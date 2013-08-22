@@ -24,7 +24,7 @@ class ConvexHull : public Test
 public:
 	enum
 	{
-		e_count = b2_maxPolygonVertices
+		e_count = b2Settings.b2_maxPolygonVertices
 	};
 
 	ConvexHull()
@@ -99,7 +99,7 @@ public:
 		}
 	}
 
-	b2Vec2 m_points[b2_maxPolygonVertices];
+	b2Vec2 m_points[b2Settings.b2_maxPolygonVertices];
 	bool m_auto;
 };
 

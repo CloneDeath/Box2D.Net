@@ -456,7 +456,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 			++pushBackIter;
 
-			if (pushBackIter == b2_maxPolygonVertices)
+			if (pushBackIter == b2Settings.b2_maxPolygonVertices)
 			{
 				break;
 			}

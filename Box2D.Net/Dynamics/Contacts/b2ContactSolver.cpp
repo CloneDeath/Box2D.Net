@@ -707,7 +707,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 			b2Vec2 rB = point - cB;
 
 			// Track max constraint error.
-			minSeparation = b2Min(minSeparation, separation);
+			minSeparation = Math.Min(minSeparation, separation);
 
 			// Prevent large corrections and allow slop.
 			float C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
@@ -798,7 +798,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(int toiIndexA, int toiIndexB)
 			b2Vec2 rB = point - cB;
 
 			// Track max constraint error.
-			minSeparation = b2Min(minSeparation, separation);
+			minSeparation = Math.Min(minSeparation, separation);
 
 			// Prevent large corrections and allow slop.
 			float C = b2Clamp(b2_toiBaugarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);

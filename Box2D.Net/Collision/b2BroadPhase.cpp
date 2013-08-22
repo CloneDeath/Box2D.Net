@@ -113,7 +113,7 @@ bool b2BroadPhase::QueryCallback(float proxyId)
 		b2Free(oldBuffer);
 	}
 
-	m_pairBuffer[m_pairCount].proxyIdA = b2Min(proxyId, m_queryProxyId);
+	m_pairBuffer[m_pairCount].proxyIdA = Math.Min(proxyId, m_queryProxyId);
 	m_pairBuffer[m_pairCount].proxyIdB = b2Max(proxyId, m_queryProxyId);
 	++m_pairCount;
 

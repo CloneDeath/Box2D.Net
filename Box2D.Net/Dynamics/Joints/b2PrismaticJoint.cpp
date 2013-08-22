@@ -312,7 +312,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		}
 		else if (m_limitState == e_atUpperLimit)
 		{
-			m_impulse.z = b2Min(m_impulse.z, 0.0f);
+			m_impulse.z = Math.Min(m_impulse.z, 0.0f);
 		}
 
 		// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)

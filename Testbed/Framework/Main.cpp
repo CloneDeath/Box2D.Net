@@ -139,7 +139,7 @@ static void Keyboard(unsigned char key, int x, int y)
 
 		// Press 'z' to zoom out.
 	case 'z':
-		viewZoom = b2Min(1.1f * viewZoom, 20.0f);
+		viewZoom = Math.Min(1.1f * viewZoom, 20.0f);
 		Resize(width, height);
 		break;
 

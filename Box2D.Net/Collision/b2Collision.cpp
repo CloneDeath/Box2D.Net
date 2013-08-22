@@ -172,7 +172,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 			}
 
 			// Pull the max down
-			tmax = b2Min(tmax, t2);
+			tmax = Math.Min(tmax, t2);
 
 			if (tmin > tmax)
 			{

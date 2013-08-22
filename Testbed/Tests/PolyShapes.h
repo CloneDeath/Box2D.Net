@@ -63,8 +63,8 @@ public:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
 				int vertexCount = poly->m_count;
-				b2Assert(vertexCount <= b2_maxPolygonVertices);
-				b2Vec2 vertices[b2_maxPolygonVertices];
+				b2Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
+				b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
 
 				for (int i = 0; i < vertexCount; ++i)
 				{

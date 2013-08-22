@@ -57,7 +57,7 @@ public:
 
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
-			b2Vec2 v[b2_maxPolygonVertices];
+			b2Vec2 v[b2Settings.b2_maxPolygonVertices];
 			for (int i = 0; i < m_polygonA.m_count; ++i)
 			{
 				v[i] = b2Mul(m_transformA, m_polygonA.m_vertices[i]);

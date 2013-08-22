@@ -62,7 +62,7 @@ public:
 			break;
 
 		case 'e':
-			m_angle = b2Min(Math.PI, m_angle + 0.05f * Math.PI);
+			m_angle = Math.Min(Math.PI, m_angle + 0.05f * Math.PI);
 			m_rope.SetAngle(m_angle);
 			break;
 		}

@@ -222,7 +222,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	b2AABB segmentAABB;
 	{
 		b2Vec2 t = p1 + maxFraction * (p2 - p1);
-		segmentAABB.lowerBound = b2Min(p1, t);
+		segmentAABB.lowerBound = Math.Min(p1, t);
 		segmentAABB.upperBound = b2Max(p1, t);
 	}
 
@@ -274,7 +274,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 				// Update segment bounding box.
 				maxFraction = value;
 				b2Vec2 t = p1 + maxFraction * (p2 - p1);
-				segmentAABB.lowerBound = b2Min(p1, t);
+				segmentAABB.lowerBound = Math.Min(p1, t);
 				segmentAABB.upperBound = b2Max(p1, t);
 			}
 		}

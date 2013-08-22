@@ -217,14 +217,14 @@ namespace Box2D {
 		/// Combine an AABB into this one.
 		public void Combine(b2AABB aabb)
 		{
-			lowerBound = b2Min(lowerBound, aabb.lowerBound);
+			lowerBound = Math.Min(lowerBound, aabb.lowerBound);
 			upperBound = b2Max(upperBound, aabb.upperBound);
 		}
 
 		/// Combine two AABBs into this one.
 		public void Combine(b2AABB aabb1, b2AABB aabb2)
 		{
-			lowerBound = b2Min(aabb1.lowerBound, aabb2.lowerBound);
+			lowerBound = Math.Min(aabb1.lowerBound, aabb2.lowerBound);
 			upperBound = b2Max(aabb1.upperBound, aabb2.upperBound);
 		}
 

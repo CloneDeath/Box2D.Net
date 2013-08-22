@@ -13,7 +13,7 @@ namespace Box2D {
 	class b2ChainShape : b2Shape {
 		public b2ChainShape(){
 			m_type = e_chain;
-			m_radius = b2_polygonRadius;
+			m_radius = b2Settings.b2_polygonRadius;
 			m_vertices = null;
 			m_count = 0;
 			m_hasPrevVertex = null;

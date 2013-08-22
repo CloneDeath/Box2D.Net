@@ -169,8 +169,8 @@ struct b2EPAxis
 // This holds polygon B expressed in frame A.
 struct b2TempPolygon
 {
-	b2Vec2 vertices[b2_maxPolygonVertices];
-	b2Vec2 normals[b2_maxPolygonVertices];
+	b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
+	b2Vec2 normals[b2Settings.b2_maxPolygonVertices];
 	int count;
 };
 
@@ -432,7 +432,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		m_polygonB.normals[i] = b2Mul(m_xf.q, polygonB->m_normals[i]);
 	}
 	
-	m_radius = 2.0f * b2_polygonRadius;
+	m_radius = 2.0f * b2Settings.b2_polygonRadius;
 	
 	manifold->pointCount = 0;
 	
@@ -651,7 +651,7 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation()
 		
 		float s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1);
 		float s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2);
-		float s = b2Min(s1, s2);
+		float s = Math.Min(s1, s2);
 		
 		if (s > m_radius)
 		{

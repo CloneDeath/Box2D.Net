@@ -174,7 +174,7 @@ void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int childInd
 	b2Vec2 v1 = b2Mul(xf, m_vertices[i1]);
 	b2Vec2 v2 = b2Mul(xf, m_vertices[i2]);
 
-	aabb->lowerBound = b2Min(v1, v2);
+	aabb->lowerBound = Math.Min(v1, v2);
 	aabb->upperBound = b2Max(v1, v2);
 }
 

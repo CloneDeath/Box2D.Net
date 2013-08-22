@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// A convex polygon. It is assumed that the interior of the polygon is to
 	/// the left of each edge.
-	/// Polygons have a maximum number of vertices equal to b2_maxPolygonVertices.
+	/// Polygons have a maximum number of vertices equal to b2Settings.b2_maxPolygonVertices.
 	/// In most cases you should not need many vertices for a convex polygon.
 	class b2PolygonShape : b2Shape {
 		public b2Vec2 m_centroid;
@@ -15,8 +15,8 @@ namespace Box2D {
 		public int m_count;
 		
 		public b2PolygonShape(){
-			m_type = e_polygon;
-			m_radius = b2_polygonRadius;
+			m_type = ShapeType.Polygon;
+			m_radius = b2Settings.b2_polygonRadius;
 			m_count = 0;
 			m_centroid.SetZero();
 		}
@@ -36,105 +36,106 @@ namespace Box2D {
 		}
 
 		/// Create a convex hull from the given array of local points.
-		/// The count must be in the range [3, b2_maxPolygonVertices].
+		/// The count must be in the range [3, b2Settings.b2_maxPolygonVertices].
 		/// @warning the points may be re-ordered, even if they form a convex polygon
 		/// @warning collinear points are handled but not removed. Collinear points
 		/// may lead to poor stacking behavior.
 		public void Set(b2Vec2 points, int count){
-			b2Assert(3 <= count && count <= b2_maxPolygonVertices);
-			if (count < 3)
-			{
-				SetAsBox(1.0f, 1.0f);
-				return;
-			}
+			throw new NotImplementedException();
+			//b2Assert(3 <= count && count <= b2Settings.b2_maxPolygonVertices);
+			//if (count < 3)
+			//{
+			//    SetAsBox(1.0f, 1.0f);
+			//    return;
+			//}
 			
-			int n = b2Min(count, b2_maxPolygonVertices);
+			//int n = Math.Min(count, b2Settings.b2_maxPolygonVertices);
 
-			// Copy vertices into local buffer
-			b2Vec2 ps[b2_maxPolygonVertices];
-			for (int i = 0; i < n; ++i)
-			{
-				ps[i] = vertices[i];
-			}
+			//// Copy vertices into local buffer
+			//b2Vec2 ps = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+			//for (int i = 0; i < n; ++i)
+			//{
+			//    ps[i] = vertices[i];
+			//}
 
-			// Create the convex hull using the Gift wrapping algorithm
-			// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
+			//// Create the convex hull using the Gift wrapping algorithm
+			//// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
 
-			// Find the right most point on the hull
-			int i0 = 0;
-			float x0 = ps[0].x;
-			for (int i = 1; i < count; ++i)
-			{
-				float x = ps[i].x;
-				if (x > x0 || (x == x0 && ps[i].y < ps[i0].y))
-				{
-					i0 = i;
-					x0 = x;
-				}
-			}
+			//// Find the right most point on the hull
+			//int i0 = 0;
+			//float x0 = ps[0].x;
+			//for (int i = 1; i < count; ++i)
+			//{
+			//    float x = ps[i].x;
+			//    if (x > x0 || (x == x0 && ps[i].y < ps[i0].y))
+			//    {
+			//        i0 = i;
+			//        x0 = x;
+			//    }
+			//}
 
-			int hull[b2_maxPolygonVertices];
-			int m = 0;
-			int ih = i0;
+			//int hull[b2Settings.b2_maxPolygonVertices];
+			//int m = 0;
+			//int ih = i0;
 
-			for (;;)
-			{
-				hull[m] = ih;
+			//for (;;)
+			//{
+			//    hull[m] = ih;
 
-				int ie = 0;
-				for (int j = 1; j < n; ++j)
-				{
-					if (ie == ih)
-					{
-						ie = j;
-						continue;
-					}
+			//    int ie = 0;
+			//    for (int j = 1; j < n; ++j)
+			//    {
+			//        if (ie == ih)
+			//        {
+			//            ie = j;
+			//            continue;
+			//        }
 
-					b2Vec2 r = ps[ie] - ps[hull[m]];
-					b2Vec2 v = ps[j] - ps[hull[m]];
-					float c = b2Cross(r, v);
-					if (c < 0.0f)
-					{
-						ie = j;
-					}
+			//        b2Vec2 r = ps[ie] - ps[hull[m]];
+			//        b2Vec2 v = ps[j] - ps[hull[m]];
+			//        float c = b2Cross(r, v);
+			//        if (c < 0.0f)
+			//        {
+			//            ie = j;
+			//        }
 
-					// Collinearity check
-					if (c == 0.0f && v.LengthSquared() > r.LengthSquared())
-					{
-						ie = j;
-					}
-				}
+			//        // Collinearity check
+			//        if (c == 0.0f && v.LengthSquared() > r.LengthSquared())
+			//        {
+			//            ie = j;
+			//        }
+			//    }
 
-				++m;
-				ih = ie;
+			//    ++m;
+			//    ih = ie;
 
-				if (ie == i0)
-				{
-					break;
-				}
-			}
+			//    if (ie == i0)
+			//    {
+			//        break;
+			//    }
+			//}
 			
-			m_count = m;
+			//m_count = m;
 
-			// Copy vertices.
-			for (int i = 0; i < m; ++i)
-			{
-				m_vertices[i] = ps[hull[i]];
-			}
+			//// Copy vertices.
+			//for (int i = 0; i < m; ++i)
+			//{
+			//    m_vertices[i] = ps[hull[i]];
+			//}
 
-			// Compute normals. Ensure the edges have non-zero length.
-			for (int i = 0; i < m; ++i)
-			{
-				int i1 = i;
-				int i2 = i + 1 < m ? i + 1 : 0;
-				b2Vec2 edge = m_vertices[i2] - m_vertices[i1];
-				b2Assert(edge.LengthSquared() > b2_epsilon * b2_epsilon);
-				m_normals[i] = b2Cross(edge, 1.0f);
-				m_normals[i].Normalize();
-			}
+			//// Compute normals. Ensure the edges have non-zero length.
+			//for (int i = 0; i < m; ++i)
+			//{
+			//    int i1 = i;
+			//    int i2 = i + 1 < m ? i + 1 : 0;
+			//    b2Vec2 edge = m_vertices[i2] - m_vertices[i1];
+			//    b2Assert(edge.LengthSquared() > b2_epsilon * b2_epsilon);
+			//    m_normals[i] = b2Cross(edge, 1.0f);
+			//    m_normals[i].Normalize();
+			//}
 
-			// Compute the polygon centroid.
-			m_centroid = ComputeCentroid(m_vertices, m);
+			//// Compute the polygon centroid.
+			//m_centroid = ComputeCentroid(m_vertices, m);
 		}
 
 		/// Build vertices to represent an axis-aligned box centered on the local origin.
@@ -178,162 +179,166 @@ namespace Box2D {
 			// Transform vertices and normals.
 			for (int i = 0; i < m_count; ++i)
 			{
-				m_vertices[i] = b2Mul(xf, m_vertices[i]);
-				m_normals[i] = b2Mul(xf.q, m_normals[i]);
+				throw new NotImplementedException();
+				//m_vertices[i] = b2Mul(xf, m_vertices[i]);
+				//m_normals[i] = b2Mul(xf.q, m_normals[i]);
 			}
 		}
 		
 		private static b2Vec2 ComputeCentroid(b2Vec2 vs, int count)
 		{
-			b2Assert(count >= 3);
+			throw new NotImplementedException();
+		//    b2Assert(count >= 3);
 
-			b2Vec2 c; c.Set(0.0f, 0.0f);
-			float area = 0.0f;
+		//    b2Vec2 c; c.Set(0.0f, 0.0f);
+		//    float area = 0.0f;
 
-			// pRef is the reference point for forming triangles.
-			// It's location doesn't change the result (except for rounding error).
-			b2Vec2 pRef(0.0f, 0.0f);
-		#if 0
-			// This code would put the reference point inside the polygon.
-			for (int i = 0; i < count; ++i)
-			{
-				pRef += vs[i];
-			}
-			pRef *= 1.0f / count;
-		#endif
+		//    // pRef is the reference point for forming triangles.
+		//    // It's location doesn't change the result (except for rounding error).
+		//    b2Vec2 pRef(0.0f, 0.0f);
+		//#if 0
+		//    // This code would put the reference point inside the polygon.
+		//    for (int i = 0; i < count; ++i)
+		//    {
+		//        pRef += vs[i];
+		//    }
+		//    pRef *= 1.0f / count;
+		//#endif
 
-			const float inv3 = 1.0f / 3.0f;
+		//    const float inv3 = 1.0f / 3.0f;
 
-			for (int i = 0; i < count; ++i)
-			{
-				// Triangle vertices.
-				b2Vec2 p1 = pRef;
-				b2Vec2 p2 = vs[i];
-				b2Vec2 p3 = i + 1 < count ? vs[i+1] : vs[0];
+		//    for (int i = 0; i < count; ++i)
+		//    {
+		//        // Triangle vertices.
+		//        b2Vec2 p1 = pRef;
+		//        b2Vec2 p2 = vs[i];
+		//        b2Vec2 p3 = i + 1 < count ? vs[i+1] : vs[0];
 
-				b2Vec2 e1 = p2 - p1;
-				b2Vec2 e2 = p3 - p1;
+		//        b2Vec2 e1 = p2 - p1;
+		//        b2Vec2 e2 = p3 - p1;
 
-				float D = b2Cross(e1, e2);
+		//        float D = b2Cross(e1, e2);
 
-				float triangleArea = 0.5f * D;
-				area += triangleArea;
+		//        float triangleArea = 0.5f * D;
+		//        area += triangleArea;
 
-				// Area weighted centroid
-				c += triangleArea * inv3 * (p1 + p2 + p3);
-			}
+		//        // Area weighted centroid
+		//        c += triangleArea * inv3 * (p1 + p2 + p3);
+		//    }
 
-			// Centroid
-			b2Assert(area > b2_epsilon);
-			c *= 1.0f / area;
-			return c;
+		//    // Centroid
+		//    b2Assert(area > b2_epsilon);
+		//    c *= 1.0f / area;
+		//    return c;
 		}
 
 		/// @see b2Shape::TestPoint
 		public bool TestPoint(b2Transform transform, b2Vec2 p){
-			b2Vec2 pLocal = b2MulT(xf.q, p - xf.p);
+			throw new NotImplementedException();
+			//b2Vec2 pLocal = b2MulT(xf.q, p - xf.p);
 
-			for (int i = 0; i < m_count; ++i)
-			{
-				float dot = b2Dot(m_normals[i], pLocal - m_vertices[i]);
-				if (dot > 0.0f)
-				{
-					return false;
-				}
-			}
+			//for (int i = 0; i < m_count; ++i)
+			//{
+			//    float dot = b2Dot(m_normals[i], pLocal - m_vertices[i]);
+			//    if (dot > 0.0f)
+			//    {
+			//        return false;
+			//    }
+			//}
 
-			return true;
+			//return true;
 		}
 
 		/// Implement b2Shape.
-		public bool RayCast(out b2RayCastOutput output, b2RayCastInput input,
-						b2Transform transform, int childIndex){
-			B2_NOT_USED(childIndex);
+		public bool RayCast(out b2RayCastOutput output, b2RayCastInput input, b2Transform transform, int childIndex){
+			throw new NotImplementedException();
+			//B2_NOT_USED(childIndex);
 
-			// Put the ray into the polygon's frame of reference.
-			b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
-			b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
-			b2Vec2 d = p2 - p1;
+			//// Put the ray into the polygon's frame of reference.
+			//b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
+			//b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
+			//b2Vec2 d = p2 - p1;
 
-			float lower = 0.0f, upper = input.maxFraction;
+			//float lower = 0.0f, upper = input.maxFraction;
 
-			int index = -1;
+			//int index = -1;
 
-			for (int i = 0; i < m_count; ++i)
-			{
-				// p = p1 + a * d
-				// dot(normal, p - v) = 0
-				// dot(normal, p1 - v) + a * dot(normal, d) = 0
-				float numerator = b2Dot(m_normals[i], m_vertices[i] - p1);
-				float denominator = b2Dot(m_normals[i], d);
+			//for (int i = 0; i < m_count; ++i)
+			//{
+			//    // p = p1 + a * d
+			//    // dot(normal, p - v) = 0
+			//    // dot(normal, p1 - v) + a * dot(normal, d) = 0
+			//    float numerator = b2Dot(m_normals[i], m_vertices[i] - p1);
+			//    float denominator = b2Dot(m_normals[i], d);
 
-				if (denominator == 0.0f)
-				{	
-					if (numerator < 0.0f)
-					{
-						return false;
-					}
-				}
-				else
-				{
-					// Note: we want this predicate without division:
-					// lower < numerator / denominator, where denominator < 0
-					// Since denominator < 0, we have to flip the inequality:
-					// lower < numerator / denominator <==> denominator * lower > numerator.
-					if (denominator < 0.0f && numerator < lower * denominator)
-					{
-						// Increase lower.
-						// The segment enters this half-space.
-						lower = numerator / denominator;
-						index = i;
-					}
-					else if (denominator > 0.0f && numerator < upper * denominator)
-					{
-						// Decrease upper.
-						// The segment exits this half-space.
-						upper = numerator / denominator;
-					}
-				}
+			//    if (denominator == 0.0f)
+			//    {	
+			//        if (numerator < 0.0f)
+			//        {
+			//            return false;
+			//        }
+			//    }
+			//    else
+			//    {
+			//        // Note: we want this predicate without division:
+			//        // lower < numerator / denominator, where denominator < 0
+			//        // Since denominator < 0, we have to flip the inequality:
+			//        // lower < numerator / denominator <==> denominator * lower > numerator.
+			//        if (denominator < 0.0f && numerator < lower * denominator)
+			//        {
+			//            // Increase lower.
+			//            // The segment enters this half-space.
+			//            lower = numerator / denominator;
+			//            index = i;
+			//        }
+			//        else if (denominator > 0.0f && numerator < upper * denominator)
+			//        {
+			//            // Decrease upper.
+			//            // The segment exits this half-space.
+			//            upper = numerator / denominator;
+			//        }
+			//    }
 
-				// The use of epsilon here causes the assert on lower to trip
-				// in some cases. Apparently the use of epsilon was to make edge
-				// shapes work, but now those are handled separately.
-				//if (upper < lower - b2_epsilon)
-				if (upper < lower)
-				{
-					return false;
-				}
-			}
+			//    // The use of epsilon here causes the assert on lower to trip
+			//    // in some cases. Apparently the use of epsilon was to make edge
+			//    // shapes work, but now those are handled separately.
+			//    //if (upper < lower - b2_epsilon)
+			//    if (upper < lower)
+			//    {
+			//        return false;
+			//    }
+			//}
 
-			b2Assert(0.0f <= lower && lower <= input.maxFraction);
+			//b2Assert(0.0f <= lower && lower <= input.maxFraction);
 
-			if (index >= 0)
-			{
-				output->fraction = lower;
-				output->normal = b2Mul(xf.q, m_normals[index]);
-				return true;
-			}
+			//if (index >= 0)
+			//{
+			//    output->fraction = lower;
+			//    output->normal = b2Mul(xf.q, m_normals[index]);
+			//    return true;
+			//}
 
-			return false;
+			//return false;
 		}
 
 		/// @see b2Shape::ComputeAABB
 		public void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex){
-			B2_NOT_USED(childIndex);
+			throw new NotImplementedException();
+			//B2_NOT_USED(childIndex);
 
-			b2Vec2 lower = b2Mul(xf, m_vertices[0]);
-			b2Vec2 upper = lower;
+			//b2Vec2 lower = b2Mul(xf, m_vertices[0]);
+			//b2Vec2 upper = lower;
 
-			for (int i = 1; i < m_count; ++i)
-			{
-				b2Vec2 v = b2Mul(xf, m_vertices[i]);
-				lower = b2Min(lower, v);
-				upper = b2Max(upper, v);
-			}
+			//for (int i = 1; i < m_count; ++i)
+			//{
+			//    b2Vec2 v = b2Mul(xf, m_vertices[i]);
+			//    lower = Math.Min(lower, v);
+			//    upper = b2Max(upper, v);
+			//}
 
-			b2Vec2 r(m_radius, m_radius);
-			aabb->lowerBound = lower - r;
-			aabb->upperBound = upper + r;
+			//b2Vec2 r(m_radius, m_radius);
+			//aabb->lowerBound = lower - r;
+			//aabb->upperBound = upper + r;
 		}
 
 		/// @see b2Shape::ComputeMass
@@ -362,61 +367,62 @@ namespace Box2D {
 			//
 			// The rest of the derivation is handled by computer algebra.
 
-			b2Assert(m_count >= 3);
+			throw new NotImplementedException();
+			//b2Assert(m_count >= 3);
 
-			b2Vec2 center; center.Set(0.0f, 0.0f);
-			float area = 0.0f;
-			float I = 0.0f;
+			//b2Vec2 center; center.Set(0.0f, 0.0f);
+			//float area = 0.0f;
+			//float I = 0.0f;
 
-			// s is the reference point for forming triangles.
-			// It's location doesn't change the result (except for rounding error).
-			b2Vec2 s(0.0f, 0.0f);
+			//// s is the reference point for forming triangles.
+			//// It's location doesn't change the result (except for rounding error).
+			//b2Vec2 s(0.0f, 0.0f);
 
-			// This code would put the reference point inside the polygon.
-			for (int i = 0; i < m_count; ++i)
-			{
-				s += m_vertices[i];
-			}
-			s *= 1.0f / m_count;
+			//// This code would put the reference point inside the polygon.
+			//for (int i = 0; i < m_count; ++i)
+			//{
+			//    s += m_vertices[i];
+			//}
+			//s *= 1.0f / m_count;
 
-			const float k_inv3 = 1.0f / 3.0f;
+			//const float k_inv3 = 1.0f / 3.0f;
 
-			for (int i = 0; i < m_count; ++i)
-			{
-				// Triangle vertices.
-				b2Vec2 e1 = m_vertices[i] - s;
-				b2Vec2 e2 = i + 1 < m_count ? m_vertices[i+1] - s : m_vertices[0] - s;
+			//for (int i = 0; i < m_count; ++i)
+			//{
+			//    // Triangle vertices.
+			//    b2Vec2 e1 = m_vertices[i] - s;
+			//    b2Vec2 e2 = i + 1 < m_count ? m_vertices[i+1] - s : m_vertices[0] - s;
 
-				float D = b2Cross(e1, e2);
+			//    float D = b2Cross(e1, e2);
 
-				float triangleArea = 0.5f * D;
-				area += triangleArea;
+			//    float triangleArea = 0.5f * D;
+			//    area += triangleArea;
 
-				// Area weighted centroid
-				center += triangleArea * k_inv3 * (e1 + e2);
+			//    // Area weighted centroid
+			//    center += triangleArea * k_inv3 * (e1 + e2);
 
-				float ex1 = e1.x, ey1 = e1.y;
-				float ex2 = e2.x, ey2 = e2.y;
+			//    float ex1 = e1.x, ey1 = e1.y;
+			//    float ex2 = e2.x, ey2 = e2.y;
 
-				float intx2 = ex1*ex1 + ex2*ex1 + ex2*ex2;
-				float inty2 = ey1*ey1 + ey2*ey1 + ey2*ey2;
+			//    float intx2 = ex1*ex1 + ex2*ex1 + ex2*ex2;
+			//    float inty2 = ey1*ey1 + ey2*ey1 + ey2*ey2;
 
-				I += (0.25f * k_inv3 * D) * (intx2 + inty2);
-			}
+			//    I += (0.25f * k_inv3 * D) * (intx2 + inty2);
+			//}
 
-			// Total mass
-			massData->mass = density * area;
+			//// Total mass
+			//massData->mass = density * area;
 
-			// Center of mass
-			b2Assert(area > b2_epsilon);
-			center *= 1.0f / area;
-			massData->center = center + s;
+			//// Center of mass
+			//b2Assert(area > b2_epsilon);
+			//center *= 1.0f / area;
+			//massData->center = center + s;
 
-			// Inertia tensor relative to the local origin (point s).
-			massData->I = density * I;
+			//// Inertia tensor relative to the local origin (point s).
+			//massData->I = density * I;
 			
-			// Shift to center of mass then to original body origin.
-			massData->I += massData->mass * (b2Dot(massData->center, massData->center) - b2Dot(center, center));
+			//// Shift to center of mass then to original body origin.
+			//massData->I += massData->mass * (b2Dot(massData->center, massData->center) - b2Dot(center, center));
 		}
 
 		/// Get the vertex count.
@@ -424,37 +430,39 @@ namespace Box2D {
 
 		/// Get a vertex by index.
 		public b2Vec2 GetVertex(int index){
-			b2Assert(0 <= index && index < m_count);
-			return m_vertices[index];
+			throw new NotImplementedException();
+			//b2Assert(0 <= index && index < m_count);
+			//return m_vertices[index];
 		}
 
 		/// Validate convexity. This is a very time consuming operation.
 		/// @returns true if valid
 		public bool Validate(){
-			for (int i = 0; i < m_count; ++i)
-			{
-				int i1 = i;
-				int i2 = i < m_count - 1 ? i1 + 1 : 0;
-				b2Vec2 p = m_vertices[i1];
-				b2Vec2 e = m_vertices[i2] - p;
+			throw new NotImplementedException();
+			//for (int i = 0; i < m_count; ++i)
+			//{
+			//    int i1 = i;
+			//    int i2 = i < m_count - 1 ? i1 + 1 : 0;
+			//    b2Vec2 p = m_vertices[i1];
+			//    b2Vec2 e = m_vertices[i2] - p;
 
-				for (int j = 0; j < m_count; ++j)
-				{
-					if (j == i1 || j == i2)
-					{
-						continue;
-					}
+			//    for (int j = 0; j < m_count; ++j)
+			//    {
+			//        if (j == i1 || j == i2)
+			//        {
+			//            continue;
+			//        }
 
-					b2Vec2 v = m_vertices[j] - p;
-					float c = b2Cross(e, v);
-					if (c < 0.0f)
-					{
-						return false;
-					}
-				}
-			}
+			//        b2Vec2 v = m_vertices[j] - p;
+			//        float c = b2Cross(e, v);
+			//        if (c < 0.0f)
+			//        {
+			//            return false;
+			//        }
+			//    }
+			//}
 
-			return true;
+			//return true;
 		}
 	}
 }

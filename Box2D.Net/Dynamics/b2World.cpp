@@ -693,7 +693,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				float beta = output.t;
 				if (output.state == b2TOIOutput::e_touching)
 				{
-					alpha = b2Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
+					alpha = Math.Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
 				}
 				else
 				{
@@ -1074,8 +1074,8 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 		{
 			b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
 			int vertexCount = poly->m_count;
-			b2Assert(vertexCount <= b2_maxPolygonVertices);
-			b2Vec2 vertices[b2_maxPolygonVertices];
+			b2Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
+			b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
 
 			for (int i = 0; i < vertexCount; ++i)
 			{

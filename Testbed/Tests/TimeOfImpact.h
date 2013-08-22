@@ -72,7 +72,7 @@ public:
 		m_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", b2_toiMaxIters, b2_toiMaxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		b2Vec2 vertices[b2_maxPolygonVertices];
+		b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
 
 		b2Transform transformA;
 		sweepA.GetTransform(&transformA, 0.0f);

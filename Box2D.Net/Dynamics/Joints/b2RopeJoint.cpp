@@ -144,7 +144,7 @@ void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	float impulse = -m_mass * Cdot;
 	float oldImpulse = m_impulse;
-	m_impulse = b2Min(0.0f, m_impulse + impulse);
+	m_impulse = Math.Min(0.0f, m_impulse + impulse);
 	impulse = m_impulse - oldImpulse;
 
 	b2Vec2 P = impulse * m_u;

@@ -366,7 +366,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			else
 			{
 				b->m_sleepTime += h;
-				minSleepTime = b2Min(minSleepTime, b->m_sleepTime);
+				minSleepTime = Math.Min(minSleepTime, b->m_sleepTime);
 			}
 		}
 
