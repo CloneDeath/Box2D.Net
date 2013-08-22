@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BE3EE03A-EFFE-45D4-84E1-A4A324FAB35E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Testbed</RootNamespace>
+    <AssemblyName>Testbed</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CMakeLists.txt" />
+    <Content Include="Framework\Main.cpp" />
+    <Content Include="Framework\Render.cpp" />
+    <Content Include="Framework\Render.h" />
+    <Content Include="Framework\Test.cpp" />
+    <Content Include="Framework\Test.h" />
+    <Content Include="Tests\AddPair.h" />
+    <Content Include="Tests\ApplyForce.h" />
+    <Content Include="Tests\BodyTypes.h" />
+    <Content Include="Tests\Breakable.h" />
+    <Content Include="Tests\Bridge.h" />
+    <Content Include="Tests\BulletTest.h" />
+    <Content Include="Tests\Cantilever.h" />
+    <Content Include="Tests\Car.h" />
+    <Content Include="Tests\Chain.h" />
+    <Content Include="Tests\CharacterCollision.h" />
+    <Content Include="Tests\CollisionFiltering.h" />
+    <Content Include="Tests\CollisionProcessing.h" />
+    <Content Include="Tests\CompoundShapes.h" />
+    <Content Include="Tests\Confined.h" />
+    <Content Include="Tests\ContinuousTest.h" />
+    <Content Include="Tests\ConvexHull.h" />
+    <Content Include="Tests\ConveyorBelt.h" />
+    <Content Include="Tests\DistanceTest.h" />
+    <Content Include="Tests\Dominos.h" />
+    <Content Include="Tests\DumpShell.h" />
+    <Content Include="Tests\DynamicTreeTest.h" />
+    <Content Include="Tests\EdgeShapes.h" />
+    <Content Include="Tests\EdgeTest.h" />
+    <Content Include="Tests\Gears.h" />
+    <Content Include="Tests\Mobile.h" />
+    <Content Include="Tests\MobileBalanced.h" />
+    <Content Include="Tests\MotorJoint.h" />
+    <Content Include="Tests\OneSidedPlatform.h" />
+    <Content Include="Tests\Pinball.h" />
+    <Content Include="Tests\PolyCollision.h" />
+    <Content Include="Tests\PolyShapes.h" />
+    <Content Include="Tests\Prismatic.h" />
+    <Content Include="Tests\Pulleys.h" />
+    <Content Include="Tests\Pyramid.h" />
+    <Content Include="Tests\RayCast.h" />
+    <Content Include="Tests\Revolute.h" />
+    <Content Include="Tests\Rope.h" />
+    <Content Include="Tests\RopeJoint.h" />
+    <Content Include="Tests\SensorTest.h" />
+    <Content Include="Tests\ShapeEditing.h" />
+    <Content Include="Tests\SliderCrank.h" />
+    <Content Include="Tests\SphereStack.h" />
+    <Content Include="Tests\TestEntries.cpp" />
+    <Content Include="Tests\TheoJansen.h" />
+    <Content Include="Tests\Tiles.h" />
+    <Content Include="Tests\TimeOfImpact.h" />
+    <Content Include="Tests\Tumbler.h" />
+    <Content Include="Tests\VaryingFriction.h" />
+    <Content Include="Tests\VaryingRestitution.h" />
+    <Content Include="Tests\VerticalStack.h" />
+    <Content Include="Tests\Web.h" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
