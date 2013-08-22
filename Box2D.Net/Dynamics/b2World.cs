@@ -10,7 +10,7 @@ namespace Box2D {
 	public class b2World {
 		/// Construct a world object.
 		/// @param gravity the world gravity vector.
-		public b2World(const b2Vec2& gravity);
+		public b2World(b2Vec2 gravity);
 
 		/// Destruct the world. All physics entities are destroyed and all heap memory is released.
 		public ~b2World();

@@ -17,10 +17,10 @@ namespace HelloWorld {
 			b2Vec2 gravity = new b2Vec2(0.0f, -10.0f);
 
 			// Construct a world object, which will hold and simulate the rigid bodies.
-			b2World world(gravity);
+			b2World world = new b2World(gravity);
 
 			// Define the ground body.
-			b2BodyDef groundBodyDef;
+			b2BodyDef groundBodyDef = new b2BodyDef();
 			groundBodyDef.position.Set(0.0f, -10.0f);
 
 			// Call the body factory which allocates memory for the ground body

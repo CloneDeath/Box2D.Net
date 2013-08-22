@@ -5,6 +5,22 @@ using System.Text;
 
 namespace Box2D {
 	class b2Rope {
+		private int m_count;
+		private b2Vec2* m_ps;
+		private b2Vec2* m_p0s;
+		private b2Vec2* m_vs;
+
+		private float* m_ims;
+
+		private float* m_Ls;
+		private float* m_as;
+
+		private b2Vec2 m_gravity;
+		private float m_damping;
+
+		private float m_k2;
+		private float m_k3;
+
 		public b2Rope(){
 			m_count = 0;
 			m_ps = null;
@@ -252,22 +268,6 @@ namespace Box2D {
 				m_ps[i + 1] = p2;
 				m_ps[i + 2] = p3;
 			}
-}
-
-		private int m_count;
-		private b2Vec2* m_ps;
-		private b2Vec2* m_p0s;
-		private b2Vec2* m_vs;
-
-		private float* m_ims;
-
-		private float* m_Ls;
-		private float* m_as;
-
-		private b2Vec2 m_gravity;
-		private float m_damping;
-
-		private float m_k2;
-		private float m_k3;
+		}
 	}
 }
