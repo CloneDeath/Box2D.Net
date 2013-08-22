@@ -138,7 +138,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 			float C = b2Dot(d, m_ax);
 
 			// Frequency
-			float omega = 2.0f * b2_pi * m_frequencyHz;
+			float omega = 2.0f * Math.PI * m_frequencyHz;
 
 			// Damping coefficient
 			float d = 2.0f * m_springMass * m_dampingRatio * omega;

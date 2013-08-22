@@ -40,13 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collision\b2Collision.cs" />
     <Compile Include="Collision\Shapes\b2ChainShape.cs" />
     <Compile Include="Collision\Shapes\b2CircleShape.cs" />
     <Compile Include="Collision\Shapes\b2EdgeShape.cs" />
     <Compile Include="Collision\Shapes\b2MassData.cs" />
     <Compile Include="Collision\Shapes\b2PolygonShape.cs" />
     <Compile Include="Collision\Shapes\b2Shape.cs" />
+    <Compile Include="Common\b2Rot.cs" />
+    <Compile Include="Common\b2Transform.cs" />
     <Compile Include="Common\b2Vec2.cs" />
+    <Compile Include="Common\b2Settings.cs" />
     <Compile Include="Dynamics\b2World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rope\b2RopeDef.cs" />
@@ -59,7 +63,6 @@
     <Content Include="Collision\b2CollideEdge.cpp" />
     <Content Include="Collision\b2CollidePolygon.cpp" />
     <Content Include="Collision\b2Collision.cpp" />
-    <Content Include="Collision\b2Collision.h" />
     <Content Include="Collision\b2Distance.cpp" />
     <Content Include="Collision\b2Distance.h" />
     <Content Include="Collision\b2DynamicTree.cpp" />
@@ -78,7 +81,6 @@
     <Content Include="Common\b2Math.cpp" />
     <Content Include="Common\b2Math.h" />
     <Content Include="Common\b2Settings.cpp" />
-    <Content Include="Common\b2Settings.h" />
     <Content Include="Common\b2StackAllocator.cpp" />
     <Content Include="Common\b2StackAllocator.h" />
     <Content Include="Common\b2Timer.cpp" />

@@ -215,83 +215,6 @@ struct b2Mat33
 	b2Vec3 ex, ey, ez;
 };
 
-/// Rotation
-struct b2Rot
-{
-	b2Rot() {}
-
-	/// Initialize from an angle in radians
-	explicit b2Rot(float angle)
-	{
-		/// TODO_ERIN optimize
-		s = sinf(angle);
-		c = cosf(angle);
-	}
-
-	/// Set using an angle in radians.
-	void Set(float angle)
-	{
-		/// TODO_ERIN optimize
-		s = sinf(angle);
-		c = cosf(angle);
-	}
-
-	/// Set to the identity rotation
-	void SetIdentity()
-	{
-		s = 0.0f;
-		c = 1.0f;
-	}
-
-	/// Get the angle in radians
-	float GetAngle() const
-	{
-		return b2Atan2(s, c);
-	}
-
-	/// Get the x-axis
-	b2Vec2 GetXAxis() const
-	{
-		return b2Vec2(c, s);
-	}
-
-	/// Get the u-axis
-	b2Vec2 GetYAxis() const
-	{
-		return b2Vec2(-s, c);
-	}
-
-	/// Sine and cosine
-	float s, c;
-};
-
-/// A transform contains translation and rotation. It is used to represent
-/// the position and orientation of rigid frames.
-struct b2Transform
-{
-	/// The default constructor does nothing.
-	b2Transform() {}
-
-	/// Initialize using a position vector and a rotation.
-	b2Transform(const b2Vec2& position, const b2Rot& rotation) : p(position), q(rotation) {}
-
-	/// Set this to the identity transform.
-	void SetIdentity()
-	{
-		p.SetZero();
-		q.SetIdentity();
-	}
-
-	/// Set this based on the position and angle.
-	void Set(const b2Vec2& position, float angle)
-	{
-		p = position;
-		q.Set(angle);
-	}
-
-	b2Vec2 p;
-	b2Rot q;
-};
 
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
@@ -631,7 +554,7 @@ inline void b2Sweep::Advance(float alpha)
 /// Normalize an angle in radians to be between -pi and pi
 inline void b2Sweep::Normalize()
 {
-	float twoPi = 2.0f * b2_pi;
+	float twoPi = 2.0f * Math.PI;
 	float d =  twoPi * floorf(a0 / twoPi);
 	a0 -= d;
 	a -= d;

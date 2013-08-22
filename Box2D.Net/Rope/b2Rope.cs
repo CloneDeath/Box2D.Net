@@ -230,15 +230,15 @@ namespace Box2D {
 
 				float C = angle - m_as[i];
 
-				while (C > b2_pi)
+				while (C > Math.PI)
 				{
-					angle -= 2 * b2_pi;
+					angle -= 2 * Math.PI;
 					C = angle - m_as[i];
 				}
 
-				while (C < -b2_pi)
+				while (C < -Math.PI)
 				{
-					angle += 2.0f * b2_pi;
+					angle += 2.0f * Math.PI;
 					C = angle - m_as[i];
 				}
 

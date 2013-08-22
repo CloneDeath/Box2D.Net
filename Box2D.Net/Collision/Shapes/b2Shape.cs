@@ -26,7 +26,7 @@ namespace Box2D {
 
 		/// Get the type of this shape. You can use this to down cast to the concrete shape.
 		/// @return the shape type.
-		public Type GetShapeType(){
+		public ShapeType GetShapeType() {
 			return m_type;
 		}
 

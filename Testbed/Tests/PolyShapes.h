@@ -183,7 +183,7 @@ public:
 
 		float x = RandomFloat(-2.0f, 2.0f);
 		bd.position.Set(x, 10.0f);
-		bd.angle = RandomFloat(-b2_pi, b2_pi);
+		bd.angle = RandomFloat(-Math.PI, Math.PI);
 
 		if (index == 4)
 		{

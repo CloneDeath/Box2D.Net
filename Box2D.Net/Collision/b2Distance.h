@@ -58,8 +58,8 @@ struct b2SimplexCache
 {
 	float metric;		///< length or area
 	uint16 count;
-	uint8 indexA[3];	///< vertices on shape A
-	uint8 indexB[3];	///< vertices on shape B
+	byte indexA[3];	///< vertices on shape A
+	byte indexB[3];	///< vertices on shape B
 };
 
 /// Input for b2Distance.

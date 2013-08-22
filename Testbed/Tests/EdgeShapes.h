@@ -59,11 +59,11 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			float x1 = -20.0f;
-			float y1 = 2.0f * cosf(x1 / 10.0f * b2_pi);
+			float y1 = 2.0f * cosf(x1 / 10.0f * Math.PI);
 			for (int i = 0; i < 80; ++i)
 			{
 				float x2 = x1 + 0.5f;
-				float y2 = 2.0f * cosf(x2 / 10.0f * b2_pi);
+				float y2 = 2.0f * cosf(x2 / 10.0f * Math.PI);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(x1, y1), b2Vec2(x2, y2));
@@ -135,7 +135,7 @@ public:
 		float x = RandomFloat(-10.0f, 10.0f);
 		float y = RandomFloat(10.0f, 20.0f);
 		bd.position.Set(x, y);
-		bd.angle = RandomFloat(-b2_pi, b2_pi);
+		bd.angle = RandomFloat(-Math.PI, Math.PI);
 		bd.type = b2_dynamicBody;
 
 		if (index == 4)
@@ -229,7 +229,7 @@ public:
 
 		if (advanceRay)
 		{
-			m_angle += 0.25f * b2_pi / 180.0f;
+			m_angle += 0.25f * Math.PI / 180.0f;
 		}
 	}
 

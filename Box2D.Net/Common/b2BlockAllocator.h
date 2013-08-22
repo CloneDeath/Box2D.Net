@@ -55,7 +55,7 @@ private:
 	b2Block* m_freeLists[b2_blockSizes];
 
 	static int s_blockSizes[b2_blockSizes];
-	static uint8 s_blockSizeLookup[b2_maxBlockSize + 1];
+	static byte s_blockSizeLookup[b2_maxBlockSize + 1];
 	static bool s_blockSizeLookupInitialized;
 };
 

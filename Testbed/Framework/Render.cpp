@@ -65,7 +65,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int vertexCount, const 
 void DebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
 	const float k_segments = 16.0f;
-	const float k_increment = 2.0f * b2_pi / k_segments;
+	const float k_increment = 2.0f * Math.PI / k_segments;
 	float theta = 0.0f;
 	glColor3f(color.r, color.g, color.b);
 	glBegin(GL_LINE_LOOP);
@@ -81,7 +81,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color& co
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color)
 {
 	const float k_segments = 16.0f;
-	const float k_increment = 2.0f * b2_pi / k_segments;
+	const float k_increment = 2.0f * Math.PI / k_segments;
 	float theta = 0.0f;
 	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

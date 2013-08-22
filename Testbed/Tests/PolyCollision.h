@@ -98,11 +98,11 @@ public:
 			break;
 
 		case 'q':
-			m_angleB += 0.1f * b2_pi;
+			m_angleB += 0.1f * Math.PI;
 			break;
 
 		case 'e':
-			m_angleB -= 0.1f * b2_pi;
+			m_angleB -= 0.1f * Math.PI;
 			break;
 		}
 

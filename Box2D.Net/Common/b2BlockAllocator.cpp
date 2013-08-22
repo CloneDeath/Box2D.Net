@@ -40,7 +40,7 @@ int b2BlockAllocator::s_blockSizes[b2_blockSizes] =
 	512,	// 12
 	640,	// 13
 };
-uint8 b2BlockAllocator::s_blockSizeLookup[b2_maxBlockSize + 1];
+byte b2BlockAllocator::s_blockSizeLookup[b2_maxBlockSize + 1];
 bool b2BlockAllocator::s_blockSizeLookupInitialized;
 
 struct b2Chunk
@@ -73,12 +73,12 @@ b2BlockAllocator::b2BlockAllocator()
 			b2Assert(j < b2_blockSizes);
 			if (i <= s_blockSizes[j])
 			{
-				s_blockSizeLookup[i] = (uint8)j;
+				s_blockSizeLookup[i] = (byte)j;
 			}
 			else
 			{
 				++j;
-				s_blockSizeLookup[i] = (uint8)j;
+				s_blockSizeLookup[i] = (byte)j;
 			}
 		}
 

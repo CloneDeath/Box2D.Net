@@ -92,7 +92,7 @@ void b2CircleShape::ComputeAABB(b2AABB* aabb, const b2Transform& transform, int 
 
 void b2CircleShape::ComputeMass(b2MassData* massData, float density) const
 {
-	massData->mass = density * b2_pi * m_radius * m_radius;
+	massData->mass = density * Math.PI * m_radius * m_radius;
 	massData->center = m_p;
 
 	// inertia about the local origin

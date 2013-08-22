@@ -110,7 +110,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	float mass = m_bodyB->GetMass();
 
 	// Frequency
-	float omega = 2.0f * b2_pi * m_frequencyHz;
+	float omega = 2.0f * Math.PI * m_frequencyHz;
 
 	// Damping coefficient
 	float d = 2.0f * mass * m_dampingRatio * omega;
