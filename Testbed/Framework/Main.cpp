@@ -25,25 +25,25 @@ using namespace std;
 
 namespace
 {
-	int32 testIndex = 0;
-	int32 testSelection = 0;
-	int32 testCount = 0;
+	int testIndex = 0;
+	int testSelection = 0;
+	int testCount = 0;
 	TestEntry* entry;
 	Test* test;
 	Settings settings;
-	int32 width = 640;
-	int32 height = 480;
-	int32 framePeriod = 16;
-	int32 mainWindow;
+	int width = 640;
+	int height = 480;
+	int framePeriod = 16;
+	int mainWindow;
 	float settingsHz = 60.0;
 	GLUI *glui;
-	float32 viewZoom = 1.0f;
+	float viewZoom = 1.0f;
 	int tx, ty, tw, th;
 	bool rMouseDown;
 	b2Vec2 lastp;
 }
 
-static void Resize(int32 w, int32 h)
+static void Resize(int w, int h)
 {
 	width = w;
 	height = h;
@@ -53,7 +53,7 @@ static void Resize(int32 w, int32 h)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	float32 ratio = float32(tw) / float32(th);
+	float ratio = float(tw) / float(th);
 
 	b2Vec2 extents(ratio * 25.0f, 25.0f);
 	extents *= viewZoom;
@@ -65,12 +65,12 @@ static void Resize(int32 w, int32 h)
 	gluOrtho2D(lower.x, upper.x, lower.y, upper.y);
 }
 
-static b2Vec2 ConvertScreenToWorld(int32 x, int32 y)
+static b2Vec2 ConvertScreenToWorld(int x, int y)
 {
-	float32 u = x / float32(tw);
-	float32 v = (th - y) / float32(th);
+	float u = x / float(tw);
+	float v = (th - y) / float(th);
 
-	float32 ratio = float32(tw) / float32(th);
+	float ratio = float(tw) / float(th);
 	b2Vec2 extents(ratio * 25.0f, 25.0f);
 	extents *= viewZoom;
 
@@ -280,7 +280,7 @@ static void KeyboardUp(unsigned char key, int x, int y)
 	}
 }
 
-static void Mouse(int32 button, int32 state, int32 x, int32 y)
+static void Mouse(int button, int state, int x, int y)
 {
 	// Use the mouse to move things around.
 	if (button == GLUT_LEFT_BUTTON)
@@ -320,7 +320,7 @@ static void Mouse(int32 button, int32 state, int32 x, int32 y)
 	}
 }
 
-static void MouseMotion(int32 x, int32 y)
+static void MouseMotion(int x, int y)
 {
 	b2Vec2 p = ConvertScreenToWorld(x, y);
 	test->MouseMove(p);
@@ -382,7 +382,7 @@ static void SingleStep(int)
 int main(int argc, char** argv)
 {
 	testCount = 0;
-	while (g_testEntries[testCount].createFcn != NULL)
+	while (g_testEntries[testCount].createFcn != null)
 	{
 		++testCount;
 	}
@@ -454,7 +454,7 @@ int main(int argc, char** argv)
 	glui->add_checkbox_to_panel(drawPanel, "Statistics", &settings.drawStats);
 	glui->add_checkbox_to_panel(drawPanel, "Profile", &settings.drawProfile);
 
-	int32 testCount = 0;
+	int testCount = 0;
 	TestEntry* e = g_testEntries;
 	while (e->createFcn)
 	{

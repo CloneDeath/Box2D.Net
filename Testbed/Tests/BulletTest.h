@@ -76,9 +76,9 @@ public:
 		m_bullet->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
 		m_bullet->SetAngularVelocity(0.0f);
 
-		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
-		extern int32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
+		extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+		extern int b2_toiCalls, b2_toiIters, b2_toiMaxIters;
+		extern int b2_toiRootIters, b2_toiMaxRootIters;
 
 		b2_gjkCalls = 0;
 		b2_gjkIters = 0;
@@ -95,25 +95,25 @@ public:
 	{
 		Test::Step(settings);
 
-		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
-		extern int32 b2_toiCalls, b2_toiIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
+		extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+		extern int b2_toiCalls, b2_toiIters;
+		extern int b2_toiRootIters, b2_toiMaxRootIters;
 
 		if (b2_gjkCalls > 0)
 		{
 			m_debugDraw.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-				b2_gjkCalls, b2_gjkIters / float32(b2_gjkCalls), b2_gjkMaxIters);
+				b2_gjkCalls, b2_gjkIters / float(b2_gjkCalls), b2_gjkMaxIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
 		if (b2_toiCalls > 0)
 		{
 			m_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
-				b2_toiCalls, b2_toiIters / float32(b2_toiCalls), b2_toiMaxRootIters);
+				b2_toiCalls, b2_toiIters / float(b2_toiCalls), b2_toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			m_debugDraw.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
-				b2_toiRootIters / float32(b2_toiCalls), b2_toiMaxRootIters);
+				b2_toiRootIters / float(b2_toiCalls), b2_toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
@@ -130,7 +130,7 @@ public:
 
 	b2Body* m_body;
 	b2Body* m_bullet;
-	float32 m_x;
+	float m_x;
 };
 
 #endif

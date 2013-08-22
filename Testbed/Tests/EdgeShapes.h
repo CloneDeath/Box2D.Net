@@ -24,11 +24,11 @@ class EdgeShapesCallback : public b2RayCastCallback
 public:
 	EdgeShapesCallback()
 	{
-		m_fixture = NULL;
+		m_fixture = null;
 	}
 
-	float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float32 fraction)
+	float ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
+		const b2Vec2& normal, float fraction)
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -58,12 +58,12 @@ public:
 			b2BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			float32 x1 = -20.0f;
-			float32 y1 = 2.0f * cosf(x1 / 10.0f * b2_pi);
-			for (int32 i = 0; i < 80; ++i)
+			float x1 = -20.0f;
+			float y1 = 2.0f * cosf(x1 / 10.0f * b2_pi);
+			for (int i = 0; i < 80; ++i)
 			{
-				float32 x2 = x1 + 0.5f;
-				float32 y2 = 2.0f * cosf(x2 / 10.0f * b2_pi);
+				float x2 = x1 + 0.5f;
+				float y2 = 2.0f * cosf(x2 / 10.0f * b2_pi);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(x1, y1), b2Vec2(x2, y2));
@@ -91,9 +91,9 @@ public:
 		}
 
 		{
-			float32 w = 1.0f;
-			float32 b = w / (2.0f + b2Sqrt(2.0f));
-			float32 s = b2Sqrt(2.0f) * b;
+			float w = 1.0f;
+			float b = w / (2.0f + b2Sqrt(2.0f));
+			float s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0].Set(0.5f * s, 0.0f);
@@ -122,18 +122,18 @@ public:
 		m_angle = 0.0f;
 	}
 
-	void Create(int32 index)
+	void Create(int index)
 	{
-		if (m_bodies[m_bodyIndex] != NULL)
+		if (m_bodies[m_bodyIndex] != null)
 		{
 			m_world->DestroyBody(m_bodies[m_bodyIndex]);
-			m_bodies[m_bodyIndex] = NULL;
+			m_bodies[m_bodyIndex] = null;
 		}
 
 		b2BodyDef bd;
 
-		float32 x = RandomFloat(-10.0f, 10.0f);
-		float32 y = RandomFloat(10.0f, 20.0f);
+		float x = RandomFloat(-10.0f, 10.0f);
+		float y = RandomFloat(10.0f, 20.0f);
 		bd.position.Set(x, y);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 		bd.type = b2_dynamicBody;
@@ -167,12 +167,12 @@ public:
 
 	void DestroyBody()
 	{
-		for (int32 i = 0; i < e_maxBodies; ++i)
+		for (int i = 0; i < e_maxBodies; ++i)
 		{
-			if (m_bodies[i] != NULL)
+			if (m_bodies[i] != null)
 			{
 				m_world->DestroyBody(m_bodies[i]);
-				m_bodies[i] = NULL;
+				m_bodies[i] = null;
 				return;
 			}
 		}
@@ -204,7 +204,7 @@ public:
 		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		float32 L = 25.0f;
+		float L = 25.0f;
 		b2Vec2 point1(0.0f, 10.0f);
 		b2Vec2 d(L * cosf(m_angle), -L * b2Abs(sinf(m_angle)));
 		b2Vec2 point2 = point1 + d;
@@ -238,12 +238,12 @@ public:
 		return new EdgeShapes;
 	}
 
-	int32 m_bodyIndex;
+	int m_bodyIndex;
 	b2Body* m_bodies[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 
-	float32 m_angle;
+	float m_angle;
 };
 
 #endif

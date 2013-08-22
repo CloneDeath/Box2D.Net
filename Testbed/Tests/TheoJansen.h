@@ -26,7 +26,7 @@ class TheoJansen : public Test
 {
 public:
 
-	void CreateLeg(float32 s, const b2Vec2& wheelAnchor)
+	void CreateLeg(float s, const b2Vec2& wheelAnchor)
 	{
 		b2Vec2 p1(5.4f * s, -6.1f);
 		b2Vec2 p2(7.2f * s, -1.2f);
@@ -140,7 +140,7 @@ public:
 		}
 
 		// Balls
-		for (int32 i = 0; i < 40; ++i)
+		for (int i = 0; i < 40; ++i)
 		{
 			b2CircleShape shape;
 			shape.m_radius = 0.25f;
@@ -250,7 +250,7 @@ public:
 	b2Body* m_wheel;
 	b2RevoluteJoint* m_motorJoint;
 	bool m_motorOn;
-	float32 m_motorSpeed;
+	float m_motorSpeed;
 };
 
 #endif // THEO_JANSEN_H

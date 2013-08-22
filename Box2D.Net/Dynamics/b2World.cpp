@@ -36,11 +36,11 @@
 
 b2World::b2World(const b2Vec2& gravity)
 {
-	m_destructionListener = NULL;
-	m_debugDraw = NULL;
+	m_destructionListener = null;
+	m_debugDraw = null;
 
-	m_bodyList = NULL;
-	m_jointList = NULL;
+	m_bodyList = null;
+	m_jointList = null;
 
 	m_bodyCount = 0;
 	m_jointCount = 0;
@@ -109,14 +109,14 @@ b2Body* b2World::CreateBody(const b2BodyDef* def)
 	b2Assert(IsLocked() == false);
 	if (IsLocked())
 	{
-		return NULL;
+		return null;
 	}
 
 	void* mem = m_blockAllocator.Allocate(sizeof(b2Body));
 	b2Body* b = new (mem) b2Body(def, this);
 
 	// Add to world doubly linked list.
-	b->m_prev = NULL;
+	b->m_prev = null;
 	b->m_next = m_bodyList;
 	if (m_bodyList)
 	{
@@ -153,7 +153,7 @@ void b2World::DestroyBody(b2Body* b)
 
 		b->m_jointList = je;
 	}
-	b->m_jointList = NULL;
+	b->m_jointList = null;
 
 	// Delete the attached contacts.
 	b2ContactEdge* ce = b->m_contactList;
@@ -163,7 +163,7 @@ void b2World::DestroyBody(b2Body* b)
 		ce = ce->next;
 		m_contactManager.Destroy(ce0->contact);
 	}
-	b->m_contactList = NULL;
+	b->m_contactList = null;
 
 	// Delete the attached fixtures. This destroys broad-phase proxies.
 	b2Fixture* f = b->m_fixtureList;
@@ -185,7 +185,7 @@ void b2World::DestroyBody(b2Body* b)
 		b->m_fixtureList = f;
 		b->m_fixtureCount -= 1;
 	}
-	b->m_fixtureList = NULL;
+	b->m_fixtureList = null;
 	b->m_fixtureCount = 0;
 
 	// Remove world body list.
@@ -214,13 +214,13 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 	b2Assert(IsLocked() == false);
 	if (IsLocked())
 	{
-		return NULL;
+		return null;
 	}
 
 	b2Joint* j = b2Joint::Create(def, &m_blockAllocator);
 
 	// Connect to the world list.
-	j->m_prev = NULL;
+	j->m_prev = null;
 	j->m_next = m_jointList;
 	if (m_jointList)
 	{
@@ -232,14 +232,14 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
 	j->m_edgeA.other = j->m_bodyB;
-	j->m_edgeA.prev = NULL;
+	j->m_edgeA.prev = null;
 	j->m_edgeA.next = j->m_bodyA->m_jointList;
 	if (j->m_bodyA->m_jointList) j->m_bodyA->m_jointList->prev = &j->m_edgeA;
 	j->m_bodyA->m_jointList = &j->m_edgeA;
 
 	j->m_edgeB.joint = j;
 	j->m_edgeB.other = j->m_bodyA;
-	j->m_edgeB.prev = NULL;
+	j->m_edgeB.prev = null;
 	j->m_edgeB.next = j->m_bodyB->m_jointList;
 	if (j->m_bodyB->m_jointList) j->m_bodyB->m_jointList->prev = &j->m_edgeB;
 	j->m_bodyB->m_jointList = &j->m_edgeB;
@@ -319,8 +319,8 @@ void b2World::DestroyJoint(b2Joint* j)
 		bodyA->m_jointList = j->m_edgeA.next;
 	}
 
-	j->m_edgeA.prev = NULL;
-	j->m_edgeA.next = NULL;
+	j->m_edgeA.prev = null;
+	j->m_edgeA.next = null;
 
 	// Remove from body 2
 	if (j->m_edgeB.prev)
@@ -338,8 +338,8 @@ void b2World::DestroyJoint(b2Joint* j)
 		bodyB->m_jointList = j->m_edgeB.next;
 	}
 
-	j->m_edgeB.prev = NULL;
-	j->m_edgeB.next = NULL;
+	j->m_edgeB.prev = null;
+	j->m_edgeB.next = null;
 
 	b2Joint::Destroy(j, &m_blockAllocator);
 
@@ -411,7 +411,7 @@ void b2World::Solve(const b2TimeStep& step)
 	}
 
 	// Build and simulate all awake islands.
-	int32 stackSize = m_bodyCount;
+	int stackSize = m_bodyCount;
 	b2Body** stack = (b2Body**)m_stackAllocator.Allocate(stackSize * sizeof(b2Body*));
 	for (b2Body* seed = m_bodyList; seed; seed = seed->m_next)
 	{
@@ -433,7 +433,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 		// Reset island and stack.
 		island.Clear();
-		int32 stackCount = 0;
+		int stackCount = 0;
 		stack[stackCount++] = seed;
 		seed->m_flags |= b2Body::e_islandFlag;
 
@@ -534,7 +534,7 @@ void b2World::Solve(const b2TimeStep& step)
 		m_profile.solvePosition += profile.solvePosition;
 
 		// Post solve cleanup.
-		for (int32 i = 0; i < island.m_bodyCount; ++i)
+		for (int i = 0; i < island.m_bodyCount; ++i)
 		{
 			// Allow static bodies to participate in other islands.
 			b2Body* b = island.m_bodies[i];
@@ -599,8 +599,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	for (;;)
 	{
 		// Find the first TOI.
-		b2Contact* minContact = NULL;
-		float32 minAlpha = 1.0f;
+		b2Contact* minContact = null;
+		float minAlpha = 1.0f;
 
 		for (b2Contact* c = m_contactManager.m_contactList; c; c = c->m_next)
 		{
@@ -616,7 +616,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				continue;
 			}
 
-			float32 alpha = 1.0f;
+			float alpha = 1.0f;
 			if (c->m_flags & b2Contact::e_toiFlag)
 			{
 				// This contact has a valid cached TOI.
@@ -660,7 +660,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 				// Compute the TOI for this contact.
 				// Put the sweeps onto the same time interval.
-				float32 alpha0 = bA->m_sweep.alpha0;
+				float alpha0 = bA->m_sweep.alpha0;
 
 				if (bA->m_sweep.alpha0 < bB->m_sweep.alpha0)
 				{
@@ -675,8 +675,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 				b2Assert(alpha0 < 1.0f);
 
-				int32 indexA = c->GetChildIndexA();
-				int32 indexB = c->GetChildIndexB();
+				int indexA = c->GetChildIndexA();
+				int indexB = c->GetChildIndexB();
 
 				// Compute the time of impact in interval [0, minTOI]
 				b2TOIInput input;
@@ -690,7 +690,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				b2TimeOfImpact(&output, &input);
 
 				// Beta is the fraction of the remaining portion of the .
-				float32 beta = output.t;
+				float beta = output.t;
 				if (output.state == b2TOIOutput::e_touching)
 				{
 					alpha = b2Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
@@ -712,7 +712,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
-		if (minContact == NULL || 1.0f - 10.0f * b2_epsilon < minAlpha)
+		if (minContact == null || 1.0f - 10.0f * b2_epsilon < minAlpha)
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -763,7 +763,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 		// Get contacts on bodyA and bodyB.
 		b2Body* bodies[2] = {bA, bB};
-		for (int32 i = 0; i < 2; ++i)
+		for (int i = 0; i < 2; ++i)
 		{
 			b2Body* body = bodies[i];
 			if (body->m_type == b2_dynamicBody)
@@ -863,7 +863,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		island.SolveTOI(subStep, bA->m_islandIndex, bB->m_islandIndex);
 
 		// Reset island flags and synchronize broad-phase proxies.
-		for (int32 i = 0; i < island.m_bodyCount; ++i)
+		for (int i = 0; i < island.m_bodyCount; ++i)
 		{
 			b2Body* body = island.m_bodies[i];
 			body->m_flags &= ~b2Body::e_islandFlag;
@@ -894,7 +894,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	}
 }
 
-void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIterations)
+void b2World::Step(float dt, int velocityIterations, int positionIterations)
 {
 	b2Timer stepTimer;
 
@@ -973,7 +973,7 @@ void b2World::ClearForces()
 
 struct b2WorldQueryWrapper
 {
-	bool QueryCallback(int32 proxyId)
+	bool QueryCallback(int proxyId)
 	{
 		b2FixtureProxy* proxy = (b2FixtureProxy*)broadPhase->GetUserData(proxyId);
 		return callback->ReportFixture(proxy->fixture);
@@ -993,18 +993,18 @@ void b2World::QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const
 
 struct b2WorldRayCastWrapper
 {
-	float32 RayCastCallback(const b2RayCastInput& input, int32 proxyId)
+	float RayCastCallback(const b2RayCastInput& input, int proxyId)
 	{
 		void* userData = broadPhase->GetUserData(proxyId);
 		b2FixtureProxy* proxy = (b2FixtureProxy*)userData;
 		b2Fixture* fixture = proxy->fixture;
-		int32 index = proxy->childIndex;
+		int index = proxy->childIndex;
 		b2RayCastOutput output;
 		bool hit = fixture->RayCast(&output, input, index);
 
 		if (hit)
 		{
-			float32 fraction = output.fraction;
+			float fraction = output.fraction;
 			b2Vec2 point = (1.0f - fraction) * input.p1 + fraction * input.p2;
 			return callback->ReportFixture(fixture, point, output.normal, fraction);
 		}
@@ -1037,7 +1037,7 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 			b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
 			b2Vec2 center = b2Mul(xf, circle->m_p);
-			float32 radius = circle->m_radius;
+			float radius = circle->m_radius;
 			b2Vec2 axis = b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
 
 			m_debugDraw->DrawSolidCircle(center, radius, axis, color);
@@ -1056,11 +1056,11 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 	case b2Shape::e_chain:
 		{
 			b2ChainShape* chain = (b2ChainShape*)fixture->GetShape();
-			int32 count = chain->m_count;
+			int count = chain->m_count;
 			const b2Vec2* vertices = chain->m_vertices;
 
 			b2Vec2 v1 = b2Mul(xf, vertices[0]);
-			for (int32 i = 1; i < count; ++i)
+			for (int i = 1; i < count; ++i)
 			{
 				b2Vec2 v2 = b2Mul(xf, vertices[i]);
 				m_debugDraw->DrawSegment(v1, v2, color);
@@ -1073,11 +1073,11 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 	case b2Shape::e_polygon:
 		{
 			b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
-			int32 vertexCount = poly->m_count;
+			int vertexCount = poly->m_count;
 			b2Assert(vertexCount <= b2_maxPolygonVertices);
 			b2Vec2 vertices[b2_maxPolygonVertices];
 
-			for (int32 i = 0; i < vertexCount; ++i)
+			for (int i = 0; i < vertexCount; ++i)
 			{
 				vertices[i] = b2Mul(xf, poly->m_vertices[i]);
 			}
@@ -1134,12 +1134,12 @@ void b2World::DrawJoint(b2Joint* joint)
 
 void b2World::DrawDebugData()
 {
-	if (m_debugDraw == NULL)
+	if (m_debugDraw == null)
 	{
 		return;
 	}
 
-	uint32 flags = m_debugDraw->GetFlags();
+	uint flags = m_debugDraw->GetFlags();
 
 	if (flags & b2Draw::e_shapeBit)
 	{
@@ -1209,7 +1209,7 @@ void b2World::DrawDebugData()
 
 			for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 			{
-				for (int32 i = 0; i < f->m_proxyCount; ++i)
+				for (int i = 0; i < f->m_proxyCount; ++i)
 				{
 					b2FixtureProxy* proxy = f->m_proxies + i;
 					b2AABB aabb = bp->GetFatAABB(proxy->proxyId);
@@ -1236,22 +1236,22 @@ void b2World::DrawDebugData()
 	}
 }
 
-int32 b2World::GetProxyCount() const
+int b2World::GetProxyCount() const
 {
 	return m_contactManager.m_broadPhase.GetProxyCount();
 }
 
-int32 b2World::GetTreeHeight() const
+int b2World::GetTreeHeight() const
 {
 	return m_contactManager.m_broadPhase.GetTreeHeight();
 }
 
-int32 b2World::GetTreeBalance() const
+int b2World::GetTreeBalance() const
 {
 	return m_contactManager.m_broadPhase.GetTreeBalance();
 }
 
-float32 b2World::GetTreeQuality() const
+float b2World::GetTreeQuality() const
 {
 	return m_contactManager.m_broadPhase.GetTreeQuality();
 }
@@ -1291,7 +1291,7 @@ void b2World::Dump()
 
 	b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
 	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
-	int32 i = 0;
+	int i = 0;
 	for (b2Body* b = m_bodyList; b; b = b->m_next)
 	{
 		b->m_islandIndex = i;
@@ -1334,6 +1334,6 @@ void b2World::Dump()
 
 	b2Log("b2Free(joints);\n");
 	b2Log("b2Free(bodies);\n");
-	b2Log("joints = NULL;\n");
-	b2Log("bodies = NULL;\n");
+	b2Log("joints = null;\n");
+	b2Log("bodies = null;\n");
 }

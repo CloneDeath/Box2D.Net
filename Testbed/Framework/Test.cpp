@@ -24,7 +24,7 @@ void DestructionListener::SayGoodbye(b2Joint* joint)
 {
 	if (test->m_mouseJoint == joint)
 	{
-		test->m_mouseJoint = NULL;
+		test->m_mouseJoint = null;
 	}
 	else
 	{
@@ -37,9 +37,9 @@ Test::Test()
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -10.0f);
 	m_world = new b2World(gravity);
-	m_bomb = NULL;
+	m_bomb = null;
 	m_textLine = 30;
-	m_mouseJoint = NULL;
+	m_mouseJoint = null;
 	m_pointCount = 0;
 
 	m_destructionListener.test = this;
@@ -62,7 +62,7 @@ Test::~Test()
 {
 	// By deleting the world, we delete the bomb, mouse joint, etc.
 	delete m_world;
-	m_world = NULL;
+	m_world = null;
 }
 
 void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
@@ -83,7 +83,7 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	b2WorldManifold worldManifold;
 	contact->GetWorldManifold(&worldManifold);
 
-	for (int32 i = 0; i < manifold->pointCount && m_pointCount < k_maxContactPoints; ++i)
+	for (int i = 0; i < manifold->pointCount && m_pointCount < k_maxContactPoints; ++i)
 	{
 		ContactPoint* cp = m_points + m_pointCount;
 		cp->fixtureA = fixtureA;
@@ -109,7 +109,7 @@ public:
 	QueryCallback(const b2Vec2& point)
 	{
 		m_point = point;
-		m_fixture = NULL;
+		m_fixture = null;
 	}
 
 	bool ReportFixture(b2Fixture* fixture)
@@ -139,7 +139,7 @@ void Test::MouseDown(const b2Vec2& p)
 {
 	m_mouseWorld = p;
 	
-	if (m_mouseJoint != NULL)
+	if (m_mouseJoint != null)
 	{
 		return;
 	}
@@ -192,7 +192,7 @@ void Test::ShiftMouseDown(const b2Vec2& p)
 {
 	m_mouseWorld = p;
 	
-	if (m_mouseJoint != NULL)
+	if (m_mouseJoint != null)
 	{
 		return;
 	}
@@ -205,7 +205,7 @@ void Test::MouseUp(const b2Vec2& p)
 	if (m_mouseJoint)
 	{
 		m_world->DestroyJoint(m_mouseJoint);
-		m_mouseJoint = NULL;
+		m_mouseJoint = null;
 	}
 	
 	if (m_bombSpawning)
@@ -236,7 +236,7 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 	if (m_bomb)
 	{
 		m_world->DestroyBody(m_bomb);
-		m_bomb = NULL;
+		m_bomb = null;
 	}
 
 	b2BodyDef bd;
@@ -266,7 +266,7 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 
 void Test::Step(Settings* settings)
 {
-	float32 timeStep = settings->hz > 0.0f ? 1.0f / settings->hz : float32(0.0f);
+	float timeStep = settings->hz > 0.0f ? 1.0f / settings->hz : float(0.0f);
 
 	if (settings->pause)
 	{
@@ -283,7 +283,7 @@ void Test::Step(Settings* settings)
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
-	uint32 flags = 0;
+	uint flags = 0;
 	flags += settings->drawShapes			* b2Draw::e_shapeBit;
 	flags += settings->drawJoints			* b2Draw::e_jointBit;
 	flags += settings->drawAABBs			* b2Draw::e_aabbBit;
@@ -308,16 +308,16 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawStats)
 	{
-		int32 bodyCount = m_world->GetBodyCount();
-		int32 contactCount = m_world->GetContactCount();
-		int32 jointCount = m_world->GetJointCount();
+		int bodyCount = m_world->GetBodyCount();
+		int contactCount = m_world->GetContactCount();
+		int jointCount = m_world->GetJointCount();
 		m_debugDraw.DrawString(5, m_textLine, "bodies/contacts/joints = %d/%d/%d", bodyCount, contactCount, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		int32 proxyCount = m_world->GetProxyCount();
-		int32 height = m_world->GetTreeHeight();
-		int32 balance = m_world->GetTreeBalance();
-		float32 quality = m_world->GetTreeQuality();
+		int proxyCount = m_world->GetProxyCount();
+		int height = m_world->GetTreeHeight();
+		int balance = m_world->GetTreeBalance();
+		float quality = m_world->GetTreeQuality();
 		m_debugDraw.DrawString(5, m_textLine, "proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
@@ -352,7 +352,7 @@ void Test::Step(Settings* settings)
 		memset(&aveProfile, 0, sizeof(b2Profile));
 		if (m_stepCount > 0)
 		{
-			float32 scale = 1.0f / m_stepCount;
+			float scale = 1.0f / m_stepCount;
 			aveProfile.step = scale * m_totalProfile.step;
 			aveProfile.collide = scale * m_totalProfile.collide;
 			aveProfile.solve = scale * m_totalProfile.solve;
@@ -407,10 +407,10 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawContactPoints)
 	{
-		const float32 k_impulseScale = 0.1f;
-		const float32 k_axisScale = 0.3f;
+		const float k_impulseScale = 0.1f;
+		const float k_axisScale = 0.3f;
 
-		for (int32 i = 0; i < m_pointCount; ++i)
+		for (int i = 0; i < m_pointCount; ++i)
 		{
 			ContactPoint* point = m_points + i;
 

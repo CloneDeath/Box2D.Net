@@ -24,7 +24,7 @@ class Gears : public Test
 public:
 	Gears()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = null;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -158,7 +158,7 @@ public:
 	{
 		Test::Step(settings);
 
-		float32 ratio, value;
+		float ratio, value;
 		
 		ratio = m_joint4->GetRatio();
 		value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();

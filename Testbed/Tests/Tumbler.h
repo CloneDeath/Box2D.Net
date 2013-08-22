@@ -30,7 +30,7 @@ public:
 
 	Tumbler()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = null;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -93,7 +93,7 @@ public:
 	}
 
 	b2RevoluteJoint* m_joint;
-	int32 m_count;
+	int m_count;
 };
 
 #endif

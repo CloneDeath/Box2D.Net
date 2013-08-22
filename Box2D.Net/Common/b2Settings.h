@@ -27,11 +27,11 @@
 
 typedef signed char	int8;
 typedef signed short int16;
-typedef signed int int32;
+typedef signed int int;
 typedef unsigned char uint8;
 typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef float float32;
+typedef unsigned int uint;
+typedef float float;
 typedef double float64;
 
 #define	b2_maxFloat		FLT_MAX
@@ -127,7 +127,7 @@ typedef double float64;
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* b2Alloc(int32 size);
+void* b2Alloc(int size);
 
 /// If you implement b2Alloc, you should also implement this function.
 void b2Free(void* mem);
@@ -139,9 +139,9 @@ void b2Log(const char* string, ...);
 /// See http://en.wikipedia.org/wiki/Software_versioning
 struct b2Version
 {
-	int32 major;		///< significant changes
-	int32 minor;		///< incremental changes
-	int32 revision;		///< bug fixes
+	int major;		///< significant changes
+	int minor;		///< incremental changes
+	int revision;		///< bug fixes
 };
 
 /// Current version.

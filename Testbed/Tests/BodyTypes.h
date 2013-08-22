@@ -24,7 +24,7 @@ class BodyTypes : public Test
 public:
 	BodyTypes()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = null;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -153,7 +153,7 @@ public:
 
 	b2Body* m_attachment;
 	b2Body* m_platform;
-	float32 m_speed;
+	float m_speed;
 };
 
 #endif

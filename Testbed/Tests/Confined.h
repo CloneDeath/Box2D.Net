@@ -54,7 +54,7 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		float32 radius = 0.5f;
+		float radius = 0.5f;
 		b2CircleShape shape;
 		shape.m_p.SetZero();
 		shape.m_radius = radius;
@@ -64,7 +64,7 @@ public:
 		fd.density = 1.0f;
 		fd.friction = 0.1f;
 
-		for (int32 j = 0; j < e_columnCount; ++j)
+		for (int j = 0; j < e_columnCount; ++j)
 		{
 			for (int i = 0; i < e_rowCount; ++i)
 			{
@@ -82,7 +82,7 @@ public:
 
 	void CreateCircle()
 	{
-		float32 radius = 2.0f;
+		float radius = 2.0f;
 		b2CircleShape shape;
 		shape.m_p.SetZero();
 		shape.m_radius = radius;

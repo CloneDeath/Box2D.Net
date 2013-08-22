@@ -33,18 +33,18 @@ typedef Test* TestCreateFcn();
 #define DRAW_STRING_NEW_LINE 25
 
 /// Random number in range [-1,1]
-inline float32 RandomFloat()
+inline float RandomFloat()
 {
-	float32 r = (float32)(std::rand() & (RAND_LIMIT));
+	float r = (float)(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = 2.0f * r - 1.0f;
 	return r;
 }
 
 /// Random floating point number in range [lo, hi]
-inline float32 RandomFloat(float32 lo, float32 hi)
+inline float RandomFloat(float lo, float hi)
 {
-	float32 r = (float32)(std::rand() & (RAND_LIMIT));
+	float r = (float)(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = (hi - lo) * r + lo;
 	return r;
@@ -78,25 +78,25 @@ struct Settings
 	}
 
 	b2Vec2 viewCenter;
-	float32 hz;
-	int32 velocityIterations;
-	int32 positionIterations;
-	int32 drawShapes;
-	int32 drawJoints;
-	int32 drawAABBs;
-	int32 drawContactPoints;
-	int32 drawContactNormals;
-	int32 drawContactImpulse;
-	int32 drawFrictionImpulse;
-	int32 drawCOMs;
-	int32 drawStats;
-	int32 drawProfile;
-	int32 enableWarmStarting;
-	int32 enableContinuous;
-	int32 enableSubStepping;
-	int32 enableSleep;
-	int32 pause;
-	int32 singleStep;
+	float hz;
+	int velocityIterations;
+	int positionIterations;
+	int drawShapes;
+	int drawJoints;
+	int drawAABBs;
+	int drawContactPoints;
+	int drawContactNormals;
+	int drawContactImpulse;
+	int drawFrictionImpulse;
+	int drawCOMs;
+	int drawStats;
+	int drawProfile;
+	int enableWarmStarting;
+	int enableContinuous;
+	int enableSubStepping;
+	int enableSleep;
+	int pause;
+	int singleStep;
 };
 
 struct TestEntry
@@ -118,7 +118,7 @@ public:
 	Test* test;
 };
 
-const int32 k_maxContactPoints = 2048;
+const int k_maxContactPoints = 2048;
 
 struct ContactPoint
 {
@@ -127,8 +127,8 @@ struct ContactPoint
 	b2Vec2 normal;
 	b2Vec2 position;
 	b2PointState state;
-	float32 normalImpulse;
-	float32 tangentImpulse;
+	float normalImpulse;
+	float tangentImpulse;
 };
 
 class Test : public b2ContactListener
@@ -175,17 +175,17 @@ protected:
 	b2Body* m_groundBody;
 	b2AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
-	int32 m_pointCount;
+	int m_pointCount;
 	DestructionListener m_destructionListener;
 	DebugDraw m_debugDraw;
-	int32 m_textLine;
+	int m_textLine;
 	b2World* m_world;
 	b2Body* m_bomb;
 	b2MouseJoint* m_mouseJoint;
 	b2Vec2 m_bombSpawnPoint;
 	bool m_bombSpawning;
 	b2Vec2 m_mouseWorld;
-	int32 m_stepCount;
+	int m_stepCount;
 
 	b2Profile m_maxProfile;
 	b2Profile m_totalProfile;

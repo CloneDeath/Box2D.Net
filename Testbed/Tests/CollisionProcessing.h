@@ -41,8 +41,8 @@ public:
 			ground->CreateFixture(&sd);
 		}
 
-		float32 xLo = -5.0f, xHi = 5.0f;
-		float32 yLo = 2.0f, yHi = 35.0f;
+		float xLo = -5.0f, xHi = 5.0f;
+		float yLo = 2.0f, yHi = 35.0f;
 
 		// Small triangle
 		b2Vec2 vertices[3];
@@ -126,20 +126,20 @@ public:
 		// We are going to destroy some bodies according to contact
 		// points. We must buffer the bodies that should be destroyed
 		// because they may belong to multiple contact points.
-		const int32 k_maxNuke = 6;
+		const int k_maxNuke = 6;
 		b2Body* nuke[k_maxNuke];
-		int32 nukeCount = 0;
+		int nukeCount = 0;
 
 		// Traverse the contact results. Destroy bodies that
 		// are touching heavier bodies.
-		for (int32 i = 0; i < m_pointCount; ++i)
+		for (int i = 0; i < m_pointCount; ++i)
 		{
 			ContactPoint* point = m_points + i;
 
 			b2Body* body1 = point->fixtureA->GetBody();
 			b2Body* body2 = point->fixtureB->GetBody();
-			float32 mass1 = body1->GetMass();
-			float32 mass2 = body2->GetMass();
+			float mass1 = body1->GetMass();
+			float mass2 = body2->GetMass();
 
 			if (mass1 > 0.0f && mass2 > 0.0f)
 			{
@@ -163,7 +163,7 @@ public:
 		std::sort(nuke, nuke + nukeCount);
 
 		// Destroy the bodies, skipping duplicates.
-		int32 i = 0;
+		int i = 0;
 		while (i < nukeCount)
 		{
 			b2Body* b = nuke[i++];

@@ -38,10 +38,10 @@ public:
 		b2Vec2 lowerBound(-8.0f, -8.0f);
 		b2Vec2 upperBound(8.0f, 8.0f);
 
-		for (int32 i = 0; i < e_count; ++i)
+		for (int i = 0; i < e_count; ++i)
 		{
-			float32 x = 10.0f * RandomFloat();
-			float32 y = 10.0f * RandomFloat();
+			float x = 10.0f * RandomFloat();
+			float y = 10.0f * RandomFloat();
 
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.
@@ -82,7 +82,7 @@ public:
 
 		m_debugDraw.DrawPolygon(shape.m_vertices, shape.m_count, b2Color(0.9f, 0.9f, 0.9f));
 
-		for (int32 i = 0; i < e_count; ++i)
+		for (int i = 0; i < e_count; ++i)
 		{
 			m_debugDraw.DrawPoint(m_points[i], 2.0f, b2Color(0.9f, 0.5f, 0.5f));
 			m_debugDraw.DrawString(m_points[i] + b2Vec2(0.05f, 0.05f), "%d", i);

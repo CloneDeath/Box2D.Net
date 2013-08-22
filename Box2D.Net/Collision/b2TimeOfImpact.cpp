@@ -26,9 +26,9 @@
 #include <cstdio>
 using namespace std;
 
-float32 b2_toiTime, b2_toiMaxTime;
-int32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-int32 b2_toiRootIters, b2_toiMaxRootIters;
+float b2_toiTime, b2_toiMaxTime;
+int b2_toiCalls, b2_toiIters, b2_toiMaxIters;
+int b2_toiRootIters, b2_toiMaxRootIters;
 
 //
 struct b2SeparationFunction
@@ -42,14 +42,14 @@ struct b2SeparationFunction
 
 	// TODO_ERIN might not need to return the separation
 
-	float32 Initialize(const b2SimplexCache* cache,
+	float Initialize(const b2SimplexCache* cache,
 		const b2DistanceProxy* proxyA, const b2Sweep& sweepA,
 		const b2DistanceProxy* proxyB, const b2Sweep& sweepB,
-		float32 t1)
+		float t1)
 	{
 		m_proxyA = proxyA;
 		m_proxyB = proxyB;
-		int32 count = cache->count;
+		int count = cache->count;
 		b2Assert(0 < count && count < 3);
 
 		m_sweepA = sweepA;
@@ -67,7 +67,7 @@ struct b2SeparationFunction
 			b2Vec2 pointA = b2Mul(xfA, localPointA);
 			b2Vec2 pointB = b2Mul(xfB, localPointB);
 			m_axis = pointB - pointA;
-			float32 s = m_axis.Normalize();
+			float s = m_axis.Normalize();
 			return s;
 		}
 		else if (cache->indexA[0] == cache->indexA[1])
@@ -87,7 +87,7 @@ struct b2SeparationFunction
 			b2Vec2 localPointA = proxyA->GetVertex(cache->indexA[0]);
 			b2Vec2 pointA = b2Mul(xfA, localPointA);
 
-			float32 s = b2Dot(pointA - pointB, normal);
+			float s = b2Dot(pointA - pointB, normal);
 			if (s < 0.0f)
 			{
 				m_axis = -m_axis;
@@ -112,7 +112,7 @@ struct b2SeparationFunction
 			b2Vec2 localPointB = m_proxyB->GetVertex(cache->indexB[0]);
 			b2Vec2 pointB = b2Mul(xfB, localPointB);
 
-			float32 s = b2Dot(pointB - pointA, normal);
+			float s = b2Dot(pointB - pointA, normal);
 			if (s < 0.0f)
 			{
 				m_axis = -m_axis;
@@ -123,7 +123,7 @@ struct b2SeparationFunction
 	}
 
 	//
-	float32 FindMinSeparation(int32* indexA, int32* indexB, float32 t) const
+	float FindMinSeparation(int* indexA, int* indexB, float t) const
 	{
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t);
@@ -145,7 +145,7 @@ struct b2SeparationFunction
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
 
-				float32 separation = b2Dot(pointB - pointA, m_axis);
+				float separation = b2Dot(pointB - pointA, m_axis);
 				return separation;
 			}
 
@@ -162,7 +162,7 @@ struct b2SeparationFunction
 				b2Vec2 localPointB = m_proxyB->GetVertex(*indexB);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
 
-				float32 separation = b2Dot(pointB - pointA, normal);
+				float separation = b2Dot(pointB - pointA, normal);
 				return separation;
 			}
 
@@ -179,7 +179,7 @@ struct b2SeparationFunction
 				b2Vec2 localPointA = m_proxyA->GetVertex(*indexA);
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 
-				float32 separation = b2Dot(pointA - pointB, normal);
+				float separation = b2Dot(pointA - pointB, normal);
 				return separation;
 			}
 
@@ -192,7 +192,7 @@ struct b2SeparationFunction
 	}
 
 	//
-	float32 Evaluate(int32 indexA, int32 indexB, float32 t) const
+	float Evaluate(int indexA, int indexB, float t) const
 	{
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t);
@@ -207,7 +207,7 @@ struct b2SeparationFunction
 
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
-				float32 separation = b2Dot(pointB - pointA, m_axis);
+				float separation = b2Dot(pointB - pointA, m_axis);
 
 				return separation;
 			}
@@ -220,7 +220,7 @@ struct b2SeparationFunction
 				b2Vec2 localPointB = m_proxyB->GetVertex(indexB);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
 
-				float32 separation = b2Dot(pointB - pointA, normal);
+				float separation = b2Dot(pointB - pointA, normal);
 				return separation;
 			}
 
@@ -232,7 +232,7 @@ struct b2SeparationFunction
 				b2Vec2 localPointA = m_proxyA->GetVertex(indexA);
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 
-				float32 separation = b2Dot(pointA - pointB, normal);
+				float separation = b2Dot(pointA - pointB, normal);
 				return separation;
 			}
 
@@ -272,16 +272,16 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 	sweepA.Normalize();
 	sweepB.Normalize();
 
-	float32 tMax = input->tMax;
+	float tMax = input->tMax;
 
-	float32 totalRadius = proxyA->m_radius + proxyB->m_radius;
-	float32 target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
-	float32 tolerance = 0.25f * b2_linearSlop;
+	float totalRadius = proxyA->m_radius + proxyB->m_radius;
+	float target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
+	float tolerance = 0.25f * b2_linearSlop;
 	b2Assert(target > tolerance);
 
-	float32 t1 = 0.0f;
-	const int32 k_maxIterations = 20;	// TODO_ERIN b2Settings
-	int32 iter = 0;
+	float t1 = 0.0f;
+	const int k_maxIterations = 20;	// TODO_ERIN b2Settings
+	int iter = 0;
 
 	// Prepare input for distance query.
 	b2SimplexCache cache;
@@ -329,18 +329,18 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 #if 0
 		// Dump the curve seen by the root finder
 		{
-			const int32 N = 100;
-			float32 dx = 1.0f / N;
-			float32 xs[N+1];
-			float32 fs[N+1];
+			const int N = 100;
+			float dx = 1.0f / N;
+			float xs[N+1];
+			float fs[N+1];
 
-			float32 x = 0.0f;
+			float x = 0.0f;
 
-			for (int32 i = 0; i <= N; ++i)
+			for (int i = 0; i <= N; ++i)
 			{
 				sweepA.GetTransform(&xfA, x);
 				sweepB.GetTransform(&xfB, x);
-				float32 f = fcn.Evaluate(xfA, xfB) - target;
+				float f = fcn.Evaluate(xfA, xfB) - target;
 
 				printf("%g %g\n", x, f);
 
@@ -355,13 +355,13 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		bool done = false;
-		float32 t2 = tMax;
-		int32 pushBackIter = 0;
+		float t2 = tMax;
+		int pushBackIter = 0;
 		for (;;)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
-			int32 indexA, indexB;
-			float32 s2 = fcn.FindMinSeparation(&indexA, &indexB, t2);
+			int indexA, indexB;
+			float s2 = fcn.FindMinSeparation(&indexA, &indexB, t2);
 
 			// Is the final configuration separated?
 			if (s2 > target + tolerance)
@@ -382,7 +382,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			}
 
 			// Compute the initial separation of the witness points.
-			float32 s1 = fcn.Evaluate(indexA, indexB, t1);
+			float s1 = fcn.Evaluate(indexA, indexB, t1);
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
@@ -405,12 +405,12 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			}
 
 			// Compute 1D root of: f(x) - target = 0
-			int32 rootIterCount = 0;
-			float32 a1 = t1, a2 = t2;
+			int rootIterCount = 0;
+			float a1 = t1, a2 = t2;
 			for (;;)
 			{
 				// Use a mix of the secant rule and bisection.
-				float32 t;
+				float t;
 				if (rootIterCount & 1)
 				{
 					// Secant rule to improve convergence.
@@ -425,7 +425,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 				++rootIterCount;
 				++b2_toiRootIters;
 
-				float32 s = fcn.Evaluate(indexA, indexB, t);
+				float s = fcn.Evaluate(indexA, indexB, t);
 
 				if (b2Abs(s - target) < tolerance)
 				{
@@ -481,7 +481,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 	b2_toiMaxIters = b2Max(b2_toiMaxIters, iter);
 
-	float32 time = timer.GetMilliseconds();
+	float time = timer.GetMilliseconds();
 	b2_toiMaxTime = b2Max(b2_toiMaxTime, time);
 	b2_toiTime += time;
 }

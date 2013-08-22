@@ -91,9 +91,9 @@ public:
 	/// @param timeStep the amount of time to simulate, this should not vary.
 	/// @param velocityIterations for the velocity constraint solver.
 	/// @param positionIterations for the position constraint solver.
-	void Step(	float32 timeStep,
-				int32 velocityIterations,
-				int32 positionIterations);
+	void Step(	float timeStep,
+				int velocityIterations,
+				int positionIterations);
 
 	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
 	/// after each call to Step. The default behavior is modified by calling SetAutoClearForces.
@@ -122,19 +122,19 @@ public:
 	void RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const;
 
 	/// Get the world body list. With the returned body, use b2Body::GetNext to get
-	/// the next body in the world list. A NULL body indicates the end of the list.
+	/// the next body in the world list. A null body indicates the end of the list.
 	/// @return the head of the world body list.
 	b2Body* GetBodyList();
 	const b2Body* GetBodyList() const;
 
 	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
-	/// the next joint in the world list. A NULL joint indicates the end of the list.
+	/// the next joint in the world list. A null joint indicates the end of the list.
 	/// @return the head of the world joint list.
 	b2Joint* GetJointList();
 	const b2Joint* GetJointList() const;
 
 	/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
-	/// the next contact in the world list. A NULL contact indicates the end of the list.
+	/// the next contact in the world list. A null contact indicates the end of the list.
 	/// @return the head of the world contact list.
 	/// @warning contacts are created and destroyed in the middle of a time step.
 	/// Use b2ContactListener to avoid missing contacts.
@@ -158,26 +158,26 @@ public:
 	bool GetSubStepping() const { return m_subStepping; }
 
 	/// Get the number of broad-phase proxies.
-	int32 GetProxyCount() const;
+	int GetProxyCount() const;
 
 	/// Get the number of bodies.
-	int32 GetBodyCount() const;
+	int GetBodyCount() const;
 
 	/// Get the number of joints.
-	int32 GetJointCount() const;
+	int GetJointCount() const;
 
 	/// Get the number of contacts (each may have 0 or more contact points).
-	int32 GetContactCount() const;
+	int GetContactCount() const;
 
 	/// Get the height of the dynamic tree.
-	int32 GetTreeHeight() const;
+	int GetTreeHeight() const;
 
 	/// Get the balance of the dynamic tree.
-	int32 GetTreeBalance() const;
+	int GetTreeBalance() const;
 
 	/// Get the quality metric of the dynamic tree. The smaller the better.
 	/// The minimum is 1.
-	float32 GetTreeQuality() const;
+	float GetTreeQuality() const;
 
 	/// Change the global gravity vector.
 	void SetGravity(const b2Vec2& gravity);
@@ -233,15 +233,15 @@ private:
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
 
-	int32 m_flags;
+	int m_flags;
 
 	b2ContactManager m_contactManager;
 
 	b2Body* m_bodyList;
 	b2Joint* m_jointList;
 
-	int32 m_bodyCount;
-	int32 m_jointCount;
+	int m_bodyCount;
+	int m_jointCount;
 
 	b2Vec2 m_gravity;
 	bool m_allowSleep;
@@ -251,7 +251,7 @@ private:
 
 	// This is used to compute the time step ratio to
 	// support a variable time step.
-	float32 m_inv_dt0;
+	float m_inv_dt0;
 
 	// These are for debugging the solver.
 	bool m_warmStarting;
@@ -293,17 +293,17 @@ inline const b2Contact* b2World::GetContactList() const
 	return m_contactManager.m_contactList;
 }
 
-inline int32 b2World::GetBodyCount() const
+inline int b2World::GetBodyCount() const
 {
 	return m_bodyCount;
 }
 
-inline int32 b2World::GetJointCount() const
+inline int b2World::GetJointCount() const
 {
 	return m_jointCount;
 }
 
-inline int32 b2World::GetContactCount() const
+inline int b2World::GetContactCount() const
 {
 	return m_contactManager.m_contactCount;
 }

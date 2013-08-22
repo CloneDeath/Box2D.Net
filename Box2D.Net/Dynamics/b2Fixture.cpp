@@ -29,12 +29,12 @@
 
 b2Fixture::b2Fixture()
 {
-	m_userData = NULL;
-	m_body = NULL;
-	m_next = NULL;
-	m_proxies = NULL;
+	m_userData = null;
+	m_body = null;
+	m_next = null;
+	m_proxies = null;
 	m_proxyCount = 0;
-	m_shape = NULL;
+	m_shape = null;
 	m_density = 0.0f;
 }
 
@@ -45,7 +45,7 @@ void b2Fixture::Create(b2BlockAllocator* allocator, b2Body* body, const b2Fixtur
 	m_restitution = def->restitution;
 
 	m_body = body;
-	m_next = NULL;
+	m_next = null;
 
 	m_filter = def->filter;
 
@@ -54,11 +54,11 @@ void b2Fixture::Create(b2BlockAllocator* allocator, b2Body* body, const b2Fixtur
 	m_shape = def->shape->Clone(allocator);
 
 	// Reserve proxy space
-	int32 childCount = m_shape->GetChildCount();
+	int childCount = m_shape->GetChildCount();
 	m_proxies = (b2FixtureProxy*)allocator->Allocate(childCount * sizeof(b2FixtureProxy));
-	for (int32 i = 0; i < childCount; ++i)
+	for (int i = 0; i < childCount; ++i)
 	{
-		m_proxies[i].fixture = NULL;
+		m_proxies[i].fixture = null;
 		m_proxies[i].proxyId = b2BroadPhase::e_nullProxy;
 	}
 	m_proxyCount = 0;
@@ -72,9 +72,9 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	b2Assert(m_proxyCount == 0);
 
 	// Free the proxy array.
-	int32 childCount = m_shape->GetChildCount();
+	int childCount = m_shape->GetChildCount();
 	allocator->Free(m_proxies, childCount * sizeof(b2FixtureProxy));
-	m_proxies = NULL;
+	m_proxies = null;
 
 	// Free the child shape.
 	switch (m_shape->m_type)
@@ -116,7 +116,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 		break;
 	}
 
-	m_shape = NULL;
+	m_shape = null;
 }
 
 void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
@@ -126,7 +126,7 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 	// Create proxies in the broad-phase.
 	m_proxyCount = m_shape->GetChildCount();
 
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (int i = 0; i < m_proxyCount; ++i)
 	{
 		b2FixtureProxy* proxy = m_proxies + i;
 		m_shape->ComputeAABB(&proxy->aabb, xf, i);
@@ -139,7 +139,7 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 void b2Fixture::DestroyProxies(b2BroadPhase* broadPhase)
 {
 	// Destroy proxies in the broad-phase.
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (int i = 0; i < m_proxyCount; ++i)
 	{
 		b2FixtureProxy* proxy = m_proxies + i;
 		broadPhase->DestroyProxy(proxy->proxyId);
@@ -156,7 +156,7 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 		return;
 	}
 
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (int i = 0; i < m_proxyCount; ++i)
 	{
 		b2FixtureProxy* proxy = m_proxies + i;
 
@@ -182,7 +182,7 @@ void b2Fixture::SetFilterData(const b2Filter& filter)
 
 void b2Fixture::Refilter()
 {
-	if (m_body == NULL)
+	if (m_body == null)
 	{
 		return;
 	}
@@ -204,14 +204,14 @@ void b2Fixture::Refilter()
 
 	b2World* world = m_body->GetWorld();
 
-	if (world == NULL)
+	if (world == null)
 	{
 		return;
 	}
 
 	// Touch each proxy so that new pairs may be created
 	b2BroadPhase* broadPhase = &world->m_contactManager.m_broadPhase;
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (int i = 0; i < m_proxyCount; ++i)
 	{
 		broadPhase->TouchProxy(m_proxies[i].proxyId);
 	}
@@ -226,7 +226,7 @@ void b2Fixture::SetSensor(bool sensor)
 	}
 }
 
-void b2Fixture::Dump(int32 bodyIndex)
+void b2Fixture::Dump(int bodyIndex)
 {
 	b2Log("    b2FixtureDef fd;\n");
 	b2Log("    fd.friction = %.15lef;\n", m_friction);
@@ -267,7 +267,7 @@ void b2Fixture::Dump(int32 bodyIndex)
 			b2PolygonShape* s = (b2PolygonShape*)m_shape;
 			b2Log("    b2PolygonShape shape;\n");
 			b2Log("    b2Vec2 vs[%d];\n", b2_maxPolygonVertices);
-			for (int32 i = 0; i < s->m_count; ++i)
+			for (int i = 0; i < s->m_count; ++i)
 			{
 				b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->m_vertices[i].x, s->m_vertices[i].y);
 			}
@@ -280,7 +280,7 @@ void b2Fixture::Dump(int32 bodyIndex)
 			b2ChainShape* s = (b2ChainShape*)m_shape;
 			b2Log("    b2ChainShape shape;\n");
 			b2Log("    b2Vec2 vs[%d];\n", s->m_count);
-			for (int32 i = 0; i < s->m_count; ++i)
+			for (int i = 0; i < s->m_count; ++i)
 			{
 				b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->m_vertices[i].x, s->m_vertices[i].y);
 			}

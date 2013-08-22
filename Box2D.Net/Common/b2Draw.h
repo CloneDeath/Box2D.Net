@@ -25,9 +25,9 @@
 struct b2Color
 {
 	b2Color() {}
-	b2Color(float32 r, float32 g, float32 b) : r(r), g(g), b(b) {}
-	void Set(float32 ri, float32 gi, float32 bi) { r = ri; g = gi; b = bi; }
-	float32 r, g, b;
+	b2Color(float r, float g, float b) : r(r), g(g), b(b) {}
+	void Set(float ri, float gi, float bi) { r = ri; g = gi; b = bi; }
+	float r, g, b;
 };
 
 /// Implement and register this class with a b2World to provide debug drawing of physics
@@ -49,28 +49,28 @@ public:
 	};
 
 	/// Set the drawing flags.
-	void SetFlags(uint32 flags);
+	void SetFlags(uint flags);
 
 	/// Get the drawing flags.
-	uint32 GetFlags() const;
+	uint GetFlags() const;
 	
 	/// Append flags to the current flags.
-	void AppendFlags(uint32 flags);
+	void AppendFlags(uint flags);
 
 	/// Clear flags from the current flags.
-	void ClearFlags(uint32 flags);
+	void ClearFlags(uint flags);
 
 	/// Draw a closed polygon provided in CCW order.
-	virtual void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) = 0;
+	virtual void DrawPolygon(const b2Vec2* vertices, int vertexCount, const b2Color& color) = 0;
 
 	/// Draw a solid closed polygon provided in CCW order.
-	virtual void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) = 0;
+	virtual void DrawSolidPolygon(const b2Vec2* vertices, int vertexCount, const b2Color& color) = 0;
 
 	/// Draw a circle.
-	virtual void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color) = 0;
+	virtual void DrawCircle(const b2Vec2& center, float radius, const b2Color& color) = 0;
 	
 	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) = 0;
+	virtual void DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color) = 0;
 	
 	/// Draw a line segment.
 	virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) = 0;
@@ -80,7 +80,7 @@ public:
 	virtual void DrawTransform(const b2Transform& xf) = 0;
 
 protected:
-	uint32 m_drawFlags;
+	uint m_drawFlags;
 };
 
 #endif

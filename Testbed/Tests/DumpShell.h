@@ -112,8 +112,8 @@ b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
 
 b2Free(joints);
 b2Free(bodies);
-joints = NULL;
-bodies = NULL;
+joints = null;
+bodies = null;
 
 	}
 

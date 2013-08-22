@@ -26,7 +26,7 @@ public:
 	{
 		m_world->SetGravity(b2Vec2(0.0f, 0.0f));
 
-		const float32 k_restitution = 0.4f;
+		const float k_restitution = 0.4f;
 
 		b2Body* ground;
 		{
@@ -122,12 +122,12 @@ public:
 
 				body->CreateFixture(&fd);
 
-				float32 gravity = 10.0f;
-				float32 I = body->GetInertia();
-				float32 mass = body->GetMass();
+				float gravity = 10.0f;
+				float I = body->GetInertia();
+				float mass = body->GetMass();
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
-				float32 radius = b2Sqrt(2.0f * I / mass);
+				float radius = b2Sqrt(2.0f * I / mass);
 
 				b2FrictionJointDef jd;
 				jd.localAnchorA.SetZero();

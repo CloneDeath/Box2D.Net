@@ -66,7 +66,7 @@ void b2Contact::AddType(b2ContactCreateFcn* createFcn, b2ContactDestroyFcn* dest
 	}
 }
 
-b2Contact* b2Contact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator)
+b2Contact* b2Contact::Create(b2Fixture* fixtureA, int indexA, b2Fixture* fixtureB, int indexB, b2BlockAllocator* allocator)
 {
 	if (s_initialized == false)
 	{
@@ -94,7 +94,7 @@ b2Contact* b2Contact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtu
 	}
 	else
 	{
-		return NULL;
+		return null;
 	}
 }
 
@@ -123,7 +123,7 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	destroyFcn(contact, allocator);
 }
 
-b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB)
+b2Contact::b2Contact(b2Fixture* fA, int indexA, b2Fixture* fB, int indexB)
 {
 	m_flags = e_enabledFlag;
 
@@ -135,18 +135,18 @@ b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB)
 
 	m_manifold.pointCount = 0;
 
-	m_prev = NULL;
-	m_next = NULL;
+	m_prev = null;
+	m_next = null;
 
-	m_nodeA.contact = NULL;
-	m_nodeA.prev = NULL;
-	m_nodeA.next = NULL;
-	m_nodeA.other = NULL;
+	m_nodeA.contact = null;
+	m_nodeA.prev = null;
+	m_nodeA.next = null;
+	m_nodeA.other = null;
 
-	m_nodeB.contact = NULL;
-	m_nodeB.prev = NULL;
-	m_nodeB.next = NULL;
-	m_nodeB.other = NULL;
+	m_nodeB.contact = null;
+	m_nodeB.prev = null;
+	m_nodeB.next = null;
+	m_nodeB.other = null;
 
 	m_toiCount = 0;
 
@@ -194,14 +194,14 @@ void b2Contact::Update(b2ContactListener* listener)
 
 		// Match old contact ids to new contact ids and copy the
 		// stored impulses to warm start the solver.
-		for (int32 i = 0; i < m_manifold.pointCount; ++i)
+		for (int i = 0; i < m_manifold.pointCount; ++i)
 		{
 			b2ManifoldPoint* mp2 = m_manifold.points + i;
 			mp2->normalImpulse = 0.0f;
 			mp2->tangentImpulse = 0.0f;
 			b2ContactID id2 = mp2->id;
 
-			for (int32 j = 0; j < oldManifold.pointCount; ++j)
+			for (int j = 0; j < oldManifold.pointCount; ++j)
 			{
 				b2ManifoldPoint* mp1 = oldManifold.points + j;
 

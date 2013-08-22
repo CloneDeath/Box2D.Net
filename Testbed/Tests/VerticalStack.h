@@ -45,9 +45,9 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		float32 xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
+		float xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
-		for (int32 j = 0; j < e_columnCount; ++j)
+		for (int j = 0; j < e_columnCount; ++j)
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
@@ -62,14 +62,14 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 
-				int32 n = j * e_rowCount + i;
+				int n = j * e_rowCount + i;
 				b2Assert(n < e_rowCount * e_columnCount);
 				m_indices[n] = n;
 				bd.userData = m_indices + n;
 
-				float32 x = 0.0f;
-				//float32 x = RandomFloat(-0.02f, 0.02f);
-				//float32 x = i % 2 == 0 ? -0.025f : 0.025f;
+				float x = 0.0f;
+				//float x = RandomFloat(-0.02f, 0.02f);
+				//float x = i % 2 == 0 ? -0.025f : 0.025f;
 				bd.position.Set(xs[j] + x, 0.752f + 1.54f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
@@ -79,7 +79,7 @@ public:
 			}
 		}
 
-		m_bullet = NULL;
+		m_bullet = null;
 	}
 
 	void Keyboard(unsigned char key)
@@ -87,10 +87,10 @@ public:
 		switch (key)
 		{
 		case ',':
-			if (m_bullet != NULL)
+			if (m_bullet != null)
 			{
 				m_world->DestroyBody(m_bullet);
-				m_bullet = NULL;
+				m_bullet = null;
 			}
 
 			{
@@ -124,10 +124,10 @@ public:
 
 		//if (m_stepCount == 300)
 		//{
-		//	if (m_bullet != NULL)
+		//	if (m_bullet != null)
 		//	{
 		//		m_world->DestroyBody(m_bullet);
-		//		m_bullet = NULL;
+		//		m_bullet = null;
 		//	}
 
 		//	{
@@ -159,7 +159,7 @@ public:
 
 	b2Body* m_bullet;
 	b2Body* m_bodies[e_rowCount * e_columnCount];
-	int32 m_indices[e_rowCount * e_columnCount];
+	int m_indices[e_rowCount * e_columnCount];
 };
 
 #endif

@@ -66,10 +66,10 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 	m_sweep.a = bd->angle;
 	m_sweep.alpha0 = 0.0f;
 
-	m_jointList = NULL;
-	m_contactList = NULL;
-	m_prev = NULL;
-	m_next = NULL;
+	m_jointList = null;
+	m_contactList = null;
+	m_prev = null;
+	m_next = null;
 
 	m_linearVelocity = bd->linearVelocity;
 	m_angularVelocity = bd->angularVelocity;
@@ -101,7 +101,7 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 
 	m_userData = bd->userData;
 
-	m_fixtureList = NULL;
+	m_fixtureList = null;
 	m_fixtureCount = 0;
 }
 
@@ -149,14 +149,14 @@ void b2Body::SetType(b2BodyType type)
 		ce = ce->next;
 		m_world->m_contactManager.Destroy(ce0->contact);
 	}
-	m_contactList = NULL;
+	m_contactList = null;
 
 	// Touch the proxies so that new contacts will be created (when appropriate)
 	b2BroadPhase* broadPhase = &m_world->m_contactManager.m_broadPhase;
 	for (b2Fixture* f = m_fixtureList; f; f = f->m_next)
 	{
-		int32 proxyCount = f->m_proxyCount;
-		for (int32 i = 0; i < proxyCount; ++i)
+		int proxyCount = f->m_proxyCount;
+		for (int i = 0; i < proxyCount; ++i)
 		{
 			broadPhase->TouchProxy(f->m_proxies[i].proxyId);
 		}
@@ -168,7 +168,7 @@ b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 	b2Assert(m_world->IsLocked() == false);
 	if (m_world->IsLocked() == true)
 	{
-		return NULL;
+		return null;
 	}
 
 	b2BlockAllocator* allocator = &m_world->m_blockAllocator;
@@ -202,7 +202,7 @@ b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 	return fixture;
 }
 
-b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float32 density)
+b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float density)
 {
 	b2FixtureDef def;
 	def.shape = shape;
@@ -225,7 +225,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	b2Assert(m_fixtureCount > 0);
 	b2Fixture** node = &m_fixtureList;
 	bool found = false;
-	while (*node != NULL)
+	while (*node != null)
 	{
 		if (*node == fixture)
 		{
@@ -267,8 +267,8 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	}
 
 	fixture->Destroy(allocator);
-	fixture->m_body = NULL;
-	fixture->m_next = NULL;
+	fixture->m_body = null;
+	fixture->m_next = null;
 	fixture->~b2Fixture();
 	allocator->Free(fixture, sizeof(b2Fixture));
 
@@ -414,7 +414,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 	return true;
 }
 
-void b2Body::SetTransform(const b2Vec2& position, float32 angle)
+void b2Body::SetTransform(const b2Vec2& position, float angle)
 {
 	b2Assert(m_world->IsLocked() == false);
 	if (m_world->IsLocked() == true)
@@ -494,7 +494,7 @@ void b2Body::SetActive(bool flag)
 			ce = ce->next;
 			m_world->m_contactManager.Destroy(ce0->contact);
 		}
-		m_contactList = NULL;
+		m_contactList = null;
 	}
 }
 
@@ -522,7 +522,7 @@ void b2Body::SetFixedRotation(bool flag)
 
 void b2Body::Dump()
 {
-	int32 bodyIndex = m_islandIndex;
+	int bodyIndex = m_islandIndex;
 
 	b2Log("{\n");
 	b2Log("  b2BodyDef bd;\n");

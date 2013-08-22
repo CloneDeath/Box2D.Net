@@ -25,7 +25,7 @@ class Web : public Test
 public:
 	Web()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = null;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -151,24 +151,24 @@ public:
 		switch (key)
 		{
 		case 'b':
-			for (int32 i = 0; i < 4; ++i)
+			for (int i = 0; i < 4; ++i)
 			{
 				if (m_bodies[i])
 				{
 					m_world->DestroyBody(m_bodies[i]);
-					m_bodies[i] = NULL;
+					m_bodies[i] = null;
 					break;
 				}
 			}
 			break;
 
 		case 'j':
-			for (int32 i = 0; i < 8; ++i)
+			for (int i = 0; i < 8; ++i)
 			{
 				if (m_joints[i])
 				{
 					m_world->DestroyJoint(m_joints[i]);
-					m_joints[i] = NULL;
+					m_joints[i] = null;
 					break;
 				}
 			}
@@ -187,11 +187,11 @@ public:
 
 	void JointDestroyed(b2Joint* joint)
 	{
-		for (int32 i = 0; i < 8; ++i)
+		for (int i = 0; i < 8; ++i)
 		{
 			if (m_joints[i] == joint)
 			{
-				m_joints[i] = NULL;
+				m_joints[i] = null;
 				break;
 			}
 		}

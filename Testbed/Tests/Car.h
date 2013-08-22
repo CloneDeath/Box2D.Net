@@ -29,7 +29,7 @@ public:
 		m_zeta = 0.7f;
 		m_speed = 50.0f;
 
-		b2Body* ground = NULL;
+		b2Body* ground = null;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -44,22 +44,22 @@ public:
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&fd);
 
-			float32 hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
+			float hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
-			float32 x = 20.0f, y1 = 0.0f, dx = 5.0f;
+			float x = 20.0f, y1 = 0.0f, dx = 5.0f;
 
-			for (int32 i = 0; i < 10; ++i)
+			for (int i = 0; i < 10; ++i)
 			{
-				float32 y2 = hs[i];
+				float y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
 				ground->CreateFixture(&fd);
 				y1 = y2;
 				x += dx;
 			}
 
-			for (int32 i = 0; i < 10; ++i)
+			for (int i = 0; i < 10; ++i)
 			{
-				float32 y2 = hs[i];
+				float y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
 				ground->CreateFixture(&fd);
 				y1 = y2;
@@ -109,7 +109,7 @@ public:
 
 		// Bridge
 		{
-			int32 N = 20;
+			int N = 20;
 			b2PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.125f);
 
@@ -121,7 +121,7 @@ public:
 			b2RevoluteJointDef jd;
 
 			b2Body* prevBody = ground;
-			for (int32 i = 0; i < N; ++i)
+			for (int i = 0; i < N; ++i)
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
@@ -146,7 +146,7 @@ public:
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 0.5f);
 
-			b2Body* body = NULL;
+			b2Body* body = null;
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 
@@ -276,9 +276,9 @@ public:
 	b2Body* m_wheel1;
 	b2Body* m_wheel2;
 
-	float32 m_hz;
-	float32 m_zeta;
-	float32 m_speed;
+	float m_hz;
+	float m_zeta;
+	float m_speed;
 	b2WheelJoint* m_spring1;
 	b2WheelJoint* m_spring2;
 };

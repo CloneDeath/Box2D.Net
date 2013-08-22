@@ -25,11 +25,11 @@ class Rope : public Test
 public:
 	Rope()
 	{
-		const int32 N = 40;
+		const int N = 40;
 		b2Vec2 vertices[N];
-		float32 masses[N];
+		float masses[N];
 
-		for (int32 i = 0; i < N; ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			vertices[i].Set(0.0f, 20.0f - 0.25f * i);
 			masses[i] = 1.0f;
@@ -70,7 +70,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		float32 dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
+		float dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
 
 		if (settings->pause == 1 && settings->singleStep == 0)
 		{
@@ -95,7 +95,7 @@ public:
 	}
 
 	b2Rope m_rope;
-	float32 m_angle;
+	float m_angle;
 };
 
 #endif

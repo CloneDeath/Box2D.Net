@@ -25,15 +25,15 @@ using namespace std;
 b2ChainShape::~b2ChainShape()
 {
 	b2Free(m_vertices);
-	m_vertices = NULL;
+	m_vertices = null;
 	m_count = 0;
 }
 
-void b2ChainShape::CreateLoop(const b2Vec2* vertices, int32 count)
+void b2ChainShape::CreateLoop(const b2Vec2* vertices, int count)
 {
-	b2Assert(m_vertices == NULL && m_count == 0);
+	b2Assert(m_vertices == null && m_count == 0);
 	b2Assert(count >= 3);
-	for (int32 i = 1; i < count; ++i)
+	for (int i = 1; i < count; ++i)
 	{
 		b2Vec2 v1 = vertices[i-1];
 		b2Vec2 v2 = vertices[i];
@@ -51,11 +51,11 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, int32 count)
 	m_hasNextVertex = true;
 }
 
-void b2ChainShape::CreateChain(const b2Vec2* vertices, int32 count)
+void b2ChainShape::CreateChain(const b2Vec2* vertices, int count)
 {
-	b2Assert(m_vertices == NULL && m_count == 0);
+	b2Assert(m_vertices == null && m_count == 0);
 	b2Assert(count >= 2);
-	for (int32 i = 1; i < count; ++i)
+	for (int i = 1; i < count; ++i)
 	{
 		b2Vec2 v1 = vertices[i-1];
 		b2Vec2 v2 = vertices[i];
@@ -95,13 +95,13 @@ b2Shape* b2ChainShape::Clone(b2BlockAllocator* allocator) const
 	return clone;
 }
 
-int32 b2ChainShape::GetChildCount() const
+int b2ChainShape::GetChildCount() const
 {
 	// edge count = vertex count - 1
 	return m_count - 1;
 }
 
-void b2ChainShape::GetChildEdge(b2EdgeShape* edge, int32 index) const
+void b2ChainShape::GetChildEdge(b2EdgeShape* edge, int index) const
 {
 	b2Assert(0 <= index && index < m_count - 1);
 	edge->m_type = b2Shape::e_edge;
@@ -141,14 +141,14 @@ bool b2ChainShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 }
 
 bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-							const b2Transform& xf, int32 childIndex) const
+							const b2Transform& xf, int childIndex) const
 {
 	b2Assert(childIndex < m_count);
 
 	b2EdgeShape edgeShape;
 
-	int32 i1 = childIndex;
-	int32 i2 = childIndex + 1;
+	int i1 = childIndex;
+	int i2 = childIndex + 1;
 	if (i2 == m_count)
 	{
 		i2 = 0;
@@ -160,12 +160,12 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
-void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childIndex) const
+void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int childIndex) const
 {
 	b2Assert(childIndex < m_count);
 
-	int32 i1 = childIndex;
-	int32 i2 = childIndex + 1;
+	int i1 = childIndex;
+	int i2 = childIndex + 1;
 	if (i2 == m_count)
 	{
 		i2 = 0;
@@ -178,7 +178,7 @@ void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childI
 	aabb->upperBound = b2Max(v1, v2);
 }
 
-void b2ChainShape::ComputeMass(b2MassData* massData, float32 density) const
+void b2ChainShape::ComputeMass(b2MassData* massData, float density) const
 {
 	B2_NOT_USED(density);
 

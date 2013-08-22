@@ -22,7 +22,7 @@
 /// This tests stacking. It also shows how to use b2World::Query
 /// and b2TestOverlap.
 
-const int32 k_maxBodies = 256;
+const int k_maxBodies = 256;
 
 /// This callback is called by b2World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
@@ -53,7 +53,7 @@ public:
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
 				b2Vec2 center = b2Mul(xf, circle->m_p);
-				float32 radius = circle->m_radius;
+				float radius = circle->m_radius;
 
 				m_debugDraw->DrawCircle(center, radius, color);
 			}
@@ -62,11 +62,11 @@ public:
 		case b2Shape::e_polygon:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
-				int32 vertexCount = poly->m_count;
+				int vertexCount = poly->m_count;
 				b2Assert(vertexCount <= b2_maxPolygonVertices);
 				b2Vec2 vertices[b2_maxPolygonVertices];
 
-				for (int32 i = 0; i < vertexCount; ++i)
+				for (int i = 0; i < vertexCount; ++i)
 				{
 					vertices[i] = b2Mul(xf, poly->m_vertices[i]);
 				}
@@ -106,7 +106,7 @@ public:
 	b2CircleShape m_circle;
 	b2Transform m_transform;
 	b2Draw* m_debugDraw;
-	int32 m_count;
+	int m_count;
 };
 
 class PolyShapes : public Test
@@ -141,9 +141,9 @@ public:
 		}
 
 		{
-			float32 w = 1.0f;
-			float32 b = w / (2.0f + b2Sqrt(2.0f));
-			float32 s = b2Sqrt(2.0f) * b;
+			float w = 1.0f;
+			float b = w / (2.0f + b2Sqrt(2.0f));
+			float s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0].Set(0.5f * s, 0.0f);
@@ -170,18 +170,18 @@ public:
 		memset(m_bodies, 0, sizeof(m_bodies));
 	}
 
-	void Create(int32 index)
+	void Create(int index)
 	{
-		if (m_bodies[m_bodyIndex] != NULL)
+		if (m_bodies[m_bodyIndex] != null)
 		{
 			m_world->DestroyBody(m_bodies[m_bodyIndex]);
-			m_bodies[m_bodyIndex] = NULL;
+			m_bodies[m_bodyIndex] = null;
 		}
 
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
 
-		float32 x = RandomFloat(-2.0f, 2.0f);
+		float x = RandomFloat(-2.0f, 2.0f);
 		bd.position.Set(x, 10.0f);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 
@@ -215,12 +215,12 @@ public:
 
 	void DestroyBody()
 	{
-		for (int32 i = 0; i < k_maxBodies; ++i)
+		for (int i = 0; i < k_maxBodies; ++i)
 		{
-			if (m_bodies[i] != NULL)
+			if (m_bodies[i] != null)
 			{
 				m_world->DestroyBody(m_bodies[i]);
-				m_bodies[i] = NULL;
+				m_bodies[i] = null;
 				return;
 			}
 		}
@@ -239,7 +239,7 @@ public:
 			break;
 
 		case 'a':
-			for (int32 i = 0; i < k_maxBodies; i += 2)
+			for (int i = 0; i < k_maxBodies; i += 2)
 			{
 				if (m_bodies[i])
 				{
@@ -286,7 +286,7 @@ public:
 		return new PolyShapes;
 	}
 
-	int32 m_bodyIndex;
+	int m_bodyIndex;
 	b2Body* m_bodies[k_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
