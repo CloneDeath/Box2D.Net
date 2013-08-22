@@ -73,7 +73,6 @@
     <Content Include="Collision\Shapes\b2ChainShape.cpp" />
     <Content Include="Collision\Shapes\b2CircleShape.cpp" />
     <Content Include="Collision\Shapes\b2EdgeShape.cpp" />
-    <Content Include="Collision\Shapes\b2PolygonShape.cpp" />
     <Content Include="Common\b2BlockAllocator.cpp" />
     <Content Include="Common\b2BlockAllocator.h" />
     <Content Include="Common\b2Draw.cpp" />
