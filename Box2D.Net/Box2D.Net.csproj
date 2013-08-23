@@ -54,6 +54,7 @@
     <Compile Include="Common\b2Mat33.cs" />
     <Compile Include="Common\b2Rot.cs" />
     <Compile Include="Common\b2Sweep.cs" />
+    <Compile Include="Common\b2Timer.cs" />
     <Compile Include="Common\b2Transform.cs" />
     <Compile Include="Common\b2Vec2.cs" />
     <Compile Include="Common\b2Settings.cs" />
@@ -103,6 +104,7 @@
     <Content Include="Common\b2Settings.cpp" />
     <Content Include="Common\b2StackAllocator.cpp" />
     <Content Include="Common\b2StackAllocator.h" />
+    <Content Include="Common\b2Timer.cpp" />
     <Content Include="Dynamics\b2ContactManager.cpp" />
     <Content Include="Dynamics\b2Island.cpp" />
     <Content Include="Dynamics\b2Island.h" />

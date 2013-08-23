@@ -42,6 +42,7 @@ namespace Box2D {
 			m_inv_dt0 = 0.0f;
 
 			m_profile = new b2Profile();
+			m_contactManager = new b2ContactManager();
 		}
 
 		/// Destruct the world. All physics entities are destroyed and all heap memory is released.
@@ -365,7 +366,7 @@ namespace Box2D {
 		/// @param velocityIterations for the velocity constraint solver.
 		/// @param positionIterations for the position constraint solver.
 		public void Step(float timeStep, int velocityIterations, int positionIterations){
-			Stopwatch stepTimer;
+			b2Timer stepTimer = new b2Timer();
 
 			// If new fixtures were added, we need to find the new contacts.
 			if (m_flags.HasFlag(WorldFlags.e_newFixture)) {
@@ -391,21 +392,21 @@ namespace Box2D {
 
 			// Update contacts. This is where some contacts are destroyed.
 			{
-				b2Timer timer;
+				b2Timer timer = new b2Timer();
 				m_contactManager.Collide();
 				m_profile.collide = timer.GetMilliseconds();
 			}
 
 			// Integrate velocities, solve velocity constraints, and integrate positions.
 			if (m_stepComplete && step.dt > 0.0f) {
-				b2Timer timer;
+				b2Timer timer = new b2Timer();
 				Solve(step);
 				m_profile.solve = timer.GetMilliseconds();
 			}
 
 			// Handle TOI events.
 			if (m_continuousPhysics && step.dt > 0.0f) {
-				b2Timer timer;
+				b2Timer timer = new b2Timer();
 				SolveTOI(step);
 				m_profile.solveTOI = timer.GetMilliseconds();
 			}
@@ -414,11 +415,11 @@ namespace Box2D {
 				m_inv_dt0 = step.inv_dt;
 			}
 
-			if (m_flags & e_clearForces) {
+			if (m_flags.HasFlag(WorldFlags.e_clearForces)) {
 				ClearForces();
 			}
 
-			m_flags &= ~e_locked;
+			m_flags &= ~WorldFlags.e_locked;
 
 			m_profile.step = stepTimer.GetMilliseconds();
 		}
