@@ -19,7 +19,7 @@ namespace Box2D {
 		public ShapeType m_type;
 		public float m_radius;
 
-		public ~b2Shape() {}
+		~b2Shape() {}
 
 		/// Clone the concrete shape using the provided allocator.
 		public abstract b2Shape Clone();

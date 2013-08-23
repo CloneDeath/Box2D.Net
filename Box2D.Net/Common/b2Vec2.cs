@@ -9,7 +9,7 @@ namespace Box2D {
 		public float x, y;
 
 		/// Default constructor does nothing (for performance).
-		public b2Vec2() {
+		public b2Vec2(object ignore) {
 			x = 0;
 			y = 0;
 		}
@@ -37,6 +37,10 @@ namespace Box2D {
 
 		public static b2Vec2 operator -(b2Vec2 lhs, b2Vec2 rhs) {
 			return new b2Vec2(lhs.x - rhs.x, lhs.y - rhs.y);
+		}
+
+		public static b2Vec2 operator *(float lhs, b2Vec2 rhs) {
+			return new b2Vec2(rhs.x * lhs, rhs.y * lhs);
 		}
 	
 		/// Read from and indexed element.

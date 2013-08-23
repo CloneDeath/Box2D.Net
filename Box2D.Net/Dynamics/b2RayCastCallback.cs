@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Box2D.Dynamics {
+namespace Box2D {
 	/// Callback class for ray casts.
 	/// See b2World::RayCast
-	abstract class b2RayCastCallback
+	public abstract class b2RayCastCallback
 	{
-		virtual ~b2RayCastCallback() {}
+		~b2RayCastCallback() {}
 
 		/// Called for each fixture found in the query. You control how the ray cast
 		/// proceeds by returning a float:

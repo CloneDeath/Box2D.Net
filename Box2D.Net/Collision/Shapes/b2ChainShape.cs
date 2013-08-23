@@ -21,7 +21,7 @@ namespace Box2D {
 		}
 
 		/// The destructor frees the vertices using b2Free.
-		public ~b2ChainShape(){
+		~b2ChainShape(){
 			m_vertices = null;
 			m_count = 0;
 		}
@@ -89,7 +89,7 @@ namespace Box2D {
 		}
 
 		/// Implement b2Shape. Vertices are cloned using b2Alloc.
-		public b2Shape Clone(){
+		public override b2Shape Clone() {
 			throw new NotImplementedException();
 			//void* mem = allocator.Allocate(sizeof(b2ChainShape));
 			//b2ChainShape* clone = new (mem) b2ChainShape;
@@ -102,7 +102,7 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::GetChildCount
-		public int GetChildCount(){
+		public override int GetChildCount() {
 			// edge count = vertex count - 1
 			return m_count - 1;
 		}
@@ -142,7 +142,7 @@ namespace Box2D {
 
 		/// This always return false.
 		/// @see b2Shape::TestPoint
-		public bool TestPoint(b2Transform transform, b2Vec2 p){
+		public override bool TestPoint(b2Transform transform, b2Vec2 p) {
 			throw new NotImplementedException();
 			//B2_NOT_USED(xf);
 			//B2_NOT_USED(p);
@@ -150,8 +150,8 @@ namespace Box2D {
 		}
 
 		/// Implement b2Shape.
-		public bool RayCast(out b2RayCastOutput output, b2RayCastInput input,
-						b2Transform transform, float childIndex){
+		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input,
+						b2Transform transform, int childIndex){
 			throw new NotImplementedException();
 			//b2Assert(childIndex < m_count);
 
@@ -171,7 +171,7 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::ComputeAABB
-		public void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex) {
+		public override void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex) {
 			throw new NotImplementedException();
 			//b2Assert(childIndex < m_count);
 
@@ -191,7 +191,7 @@ namespace Box2D {
 
 		/// Chains have zero mass.
 		/// @see b2Shape::ComputeMass
-		public void ComputeMass(out b2MassData massData, float density){
+		public override void ComputeMass(out b2MassData massData, float density){
 			throw new NotImplementedException();
 			//B2_NOT_USED(density);
 

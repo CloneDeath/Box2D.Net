@@ -51,6 +51,7 @@
     <Compile Include="Collision\Shapes\b2Shape.cs" />
     <Compile Include="Common\b2Draw.cs" />
     <Compile Include="Common\b2Rot.cs" />
+    <Compile Include="Common\b2Sweep.cs" />
     <Compile Include="Common\b2Transform.cs" />
     <Compile Include="Common\b2Vec2.cs" />
     <Compile Include="Common\b2Settings.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Dynamics\b2ContactFilter.cs" />
     <Compile Include="Dynamics\b2ContactImpulse.cs" />
     <Compile Include="Dynamics\b2ContactListener.cs" />
+    <Compile Include="Dynamics\b2ContactManager.cs" />
     <Compile Include="Dynamics\b2DestructionListener.cs" />
     <Compile Include="Dynamics\b2Filter.cs" />
     <Compile Include="Dynamics\b2Fixture.cs" />
@@ -100,9 +102,7 @@
     <Content Include="Common\b2StackAllocator.h" />
     <Content Include="Common\b2Timer.cpp" />
     <Content Include="Common\b2Timer.h" />
-    <Content Include="Dynamics\b2Body.cpp" />
     <Content Include="Dynamics\b2ContactManager.cpp" />
-    <Content Include="Dynamics\b2ContactManager.h" />
     <Content Include="Dynamics\b2Island.cpp" />
     <Content Include="Dynamics\b2Island.h" />
     <Content Include="Dynamics\b2WorldCallbacks.cpp" />

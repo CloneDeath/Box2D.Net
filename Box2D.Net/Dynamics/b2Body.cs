@@ -23,9 +23,9 @@ namespace Box2D {
 	public struct b2BodyDef
 	{
 		/// This constructor sets the body definition default values.
-		public b2BodyDef()
+		public b2BodyDef(object UserData)
 		{
-			userData = null;
+			userData = UserData;
 			position = new b2Vec2(0.0f, 0.0f);
 			angle = 0.0f;
 			linearVelocity = new b2Vec2(0.0f, 0.0f);
@@ -104,7 +104,44 @@ namespace Box2D {
 		/// Contacts are not created until the next time step.
 		/// @param def the fixture definition.
 		/// @warning This function is locked during callbacks.
-		public b2Fixture* CreateFixture(const b2FixtureDef* def);
+		public b2Fixture CreateFixture(b2FixtureDef def){
+			throw new NotImplementedException();
+			//b2Assert(m_world.IsLocked() == false);
+			//if (m_world.IsLocked() == true)
+			//{
+			//    return null;
+			//}
+
+			//b2BlockAllocator* allocator = &m_world.m_blockAllocator;
+
+			//void* memory = allocator.Allocate(sizeof(b2Fixture));
+			//b2Fixture* fixture = new (memory) b2Fixture;
+			//fixture.Create(allocator, this, def);
+
+			//if (m_flags & e_activeFlag)
+			//{
+			//    b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//    fixture.CreateProxies(broadPhase, m_xf);
+			//}
+
+			//fixture.m_next = m_fixtureList;
+			//m_fixtureList = fixture;
+			//++m_fixtureCount;
+
+			//fixture.m_body = this;
+
+			//// Adjust mass properties if needed.
+			//if (fixture.m_density > 0.0f)
+			//{
+			//    ResetMassData();
+			//}
+
+			//// Let the world know we have a new fixture. This will cause new contacts
+			//// to be created at the beginning of the next time step.
+			//m_world.m_flags |= b2World::e_newFixture;
+
+			//return fixture;
+		}
 
 		/// Creates a fixture from a shape and attach it to this body.
 		/// This is a convenience function. Use b2FixtureDef if you need to set parameters
@@ -113,7 +150,14 @@ namespace Box2D {
 		/// @param shape the shape to be cloned.
 		/// @param density the shape density (set to zero for static bodies).
 		/// @warning This function is locked during callbacks.
-		public b2Fixture* CreateFixture(const b2Shape* shape, float density);
+		public b2Fixture CreateFixture(b2Shape shape, float density){
+			throw new NotImplementedException();
+			//b2FixtureDef def;
+			//def.shape = shape;
+			//def.density = density;
+
+			//return CreateFixture(&def);
+		}
 
 		/// Destroy a fixture. This removes the fixture from the broad-phase and
 		/// destroys all contacts associated with this fixture. This will
@@ -122,14 +166,103 @@ namespace Box2D {
 		/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
 		/// @param fixture the fixture to be removed.
 		/// @warning This function is locked during callbacks.
-		public void DestroyFixture(b2Fixture* fixture);
+		public void DestroyFixture(b2Fixture fixture){
+			throw new NotImplementedException();
+			//b2Assert(m_world.IsLocked() == false);
+			//if (m_world.IsLocked() == true)
+			//{
+			//    return;
+			//}
+
+			//b2Assert(fixture.m_body == this);
+
+			//// Remove the fixture from this body's singly linked list.
+			//b2Assert(m_fixtureCount > 0);
+			//b2Fixture** node = &m_fixtureList;
+			//bool found = false;
+			//while (*node != null)
+			//{
+			//    if (*node == fixture)
+			//    {
+			//        *node = fixture.m_next;
+			//        found = true;
+			//        break;
+			//    }
+
+			//    node = &(*node).m_next;
+			//}
+
+			//// You tried to remove a shape that is not attached to this body.
+			//b2Assert(found);
+
+			//// Destroy any contacts associated with the fixture.
+			//b2ContactEdge* edge = m_contactList;
+			//while (edge)
+			//{
+			//    b2Contact* c = edge.contact;
+			//    edge = edge.next;
+
+			//    b2Fixture* fixtureA = c.GetFixtureA();
+			//    b2Fixture* fixtureB = c.GetFixtureB();
+
+			//    if (fixture == fixtureA || fixture == fixtureB)
+			//    {
+			//        // This destroys the contact and removes it from
+			//        // this body's contact list.
+			//        m_world.m_contactManager.Destroy(c);
+			//    }
+			//}
+
+			//b2BlockAllocator* allocator = &m_world.m_blockAllocator;
+
+			//if (m_flags & e_activeFlag)
+			//{
+			//    b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//    fixture.DestroyProxies(broadPhase);
+			//}
+
+			//fixture.Destroy(allocator);
+			//fixture.m_body = null;
+			//fixture.m_next = null;
+			//fixture.~b2Fixture();
+			//allocator.Free(fixture, sizeof(b2Fixture));
+
+			//--m_fixtureCount;
+
+			//// Reset the mass data.
+			//ResetMassData();
+		}
 
 		/// Set the position of the body's origin and rotation.
 		/// This breaks any contacts and wakes the other bodies.
 		/// Manipulating a body's transform may cause non-physical behavior.
 		/// @param position the world position of the body's local origin.
 		/// @param angle the world rotation in radians.
-		public void SetTransform(const b2Vec2& position, float angle);
+		public void SetTransform(b2Vec2 position, float angle){
+			throw new NotImplementedException();
+			//b2Assert(m_world.IsLocked() == false);
+			//if (m_world.IsLocked() == true)
+			//{
+			//    return;
+			//}
+
+			//m_xf.q.Set(angle);
+			//m_xf.p = position;
+
+			//m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+			//m_sweep.a = angle;
+
+			//m_sweep.c0 = m_sweep.c;
+			//m_sweep.a0 = angle;
+
+			//b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//{
+			//    f.Synchronize(broadPhase, m_xf, m_xf);
+			//}
+
+			//m_world.m_contactManager.FindNewContacts();
+		}
 
 		/// Get the body transform for the body's origin.
 		/// @return the world transform of the body's origin.
@@ -162,17 +295,18 @@ namespace Box2D {
 		/// Set the linear velocity of the center of mass.
 		/// @param v the new linear velocity of the center of mass.
 		public void SetLinearVelocity(b2Vec2 v){
-			if (m_type == b2_staticBody)
-			{
-				return;
-			}
+			throw new NotImplementedException();
+			//if (m_type == b2_staticBody)
+			//{
+			//    return;
+			//}
 
-			if (b2Dot(v,v) > 0.0f)
-			{
-				SetAwake(true);
-			}
+			//if (b2Dot(v,v) > 0.0f)
+			//{
+			//    SetAwake(true);
+			//}
 
-			m_linearVelocity = v;
+			//m_linearVelocity = v;
 		}
 
 		/// Get the linear velocity of the center of mass.
@@ -184,17 +318,18 @@ namespace Box2D {
 		/// Set the angular velocity.
 		/// @param omega the new angular velocity in radians/second.
 		public void SetAngularVelocity(float omega){
-			if (m_type == b2_staticBody)
-			{
-				return;
-			}
+			throw new NotImplementedException();
+			//if (m_type == b2_staticBody)
+			//{
+			//    return;
+			//}
 
-			if (w * w > 0.0f)
-			{
-				SetAwake(true);
-			}
+			//if (w * w > 0.0f)
+			//{
+			//    SetAwake(true);
+			//}
 
-			m_angularVelocity = w;
+			//m_angularVelocity = w;
 		}
 
 		/// Get the angular velocity.
@@ -209,44 +344,46 @@ namespace Box2D {
 		/// @param force the world force vector, usually in Newtons (N).
 		/// @param point the world position of the point of application.
 		/// @param wake also wake up the body
-		public void ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake){
-			if (m_type != b2_dynamicBody)
-			{
-				return;
-			}
+		public void ApplyForce(b2Vec2 force, b2Vec2 point, bool wake){
+			throw new NotImplementedException();
+			//if (m_type != b2_dynamicBody)
+			//{
+			//    return;
+			//}
 
-			if (wake && (m_flags & e_awakeFlag) == 0)
-			{
-				SetAwake(true);
-			}
+			//if (wake && (m_flags & e_awakeFlag) == 0)
+			//{
+			//    SetAwake(true);
+			//}
 
-			// Don't accumulate a force if the body is sleeping.
-			if (m_flags & e_awakeFlag)
-			{
-				m_force += force;
-				m_torque += b2Cross(point - m_sweep.c, force);
-			}
+			//// Don't accumulate a force if the body is sleeping.
+			//if (m_flags & e_awakeFlag)
+			//{
+			//    m_force += force;
+			//    m_torque += b2Cross(point - m_sweep.c, force);
+			//}
 		}
 
 		/// Apply a force to the center of mass. This wakes up the body.
 		/// @param force the world force vector, usually in Newtons (N).
 		/// @param wake also wake up the body
-		public void ApplyForceToCenter(const b2Vec2& force, bool wake){
-			if (m_type != b2_dynamicBody)
-			{
-				return;
-			}
+		public void ApplyForceToCenter(b2Vec2 force, bool wake){
+			throw new NotImplementedException();
+			//if (m_type != b2_dynamicBody)
+			//{
+			//    return;
+			//}
 
-			if (wake && (m_flags & e_awakeFlag) == 0)
-			{
-				SetAwake(true);
-			}
+			//if (wake && (m_flags & e_awakeFlag) == 0)
+			//{
+			//    SetAwake(true);
+			//}
 
-			// Don't accumulate a force if the body is sleeping
-			if (m_flags & e_awakeFlag)
-			{
-				m_force += force;
-			}
+			//// Don't accumulate a force if the body is sleeping
+			//if (m_flags & e_awakeFlag)
+			//{
+			//    m_force += force;
+			//}
 		}
 
 		/// Apply a torque. This affects the angular velocity
@@ -255,21 +392,22 @@ namespace Box2D {
 		/// @param torque about the z-axis (out of the screen), usually in N-m.
 		/// @param wake also wake up the body
 		public void ApplyTorque(float torque, bool wake){
-			if (m_type != b2_dynamicBody)
-			{
-				return;
-			}
+			throw new NotImplementedException();
+			//if (m_type != b2_dynamicBody)
+			//{
+			//    return;
+			//}
 
-			if (wake && (m_flags & e_awakeFlag) == 0)
-			{
-				SetAwake(true);
-			}
+			//if (wake && (m_flags & e_awakeFlag) == 0)
+			//{
+			//    SetAwake(true);
+			//}
 
-			// Don't accumulate a force if the body is sleeping
-			if (m_flags & e_awakeFlag)
-			{
-				m_torque += torque;
-			}
+			//// Don't accumulate a force if the body is sleeping
+			//if (m_flags & e_awakeFlag)
+			//{
+			//    m_torque += torque;
+			//}
 		}
 
 		/// Apply an impulse at a point. This immediately modifies the velocity.
@@ -278,44 +416,46 @@ namespace Box2D {
 		/// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
 		/// @param point the world position of the point of application.
 		/// @param wake also wake up the body
-		public void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake){
-			if (m_type != b2_dynamicBody)
-			{
-				return;
-			}
+		public void ApplyLinearImpulse(b2Vec2 impulse, b2Vec2 point, bool wake){
+			throw new NotImplementedException();
+			//if (m_type != b2_dynamicBody)
+			//{
+			//    return;
+			//}
 
-			if (wake && (m_flags & e_awakeFlag) == 0)
-			{
-				SetAwake(true);
-			}
+			//if (wake && (m_flags & e_awakeFlag) == 0)
+			//{
+			//    SetAwake(true);
+			//}
 
-			// Don't accumulate velocity if the body is sleeping
-			if (m_flags & e_awakeFlag)
-			{
-				m_linearVelocity += m_invMass * impulse;
-				m_angularVelocity += m_invI * b2Cross(point - m_sweep.c, impulse);
-			}
+			//// Don't accumulate velocity if the body is sleeping
+			//if (m_flags & e_awakeFlag)
+			//{
+			//    m_linearVelocity += m_invMass * impulse;
+			//    m_angularVelocity += m_invI * b2Cross(point - m_sweep.c, impulse);
+			//}
 		}
 
 		/// Apply an angular impulse.
 		/// @param impulse the angular impulse in units of kg*m*m/s
 		/// @param wake also wake up the body
 		public void ApplyAngularImpulse(float impulse, bool wake){
-			if (m_type != b2_dynamicBody)
-			{
-				return;
-			}
+			throw new NotImplementedException();
+			//if (m_type != b2_dynamicBody)
+			//{
+			//    return;
+			//}
 
-			if (wake && (m_flags & e_awakeFlag) == 0)
-			{
-				SetAwake(true);
-			}
+			//if (wake && (m_flags & e_awakeFlag) == 0)
+			//{
+			//    SetAwake(true);
+			//}
 
-			// Don't accumulate velocity if the body is sleeping
-			if (m_flags & e_awakeFlag)
-			{
-				m_angularVelocity += m_invI * impulse;
-			}
+			//// Don't accumulate velocity if the body is sleeping
+			//if (m_flags & e_awakeFlag)
+			//{
+			//    m_angularVelocity += m_invI * impulse;
+			//}
 		}
 
 		/// Get the total mass of the body.
@@ -327,15 +467,17 @@ namespace Box2D {
 		/// Get the rotational inertia of the body about the local origin.
 		/// @return the rotational inertia, usually in kg-m^2.
 		public float GetInertia(){
-			return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+			throw new NotImplementedException();
+			//return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 		}
 
 		/// Get the mass data of the body.
 		/// @return a struct containing the mass, inertia and center of the body.
-		public void GetMassData(b2MassData* data){
-			data.mass = m_mass;
-			data.I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
-			data.center = m_sweep.localCenter;
+		public void GetMassData(out b2MassData data){
+			throw new NotImplementedException();
+			//data.mass = m_mass;
+			//data.I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+			//data.center = m_sweep.localCenter;
 		}
 
 		/// Set the mass properties to override the mass properties of the fixtures.
@@ -343,54 +485,169 @@ namespace Box2D {
 		/// Note that creating or destroying fixtures can also alter the mass.
 		/// This function has no effect if the body isn't dynamic.
 		/// @param massData the mass properties.
-		public void SetMassData(const b2MassData* data);
+		public void SetMassData(b2MassData data){
+			throw new NotImplementedException();
+			//b2Assert(m_world.IsLocked() == false);
+			//if (m_world.IsLocked() == true)
+			//{
+			//    return;
+			//}
+
+			//if (m_type != b2_dynamicBody)
+			//{
+			//    return;
+			//}
+
+			//m_invMass = 0.0f;
+			//m_I = 0.0f;
+			//m_invI = 0.0f;
+
+			//m_mass = massData.mass;
+			//if (m_mass <= 0.0f)
+			//{
+			//    m_mass = 1.0f;
+			//}
+
+			//m_invMass = 1.0f / m_mass;
+
+			//if (massData.I > 0.0f && (m_flags & b2Body::e_fixedRotationFlag) == 0)
+			//{
+			//    m_I = massData.I - m_mass * b2Dot(massData.center, massData.center);
+			//    b2Assert(m_I > 0.0f);
+			//    m_invI = 1.0f / m_I;
+			//}
+
+			//// Move center of mass.
+			//b2Vec2 oldCenter = m_sweep.c;
+			//m_sweep.localCenter =  massData.center;
+			//m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+
+			//// Update center of mass velocity.
+			//m_linearVelocity += b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
+		}
 
 		/// This resets the mass properties to the sum of the mass properties of the fixtures.
 		/// This normally does not need to be called unless you called SetMassData to override
 		/// the mass and you later want to reset the mass.
-		public void ResetMassData();
+		public void ResetMassData(){
+			throw new NotImplementedException();
+			//// Compute mass data from shapes. Each shape has its own density.
+			//m_mass = 0.0f;
+			//m_invMass = 0.0f;
+			//m_I = 0.0f;
+			//m_invI = 0.0f;
+			//m_sweep.localCenter.SetZero();
+
+			//// Static and kinematic bodies have zero mass.
+			//if (m_type == b2_staticBody || m_type == b2_kinematicBody)
+			//{
+			//    m_sweep.c0 = m_xf.p;
+			//    m_sweep.c = m_xf.p;
+			//    m_sweep.a0 = m_sweep.a;
+			//    return;
+			//}
+
+			//b2Assert(m_type == b2_dynamicBody);
+
+			//// Accumulate mass over all fixtures.
+			//b2Vec2 localCenter = b2Vec2_zero;
+			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//{
+			//    if (f.m_density == 0.0f)
+			//    {
+			//        continue;
+			//    }
+
+			//    b2MassData massData;
+			//    f.GetMassData(&massData);
+			//    m_mass += massData.mass;
+			//    localCenter += massData.mass * massData.center;
+			//    m_I += massData.I;
+			//}
+
+			//// Compute center of mass.
+			//if (m_mass > 0.0f)
+			//{
+			//    m_invMass = 1.0f / m_mass;
+			//    localCenter *= m_invMass;
+			//}
+			//else
+			//{
+			//    // Force all dynamic bodies to have a positive mass.
+			//    m_mass = 1.0f;
+			//    m_invMass = 1.0f;
+			//}
+
+			//if (m_I > 0.0f && (m_flags & e_fixedRotationFlag) == 0)
+			//{
+			//    // Center the inertia about the center of mass.
+			//    m_I -= m_mass * b2Dot(localCenter, localCenter);
+			//    b2Assert(m_I > 0.0f);
+			//    m_invI = 1.0f / m_I;
+
+			//}
+			//else
+			//{
+			//    m_I = 0.0f;
+			//    m_invI = 0.0f;
+			//}
+
+			//// Move center of mass.
+			//b2Vec2 oldCenter = m_sweep.c;
+			//m_sweep.localCenter = localCenter;
+			//m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+
+			//// Update center of mass velocity.
+			//m_linearVelocity += b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
+		}
 
 		/// Get the world coordinates of a point given the local coordinates.
 		/// @param localPoint a point on the body measured relative the the body's origin.
 		/// @return the same point expressed in world coordinates.
 		public b2Vec2 GetWorldPoint(b2Vec2 localPoint){
-			return b2Mul(m_xf, localPoint);
+			throw new NotImplementedException();
+			//return b2Mul(m_xf, localPoint);
 		}
 
 		/// Get the world coordinates of a vector given the local coordinates.
 		/// @param localVector a vector fixed in the body.
 		/// @return the same vector expressed in world coordinates.
 		public b2Vec2 GetWorldVector(b2Vec2 localVector){
-			return b2Mul(m_xf.q, localVector);
+			throw new NotImplementedException();
+			//return b2Mul(m_xf.q, localVector);
 		}
 
 		/// Gets a local point relative to the body's origin given a world point.
 		/// @param a point in world coordinates.
 		/// @return the corresponding local point relative to the body's origin.
-		public b2Vec2 GetLocalPoint(const b2Vec2& worldPoint){
-			return b2MulT(m_xf, worldPoint);
+		public b2Vec2 GetLocalPoint(b2Vec2 worldPoint){
+			throw new NotImplementedException();
+			//return b2MulT(m_xf, worldPoint);
 		}
 
 		/// Gets a local vector given a world vector.
 		/// @param a vector in world coordinates.
 		/// @return the corresponding local vector.
-		public b2Vec2 GetLocalVector(const b2Vec2& worldVector) {
-			return b2MulT(m_xf.q, worldVector);
+		public b2Vec2 GetLocalVector(b2Vec2 worldVector) {
+			throw new NotImplementedException();
+			//return b2MulT(m_xf.q, worldVector);
 		}
 
 
 		/// Get the world linear velocity of a world point attached to this body.
 		/// @param a point in world coordinates.
 		/// @return the world velocity of a point.
-		public b2Vec2 GetLinearVelocityFromWorldPoint(const b2Vec2& worldPoint){
-			return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
+		public b2Vec2 GetLinearVelocityFromWorldPoint(b2Vec2 worldPoint){
+			throw new NotImplementedException();
+			//return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
 		}
 
 		/// Get the world velocity of a local point.
 		/// @param a point in local coordinates.
 		/// @return the world velocity of a point.
-		public b2Vec2 GetLinearVelocityFromLocalPoint(const b2Vec2& localPoint){
-			return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
+		public b2Vec2 GetLinearVelocityFromLocalPoint(b2Vec2 localPoint){
+			throw new NotImplementedException();
+			//return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
 		}
 
 		/// Get the linear damping of the body.
@@ -424,77 +681,134 @@ namespace Box2D {
 		}
 
 		/// Set the type of this body. This may alter the mass and velocity.
-		public void SetType(b2BodyType type);
+		public void SetType(b2BodyType type){
+			throw new NotImplementedException();
+			//b2Assert(m_world.IsLocked() == false);
+			//if (m_world.IsLocked() == true)
+			//{
+			//    return;
+			//}
+
+			//if (m_type == type)
+			//{
+			//    return;
+			//}
+
+			//m_type = type;
+
+			//ResetMassData();
+
+			//if (m_type == b2_staticBody)
+			//{
+			//    m_linearVelocity.SetZero();
+			//    m_angularVelocity = 0.0f;
+			//    m_sweep.a0 = m_sweep.a;
+			//    m_sweep.c0 = m_sweep.c;
+			//    SynchronizeFixtures();
+			//}
+
+			//SetAwake(true);
+
+			//m_force.SetZero();
+			//m_torque = 0.0f;
+
+			//// Delete the attached contacts.
+			//b2ContactEdge* ce = m_contactList;
+			//while (ce)
+			//{
+			//    b2ContactEdge* ce0 = ce;
+			//    ce = ce.next;
+			//    m_world.m_contactManager.Destroy(ce0.contact);
+			//}
+			//m_contactList = null;
+
+			//// Touch the proxies so that new contacts will be created (when appropriate)
+			//b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//{
+			//    int proxyCount = f.m_proxyCount;
+			//    for (int i = 0; i < proxyCount; ++i)
+			//    {
+			//        broadPhase.TouchProxy(f.m_proxies[i].proxyId);
+			//    }
+			//}
+		}
 
 		/// Get the type of this body.
-		public b2BodyType GetType(){
+		public b2BodyType GetBodyType(){
 			return m_type;
 		}
 
 		/// Should this body be treated like a bullet for continuous collision detection?
 		public void SetBullet(bool flag){
-			if (flag)
-			{
-				m_flags |= e_bulletFlag;
-			}
-			else
-			{
-				m_flags &= ~e_bulletFlag;
-			}
+			throw new NotImplementedException();
+			//if (flag)
+			//{
+			//    m_flags |= e_bulletFlag;
+			//}
+			//else
+			//{
+			//    m_flags &= ~e_bulletFlag;
+			//}
 		}
 
 		/// Is this body treated like a bullet for continuous collision detection?
 		public bool IsBullet(){
-			return (m_flags & e_bulletFlag) == e_bulletFlag;
+			throw new NotImplementedException();
+			//return (m_flags & e_bulletFlag) == e_bulletFlag;
 		}
 
 		/// You can disable sleeping on this body. If you disable sleeping, the
 		/// body will be woken.
 		public void SetSleepingAllowed(bool flag){
-			if (flag)
-			{
-				m_flags |= e_autoSleepFlag;
-			}
-			else
-			{
-				m_flags &= ~e_autoSleepFlag;
-				SetAwake(true);
-			}
+			throw new NotImplementedException();
+			//if (flag)
+			//{
+			//    m_flags |= e_autoSleepFlag;
+			//}
+			//else
+			//{
+			//    m_flags &= ~e_autoSleepFlag;
+			//    SetAwake(true);
+			//}
 		}
 
 
 		/// Is this body allowed to sleep
 		public bool IsSleepingAllowed() {
-			return (m_flags & e_autoSleepFlag) == e_autoSleepFlag;
+			throw new NotImplementedException();
+			//throw new NotImplementedException();return (m_flags & e_autoSleepFlag) == e_autoSleepFlag;
 		}
 
 		/// Set the sleep state of the body. A sleeping body has very
 		/// low CPU cost.
 		/// @param flag set to true to wake the body, false to put it to sleep.
 		public void SetAwake(bool flag){
-			if (flag)
-			{
-				if ((m_flags & e_awakeFlag) == 0)
-				{
-					m_flags |= e_awakeFlag;
-					m_sleepTime = 0.0f;
-				}
-			}
-			else
-			{
-				m_flags &= ~e_awakeFlag;
-				m_sleepTime = 0.0f;
-				m_linearVelocity.SetZero();
-				m_angularVelocity = 0.0f;
-				m_force.SetZero();
-				m_torque = 0.0f;
-			}
+			throw new NotImplementedException();
+			//if (flag)
+			//{
+			//    if ((m_flags & e_awakeFlag) == 0)
+			//    {
+			//        m_flags |= e_awakeFlag;
+			//        m_sleepTime = 0.0f;
+			//    }
+			//}
+			//else
+			//{
+			//    m_flags &= ~e_awakeFlag;
+			//    m_sleepTime = 0.0f;
+			//    m_linearVelocity.SetZero();
+			//    m_angularVelocity = 0.0f;
+			//    m_force.SetZero();
+			//    m_torque = 0.0f;
+			//}
 		}
 
 		/// Get the sleeping state of this body.
 		/// @return true if the body is sleeping.
 		public bool IsAwake(){
-			return (m_flags & e_awakeFlag) == e_awakeFlag;
+			throw new NotImplementedException();
+			//return (m_flags & e_awakeFlag) == e_awakeFlag;
 		}
 
 		/// Set the active state of the body. An inactive body is not
@@ -510,41 +824,105 @@ namespace Box2D {
 		/// Joints connected to an inactive body are implicitly inactive.
 		/// An inactive body is still owned by a b2World object and remains
 		/// in the body list.
-		public void SetActive(bool flag);
+		public void SetActive(bool flag){
+			throw new NotImplementedException();
+			//b2Assert(m_world.IsLocked() == false);
+
+			//if (flag == IsActive())
+			//{
+			//    return;
+			//}
+
+			//if (flag)
+			//{
+			//    m_flags |= e_activeFlag;
+
+			//    // Create all proxies.
+			//    b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//    for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//    {
+			//        f.CreateProxies(broadPhase, m_xf);
+			//    }
+
+			//    // Contacts are created the next time step.
+			//}
+			//else
+			//{
+			//    m_flags &= ~e_activeFlag;
+
+			//    // Destroy all proxies.
+			//    b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//    for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//    {
+			//        f.DestroyProxies(broadPhase);
+			//    }
+
+			//    // Destroy the attached contacts.
+			//    b2ContactEdge* ce = m_contactList;
+			//    while (ce)
+			//    {
+			//        b2ContactEdge* ce0 = ce;
+			//        ce = ce.next;
+			//        m_world.m_contactManager.Destroy(ce0.contact);
+			//    }
+			//    m_contactList = null;
+			//}
+		}
 
 		/// Get the active state of the body.
 		public bool IsActive() {
-			return (m_flags & e_activeFlag) == e_activeFlag;
+			throw new NotImplementedException();
+			//return (m_flags & e_activeFlag) == e_activeFlag;
 		}
 
 		/// Set this body to have fixed rotation. This causes the mass
 		/// to be reset.
-		public void SetFixedRotation(bool flag);
+		public void SetFixedRotation(bool flag){
+			throw new NotImplementedException();
+			//bool status = (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
+			//if (status == flag)
+			//{
+			//    return;
+			//}
 
+			//if (flag)
+			//{
+			//    m_flags |= e_fixedRotationFlag;
+			//}
+			//else
+			//{
+			//    m_flags &= ~e_fixedRotationFlag;
+			//}
+
+			//m_angularVelocity = 0.0f;
+
+			//ResetMassData();
+		}
 		/// Does this body have fixed rotation?
 		public bool IsFixedRotation() {
-			return (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
+			throw new NotImplementedException();
+			//return (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
 		}
 
 		/// Get the list of all fixtures attached to this body.
-		public b2Fixture* GetFixtureList(){
+		public List<b2Fixture> GetFixtureList(){
 			return m_fixtureList;
 		}
 
 		/// Get the list of all joints attached to this body.
-		public b2JointEdge* GetJointList(){
+		public List<b2JointEdge> GetJointList(){
 			return m_jointList;
 		}
 
 		/// Get the list of all contacts attached to this body.
 		/// @warning this list changes during the time step and you may
 		/// miss some collisions if you don't use b2ContactListener.
-		public b2ContactEdge* GetContactList(){
+		public List<b2ContactEdge> GetContactList(){
 			return m_contactList;
 		}
 
 		/// Get the next body in the world's body list.
-		public b2Body* GetNext(){
+		public b2Body GetNext(){
 			return m_next;
 		}
 
@@ -559,33 +937,43 @@ namespace Box2D {
 		}
 
 		/// Get the parent world of this body.
-		public b2World* GetWorld(){
+		public b2World GetWorld(){
 			return m_world;
 		}
 
 		/// Dump this body to a log file
-		public void Dump();
+		public void Dump(){
+			throw new NotImplementedException();
+			//int bodyIndex = m_islandIndex;
 
-		friend class b2World;
-		friend class b2Island;
-		friend class b2ContactManager;
-		friend class b2ContactSolver;
-		friend class b2Contact;
-	
-		friend class b2DistanceJoint;
-		friend class b2FrictionJoint;
-		friend class b2GearJoint;
-		friend class b2MotorJoint;
-		friend class b2MouseJoint;
-		friend class b2PrismaticJoint;
-		friend class b2PulleyJoint;
-		friend class b2RevoluteJoint;
-		friend class b2RopeJoint;
-		friend class b2WeldJoint;
-		friend class b2WheelJoint;
+			//b2Settings.b2Log("{\n");
+			//b2Settings.b2Log("  b2BodyDef bd;\n");
+			//b2Settings.b2Log("  bd.type = b2BodyType(%d);\n", m_type);
+			//b2Settings.b2Log("  bd.position.Set(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
+			//b2Settings.b2Log("  bd.angle = %.15lef;\n", m_sweep.a);
+			//b2Settings.b2Log("  bd.linearVelocity.Set(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
+			//b2Settings.b2Log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
+			//b2Settings.b2Log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
+			//b2Settings.b2Log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
+			//b2Settings.b2Log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
+			//b2Settings.b2Log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
+			//b2Settings.b2Log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
+			//b2Settings.b2Log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
+			//b2Settings.b2Log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
+			//b2Settings.b2Log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
+			//b2Settings.b2Log("  bodies[%d] = m_world.CreateBody(&bd);\n", m_islandIndex);
+			//b2Settings.b2Log("\n");
+			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//{
+			//    b2Settings.b2Log("  {\n");
+			//    f.Dump(bodyIndex);
+			//    b2Settings.b2Log("  }\n");
+			//}
+			//b2Settings.b2Log("}\n");
+		}
 
 		// m_flags
-		private enum
+		internal enum BodyFlags
 		{
 			e_islandFlag		= 0x0001,
 			e_awakeFlag			= 0x0002,
@@ -596,26 +984,144 @@ namespace Box2D {
 			e_toiFlag			= 0x0040
 		};
 
-		private b2Body(const b2BodyDef* bd, b2World* world);
-		private ~b2Body();
+		private b2Body(b2BodyDef bd, b2World world){
+			throw new NotImplementedException();
+			//b2Assert(bd.position.IsValid());
+			//b2Assert(bd.linearVelocity.IsValid());
+			//b2Assert(b2IsValid(bd.angle));
+			//b2Assert(b2IsValid(bd.angularVelocity));
+			//b2Assert(b2IsValid(bd.angularDamping) && bd.angularDamping >= 0.0f);
+			//b2Assert(b2IsValid(bd.linearDamping) && bd.linearDamping >= 0.0f);
 
-		private void SynchronizeFixtures();
+			//m_flags = 0;
+
+			//if (bd.bullet)
+			//{
+			//    m_flags |= e_bulletFlag;
+			//}
+			//if (bd.fixedRotation)
+			//{
+			//    m_flags |= e_fixedRotationFlag;
+			//}
+			//if (bd.allowSleep)
+			//{
+			//    m_flags |= e_autoSleepFlag;
+			//}
+			//if (bd.awake)
+			//{
+			//    m_flags |= e_awakeFlag;
+			//}
+			//if (bd.active)
+			//{
+			//    m_flags |= e_activeFlag;
+			//}
+
+			//m_world = world;
+
+			//m_xf.p = bd.position;
+			//m_xf.q.Set(bd.angle);
+
+			//m_sweep.localCenter.SetZero();
+			//m_sweep.c0 = m_xf.p;
+			//m_sweep.c = m_xf.p;
+			//m_sweep.a0 = bd.angle;
+			//m_sweep.a = bd.angle;
+			//m_sweep.alpha0 = 0.0f;
+
+			//m_jointList = null;
+			//m_contactList = null;
+			//m_prev = null;
+			//m_next = null;
+
+			//m_linearVelocity = bd.linearVelocity;
+			//m_angularVelocity = bd.angularVelocity;
+
+			//m_linearDamping = bd.linearDamping;
+			//m_angularDamping = bd.angularDamping;
+			//m_gravityScale = bd.gravityScale;
+
+			//m_force.SetZero();
+			//m_torque = 0.0f;
+
+			//m_sleepTime = 0.0f;
+
+			//m_type = bd.type;
+
+			//if (m_type == b2_dynamicBody)
+			//{
+			//    m_mass = 1.0f;
+			//    m_invMass = 1.0f;
+			//}
+			//else
+			//{
+			//    m_mass = 0.0f;
+			//    m_invMass = 0.0f;
+			//}
+
+			//m_I = 0.0f;
+			//m_invI = 0.0f;
+
+			//m_userData = bd.userData;
+
+			//m_fixtureList = null;
+			//m_fixtureCount = 0;
+		}
+
+		~b2Body(){
+			// shapes and joints are destroyed in b2World::Destroy
+		}
+
+		private void SynchronizeFixtures(){
+			throw new NotImplementedException();
+			//b2Transform xf1;
+			//xf1.q.Set(m_sweep.a0);
+			//xf1.p = m_sweep.c0 - b2Mul(xf1.q, m_sweep.localCenter);
+
+			//b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
+			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
+			//{
+			//    f.Synchronize(broadPhase, xf1, m_xf);
+			//}
+		}
 		private void SynchronizeTransform(){
-			m_xf.q.Set(m_sweep.a);
-			m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
+			throw new NotImplementedException();
+			//m_xf.q.Set(m_sweep.a);
+			//m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
 		}
 
 		// This is used to prevent connected bodies from colliding.
 		// It may lie, depending on the collideConnected flag.
-		private bool ShouldCollide(const b2Body* other) const;
+		private bool ShouldCollide(b2Body other){
+			throw new NotImplementedException();
+			//// At least one body should be dynamic.
+			//if (m_type != b2_dynamicBody && other.m_type != b2_dynamicBody)
+			//{
+			//    return false;
+			//}
+
+			//// Does a joint prevent collision?
+			//for (b2JointEdge* jn = m_jointList; jn; jn = jn.next)
+			//{
+			//    if (jn.other == other)
+			//    {
+			//        if (jn.joint.m_collideConnected == false)
+			//        {
+			//            return false;
+			//        }
+			//    }
+			//}
+
+			//return true;
+		}
 
 		private void Advance(float t){
-			// Advance to the new safe time. This doesn't sync the broad-phase.
-			m_sweep.Advance(alpha);
-			m_sweep.c = m_sweep.c0;
-			m_sweep.a = m_sweep.a0;
-			m_xf.q.Set(m_sweep.a);
-			m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
+			throw new NotImplementedException();
+			//// Advance to the new safe time. This doesn't sync the broad-phase.
+			//m_sweep.Advance(alpha);
+			//m_sweep.c = m_sweep.c0;
+			//m_sweep.a = m_sweep.a0;
+			//m_xf.q.Set(m_sweep.a);
+			//m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
 		}
 
 		private b2BodyType m_type;
@@ -633,15 +1139,15 @@ namespace Box2D {
 		private b2Vec2 m_force;
 		private float m_torque;
 
-		private b2World* m_world;
-		private b2Body* m_prev;
-		private b2Body* m_next;
+		private b2World m_world; //pointer
+		private b2Body m_prev; //pointer
+		private b2Body m_next; //pointer
 
-		private b2Fixture* m_fixtureList;
+		private List<b2Fixture> m_fixtureList; //pointer
 		private int m_fixtureCount;
 
-		private b2JointEdge* m_jointList;
-		private b2ContactEdge* m_contactList;
+		private List<b2JointEdge> m_jointList;//pointer
+		private List<b2ContactEdge> m_contactList;//pointer
 
 		private float m_mass, m_invMass;
 

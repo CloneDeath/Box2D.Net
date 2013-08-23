@@ -5,24 +5,24 @@ using System.Text;
 
 namespace Box2D {
 	struct b2RopeDef {
-		b2RopeDef() {
-			vertices = null;
+		b2RopeDef(object ignore) {
+			vertices = new List<b2Vec2>();
 			count = 0;
-			masses = null;
-			gravity.SetZero();
+			masses = new List<float>();
+			gravity = new b2Vec2(0, 0);
 			damping = 0.1f;
 			k2 = 0.9f;
 			k3 = 0.1f;
 		}
 
 		///
-		b2Vec2* vertices;
+		List<b2Vec2> vertices; //was pointer
 
 		///
 		int count;
 
 		///
-		float* masses;
+		List<float> masses;//was pointer
 
 		///
 		b2Vec2 gravity;

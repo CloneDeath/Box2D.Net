@@ -216,31 +216,7 @@ struct b2Mat33
 };
 
 
-/// This describes the motion of a body/shape for TOI computation.
-/// Shapes are defined with respect to the body origin, which may
-/// no coincide with the center of mass. However, to support dynamics
-/// we must interpolate the center of mass position.
-struct b2Sweep
-{
-	/// Get the interpolated transform at a specific time.
-	/// @param beta is a factor in [0,1], where 0 indicates alpha0.
-	void GetTransform(b2Transform* xfb, float beta) const;
 
-	/// Advance the sweep forward, yielding a new initial state.
-	/// @param alpha the new initial time.
-	void Advance(float alpha);
-
-	/// Normalize the angles.
-	void Normalize();
-
-	b2Vec2 localCenter;	///< local center of mass position
-	b2Vec2 c0, c;		///< center world positions
-	float a0, a;		///< world angles
-
-	/// Fraction of the current time step in the range [0,1]
-	/// c0 and a0 are the positions at alpha0.
-	float alpha0;
-};
 
 /// Useful constant
 extern const b2Vec2 b2Vec2_zero;
@@ -532,32 +508,5 @@ inline bool b2IsPowerOfTwo(uint x)
 	return result;
 }
 
-inline void b2Sweep::GetTransform(b2Transform* xf, float beta) const
-{
-	xf.p = (1.0f - beta) * c0 + beta * c;
-	float angle = (1.0f - beta) * a0 + beta * a;
-	xf.q.Set(angle);
-
-	// Shift to origin
-	xf.p -= b2Mul(xf.q, localCenter);
-}
-
-inline void b2Sweep::Advance(float alpha)
-{
-	b2Assert(alpha0 < 1.0f);
-	float beta = (alpha - alpha0) / (1.0f - alpha0);
-	c0 += beta * (c - c0);
-	a0 += beta * (a - a0);
-	alpha0 = alpha;
-}
-
-/// Normalize an angle in radians to be between -pi and pi
-inline void b2Sweep::Normalize()
-{
-	float twoPi = 2.0f * Math.PI;
-	float d =  twoPi * floorf(a0 / twoPi);
-	a0 -= d;
-	a -= d;
-}
 
 #endif

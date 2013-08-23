@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	enum b2JointType {
+	public enum b2JointType {
 		e_unknownJoint,
 		e_revoluteJoint,
 		e_prismaticJoint,
@@ -19,7 +19,7 @@ namespace Box2D {
 		e_motorJoint
 	};
 
-	enum b2LimitState {
+	public enum b2LimitState {
 		e_inactiveLimit,
 		e_atLowerLimit,
 		e_atUpperLimit,

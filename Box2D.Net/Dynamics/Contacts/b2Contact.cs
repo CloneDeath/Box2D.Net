@@ -7,7 +7,7 @@ namespace Box2D {
 	/// The class manages contact between two shapes. A contact exists for each overlapping
 	/// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 	/// that has no contact points.
-	abstract class b2Contact
+	public abstract class b2Contact
 	{
 		protected uint m_flags;
 
@@ -320,7 +320,7 @@ namespace Box2D {
 
 			//m_tangentSpeed = 0.0f;
 		}
-		protected virtual ~b2Contact() {}
+		~b2Contact() {}
 
 		// Update the contact manifold and touching status.
 		// Note: do not assume the fixture AABBs are overlapping or are valid.

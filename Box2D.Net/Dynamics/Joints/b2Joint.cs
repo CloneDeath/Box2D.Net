@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// The base joint class. Joints are used to constraint two bodies together in
 	/// various fashions. Some joints also feature limits and motors.
-	abstract class b2Joint
+	public abstract class b2Joint
 	{
 		protected b2JointType m_type;
 		protected b2Joint m_prev;
@@ -47,7 +47,7 @@ namespace Box2D {
 			//m_edgeB.prev = null;
 			//m_edgeB.next = null;
 		}
-		protected virtual ~b2Joint() {}
+		~b2Joint() {}
 
 		protected abstract void InitVelocityConstraints(b2SolverData data);
 		protected abstract void SolveVelocityConstraints(b2SolverData data);
@@ -114,151 +114,154 @@ namespace Box2D {
 		public virtual void Dump() { b2Settings.b2Log("// Dump is not supported for this joint type.\n"); }
 
 		/// Shift the origin for any points stored in world coordinates.
-		public virtual void ShiftOrigin(b2Vec2 newOrigin) { 
-			B2_NOT_USED(newOrigin);  
+		public virtual void ShiftOrigin(b2Vec2 newOrigin) {
+			throw new NotImplementedException();
+			//B2_NOT_USED(newOrigin);  
 		}
 
-		protected static b2Joint* Create(const b2JointDef* def, b2BlockAllocator* allocator){
-			b2Joint* joint = null;
+		protected static b2Joint Create(b2JointDef def){
+			throw new NotImplementedException();
+			//b2Joint* joint = null;
 
-			switch (def.type)
-			{
-			case e_distanceJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2DistanceJoint));
-					joint = new (mem) b2DistanceJoint((b2DistanceJointDef*)def);
-				}
-				break;
+			//switch (def.type)
+			//{
+			//case e_distanceJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2DistanceJoint));
+			//        joint = new (mem) b2DistanceJoint((b2DistanceJointDef*)def);
+			//    }
+			//    break;
 
-			case e_mouseJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2MouseJoint));
-					joint = new (mem) b2MouseJoint((b2MouseJointDef*)def);
-				}
-				break;
+			//case e_mouseJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2MouseJoint));
+			//        joint = new (mem) b2MouseJoint((b2MouseJointDef*)def);
+			//    }
+			//    break;
 
-			case e_prismaticJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2PrismaticJoint));
-					joint = new (mem) b2PrismaticJoint((b2PrismaticJointDef*)def);
-				}
-				break;
+			//case e_prismaticJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2PrismaticJoint));
+			//        joint = new (mem) b2PrismaticJoint((b2PrismaticJointDef*)def);
+			//    }
+			//    break;
 
-			case e_revoluteJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2RevoluteJoint));
-					joint = new (mem) b2RevoluteJoint((b2RevoluteJointDef*)def);
-				}
-				break;
+			//case e_revoluteJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2RevoluteJoint));
+			//        joint = new (mem) b2RevoluteJoint((b2RevoluteJointDef*)def);
+			//    }
+			//    break;
 
-			case e_pulleyJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2PulleyJoint));
-					joint = new (mem) b2PulleyJoint((b2PulleyJointDef*)def);
-				}
-				break;
+			//case e_pulleyJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2PulleyJoint));
+			//        joint = new (mem) b2PulleyJoint((b2PulleyJointDef*)def);
+			//    }
+			//    break;
 
-			case e_gearJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2GearJoint));
-					joint = new (mem) b2GearJoint((b2GearJointDef*)def);
-				}
-				break;
+			//case e_gearJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2GearJoint));
+			//        joint = new (mem) b2GearJoint((b2GearJointDef*)def);
+			//    }
+			//    break;
 
-			case e_wheelJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2WheelJoint));
-					joint = new (mem) b2WheelJoint((b2WheelJointDef*)def);
-				}
-				break;
+			//case e_wheelJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2WheelJoint));
+			//        joint = new (mem) b2WheelJoint((b2WheelJointDef*)def);
+			//    }
+			//    break;
 
-			case e_weldJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2WeldJoint));
-					joint = new (mem) b2WeldJoint((b2WeldJointDef*)def);
-				}
-				break;
+			//case e_weldJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2WeldJoint));
+			//        joint = new (mem) b2WeldJoint((b2WeldJointDef*)def);
+			//    }
+			//    break;
         
-			case e_frictionJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2FrictionJoint));
-					joint = new (mem) b2FrictionJoint((b2FrictionJointDef*)def);
-				}
-				break;
+			//case e_frictionJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2FrictionJoint));
+			//        joint = new (mem) b2FrictionJoint((b2FrictionJointDef*)def);
+			//    }
+			//    break;
 
-			case e_ropeJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2RopeJoint));
-					joint = new (mem) b2RopeJoint((b2RopeJointDef*)def);
-				}
-				break;
+			//case e_ropeJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2RopeJoint));
+			//        joint = new (mem) b2RopeJoint((b2RopeJointDef*)def);
+			//    }
+			//    break;
 
-			case e_motorJoint:
-				{
-					void* mem = allocator.Allocate(sizeof(b2MotorJoint));
-					joint = new (mem) b2MotorJoint((b2MotorJointDef*)def);
-				}
-				break;
+			//case e_motorJoint:
+			//    {
+			//        void* mem = allocator.Allocate(sizeof(b2MotorJoint));
+			//        joint = new (mem) b2MotorJoint((b2MotorJointDef*)def);
+			//    }
+			//    break;
 
-			default:
-				b2Assert(false);
-				break;
-			}
+			//default:
+			//    b2Assert(false);
+			//    break;
+			//}
 
-			return joint;
+			//return joint;
 		}
-		protected static void Destroy(b2Joint* joint, b2BlockAllocator* allocator){
-			joint.~b2Joint();
-			switch (joint.m_type)
-			{
-			case e_distanceJoint:
-				allocator.Free(joint, sizeof(b2DistanceJoint));
-				break;
+		protected static void Destroy(b2Joint joint){
+			throw new NotImplementedException();
+			//joint.~b2Joint();
+			//switch (joint.m_type)
+			//{
+			//case e_distanceJoint:
+			//    allocator.Free(joint, sizeof(b2DistanceJoint));
+			//    break;
 
-			case e_mouseJoint:
-				allocator.Free(joint, sizeof(b2MouseJoint));
-				break;
+			//case e_mouseJoint:
+			//    allocator.Free(joint, sizeof(b2MouseJoint));
+			//    break;
 
-			case e_prismaticJoint:
-				allocator.Free(joint, sizeof(b2PrismaticJoint));
-				break;
+			//case e_prismaticJoint:
+			//    allocator.Free(joint, sizeof(b2PrismaticJoint));
+			//    break;
 
-			case e_revoluteJoint:
-				allocator.Free(joint, sizeof(b2RevoluteJoint));
-				break;
+			//case e_revoluteJoint:
+			//    allocator.Free(joint, sizeof(b2RevoluteJoint));
+			//    break;
 
-			case e_pulleyJoint:
-				allocator.Free(joint, sizeof(b2PulleyJoint));
-				break;
+			//case e_pulleyJoint:
+			//    allocator.Free(joint, sizeof(b2PulleyJoint));
+			//    break;
 
-			case e_gearJoint:
-				allocator.Free(joint, sizeof(b2GearJoint));
-				break;
+			//case e_gearJoint:
+			//    allocator.Free(joint, sizeof(b2GearJoint));
+			//    break;
 
-			case e_wheelJoint:
-				allocator.Free(joint, sizeof(b2WheelJoint));
-				break;
+			//case e_wheelJoint:
+			//    allocator.Free(joint, sizeof(b2WheelJoint));
+			//    break;
     
-			case e_weldJoint:
-				allocator.Free(joint, sizeof(b2WeldJoint));
-				break;
+			//case e_weldJoint:
+			//    allocator.Free(joint, sizeof(b2WeldJoint));
+			//    break;
 
-			case e_frictionJoint:
-				allocator.Free(joint, sizeof(b2FrictionJoint));
-				break;
+			//case e_frictionJoint:
+			//    allocator.Free(joint, sizeof(b2FrictionJoint));
+			//    break;
 
-			case e_ropeJoint:
-				allocator.Free(joint, sizeof(b2RopeJoint));
-				break;
+			//case e_ropeJoint:
+			//    allocator.Free(joint, sizeof(b2RopeJoint));
+			//    break;
 
-			case e_motorJoint:
-				allocator.Free(joint, sizeof(b2MotorJoint));
-				break;
+			//case e_motorJoint:
+			//    allocator.Free(joint, sizeof(b2MotorJoint));
+			//    break;
 
-			default:
-				b2Assert(false);
-				break;
-			}
+			//default:
+			//    b2Assert(false);
+			//    break;
+			//}
 		}
 
 		

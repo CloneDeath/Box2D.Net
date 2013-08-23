@@ -11,7 +11,7 @@ namespace Box2D {
 		public b2Rot q;
 
 		/// The default constructor does nothing.
-		public b2Transform() {
+		public b2Transform(object ignore) {
 			p = new b2Vec2();
 			q = new b2Rot();
 		}

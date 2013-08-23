@@ -8,7 +8,7 @@ namespace Box2D {
 	/// the left of each edge.
 	/// Polygons have a maximum number of vertices equal to b2Settings.b2_maxPolygonVertices.
 	/// In most cases you should not need many vertices for a convex polygon.
-	class b2PolygonShape : b2Shape {
+	public class b2PolygonShape : b2Shape {
 		public b2Vec2 m_centroid;
 		public b2Vec2[] m_vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 		public b2Vec2[] m_normals = new b2Vec2[b2Settings.b2_maxPolygonVertices];
@@ -22,7 +22,7 @@ namespace Box2D {
 		}
 
 		/// Implement b2Shape.
-		public b2Shape Clone() {
+		public override b2Shape Clone() {
 			throw new NotImplementedException();
 			//void* mem = allocator.Allocate(sizeof(b2PolygonShape));
 			//b2PolygonShape* clone = new (mem) b2PolygonShape;
@@ -31,7 +31,7 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::GetChildCount
-		public int GetChildCount(){
+		public override int GetChildCount() {
 			return 1;
 		}
 
@@ -161,28 +161,29 @@ namespace Box2D {
 		/// @param center the center of the box in local coordinates.
 		/// @param angle the rotation of the box in local coordinates.
 		public void SetAsBox(float hx, float hy, b2Vec2 center, float angle){
-			m_count = 4;
-			m_vertices[0].Set(-hx, -hy);
-			m_vertices[1].Set( hx, -hy);
-			m_vertices[2].Set( hx,  hy);
-			m_vertices[3].Set(-hx,  hy);
-			m_normals[0].Set(0.0f, -1.0f);
-			m_normals[1].Set(1.0f, 0.0f);
-			m_normals[2].Set(0.0f, 1.0f);
-			m_normals[3].Set(-1.0f, 0.0f);
-			m_centroid = center;
+			throw new NotImplementedException();
+			//m_count = 4;
+			//m_vertices[0].Set(-hx, -hy);
+			//m_vertices[1].Set( hx, -hy);
+			//m_vertices[2].Set( hx,  hy);
+			//m_vertices[3].Set(-hx,  hy);
+			//m_normals[0].Set(0.0f, -1.0f);
+			//m_normals[1].Set(1.0f, 0.0f);
+			//m_normals[2].Set(0.0f, 1.0f);
+			//m_normals[3].Set(-1.0f, 0.0f);
+			//m_centroid = center;
 
-			b2Transform xf;
-			xf.p = center;
-			xf.q.Set(angle);
+			//b2Transform xf;
+			//xf.p = center;
+			//xf.q.Set(angle);
 
-			// Transform vertices and normals.
-			for (int i = 0; i < m_count; ++i)
-			{
-				throw new NotImplementedException();
-				//m_vertices[i] = b2Mul(xf, m_vertices[i]);
-				//m_normals[i] = b2Mul(xf.q, m_normals[i]);
-			}
+			//// Transform vertices and normals.
+			//for (int i = 0; i < m_count; ++i)
+			//{
+			//    throw new NotImplementedException();
+			//    //m_vertices[i] = b2Mul(xf, m_vertices[i]);
+			//    //m_normals[i] = b2Mul(xf.q, m_normals[i]);
+			//}
 		}
 		
 		private static b2Vec2 ComputeCentroid(b2Vec2 vs, int count)
@@ -233,7 +234,7 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::TestPoint
-		public bool TestPoint(b2Transform transform, b2Vec2 p){
+		public override bool TestPoint(b2Transform transform, b2Vec2 p) {
 			throw new NotImplementedException();
 			//b2Vec2 pLocal = b2MulT(xf.q, p - xf.p);
 
@@ -250,7 +251,7 @@ namespace Box2D {
 		}
 
 		/// Implement b2Shape.
-		public bool RayCast(out b2RayCastOutput output, b2RayCastInput input, b2Transform transform, int childIndex){
+		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input, b2Transform transform, int childIndex) {
 			throw new NotImplementedException();
 			//B2_NOT_USED(childIndex);
 
@@ -322,7 +323,7 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::ComputeAABB
-		public void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex){
+		public override void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex) {
 			throw new NotImplementedException();
 			//B2_NOT_USED(childIndex);
 
@@ -342,7 +343,7 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::ComputeMass
-		public void ComputeMass(out b2MassData massData, float density){
+		public override void ComputeMass(out b2MassData massData, float density) {
 			// Polygon mass, centroid, and inertia.
 			// Let rho be the polygon density in mass per unit area.
 			// Then:

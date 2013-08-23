@@ -6,12 +6,12 @@ using System.Text;
 namespace Box2D {
 	/// Callback class for AABB queries.
 	/// See b2World::Query
-	abstract class b2QueryCallback
+	public abstract class b2QueryCallback
 	{
-		virtual ~b2QueryCallback() {}
+		~b2QueryCallback() {}
 
 		/// Called for each fixture found in the query AABB.
 		/// @return false to terminate the query.
-		public abstract bool ReportFixture(b2Fixture* fixture);
+		public abstract bool ReportFixture(b2Fixture fixture); //fixture was pointer
 	}
 }

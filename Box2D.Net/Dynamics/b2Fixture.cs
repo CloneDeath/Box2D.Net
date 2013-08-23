@@ -9,7 +9,7 @@ namespace Box2D {
 	/// such as friction, collision filters, etc.
 	/// Fixtures are created via b2Body::CreateFixture.
 	/// @warning you cannot reuse fixtures.
-	class b2Fixture
+	public class b2Fixture
 	{
 		protected float m_density;
 

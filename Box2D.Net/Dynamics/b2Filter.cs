@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Box2D {
 	/// This holds contact filtering data.
-	struct b2Filter {
-		public b2Filter() {
+	public struct b2Filter {
+		public b2Filter(object ignore) {
 			categoryBits = 0x0001;
 			maskBits = 0xFFFF;
 			groupIndex = 0;

@@ -29,7 +29,7 @@ namespace HelloWorld {
 			b2Body groundBody = world.CreateBody(groundBodyDef);
 
 			// Define the ground box shape.
-			b2PolygonShape groundBox;
+			b2PolygonShape groundBox = new b2PolygonShape();
 
 			// The extents are the half-widths of the box.
 			groundBox.SetAsBox(50.0f, 10.0f);
@@ -38,17 +38,17 @@ namespace HelloWorld {
 			groundBody.CreateFixture(groundBox, 0.0f);
 
 			// Define the dynamic body. We set its position and call the body factory.
-			b2BodyDef bodyDef;
+			b2BodyDef bodyDef = new b2BodyDef();
 			bodyDef.type = b2BodyType.b2_dynamicBody;
-			bodyDef.position.Set(0.0f, 4.0f);
+			bodyDef.position = new b2Vec2(0.0f, 4.0f);
 			b2Body body = world.CreateBody(bodyDef);
 
 			// Define another box shape for our dynamic body.
-			b2PolygonShape dynamicBox;
+			b2PolygonShape dynamicBox = new b2PolygonShape();
 			dynamicBox.SetAsBox(1.0f, 1.0f);
 
 			// Define the dynamic body fixture.
-			b2FixtureDef fixtureDef;
+			b2FixtureDef fixtureDef = new b2FixtureDef();
 			fixtureDef.shape = dynamicBox;
 
 			// Set the box density to be non-zero, so it will be dynamic.

@@ -6,8 +6,14 @@ using System.Text;
 namespace Box2D.Dynamics {
 	struct b2WorldRayCastWrapper
 	{
+		public b2WorldRayCastWrapper(object ignore) {
+			broadPhase = new b2BroadPhase();
+			callback = null;
+		}
+
 		float RayCastCallback(b2RayCastInput input, int proxyId)
 		{
+			
 			throw new NotImplementedException();
 			//void* userData = broadPhase.GetUserData(proxyId);
 			//b2FixtureProxy* proxy = (b2FixtureProxy*)userData;
@@ -26,7 +32,7 @@ namespace Box2D.Dynamics {
 			//return input.maxFraction;
 		}
 
-		public readonly b2BroadPhase broadPhase = new b2BroadPhase();
+		public readonly b2BroadPhase broadPhase;
 		b2RayCastCallback callback;
 	}
 }

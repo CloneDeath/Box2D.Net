@@ -15,7 +15,7 @@ namespace Box2D {
 			m_drawFlags = 0;
 		}
 
-		public virtual ~b2Draw() {}
+		~b2Draw() {}
 
 		[Flags]
 		public enum DrawFlags

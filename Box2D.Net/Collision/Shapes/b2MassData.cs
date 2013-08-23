@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// This holds the mass data computed for a shape.
-	struct b2MassData {
+	public struct b2MassData {
 		/// The mass of the shape, usually in kilograms.
 		float mass;
 

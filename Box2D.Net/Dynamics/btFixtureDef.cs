@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// A fixture definition is used to create a fixture. This class defines an
 	/// abstract fixture definition. You can reuse fixture definitions safely.
-	abstract class b2FixtureDef
+	public class b2FixtureDef
 	{
 		/// The shape, this must be set. The shape will be cloned, so you
 		/// can create the shape on the stack.

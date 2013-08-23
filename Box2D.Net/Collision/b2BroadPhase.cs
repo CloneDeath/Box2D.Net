@@ -7,7 +7,7 @@ namespace Box2D {
 	/// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 	/// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 	/// It is up to the client to consume the new pairs and to track subsequent overlap.
-	class b2BroadPhase
+	public class b2BroadPhase
 	{
 		public static bool b2PairLessThan(b2Pair pair1, b2Pair pair2)
 		{
@@ -30,18 +30,19 @@ namespace Box2D {
 		}
 
 		public b2BroadPhase(){
-			m_proxyCount = 0;
+			throw new NotImplementedException();
+			//m_proxyCount = 0;
 
-			m_pairCapacity = 16;
-			m_pairCount = 0;
-			m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
+			//m_pairCapacity = 16;
+			//m_pairCount = 0;
+			//m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
 
-			m_moveCapacity = 16;
-			m_moveCount = 0;
-			m_moveBuffer = (float*)b2Alloc(m_moveCapacity * sizeof(float));
+			//m_moveCapacity = 16;
+			//m_moveCount = 0;
+			//m_moveBuffer = (float*)b2Alloc(m_moveCapacity * sizeof(float));
 		}
 
-		public ~b2BroadPhase(){
+		~b2BroadPhase(){
 			throw new NotImplementedException();
 			//b2Free(m_moveBuffer);
 			//b2Free(m_pairBuffer);
@@ -256,11 +257,11 @@ namespace Box2D {
 
 		private int m_proxyCount;
 
-		private int* m_moveBuffer;
+		private int m_moveBuffer; //pointer
 		private int m_moveCapacity;
 		private int m_moveCount;
 
-		private b2Pair* m_pairBuffer;
+		private b2Pair m_pairBuffer; //pointer
 		private int m_pairCapacity;
 		private int m_pairCount;
 

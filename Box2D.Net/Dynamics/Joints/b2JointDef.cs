@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// Joint definitions are used to construct joints.
 	public struct b2JointDef {
-		public b2JointDef() {
+		public b2JointDef(object ignore) {
 			type = b2JointType.e_unknownJoint;
 			userData = null;
 			bodyA = null;

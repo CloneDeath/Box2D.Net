@@ -13,9 +13,9 @@ namespace Box2D {
 	/// You should strive to make your callbacks efficient because there may be
 	/// many callbacks per time step.
 	/// @warning You cannot create/destroy Box2D entities inside these callbacks.
-	abstract class b2ContactListener
+	public abstract class b2ContactListener
 	{
-		public virtual ~b2ContactListener() {}
+		~b2ContactListener() {}
 
 		/// Called when two fixtures begin to touch.
 		public virtual void BeginContact(b2Contact contact) { 

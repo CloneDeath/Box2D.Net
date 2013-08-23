@@ -8,13 +8,13 @@ namespace Box2D {
 	class b2Rope {
 		private int m_count;
 		private List<b2Vec2> m_ps;
-		private b2Vec2* m_p0s;
-		private b2Vec2* m_vs;
+		private b2Vec2 m_p0s; //was pointer
+		private b2Vec2 m_vs; //was pointer
 
-		private float* m_ims;
+		private float m_ims; //was pointer
 
-		private float* m_Ls;
-		private float* m_as;
+		private float m_Ls; //was pointer
+		private float m_as; //was pointer
 
 		private b2Vec2 m_gravity;
 		private float m_damping;
@@ -36,7 +36,7 @@ namespace Box2D {
 			//m_k3 = 0.1f;
 		}
 
-		public ~b2Rope()
+		~b2Rope()
 		{
 			throw new NotImplementedException();
 			//b2Free(m_ps);

@@ -9,7 +9,7 @@ namespace Box2D {
 		/// Sine and cosine
 		public float s, c;
 
-		public b2Rot() {
+		public b2Rot(object ignore) {
 			s = 0;
 			c = 1;
 		}

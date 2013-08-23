@@ -54,7 +54,7 @@ namespace Box2D {
 
 
 		/// Destroy the tree, freeing the node pool.
-		public ~b2DynamicTree(){
+		~b2DynamicTree(){
 			throw new NotImplementedException();
 			//// This frees the entire tree in one shot.
 			//b2Free(m_nodes);
