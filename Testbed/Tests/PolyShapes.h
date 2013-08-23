@@ -44,34 +44,34 @@ public:
 	void DrawFixture(b2Fixture* fixture)
 	{
 		b2Color color(0.95f, 0.95f, 0.6f);
-		const b2Transform& xf = fixture->GetBody()->GetTransform();
+		const b2Transform& xf = fixture.GetBody().GetTransform();
 
-		switch (fixture->GetType())
+		switch (fixture.GetType())
 		{
 		case b2Shape::e_circle:
 			{
-				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
+				b2CircleShape* circle = (b2CircleShape*)fixture.GetShape();
 
-				b2Vec2 center = b2Mul(xf, circle->m_p);
-				float radius = circle->m_radius;
+				b2Vec2 center = b2Mul(xf, circle.m_p);
+				float radius = circle.m_radius;
 
-				m_debugDraw->DrawCircle(center, radius, color);
+				m_debugDraw.DrawCircle(center, radius, color);
 			}
 			break;
 
 		case b2Shape::e_polygon:
 			{
-				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
-				int vertexCount = poly->m_count;
+				b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
+				int vertexCount = poly.m_count;
 				b2Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
 				b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
 
 				for (int i = 0; i < vertexCount; ++i)
 				{
-					vertices[i] = b2Mul(xf, poly->m_vertices[i]);
+					vertices[i] = b2Mul(xf, poly.m_vertices[i]);
 				}
 
-				m_debugDraw->DrawPolygon(vertices, vertexCount, color);
+				m_debugDraw.DrawPolygon(vertices, vertexCount, color);
 			}
 			break;
 				
@@ -89,10 +89,10 @@ public:
 			return false;
 		}
 
-		b2Body* body = fixture->GetBody();
-		b2Shape* shape = fixture->GetShape();
+		b2Body* body = fixture.GetBody();
+		b2Shape* shape = fixture.GetShape();
 
-		bool overlap = b2TestOverlap(shape, 0, &m_circle, 0, body->GetTransform(), m_transform);
+		bool overlap = b2TestOverlap(shape, 0, &m_circle, 0, body.GetTransform(), m_transform);
 
 		if (overlap)
 		{
@@ -117,11 +117,11 @@ public:
 		// Ground body
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -174,7 +174,7 @@ public:
 	{
 		if (m_bodies[m_bodyIndex] != null)
 		{
-			m_world->DestroyBody(m_bodies[m_bodyIndex]);
+			m_world.DestroyBody(m_bodies[m_bodyIndex]);
 			m_bodies[m_bodyIndex] = null;
 		}
 
@@ -190,7 +190,7 @@ public:
 			bd.angularDamping = 0.02f;
 		}
 
-		m_bodies[m_bodyIndex] = m_world->CreateBody(&bd);
+		m_bodies[m_bodyIndex] = m_world.CreateBody(&bd);
 
 		if (index < 4)
 		{
@@ -198,7 +198,7 @@ public:
 			fd.shape = m_polygons + index;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex].CreateFixture(&fd);
 		}
 		else
 		{
@@ -207,7 +207,7 @@ public:
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
 
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex].CreateFixture(&fd);
 		}
 
 		m_bodyIndex = (m_bodyIndex + 1) % k_maxBodies;
@@ -219,7 +219,7 @@ public:
 		{
 			if (m_bodies[i] != null)
 			{
-				m_world->DestroyBody(m_bodies[i]);
+				m_world.DestroyBody(m_bodies[i]);
 				m_bodies[i] = null;
 				return;
 			}
@@ -243,8 +243,8 @@ public:
 			{
 				if (m_bodies[i])
 				{
-					bool active = m_bodies[i]->IsActive();
-					m_bodies[i]->SetActive(!active);
+					bool active = m_bodies[i].IsActive();
+					m_bodies[i].SetActive(!active);
 				}
 			}
 			break;
@@ -268,7 +268,7 @@ public:
 		b2AABB aabb;
 		callback.m_circle.ComputeAABB(&aabb, callback.m_transform, 0);
 
-		m_world->QueryAABB(&callback, aabb);
+		m_world.QueryAABB(&callback, aabb);
 
 		b2Color color(0.4f, 0.7f, 0.8f);
 		m_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);

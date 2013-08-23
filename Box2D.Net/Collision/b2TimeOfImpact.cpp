@@ -49,7 +49,7 @@ struct b2SeparationFunction
 	{
 		m_proxyA = proxyA;
 		m_proxyB = proxyB;
-		int count = cache->count;
+		int count = cache.count;
 		b2Assert(0 < count && count < 3);
 
 		m_sweepA = sweepA;
@@ -62,20 +62,20 @@ struct b2SeparationFunction
 		if (count == 1)
 		{
 			m_type = e_points;
-			b2Vec2 localPointA = m_proxyA->GetVertex(cache->indexA[0]);
-			b2Vec2 localPointB = m_proxyB->GetVertex(cache->indexB[0]);
+			b2Vec2 localPointA = m_proxyA.GetVertex(cache.indexA[0]);
+			b2Vec2 localPointB = m_proxyB.GetVertex(cache.indexB[0]);
 			b2Vec2 pointA = b2Mul(xfA, localPointA);
 			b2Vec2 pointB = b2Mul(xfB, localPointB);
 			m_axis = pointB - pointA;
 			float s = m_axis.Normalize();
 			return s;
 		}
-		else if (cache->indexA[0] == cache->indexA[1])
+		else if (cache.indexA[0] == cache.indexA[1])
 		{
 			// Two points on B and one on A.
 			m_type = e_faceB;
-			b2Vec2 localPointB1 = proxyB->GetVertex(cache->indexB[0]);
-			b2Vec2 localPointB2 = proxyB->GetVertex(cache->indexB[1]);
+			b2Vec2 localPointB1 = proxyB.GetVertex(cache.indexB[0]);
+			b2Vec2 localPointB2 = proxyB.GetVertex(cache.indexB[1]);
 
 			m_axis = b2Cross(localPointB2 - localPointB1, 1.0f);
 			m_axis.Normalize();
@@ -84,7 +84,7 @@ struct b2SeparationFunction
 			m_localPoint = 0.5f * (localPointB1 + localPointB2);
 			b2Vec2 pointB = b2Mul(xfB, m_localPoint);
 
-			b2Vec2 localPointA = proxyA->GetVertex(cache->indexA[0]);
+			b2Vec2 localPointA = proxyA.GetVertex(cache.indexA[0]);
 			b2Vec2 pointA = b2Mul(xfA, localPointA);
 
 			float s = b2Dot(pointA - pointB, normal);
@@ -99,8 +99,8 @@ struct b2SeparationFunction
 		{
 			// Two points on A and one or two points on B.
 			m_type = e_faceA;
-			b2Vec2 localPointA1 = m_proxyA->GetVertex(cache->indexA[0]);
-			b2Vec2 localPointA2 = m_proxyA->GetVertex(cache->indexA[1]);
+			b2Vec2 localPointA1 = m_proxyA.GetVertex(cache.indexA[0]);
+			b2Vec2 localPointA2 = m_proxyA.GetVertex(cache.indexA[1]);
 			
 			m_axis = b2Cross(localPointA2 - localPointA1, 1.0f);
 			m_axis.Normalize();
@@ -109,7 +109,7 @@ struct b2SeparationFunction
 			m_localPoint = 0.5f * (localPointA1 + localPointA2);
 			b2Vec2 pointA = b2Mul(xfA, m_localPoint);
 
-			b2Vec2 localPointB = m_proxyB->GetVertex(cache->indexB[0]);
+			b2Vec2 localPointB = m_proxyB.GetVertex(cache.indexB[0]);
 			b2Vec2 pointB = b2Mul(xfB, localPointB);
 
 			float s = b2Dot(pointB - pointA, normal);
@@ -136,11 +136,11 @@ struct b2SeparationFunction
 				b2Vec2 axisA = b2MulT(xfA.q,  m_axis);
 				b2Vec2 axisB = b2MulT(xfB.q, -m_axis);
 
-				*indexA = m_proxyA->GetSupport(axisA);
-				*indexB = m_proxyB->GetSupport(axisB);
+				*indexA = m_proxyA.GetSupport(axisA);
+				*indexB = m_proxyB.GetSupport(axisB);
 
-				b2Vec2 localPointA = m_proxyA->GetVertex(*indexA);
-				b2Vec2 localPointB = m_proxyB->GetVertex(*indexB);
+				b2Vec2 localPointA = m_proxyA.GetVertex(*indexA);
+				b2Vec2 localPointB = m_proxyB.GetVertex(*indexB);
 				
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
@@ -157,9 +157,9 @@ struct b2SeparationFunction
 				b2Vec2 axisB = b2MulT(xfB.q, -normal);
 				
 				*indexA = -1;
-				*indexB = m_proxyB->GetSupport(axisB);
+				*indexB = m_proxyB.GetSupport(axisB);
 
-				b2Vec2 localPointB = m_proxyB->GetVertex(*indexB);
+				b2Vec2 localPointB = m_proxyB.GetVertex(*indexB);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
 
 				float separation = b2Dot(pointB - pointA, normal);
@@ -174,9 +174,9 @@ struct b2SeparationFunction
 				b2Vec2 axisA = b2MulT(xfA.q, -normal);
 
 				*indexB = -1;
-				*indexA = m_proxyA->GetSupport(axisA);
+				*indexA = m_proxyA.GetSupport(axisA);
 
-				b2Vec2 localPointA = m_proxyA->GetVertex(*indexA);
+				b2Vec2 localPointA = m_proxyA.GetVertex(*indexA);
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 
 				float separation = b2Dot(pointA - pointB, normal);
@@ -202,8 +202,8 @@ struct b2SeparationFunction
 		{
 		case e_points:
 			{
-				b2Vec2 localPointA = m_proxyA->GetVertex(indexA);
-				b2Vec2 localPointB = m_proxyB->GetVertex(indexB);
+				b2Vec2 localPointA = m_proxyA.GetVertex(indexA);
+				b2Vec2 localPointB = m_proxyB.GetVertex(indexB);
 
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
@@ -217,7 +217,7 @@ struct b2SeparationFunction
 				b2Vec2 normal = b2Mul(xfA.q, m_axis);
 				b2Vec2 pointA = b2Mul(xfA, m_localPoint);
 
-				b2Vec2 localPointB = m_proxyB->GetVertex(indexB);
+				b2Vec2 localPointB = m_proxyB.GetVertex(indexB);
 				b2Vec2 pointB = b2Mul(xfB, localPointB);
 
 				float separation = b2Dot(pointB - pointA, normal);
@@ -229,7 +229,7 @@ struct b2SeparationFunction
 				b2Vec2 normal = b2Mul(xfB.q, m_axis);
 				b2Vec2 pointB = b2Mul(xfB, m_localPoint);
 
-				b2Vec2 localPointA = m_proxyA->GetVertex(indexA);
+				b2Vec2 localPointA = m_proxyA.GetVertex(indexA);
 				b2Vec2 pointA = b2Mul(xfA, localPointA);
 
 				float separation = b2Dot(pointA - pointB, normal);
@@ -258,23 +258,23 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 	++b2_toiCalls;
 
-	output->state = b2TOIOutput::e_unknown;
-	output->t = input->tMax;
+	output.state = b2TOIOutput::e_unknown;
+	output.t = input.tMax;
 
-	const b2DistanceProxy* proxyA = &input->proxyA;
-	const b2DistanceProxy* proxyB = &input->proxyB;
+	const b2DistanceProxy* proxyA = &input.proxyA;
+	const b2DistanceProxy* proxyB = &input.proxyB;
 
-	b2Sweep sweepA = input->sweepA;
-	b2Sweep sweepB = input->sweepB;
+	b2Sweep sweepA = input.sweepA;
+	b2Sweep sweepB = input.sweepB;
 
 	// Large rotations can make the root finder fail, so we normalize the
 	// sweep angles.
 	sweepA.Normalize();
 	sweepB.Normalize();
 
-	float tMax = input->tMax;
+	float tMax = input.tMax;
 
-	float totalRadius = proxyA->m_radius + proxyB->m_radius;
+	float totalRadius = proxyA.m_radius + proxyB.m_radius;
 	float target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
 	float tolerance = 0.25f * b2_linearSlop;
 	b2Assert(target > tolerance);
@@ -287,8 +287,8 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 	b2SimplexCache cache;
 	cache.count = 0;
 	b2DistanceInput distanceInput;
-	distanceInput.proxyA = input->proxyA;
-	distanceInput.proxyB = input->proxyB;
+	distanceInput.proxyA = input.proxyA;
+	distanceInput.proxyB = input.proxyB;
 	distanceInput.useRadii = false;
 
 	// The outer loop progressively attempts to compute new separating axes.
@@ -310,16 +310,16 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 		if (distanceOutput.distance <= 0.0f)
 		{
 			// Failure!
-			output->state = b2TOIOutput::e_overlapped;
-			output->t = 0.0f;
+			output.state = b2TOIOutput::e_overlapped;
+			output.t = 0.0f;
 			break;
 		}
 
 		if (distanceOutput.distance < target + tolerance)
 		{
 			// Victory!
-			output->state = b2TOIOutput::e_touching;
-			output->t = t1;
+			output.state = b2TOIOutput::e_touching;
+			output.t = t1;
 			break;
 		}
 
@@ -367,8 +367,8 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			if (s2 > target + tolerance)
 			{
 				// Victory!
-				output->state = b2TOIOutput::e_separated;
-				output->t = tMax;
+				output.state = b2TOIOutput::e_separated;
+				output.t = tMax;
 				done = true;
 				break;
 			}
@@ -388,8 +388,8 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			// runs out of iterations.
 			if (s1 < target - tolerance)
 			{
-				output->state = b2TOIOutput::e_failed;
-				output->t = t1;
+				output.state = b2TOIOutput::e_failed;
+				output.t = t1;
 				done = true;
 				break;
 			}
@@ -398,8 +398,8 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			if (s1 <= target + tolerance)
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
-				output->state = b2TOIOutput::e_touching;
-				output->t = t1;
+				output.state = b2TOIOutput::e_touching;
+				output.t = t1;
 				done = true;
 				break;
 			}
@@ -473,8 +473,8 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 		if (iter == k_maxIterations)
 		{
 			// Root finder got stuck. Semi-victory.
-			output->state = b2TOIOutput::e_failed;
-			output->t = t1;
+			output.state = b2TOIOutput::e_failed;
+			output.t = t1;
 			break;
 		}
 	}

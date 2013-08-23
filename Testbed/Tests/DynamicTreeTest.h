@@ -38,8 +38,8 @@ public:
 		for (int i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
-			GetRandomAABB(&actor->aabb);
-			actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
+			GetRandomAABB(&actor.aabb);
+			actor.proxyId = m_tree.CreateProxy(actor.aabb, actor);
 		}
 
 		m_stepCount = 0;
@@ -89,11 +89,11 @@ public:
 		for (int i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
-			if (actor->proxyId == b2_nullNode)
+			if (actor.proxyId == b2_nullNode)
 				continue;
 
 			b2Color c(0.9f, 0.9f, 0.9f);
-			if (actor == m_rayActor && actor->overlap)
+			if (actor == m_rayActor && actor.overlap)
 			{
 				c.Set(0.9f, 0.6f, 0.6f);
 			}
@@ -101,12 +101,12 @@ public:
 			{
 				c.Set(0.6f, 0.9f, 0.6f);
 			}
-			else if (actor->overlap)
+			else if (actor.overlap)
 			{
 				c.Set(0.6f, 0.6f, 0.9f);
 			}
 
-			m_debugDraw.DrawAABB(&actor->aabb, c);
+			m_debugDraw.DrawAABB(&actor.aabb, c);
 		}
 
 		b2Color c(0.7f, 0.7f, 0.7f);
@@ -122,7 +122,7 @@ public:
 		if (m_rayActor)
 		{
 			b2Color cr(0.2f, 0.2f, 0.9f);
-			b2Vec2 p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
+			b2Vec2 p = m_rayCastInput.p1 + m_rayActor.fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
 			m_debugDraw.DrawPoint(p, 6.0f, cr);
 		}
 
@@ -160,7 +160,7 @@ public:
 	bool QueryCallback(int proxyId)
 	{
 		Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
-		actor->overlap = b2TestOverlap(m_queryAABB, actor->aabb);
+		actor.overlap = b2TestOverlap(m_queryAABB, actor.aabb);
 		return true;
 	}
 
@@ -169,13 +169,13 @@ public:
 		Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
 
 		b2RayCastOutput output;
-		bool hit = actor->aabb.RayCast(&output, input);
+		bool hit = actor.aabb.RayCast(&output, input);
 
 		if (hit)
 		{
 			m_rayCastOutput = output;
 			m_rayActor = actor;
-			m_rayActor->fraction = output.fraction;
+			m_rayActor.fraction = output.fraction;
 			return output.fraction;
 		}
 
@@ -195,11 +195,11 @@ private:
 	void GetRandomAABB(b2AABB* aabb)
 	{
 		b2Vec2 w; w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
-		//aabb->lowerBound.x = -m_proxyExtent;
-		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
-		aabb->lowerBound.x = RandomFloat(-m_worldExtent, m_worldExtent);
-		aabb->lowerBound.y = RandomFloat(0.0f, 2.0f * m_worldExtent);
-		aabb->upperBound = aabb->lowerBound + w;
+		//aabb.lowerBound.x = -m_proxyExtent;
+		//aabb.lowerBound.y = -m_proxyExtent + m_worldExtent;
+		aabb.lowerBound.x = RandomFloat(-m_worldExtent, m_worldExtent);
+		aabb.lowerBound.y = RandomFloat(0.0f, 2.0f * m_worldExtent);
+		aabb.upperBound = aabb.lowerBound + w;
 	}
 
 	void MoveAABB(b2AABB* aabb)
@@ -209,16 +209,16 @@ private:
 		d.y = RandomFloat(-0.5f, 0.5f);
 		//d.x = 2.0f;
 		//d.y = 0.0f;
-		aabb->lowerBound += d;
-		aabb->upperBound += d;
+		aabb.lowerBound += d;
+		aabb.upperBound += d;
 
-		b2Vec2 c0 = 0.5f * (aabb->lowerBound + aabb->upperBound);
+		b2Vec2 c0 = 0.5f * (aabb.lowerBound + aabb.upperBound);
 		b2Vec2 min; min.Set(-m_worldExtent, 0.0f);
 		b2Vec2 max; max.Set(m_worldExtent, 2.0f * m_worldExtent);
 		b2Vec2 c = b2Clamp(c0, min, max);
 
-		aabb->lowerBound += c - c0;
-		aabb->upperBound += c - c0;
+		aabb.lowerBound += c - c0;
+		aabb.upperBound += c - c0;
 	}
 
 	void CreateProxy()
@@ -227,10 +227,10 @@ private:
 		{
 			int j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId == b2_nullNode)
+			if (actor.proxyId == b2_nullNode)
 			{
-				GetRandomAABB(&actor->aabb);
-				actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
+				GetRandomAABB(&actor.aabb);
+				actor.proxyId = m_tree.CreateProxy(actor.aabb, actor);
 				return;
 			}
 		}
@@ -242,10 +242,10 @@ private:
 		{
 			int j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId != b2_nullNode)
+			if (actor.proxyId != b2_nullNode)
 			{
-				m_tree.DestroyProxy(actor->proxyId);
-				actor->proxyId = b2_nullNode;
+				m_tree.DestroyProxy(actor.proxyId);
+				actor.proxyId = b2_nullNode;
 				return;
 			}
 		}
@@ -257,15 +257,15 @@ private:
 		{
 			int j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId == b2_nullNode)
+			if (actor.proxyId == b2_nullNode)
 			{
 				continue;
 			}
 
-			b2AABB aabb0 = actor->aabb;
-			MoveAABB(&actor->aabb);
-			b2Vec2 displacement = actor->aabb.GetCenter() - aabb0.GetCenter();
-			m_tree.MoveProxy(actor->proxyId, actor->aabb, displacement);
+			b2AABB aabb0 = actor.aabb;
+			MoveAABB(&actor.aabb);
+			b2Vec2 displacement = actor.aabb.GetCenter() - aabb0.GetCenter();
+			m_tree.MoveProxy(actor.proxyId, actor.aabb, displacement);
 			return;
 		}
 	}

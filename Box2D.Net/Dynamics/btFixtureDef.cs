@@ -10,26 +10,26 @@ namespace Box2D {
 	{
 		/// The shape, this must be set. The shape will be cloned, so you
 		/// can create the shape on the stack.
-		b2Shape shape; //was const*
+		public b2Shape shape; //was const*
 
 		/// Use this to store application specific fixture data.
-		object userData;
+		public object userData;
 
 		/// The friction coefficient, usually in the range [0,1].
-		float friction;
+		public float friction;
 
 		/// The restitution (elasticity) usually in the range [0,1].
-		float restitution;
+		public float restitution;
 
 		/// The density, usually in kg/m^2.
-		float density;
+		public float density;
 
 		/// A sensor shape collects contact information but never generates a collision
 		/// response.
-		bool isSensor;
+		public bool isSensor;
 
 		/// Contact filtering data.
-		b2Filter filter;
+		public b2Filter filter;
 
 		/// The constructor sets the default fixture definition values.
 		public b2FixtureDef()
@@ -41,7 +41,5 @@ namespace Box2D {
 			density = 0.0f;
 			isSensor = false;
 		}
-
-		
 	}
 }

@@ -23,18 +23,18 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 						  const b2Transform& xfA, float radiusA,
 						  const b2Transform& xfB, float radiusB)
 {
-	if (manifold->pointCount == 0)
+	if (manifold.pointCount == 0)
 	{
 		return;
 	}
 
-	switch (manifold->type)
+	switch (manifold.type)
 	{
 	case b2Manifold::e_circles:
 		{
 			normal.Set(1.0f, 0.0f);
-			b2Vec2 pointA = b2Mul(xfA, manifold->localPoint);
-			b2Vec2 pointB = b2Mul(xfB, manifold->points[0].localPoint);
+			b2Vec2 pointA = b2Mul(xfA, manifold.localPoint);
+			b2Vec2 pointB = b2Mul(xfB, manifold.points[0].localPoint);
 			if (b2DistanceSquared(pointA, pointB) > b2_epsilon * b2_epsilon)
 			{
 				normal = pointB - pointA;
@@ -49,12 +49,12 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 
 	case b2Manifold::e_faceA:
 		{
-			normal = b2Mul(xfA.q, manifold->localNormal);
-			b2Vec2 planePoint = b2Mul(xfA, manifold->localPoint);
+			normal = b2Mul(xfA.q, manifold.localNormal);
+			b2Vec2 planePoint = b2Mul(xfA, manifold.localPoint);
 			
-			for (int i = 0; i < manifold->pointCount; ++i)
+			for (int i = 0; i < manifold.pointCount; ++i)
 			{
-				b2Vec2 clipPoint = b2Mul(xfB, manifold->points[i].localPoint);
+				b2Vec2 clipPoint = b2Mul(xfB, manifold.points[i].localPoint);
 				b2Vec2 cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
 				b2Vec2 cB = clipPoint - radiusB * normal;
 				points[i] = 0.5f * (cA + cB);
@@ -64,12 +64,12 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 
 	case b2Manifold::e_faceB:
 		{
-			normal = b2Mul(xfB.q, manifold->localNormal);
-			b2Vec2 planePoint = b2Mul(xfB, manifold->localPoint);
+			normal = b2Mul(xfB.q, manifold.localNormal);
+			b2Vec2 planePoint = b2Mul(xfB, manifold.localPoint);
 
-			for (int i = 0; i < manifold->pointCount; ++i)
+			for (int i = 0; i < manifold.pointCount; ++i)
 			{
-				b2Vec2 clipPoint = b2Mul(xfA, manifold->points[i].localPoint);
+				b2Vec2 clipPoint = b2Mul(xfA, manifold.points[i].localPoint);
 				b2Vec2 cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
 				b2Vec2 cA = clipPoint - radiusA * normal;
 				points[i] = 0.5f * (cA + cB);
@@ -92,15 +92,15 @@ void b2GetPointStates(b2PointState state1[b2Settings.b2_maxManifoldPoints], b2Po
 	}
 
 	// Detect persists and removes.
-	for (int i = 0; i < manifold1->pointCount; ++i)
+	for (int i = 0; i < manifold1.pointCount; ++i)
 	{
-		b2ContactID id = manifold1->points[i].id;
+		b2ContactID id = manifold1.points[i].id;
 
 		state1[i] = b2_removeState;
 
-		for (int j = 0; j < manifold2->pointCount; ++j)
+		for (int j = 0; j < manifold2.pointCount; ++j)
 		{
-			if (manifold2->points[j].id.key == id.key)
+			if (manifold2.points[j].id.key == id.key)
 			{
 				state1[i] = b2_persistState;
 				break;
@@ -109,15 +109,15 @@ void b2GetPointStates(b2PointState state1[b2Settings.b2_maxManifoldPoints], b2Po
 	}
 
 	// Detect persists and adds.
-	for (int i = 0; i < manifold2->pointCount; ++i)
+	for (int i = 0; i < manifold2.pointCount; ++i)
 	{
-		b2ContactID id = manifold2->points[i].id;
+		b2ContactID id = manifold2.points[i].id;
 
 		state2[i] = b2_addState;
 
-		for (int j = 0; j < manifold1->pointCount; ++j)
+		for (int j = 0; j < manifold1.pointCount; ++j)
 		{
-			if (manifold1->points[j].id.key == id.key)
+			if (manifold1.points[j].id.key == id.key)
 			{
 				state2[i] = b2_persistState;
 				break;
@@ -189,8 +189,8 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 	}
 
 	// Intersection.
-	output->fraction = tmin;
-	output->normal = normal;
+	output.fraction = tmin;
+	output.normal = normal;
 	return true;
 }
 

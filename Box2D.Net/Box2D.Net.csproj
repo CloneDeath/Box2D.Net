@@ -38,7 +38,11 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collision\b2BroadPhase.cs" />
     <Compile Include="Collision\b2Collision.cs" />
+    <Compile Include="Collision\b2DynamicTree.cs" />
+    <Compile Include="Collision\b2Pair.cs" />
+    <Compile Include="Collision\b2TreeNode.cs" />
     <Compile Include="Collision\Shapes\b2ChainShape.cs" />
     <Compile Include="Collision\Shapes\b2CircleShape.cs" />
     <Compile Include="Collision\Shapes\b2EdgeShape.cs" />
@@ -56,12 +60,17 @@
     <Compile Include="Dynamics\b2ContactListener.cs" />
     <Compile Include="Dynamics\b2DestructionListener.cs" />
     <Compile Include="Dynamics\b2Filter.cs" />
+    <Compile Include="Dynamics\b2Fixture.cs" />
+    <Compile Include="Dynamics\b2FixtureProxy.cs" />
     <Compile Include="Dynamics\b2QueryCallback.cs" />
     <Compile Include="Dynamics\b2RayCastCallback.cs" />
     <Compile Include="Dynamics\b2World.cs" />
     <Compile Include="Dynamics\b2WorldQueryWrapper.cs" />
     <Compile Include="Dynamics\b2WorldRayCastWrapper.cs" />
     <Compile Include="Dynamics\btFixtureDef.cs" />
+    <Compile Include="Dynamics\Contacts\b2Contact.cs" />
+    <Compile Include="Dynamics\Contacts\b2ContactEdge.cs" />
+    <Compile Include="Dynamics\Contacts\b2ContactRegister.cs" />
     <Compile Include="Dynamics\Joints\b2Jacobian.cs" />
     <Compile Include="Dynamics\Joints\b2Joint.cs" />
     <Compile Include="Dynamics\Joints\b2JointDef.cs" />
@@ -73,16 +82,12 @@
     <Compile Include="Rope\b2Rope.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Collision\b2BroadPhase.cpp" />
-    <Content Include="Collision\b2BroadPhase.h" />
     <Content Include="Collision\b2CollideCircle.cpp" />
     <Content Include="Collision\b2CollideEdge.cpp" />
     <Content Include="Collision\b2CollidePolygon.cpp" />
     <Content Include="Collision\b2Collision.cpp" />
     <Content Include="Collision\b2Distance.cpp" />
     <Content Include="Collision\b2Distance.h" />
-    <Content Include="Collision\b2DynamicTree.cpp" />
-    <Content Include="Collision\b2DynamicTree.h" />
     <Content Include="Collision\b2TimeOfImpact.cpp" />
     <Content Include="Collision\b2TimeOfImpact.h" />
     <Content Include="Common\b2BlockAllocator.cpp" />
@@ -98,8 +103,6 @@
     <Content Include="Dynamics\b2Body.cpp" />
     <Content Include="Dynamics\b2ContactManager.cpp" />
     <Content Include="Dynamics\b2ContactManager.h" />
-    <Content Include="Dynamics\b2Fixture.cpp" />
-    <Content Include="Dynamics\b2Fixture.h" />
     <Content Include="Dynamics\b2Island.cpp" />
     <Content Include="Dynamics\b2Island.h" />
     <Content Include="Dynamics\b2WorldCallbacks.cpp" />
@@ -109,8 +112,6 @@
     <Content Include="Dynamics\Contacts\b2ChainAndPolygonContact.h" />
     <Content Include="Dynamics\Contacts\b2CircleContact.cpp" />
     <Content Include="Dynamics\Contacts\b2CircleContact.h" />
-    <Content Include="Dynamics\Contacts\b2Contact.cpp" />
-    <Content Include="Dynamics\Contacts\b2Contact.h" />
     <Content Include="Dynamics\Contacts\b2ContactSolver.cpp" />
     <Content Include="Dynamics\Contacts\b2ContactSolver.h" />
     <Content Include="Dynamics\Contacts\b2EdgeAndCircleContact.cpp" />

@@ -32,7 +32,7 @@ public:
 		b2Body* ground = null;
 		{
 			b2BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 
@@ -42,7 +42,7 @@ public:
 			fd.friction = 0.6f;
 
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 
 			float hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
@@ -52,7 +52,7 @@ public:
 			{
 				float y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
-				ground->CreateFixture(&fd);
+				ground.CreateFixture(&fd);
 				y1 = y2;
 				x += dx;
 			}
@@ -61,29 +61,29 @@ public:
 			{
 				float y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
-				ground->CreateFixture(&fd);
+				ground.CreateFixture(&fd);
 				y1 = y2;
 				x += dx;
 			}
 
 			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 
 			x += 80.0f;
 			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 
 			x += 40.0f;
 			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 10.0f, 5.0f));
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 
 			x += 20.0f;
 			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 
 			x += 40.0f;
 			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x, 20.0f));
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 		}
 
 		// Teeter
@@ -91,20 +91,20 @@ public:
 			b2BodyDef bd;
 			bd.position.Set(140.0f, 1.0f);
 			bd.type = b2_dynamicBody;
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			b2PolygonShape box;
 			box.SetAsBox(10.0f, 0.25f);
-			body->CreateFixture(&box, 1.0f);
+			body.CreateFixture(&box, 1.0f);
 
 			b2RevoluteJointDef jd;
-			jd.Initialize(ground, body, body->GetPosition());
+			jd.Initialize(ground, body, body.GetPosition());
 			jd.lowerAngle = -8.0f * Math.PI / 180.0f;
 			jd.upperAngle = 8.0f * Math.PI / 180.0f;
 			jd.enableLimit = true;
-			m_world->CreateJoint(&jd);
+			m_world.CreateJoint(&jd);
 
-			body->ApplyAngularImpulse(100.0f, true);
+			body.ApplyAngularImpulse(100.0f, true);
 		}
 
 		// Bridge
@@ -126,19 +126,19 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position.Set(161.0f + 2.0f * i, -0.125f);
-				b2Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
+				b2Body* body = m_world.CreateBody(&bd);
+				body.CreateFixture(&fd);
 
 				b2Vec2 anchor(160.0f + 2.0f * i, -0.125f);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world.CreateJoint(&jd);
 
 				prevBody = body;
 			}
 
 			b2Vec2 anchor(160.0f + 2.0f * N, -0.125f);
 			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(&jd);
+			m_world.CreateJoint(&jd);
 		}
 
 		// Boxes
@@ -151,24 +151,24 @@ public:
 			bd.type = b2_dynamicBody;
 
 			bd.position.Set(230.0f, 0.5f);
-			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body = m_world.CreateBody(&bd);
+			body.CreateFixture(&box, 0.5f);
 
 			bd.position.Set(230.0f, 1.5f);
-			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body = m_world.CreateBody(&bd);
+			body.CreateFixture(&box, 0.5f);
 
 			bd.position.Set(230.0f, 2.5f);
-			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body = m_world.CreateBody(&bd);
+			body.CreateFixture(&box, 0.5f);
 
 			bd.position.Set(230.0f, 3.5f);
-			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body = m_world.CreateBody(&bd);
+			body.CreateFixture(&box, 0.5f);
 
 			bd.position.Set(230.0f, 4.5f);
-			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body = m_world.CreateBody(&bd);
+			body.CreateFixture(&box, 0.5f);
 		}
 
 		// Car
@@ -189,8 +189,8 @@ public:
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position.Set(0.0f, 1.0f);
-			m_car = m_world->CreateBody(&bd);
-			m_car->CreateFixture(&chassis, 1.0f);
+			m_car = m_world.CreateBody(&bd);
+			m_car.CreateFixture(&chassis, 1.0f);
 
 			b2FixtureDef fd;
 			fd.shape = &circle;
@@ -198,31 +198,31 @@ public:
 			fd.friction = 0.9f;
 
 			bd.position.Set(-1.0f, 0.35f);
-			m_wheel1 = m_world->CreateBody(&bd);
-			m_wheel1->CreateFixture(&fd);
+			m_wheel1 = m_world.CreateBody(&bd);
+			m_wheel1.CreateFixture(&fd);
 
 			bd.position.Set(1.0f, 0.4f);
-			m_wheel2 = m_world->CreateBody(&bd);
-			m_wheel2->CreateFixture(&fd);
+			m_wheel2 = m_world.CreateBody(&bd);
+			m_wheel2.CreateFixture(&fd);
 
 			b2WheelJointDef jd;
 			b2Vec2 axis(0.0f, 1.0f);
 
-			jd.Initialize(m_car, m_wheel1, m_wheel1->GetPosition(), axis);
+			jd.Initialize(m_car, m_wheel1, m_wheel1.GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
 			jd.maxMotorTorque = 20.0f;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring1 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring1 = (b2WheelJoint*)m_world.CreateJoint(&jd);
 
-			jd.Initialize(m_car, m_wheel2, m_wheel2->GetPosition(), axis);
+			jd.Initialize(m_car, m_wheel2, m_wheel2.GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
 			jd.maxMotorTorque = 10.0f;
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring2 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring2 = (b2WheelJoint*)m_world.CreateJoint(&jd);
 		}
 	}
 
@@ -231,27 +231,27 @@ public:
 		switch (key)
 		{
 		case 'a':
-			m_spring1->SetMotorSpeed(m_speed);
+			m_spring1.SetMotorSpeed(m_speed);
 			break;
 
 		case 's':
-			m_spring1->SetMotorSpeed(0.0f);
+			m_spring1.SetMotorSpeed(0.0f);
 			break;
 
 		case 'd':
-			m_spring1->SetMotorSpeed(-m_speed);
+			m_spring1.SetMotorSpeed(-m_speed);
 			break;
 
 		case 'q':
 			m_hz = b2Max(0.0f, m_hz - 1.0f);
-			m_spring1->SetSpringFrequencyHz(m_hz);
-			m_spring2->SetSpringFrequencyHz(m_hz);
+			m_spring1.SetSpringFrequencyHz(m_hz);
+			m_spring2.SetSpringFrequencyHz(m_hz);
 			break;
 
 		case 'e':
 			m_hz += 1.0f;
-			m_spring1->SetSpringFrequencyHz(m_hz);
-			m_spring2->SetSpringFrequencyHz(m_hz);
+			m_spring1.SetSpringFrequencyHz(m_hz);
+			m_spring2.SetSpringFrequencyHz(m_hz);
 			break;
 		}
 	}
@@ -263,7 +263,7 @@ public:
 		m_debugDraw.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", m_hz, m_zeta);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		settings->viewCenter.x = m_car->GetPosition().x;
+		settings.viewCenter.x = m_car.GetPosition().x;
 		Test::Step(settings);
 	}
 

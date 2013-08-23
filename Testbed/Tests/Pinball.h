@@ -30,7 +30,7 @@ public:
 		b2Body* ground = null;
 		{
 			b2BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world.CreateBody(&bd);
 
 			b2Vec2 vs[5];
 			vs[0].Set(0.0f, -2.0f);
@@ -44,7 +44,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &loop;
 			fd.density = 0.0f;
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 		}
 
 		// Flippers
@@ -55,10 +55,10 @@ public:
 			bd.type = b2_dynamicBody;
 
 			bd.position = p1;
-			b2Body* leftFlipper = m_world->CreateBody(&bd);
+			b2Body* leftFlipper = m_world.CreateBody(&bd);
 
 			bd.position = p2;
-			b2Body* rightFlipper = m_world->CreateBody(&bd);
+			b2Body* rightFlipper = m_world.CreateBody(&bd);
 
 			b2PolygonShape box;
 			box.SetAsBox(1.75f, 0.1f);
@@ -67,8 +67,8 @@ public:
 			fd.shape = &box;
 			fd.density = 1.0f;
 
-			leftFlipper->CreateFixture(&fd);
-			rightFlipper->CreateFixture(&fd);
+			leftFlipper.CreateFixture(&fd);
+			rightFlipper.CreateFixture(&fd);
 
 			b2RevoluteJointDef jd;
 			jd.bodyA = ground;
@@ -82,14 +82,14 @@ public:
 			jd.bodyB = leftFlipper;
 			jd.lowerAngle = -30.0f * Math.PI / 180.0f;
 			jd.upperAngle = 5.0f * Math.PI / 180.0f;
-			m_leftJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_leftJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
 
 			jd.motorSpeed = 0.0f;
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
 			jd.lowerAngle = -5.0f * Math.PI / 180.0f;
 			jd.upperAngle = 30.0f * Math.PI / 180.0f;
-			m_rightJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_rightJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
 		}
 
 		// Circle character
@@ -99,7 +99,7 @@ public:
 			bd.type = b2_dynamicBody;
 			bd.bullet = true;
 
-			m_ball = m_world->CreateBody(&bd);
+			m_ball = m_world.CreateBody(&bd);
 
 			b2CircleShape shape;
 			shape.m_radius = 0.2f;
@@ -107,7 +107,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
-			m_ball->CreateFixture(&fd);
+			m_ball.CreateFixture(&fd);
 		}
 
 		m_button = false;
@@ -117,13 +117,13 @@ public:
 	{
 		if (m_button)
 		{
-			m_leftJoint->SetMotorSpeed(20.0f);
-			m_rightJoint->SetMotorSpeed(-20.0f);
+			m_leftJoint.SetMotorSpeed(20.0f);
+			m_rightJoint.SetMotorSpeed(-20.0f);
 		}
 		else
 		{
-			m_leftJoint->SetMotorSpeed(-10.0f);
-			m_rightJoint->SetMotorSpeed(10.0f);
+			m_leftJoint.SetMotorSpeed(-10.0f);
+			m_rightJoint.SetMotorSpeed(10.0f);
 		}
 
 		Test::Step(settings);

@@ -27,21 +27,21 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
 		bd.position.Set(0.0f, 10.0f);
-		m_body = m_world->CreateBody(&bd);
+		m_body = m_world.CreateBody(&bd);
 
 		b2PolygonShape shape;
 		shape.SetAsBox(4.0f, 4.0f, b2Vec2(0.0f, 0.0f), 0.0f);
-		m_fixture1 = m_body->CreateFixture(&shape, 10.0f);
+		m_fixture1 = m_body.CreateFixture(&shape, 10.0f);
 
 		m_fixture2 = null;
 
@@ -58,17 +58,17 @@ public:
 				b2CircleShape shape;
 				shape.m_radius = 3.0f;
 				shape.m_p.Set(0.5f, -4.0f);
-				m_fixture2 = m_body->CreateFixture(&shape, 10.0f);
-				m_body->SetAwake(true);
+				m_fixture2 = m_body.CreateFixture(&shape, 10.0f);
+				m_body.SetAwake(true);
 			}
 			break;
 
 		case 'd':
 			if (m_fixture2 != null)
 			{
-				m_body->DestroyFixture(m_fixture2);
+				m_body.DestroyFixture(m_fixture2);
 				m_fixture2 = null;
-				m_body->SetAwake(true);
+				m_body.SetAwake(true);
 			}
 			break;
 
@@ -76,7 +76,7 @@ public:
 			if (m_fixture2 != null)
 			{
 				m_sensor = !m_sensor;
-				m_fixture2->SetSensor(m_sensor);
+				m_fixture2.SetSensor(m_sensor);
 			}
 			break;
 		}

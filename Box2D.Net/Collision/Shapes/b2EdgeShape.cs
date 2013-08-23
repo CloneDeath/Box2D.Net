@@ -30,7 +30,7 @@ namespace Box2D {
 		/// Implement b2Shape.
 		public b2Shape Clone(){
 			throw new NotImplementedException();
-			//void* mem = allocator->Allocate(sizeof(b2EdgeShape));
+			//void* mem = allocator.Allocate(sizeof(b2EdgeShape));
 			//b2EdgeShape* clone = new (mem) b2EdgeShape;
 			//*clone = *this;
 			//return clone;
@@ -103,14 +103,14 @@ namespace Box2D {
 				return false;
 			}
 
-			output->fraction = t;
+			output.fraction = t;
 			if (numerator > 0.0f)
 			{
-				output->normal = -normal;
+				output.normal = -normal;
 			}
 			else
 			{
-				output->normal = normal;
+				output.normal = normal;
 			}
 			return true;
 		}
@@ -127,8 +127,8 @@ namespace Box2D {
 			//b2Vec2 upper = b2Max(v1, v2);
 
 			//b2Vec2 r(m_radius, m_radius);
-			//aabb->lowerBound = lower - r;
-			//aabb->upperBound = upper + r;
+			//aabb.lowerBound = lower - r;
+			//aabb.upperBound = upper + r;
 		}
 
 		/// @see b2Shape::ComputeMass
@@ -136,9 +136,9 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//B2_NOT_USED(density);
 
-			//massData->mass = 0.0f;
-			//massData->center = 0.5f * (m_vertex1 + m_vertex2);
-			//massData->I = 0.0f;
+			//massData.mass = 0.0f;
+			//massData.center = 0.5f * (m_vertex1 + m_vertex2);
+			//massData.I = 0.0f;
 		}
 	
 		/// These are the edge vertices

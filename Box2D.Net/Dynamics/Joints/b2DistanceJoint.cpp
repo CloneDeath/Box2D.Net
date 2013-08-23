@@ -40,8 +40,8 @@ void b2DistanceJointDef::Initialize(b2Body* b1, b2Body* b2,
 {
 	bodyA = b1;
 	bodyB = b2;
-	localAnchorA = bodyA->GetLocalPoint(anchor1);
-	localAnchorB = bodyB->GetLocalPoint(anchor2);
+	localAnchorA = bodyA.GetLocalPoint(anchor1);
+	localAnchorB = bodyB.GetLocalPoint(anchor2);
 	b2Vec2 d = anchor2 - anchor1;
 	length = d.Length();
 }
@@ -49,11 +49,11 @@ void b2DistanceJointDef::Initialize(b2Body* b1, b2Body* b2,
 b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
 : b2Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_length = def->length;
-	m_frequencyHz = def->frequencyHz;
-	m_dampingRatio = def->dampingRatio;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_length = def.length;
+	m_frequencyHz = def.frequencyHz;
+	m_dampingRatio = def.dampingRatio;
 	m_impulse = 0.0f;
 	m_gamma = 0.0f;
 	m_bias = 0.0f;
@@ -61,14 +61,14 @@ b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
 
 void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	b2Vec2 cA = data.positions[m_indexA].c;
 	float aA = data.positions[m_indexA].a;
@@ -222,12 +222,12 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2DistanceJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2DistanceJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2DistanceJoint::GetReactionForce(float inv_dt) const
@@ -244,8 +244,8 @@ float b2DistanceJoint::GetReactionTorque(float inv_dt) const
 
 void b2DistanceJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2DistanceJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -256,5 +256,5 @@ void b2DistanceJoint::Dump()
 	b2Settings.b2Log("  jd.length = %.15lef;\n", m_length);
 	b2Settings.b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	b2Settings.b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

@@ -36,33 +36,33 @@ void b2FrictionJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = bodyA->GetLocalPoint(anchor);
-	localAnchorB = bodyB->GetLocalPoint(anchor);
+	localAnchorA = bodyA.GetLocalPoint(anchor);
+	localAnchorB = bodyB.GetLocalPoint(anchor);
 }
 
 b2FrictionJoint::b2FrictionJoint(const b2FrictionJointDef* def)
 : b2Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
 
 	m_linearImpulse.SetZero();
 	m_angularImpulse = 0.0f;
 
-	m_maxForce = def->maxForce;
-	m_maxTorque = def->maxTorque;
+	m_maxForce = def.maxForce;
+	m_maxTorque = def.maxTorque;
 }
 
 void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	float aA = data.positions[m_indexA].a;
 	b2Vec2 vA = data.velocities[m_indexA].v;
@@ -194,12 +194,12 @@ bool b2FrictionJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2FrictionJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2FrictionJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2FrictionJoint::GetReactionForce(float inv_dt) const
@@ -236,8 +236,8 @@ float b2FrictionJoint::GetMaxTorque() const
 
 void b2FrictionJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2FrictionJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -247,5 +247,5 @@ void b2FrictionJoint::Dump()
 	b2Settings.b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	b2Settings.b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 	b2Settings.b2Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

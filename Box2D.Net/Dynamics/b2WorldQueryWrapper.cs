@@ -8,11 +8,11 @@ namespace Box2D {
 	{
 		bool QueryCallback(int proxyId)
 		{
-			b2FixtureProxy* proxy = (b2FixtureProxy*)broadPhase->GetUserData(proxyId);
-			return callback->ReportFixture(proxy->fixture);
+			b2FixtureProxy proxy = (b2FixtureProxy)broadPhase.GetUserData(proxyId);
+			return callback.ReportFixture(proxy.fixture);
 		}
 
-		const b2BroadPhase* broadPhase;
-		b2QueryCallback* callback;
+		readonly b2BroadPhase broadPhase = new b2BroadPhase();
+		b2QueryCallback callback;
 	}
 }

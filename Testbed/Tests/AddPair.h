@@ -25,7 +25,7 @@ public:
 
 	AddPair()
 	{
-		m_world->SetGravity(b2Vec2(0.0f,0.0f));
+		m_world.SetGravity(b2Vec2(0.0f,0.0f));
 		{
 			b2CircleShape shape;
 			shape.m_p.SetZero();
@@ -41,8 +41,8 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position = b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
-				b2Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&shape, 0.01f);
+				b2Body* body = m_world.CreateBody(&bd);
+				body.CreateFixture(&shape, 0.01f);
 			}
 		}
 		
@@ -53,9 +53,9 @@ public:
 			bd.type = b2_dynamicBody;
 			bd.position.Set(-40.0f,5.0f);
 			bd.bullet = true;
-			b2Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 1.0f);
-			body->SetLinearVelocity(b2Vec2(150.0f, 0.0f));
+			b2Body* body = m_world.CreateBody(&bd);
+			body.CreateFixture(&shape, 1.0f);
+			body.SetLinearVelocity(b2Vec2(150.0f, 0.0f));
 		}
 	}
 

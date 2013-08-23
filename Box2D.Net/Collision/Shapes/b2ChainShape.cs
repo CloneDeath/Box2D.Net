@@ -91,13 +91,13 @@ namespace Box2D {
 		/// Implement b2Shape. Vertices are cloned using b2Alloc.
 		public b2Shape Clone(){
 			throw new NotImplementedException();
-			//void* mem = allocator->Allocate(sizeof(b2ChainShape));
+			//void* mem = allocator.Allocate(sizeof(b2ChainShape));
 			//b2ChainShape* clone = new (mem) b2ChainShape;
-			//clone->CreateChain(m_vertices, m_count);
-			//clone->m_prevVertex = m_prevVertex;
-			//clone->m_nextVertex = m_nextVertex;
-			//clone->m_hasPrevVertex = m_hasPrevVertex;
-			//clone->m_hasNextVertex = m_hasNextVertex;
+			//clone.CreateChain(m_vertices, m_count);
+			//clone.m_prevVertex = m_prevVertex;
+			//clone.m_nextVertex = m_nextVertex;
+			//clone.m_hasPrevVertex = m_hasPrevVertex;
+			//clone.m_hasNextVertex = m_hasNextVertex;
 			//return clone;
 		}
 
@@ -111,32 +111,32 @@ namespace Box2D {
 		public void GetChildEdge(out b2EdgeShape edge, int index){
 			throw new NotImplementedException();
 			//b2Assert(0 <= index && index < m_count - 1);
-			//edge->m_type = b2Shape::e_edge;
-			//edge->m_radius = m_radius;
+			//edge.m_type = b2Shape::e_edge;
+			//edge.m_radius = m_radius;
 
-			//edge->m_vertex1 = m_vertices[index + 0];
-			//edge->m_vertex2 = m_vertices[index + 1];
+			//edge.m_vertex1 = m_vertices[index + 0];
+			//edge.m_vertex2 = m_vertices[index + 1];
 
 			//if (index > 0)
 			//{
-			//    edge->m_vertex0 = m_vertices[index - 1];
-			//    edge->m_hasVertex0 = true;
+			//    edge.m_vertex0 = m_vertices[index - 1];
+			//    edge.m_hasVertex0 = true;
 			//}
 			//else
 			//{
-			//    edge->m_vertex0 = m_prevVertex;
-			//    edge->m_hasVertex0 = m_hasPrevVertex;
+			//    edge.m_vertex0 = m_prevVertex;
+			//    edge.m_hasVertex0 = m_hasPrevVertex;
 			//}
 
 			//if (index < m_count - 2)
 			//{
-			//    edge->m_vertex3 = m_vertices[index + 2];
-			//    edge->m_hasVertex3 = true;
+			//    edge.m_vertex3 = m_vertices[index + 2];
+			//    edge.m_hasVertex3 = true;
 			//}
 			//else
 			//{
-			//    edge->m_vertex3 = m_nextVertex;
-			//    edge->m_hasVertex3 = m_hasNextVertex;
+			//    edge.m_vertex3 = m_nextVertex;
+			//    edge.m_hasVertex3 = m_hasNextVertex;
 			//}
 		}
 
@@ -185,8 +185,8 @@ namespace Box2D {
 			//b2Vec2 v1 = b2Mul(xf, m_vertices[i1]);
 			//b2Vec2 v2 = b2Mul(xf, m_vertices[i2]);
 
-			//aabb->lowerBound = Math.Min(v1, v2);
-			//aabb->upperBound = b2Max(v1, v2);
+			//aabb.lowerBound = Math.Min(v1, v2);
+			//aabb.upperBound = b2Max(v1, v2);
 		}
 
 		/// Chains have zero mass.
@@ -195,9 +195,9 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//B2_NOT_USED(density);
 
-			//massData->mass = 0.0f;
-			//massData->center.SetZero();
-			//massData->I = 0.0f;
+			//massData.mass = 0.0f;
+			//massData.center.SetZero();
+			//massData.I = 0.0f;
 		}
 
 		/// The vertices. Owned by this class.

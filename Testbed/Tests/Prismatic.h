@@ -28,11 +28,11 @@ public:
 		b2Body* ground = null;
 		{
 			b2BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -44,8 +44,8 @@ public:
 			bd.position.Set(-10.0f, 10.0f);
 			bd.angle = 0.5f * Math.PI;
 			bd.allowSleep = false;
-			b2Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 5.0f);
+			b2Body* body = m_world.CreateBody(&bd);
+			body.CreateFixture(&shape, 5.0f);
 
 			b2PrismaticJointDef pjd;
 
@@ -64,7 +64,7 @@ public:
 			pjd.upperTranslation = 20.0f;
 			pjd.enableLimit = true;
 
-			m_joint = (b2PrismaticJoint*)m_world->CreateJoint(&pjd);
+			m_joint = (b2PrismaticJoint*)m_world.CreateJoint(&pjd);
 		}
 	}
 
@@ -73,15 +73,15 @@ public:
 		switch (key)
 		{
 		case 'l':
-			m_joint->EnableLimit(!m_joint->IsLimitEnabled());
+			m_joint.EnableLimit(!m_joint.IsLimitEnabled());
 			break;
 
 		case 'm':
-			m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+			m_joint.EnableMotor(!m_joint.IsMotorEnabled());
 			break;
 
 		case 's':
-			m_joint->SetMotorSpeed(-m_joint->GetMotorSpeed());
+			m_joint.SetMotorSpeed(-m_joint.GetMotorSpeed());
 			break;
 		}
 	}
@@ -91,7 +91,7 @@ public:
 		Test::Step(settings);
 		m_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		float force = m_joint->GetMotorForce(settings->hz);
+		float force = m_joint.GetMotorForce(settings.hz);
 		m_debugDraw.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

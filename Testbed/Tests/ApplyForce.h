@@ -24,7 +24,7 @@ class ApplyForce : public Test
 public:
 	ApplyForce()
 	{
-		m_world->SetGravity(b2Vec2(0.0f, 0.0f));
+		m_world.SetGravity(b2Vec2(0.0f, 0.0f));
 
 		const float k_restitution = 0.4f;
 
@@ -32,7 +32,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.position.Set(0.0f, 20.0f);
-			ground = m_world->CreateBody(&bd);
+			ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 
@@ -43,19 +43,19 @@ public:
 
 			// Left vertical
 			shape.Set(b2Vec2(-20.0f, -20.0f), b2Vec2(-20.0f, 20.0f));
-			ground->CreateFixture(&sd);
+			ground.CreateFixture(&sd);
 
 			// Right vertical
 			shape.Set(b2Vec2(20.0f, -20.0f), b2Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&sd);
+			ground.CreateFixture(&sd);
 
 			// Top horizontal
 			shape.Set(b2Vec2(-20.0f, 20.0f), b2Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&sd);
+			ground.CreateFixture(&sd);
 
 			// Bottom horizontal
 			shape.Set(b2Vec2(-20.0f, -20.0f), b2Vec2(20.0f, -20.0f));
-			ground->CreateFixture(&sd);
+			ground.CreateFixture(&sd);
 		}
 
 		{
@@ -98,9 +98,9 @@ public:
 			bd.position.Set(0.0f, 2.0);
 			bd.angle = Math.PI;
 			bd.allowSleep = false;
-			m_body = m_world->CreateBody(&bd);
-			m_body->CreateFixture(&sd1);
-			m_body->CreateFixture(&sd2);
+			m_body = m_world.CreateBody(&bd);
+			m_body.CreateFixture(&sd1);
+			m_body.CreateFixture(&sd2);
 		}
 
 		{
@@ -118,13 +118,13 @@ public:
 				bd.type = b2_dynamicBody;
 
 				bd.position.Set(0.0f, 5.0f + 1.54f * i);
-				b2Body* body = m_world->CreateBody(&bd);
+				b2Body* body = m_world.CreateBody(&bd);
 
-				body->CreateFixture(&fd);
+				body.CreateFixture(&fd);
 
 				float gravity = 10.0f;
-				float I = body->GetInertia();
-				float mass = body->GetMass();
+				float I = body.GetInertia();
+				float mass = body.GetMass();
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
 				float radius = b2Sqrt(2.0f * I / mass);
@@ -138,7 +138,7 @@ public:
 				jd.maxForce = mass * gravity;
 				jd.maxTorque = mass * radius * gravity;
 
-				m_world->CreateJoint(&jd);
+				m_world.CreateJoint(&jd);
 			}
 		}
 	}
@@ -149,21 +149,21 @@ public:
 		{
 		case 'w':
 			{
-				b2Vec2 f = m_body->GetWorldVector(b2Vec2(0.0f, -200.0f));
-				b2Vec2 p = m_body->GetWorldPoint(b2Vec2(0.0f, 2.0f));
-				m_body->ApplyForce(f, p, true);
+				b2Vec2 f = m_body.GetWorldVector(b2Vec2(0.0f, -200.0f));
+				b2Vec2 p = m_body.GetWorldPoint(b2Vec2(0.0f, 2.0f));
+				m_body.ApplyForce(f, p, true);
 			}
 			break;
 
 		case 'a':
 			{
-				m_body->ApplyTorque(50.0f, true);
+				m_body.ApplyTorque(50.0f, true);
 			}
 			break;
 
 		case 'd':
 			{
-				m_body->ApplyTorque(-50.0f, true);
+				m_body.ApplyTorque(-50.0f, true);
 			}
 			break;
 		}

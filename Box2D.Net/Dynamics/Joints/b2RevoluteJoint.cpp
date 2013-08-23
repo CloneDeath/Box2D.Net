@@ -37,40 +37,40 @@ void b2RevoluteJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = bodyA->GetLocalPoint(anchor);
-	localAnchorB = bodyB->GetLocalPoint(anchor);
-	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
+	localAnchorA = bodyA.GetLocalPoint(anchor);
+	localAnchorB = bodyB.GetLocalPoint(anchor);
+	referenceAngle = bodyB.GetAngle() - bodyA.GetAngle();
 }
 
 b2RevoluteJoint::b2RevoluteJoint(const b2RevoluteJointDef* def)
 : b2Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_referenceAngle = def->referenceAngle;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_referenceAngle = def.referenceAngle;
 
 	m_impulse.SetZero();
 	m_motorImpulse = 0.0f;
 
-	m_lowerAngle = def->lowerAngle;
-	m_upperAngle = def->upperAngle;
-	m_maxMotorTorque = def->maxMotorTorque;
-	m_motorSpeed = def->motorSpeed;
-	m_enableLimit = def->enableLimit;
-	m_enableMotor = def->enableMotor;
+	m_lowerAngle = def.lowerAngle;
+	m_upperAngle = def.upperAngle;
+	m_maxMotorTorque = def.maxMotorTorque;
+	m_motorSpeed = def.motorSpeed;
+	m_enableLimit = def.enableLimit;
+	m_enableMotor = def.enableMotor;
 	m_limitState = e_inactiveLimit;
 }
 
 void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	float aA = data.positions[m_indexA].a;
 	b2Vec2 vA = data.velocities[m_indexA].v;
@@ -376,12 +376,12 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2RevoluteJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2RevoluteJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2RevoluteJoint::GetReactionForce(float inv_dt) const
@@ -399,14 +399,14 @@ float b2RevoluteJoint::GetJointAngle() const
 {
 	b2Body* bA = m_bodyA;
 	b2Body* bB = m_bodyB;
-	return bB->m_sweep.a - bA->m_sweep.a - m_referenceAngle;
+	return bB.m_sweep.a - bA.m_sweep.a - m_referenceAngle;
 }
 
 float b2RevoluteJoint::GetJointSpeed() const
 {
 	b2Body* bA = m_bodyA;
 	b2Body* bB = m_bodyB;
-	return bB->m_angularVelocity - bA->m_angularVelocity;
+	return bB.m_angularVelocity - bA.m_angularVelocity;
 }
 
 bool b2RevoluteJoint::IsMotorEnabled() const
@@ -416,8 +416,8 @@ bool b2RevoluteJoint::IsMotorEnabled() const
 
 void b2RevoluteJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_enableMotor = flag;
 }
 
@@ -428,15 +428,15 @@ float b2RevoluteJoint::GetMotorTorque(float inv_dt) const
 
 void b2RevoluteJoint::SetMotorSpeed(float speed)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_motorSpeed = speed;
 }
 
 void b2RevoluteJoint::SetMaxMotorTorque(float torque)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_maxMotorTorque = torque;
 }
 
@@ -449,8 +449,8 @@ void b2RevoluteJoint::EnableLimit(bool flag)
 {
 	if (flag != m_enableLimit)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA.SetAwake(true);
+		m_bodyB.SetAwake(true);
 		m_enableLimit = flag;
 		m_impulse.z = 0.0f;
 	}
@@ -472,8 +472,8 @@ void b2RevoluteJoint::SetLimits(float lower, float upper)
 	
 	if (lower != m_lowerAngle || upper != m_upperAngle)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA.SetAwake(true);
+		m_bodyB.SetAwake(true);
 		m_impulse.z = 0.0f;
 		m_lowerAngle = lower;
 		m_upperAngle = upper;
@@ -482,8 +482,8 @@ void b2RevoluteJoint::SetLimits(float lower, float upper)
 
 void b2RevoluteJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2RevoluteJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -498,5 +498,5 @@ void b2RevoluteJoint::Dump()
 	b2Settings.b2Log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
 	b2Settings.b2Log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 	b2Settings.b2Log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

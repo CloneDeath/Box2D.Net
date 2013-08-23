@@ -50,8 +50,8 @@ namespace Box2D {
 		///
 		public void Initialize(b2RopeDef def){
 			throw new NotImplementedException();
-			//b2Assert(def->count >= 3);
-			//m_count = def->count;
+			//b2Assert(def.count >= 3);
+			//m_count = def.count;
 			//m_ps = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
 			//m_p0s = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
 			//m_vs = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
@@ -59,11 +59,11 @@ namespace Box2D {
 
 			//for (int i = 0; i < m_count; ++i)
 			//{
-			//    m_ps[i] = def->vertices[i];
-			//    m_p0s[i] = def->vertices[i];
+			//    m_ps[i] = def.vertices[i];
+			//    m_p0s[i] = def.vertices[i];
 			//    m_vs[i].SetZero();
 
-			//    float m = def->masses[i];
+			//    float m = def.masses[i];
 			//    if (m > 0.0f)
 			//    {
 			//        m_ims[i] = 1.0f / m;
@@ -101,10 +101,10 @@ namespace Box2D {
 			//    m_as[i] = b2Atan2(a, b);
 			//}
 
-			//m_gravity = def->gravity;
-			//m_damping = def->damping;
-			//m_k2 = def->k2;
-			//m_k3 = def->k3;
+			//m_gravity = def.gravity;
+			//m_damping = def.damping;
+			//m_k2 = def.k2;
+			//m_k3 = def.k3;
 		}
 
 		///
@@ -161,7 +161,7 @@ namespace Box2D {
 
 			for (int i = 0; i < m_count - 1; ++i)
 			{
-				draw->DrawSegment(m_ps[i], m_ps[i+1], c);
+				draw.DrawSegment(m_ps[i], m_ps[i+1], c);
 			}
 		}
 

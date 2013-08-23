@@ -34,8 +34,8 @@ public:
 
 	float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction)
 	{
-		b2Body* body = fixture->GetBody();
-		void* userData = body->GetUserData();
+		b2Body* body = fixture.GetBody();
+		void* userData = body.GetUserData();
 		if (userData)
 		{
 			int index = *(int*)userData;
@@ -74,8 +74,8 @@ public:
 
 	float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction)
 	{
-		b2Body* body = fixture->GetBody();
-		void* userData = body->GetUserData();
+		b2Body* body = fixture.GetBody();
+		void* userData = body.GetUserData();
 		if (userData)
 		{
 			int index = *(int*)userData;
@@ -119,8 +119,8 @@ public:
 
 	float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction)
 	{
-		b2Body* body = fixture->GetBody();
-		void* userData = body->GetUserData();
+		b2Body* body = fixture.GetBody();
+		void* userData = body.GetUserData();
 		if (userData)
 		{
 			int index = *(int*)userData;
@@ -176,11 +176,11 @@ public:
 		// Ground body
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -237,7 +237,7 @@ public:
 	{
 		if (m_bodies[m_bodyIndex] != null)
 		{
-			m_world->DestroyBody(m_bodies[m_bodyIndex]);
+			m_world.DestroyBody(m_bodies[m_bodyIndex]);
 			m_bodies[m_bodyIndex] = null;
 		}
 
@@ -256,14 +256,14 @@ public:
 			bd.angularDamping = 0.02f;
 		}
 
-		m_bodies[m_bodyIndex] = m_world->CreateBody(&bd);
+		m_bodies[m_bodyIndex] = m_world.CreateBody(&bd);
 
 		if (index < 4)
 		{
 			b2FixtureDef fd;
 			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex].CreateFixture(&fd);
 		}
 		else
 		{
@@ -271,7 +271,7 @@ public:
 			fd.shape = &m_circle;
 			fd.friction = 0.3f;
 
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex].CreateFixture(&fd);
 		}
 
 		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
@@ -283,7 +283,7 @@ public:
 		{
 			if (m_bodies[i] != null)
 			{
-				m_world->DestroyBody(m_bodies[i]);
+				m_world.DestroyBody(m_bodies[i]);
 				m_bodies[i] = null;
 				return;
 			}
@@ -324,7 +324,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		bool advanceRay = settings->pause == 0 || settings->singleStep;
+		bool advanceRay = settings.pause == 0 || settings.singleStep;
 
 		Test::Step(settings);
 		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff, m to change the mode");
@@ -354,7 +354,7 @@ public:
 		if (m_mode == e_closest)
 		{
 			RayCastClosestCallback callback;
-			m_world->RayCast(&callback, point1, point2);
+			m_world.RayCast(&callback, point1, point2);
 
 			if (callback.m_hit)
 			{
@@ -371,7 +371,7 @@ public:
 		else if (m_mode == e_any)
 		{
 			RayCastAnyCallback callback;
-			m_world->RayCast(&callback, point1, point2);
+			m_world.RayCast(&callback, point1, point2);
 
 			if (callback.m_hit)
 			{
@@ -388,7 +388,7 @@ public:
 		else if (m_mode == e_multiple)
 		{
 			RayCastMultipleCallback callback;
-			m_world->RayCast(&callback, point1, point2);
+			m_world.RayCast(&callback, point1, point2);
 			m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
 
 			for (int i = 0; i < callback.m_count; ++i)

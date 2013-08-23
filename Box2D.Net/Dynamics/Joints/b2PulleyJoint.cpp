@@ -41,8 +41,8 @@ void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
 	bodyB = bB;
 	groundAnchorA = groundA;
 	groundAnchorB = groundB;
-	localAnchorA = bodyA->GetLocalPoint(anchorA);
-	localAnchorB = bodyB->GetLocalPoint(anchorB);
+	localAnchorA = bodyA.GetLocalPoint(anchorA);
+	localAnchorB = bodyB.GetLocalPoint(anchorB);
 	b2Vec2 dA = anchorA - groundA;
 	lengthA = dA.Length();
 	b2Vec2 dB = anchorB - groundB;
@@ -54,32 +54,32 @@ void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
 b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
 : b2Joint(def)
 {
-	m_groundAnchorA = def->groundAnchorA;
-	m_groundAnchorB = def->groundAnchorB;
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
+	m_groundAnchorA = def.groundAnchorA;
+	m_groundAnchorB = def.groundAnchorB;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
 
-	m_lengthA = def->lengthA;
-	m_lengthB = def->lengthB;
+	m_lengthA = def.lengthA;
+	m_lengthB = def.lengthB;
 
-	b2Assert(def->ratio != 0.0f);
-	m_ratio = def->ratio;
+	b2Assert(def.ratio != 0.0f);
+	m_ratio = def.ratio;
 
-	m_constant = def->lengthA + m_ratio * def->lengthB;
+	m_constant = def.lengthA + m_ratio * def.lengthB;
 
 	m_impulse = 0.0f;
 }
 
 void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	b2Vec2 cA = data.positions[m_indexA].c;
 	float aA = data.positions[m_indexA].a;
@@ -261,12 +261,12 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2PulleyJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2PulleyJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2PulleyJoint::GetReactionForce(float inv_dt) const
@@ -308,7 +308,7 @@ float b2PulleyJoint::GetRatio() const
 
 float b2PulleyJoint::GetCurrentLengthA() const
 {
-	b2Vec2 p = m_bodyA->GetWorldPoint(m_localAnchorA);
+	b2Vec2 p = m_bodyA.GetWorldPoint(m_localAnchorA);
 	b2Vec2 s = m_groundAnchorA;
 	b2Vec2 d = p - s;
 	return d.Length();
@@ -316,7 +316,7 @@ float b2PulleyJoint::GetCurrentLengthA() const
 
 float b2PulleyJoint::GetCurrentLengthB() const
 {
-	b2Vec2 p = m_bodyB->GetWorldPoint(m_localAnchorB);
+	b2Vec2 p = m_bodyB.GetWorldPoint(m_localAnchorB);
 	b2Vec2 s = m_groundAnchorB;
 	b2Vec2 d = p - s;
 	return d.Length();
@@ -324,8 +324,8 @@ float b2PulleyJoint::GetCurrentLengthB() const
 
 void b2PulleyJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2PulleyJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -338,7 +338,7 @@ void b2PulleyJoint::Dump()
 	b2Settings.b2Log("  jd.lengthA = %.15lef;\n", m_lengthA);
 	b2Settings.b2Log("  jd.lengthB = %.15lef;\n", m_lengthB);
 	b2Settings.b2Log("  jd.ratio = %.15lef;\n", m_ratio);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }
 
 void b2PulleyJoint::ShiftOrigin(const b2Vec2& newOrigin)

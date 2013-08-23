@@ -27,7 +27,7 @@ public:
 		b2Body* ground = null;
 		{
 			b2BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -36,7 +36,7 @@ public:
 			fd.shape = &shape;
 			//fd.filter.categoryBits = 2;
 
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 		}
 
 		{
@@ -49,12 +49,12 @@ public:
 			b2RevoluteJointDef rjd;
 
 			bd.position.Set(-10.0f, 20.0f);
-			b2Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 5.0f);
+			b2Body* body = m_world.CreateBody(&bd);
+			body.CreateFixture(&shape, 5.0f);
 
 			float w = 100.0f;
-			body->SetAngularVelocity(w);
-			body->SetLinearVelocity(b2Vec2(-8.0f * w, 0.0f));
+			body.SetAngularVelocity(w);
+			body.SetLinearVelocity(b2Vec2(-8.0f * w, 0.0f));
 
 			rjd.Initialize(ground, body, b2Vec2(-10.0f, 12.0f));
 			rjd.motorSpeed = 1.0f * Math.PI;
@@ -65,7 +65,7 @@ public:
 			rjd.enableLimit = true;
 			rjd.collideConnected = true;
 
-			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&rjd);
+			m_joint = (b2RevoluteJoint*)m_world.CreateJoint(&rjd);
 		}
 
 		{
@@ -81,8 +81,8 @@ public:
 			fd.filter.maskBits = 1;
 			fd.shape = &circle_shape;
 
-			m_ball = m_world->CreateBody(&circle_bd);
-			m_ball->CreateFixture(&fd);
+			m_ball = m_world.CreateBody(&circle_bd);
+			m_ball.CreateFixture(&fd);
 
 			b2PolygonShape polygon_shape;
 			polygon_shape.SetAsBox(10.0f, 0.2f, b2Vec2 (-10.0f, 0.0f), 0.0f);
@@ -91,22 +91,22 @@ public:
 			polygon_bd.position.Set(20.0f, 10.0f);
 			polygon_bd.type = b2_dynamicBody;
 			polygon_bd.bullet = true;
-			b2Body* polygon_body = m_world->CreateBody(&polygon_bd);
-			polygon_body->CreateFixture(&polygon_shape, 2.0f);
+			b2Body* polygon_body = m_world.CreateBody(&polygon_bd);
+			polygon_body.CreateFixture(&polygon_shape, 2.0f);
 
 			b2RevoluteJointDef rjd;
 			rjd.Initialize(ground, polygon_body, b2Vec2(20.0f, 10.0f));
 			rjd.lowerAngle = -0.25f * Math.PI;
 			rjd.upperAngle = 0.0f * Math.PI;
 			rjd.enableLimit = true;
-			m_world->CreateJoint(&rjd);
+			m_world.CreateJoint(&rjd);
 		}
 
 		// Tests mass computation of a small object far from the origin
 		{
 			b2BodyDef bodyDef;
 			bodyDef.type = b2_dynamicBody;
-			b2Body* body = m_world->CreateBody(&bodyDef);
+			b2Body* body = m_world.CreateBody(&bodyDef);
 		
 			b2PolygonShape polyShape;		
 			b2Vec2 verts[3];
@@ -119,7 +119,7 @@ public:
 			polyFixtureDef.shape = &polyShape;
 			polyFixtureDef.density = 1;
 
-			body->CreateFixture(&polyFixtureDef);	//assertion hits inside here
+			body.CreateFixture(&polyFixtureDef);	//assertion hits inside here
 		}
 
 	}
@@ -129,11 +129,11 @@ public:
 		switch (key)
 		{
 		case 'l':
-			m_joint->EnableLimit(!m_joint->IsLimitEnabled());
+			m_joint.EnableLimit(!m_joint.IsLimitEnabled());
 			break;
 
 		case 'm':
-			m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+			m_joint.EnableMotor(!m_joint.IsMotorEnabled());
 			break;
 		}
 	}
@@ -146,10 +146,10 @@ public:
 
 		//if (m_stepCount == 360)
 		//{
-		//	m_ball->SetTransform(b2Vec2(0.0f, 0.5f), 0.0f);
+		//	m_ball.SetTransform(b2Vec2(0.0f, 0.5f), 0.0f);
 		//}
 
-		//float torque1 = m_joint1->GetMotorTorque();
+		//float torque1 = m_joint1.GetMotorTorque();
 		//m_debugDraw.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
 		//m_textLine += DRAW_STRING_NEW_LINE;
 	}

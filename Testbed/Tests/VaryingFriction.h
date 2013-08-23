@@ -27,11 +27,11 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -42,8 +42,8 @@ public:
 			bd.position.Set(-4.0f, 22.0f);
 			bd.angle = -0.25f;
 
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -53,8 +53,8 @@ public:
 			b2BodyDef bd;
 			bd.position.Set(10.5f, 19.0f);
 
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -65,8 +65,8 @@ public:
 			bd.position.Set(4.0f, 14.0f);
 			bd.angle = 0.25f;
 
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -76,8 +76,8 @@ public:
 			b2BodyDef bd;
 			bd.position.Set(-10.5f, 11.0f);
 
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -88,8 +88,8 @@ public:
 			bd.position.Set(-4.0f, 6.0f);
 			bd.angle = -0.25f;
 
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -107,10 +107,10 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position.Set(-15.0f + 4.0f * i, 28.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				b2Body* body = m_world.CreateBody(&bd);
 
 				fd.friction = friction[i];
-				body->CreateFixture(&fd);
+				body.CreateFixture(&fd);
 			}
 		}
 	}

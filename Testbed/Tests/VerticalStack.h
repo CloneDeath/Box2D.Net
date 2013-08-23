@@ -35,14 +35,14 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 
 			shape.Set(b2Vec2(20.0f, 0.0f), b2Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		float xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
@@ -71,11 +71,11 @@ public:
 				//float x = RandomFloat(-0.02f, 0.02f);
 				//float x = i % 2 == 0 ? -0.025f : 0.025f;
 				bd.position.Set(xs[j] + x, 0.752f + 1.54f * i);
-				b2Body* body = m_world->CreateBody(&bd);
+				b2Body* body = m_world.CreateBody(&bd);
 
 				m_bodies[n] = body;
 
-				body->CreateFixture(&fd);
+				body.CreateFixture(&fd);
 			}
 		}
 
@@ -89,7 +89,7 @@ public:
 		case ',':
 			if (m_bullet != null)
 			{
-				m_world->DestroyBody(m_bullet);
+				m_world.DestroyBody(m_bullet);
 				m_bullet = null;
 			}
 
@@ -107,10 +107,10 @@ public:
 				bd.bullet = true;
 				bd.position.Set(-31.0f, 5.0f);
 
-				m_bullet = m_world->CreateBody(&bd);
-				m_bullet->CreateFixture(&fd);
+				m_bullet = m_world.CreateBody(&bd);
+				m_bullet.CreateFixture(&fd);
 
-				m_bullet->SetLinearVelocity(b2Vec2(400.0f, 0.0f));
+				m_bullet.SetLinearVelocity(b2Vec2(400.0f, 0.0f));
 			}
 			break;
 		}
@@ -126,7 +126,7 @@ public:
 		//{
 		//	if (m_bullet != null)
 		//	{
-		//		m_world->DestroyBody(m_bullet);
+		//		m_world.DestroyBody(m_bullet);
 		//		m_bullet = null;
 		//	}
 
@@ -144,10 +144,10 @@ public:
 		//		bd.bullet = true;
 		//		bd.position.Set(-31.0f, 5.0f);
 
-		//		m_bullet = m_world->CreateBody(&bd);
-		//		m_bullet->CreateFixture(&fd);
+		//		m_bullet = m_world.CreateBody(&bd);
+		//		m_bullet.CreateFixture(&fd);
 
-		//		m_bullet->SetLinearVelocity(b2Vec2(400.0f, 0.0f));
+		//		m_bullet.SetLinearVelocity(b2Vec2(400.0f, 0.0f));
 		//	}
 		//}
 	}

@@ -52,8 +52,8 @@ public:
 			sd.friction = 0.3f;
 
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&sd);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&sd);
 		}
 
 		// Small triangle
@@ -76,8 +76,8 @@ public:
 		triangleBodyDef.type = b2_dynamicBody;
 		triangleBodyDef.position.Set(-5.0f, 2.0f);
 
-		b2Body* body1 = m_world->CreateBody(&triangleBodyDef);
-		body1->CreateFixture(&triangleShapeDef);
+		b2Body* body1 = m_world.CreateBody(&triangleBodyDef);
+		body1.CreateFixture(&triangleShapeDef);
 
 		// Large triangle (recycle definitions)
 		vertices[0] *= 2.0f;
@@ -88,18 +88,18 @@ public:
 		triangleBodyDef.position.Set(-5.0f, 6.0f);
 		triangleBodyDef.fixedRotation = true; // look at me!
 
-		b2Body* body2 = m_world->CreateBody(&triangleBodyDef);
-		body2->CreateFixture(&triangleShapeDef);
+		b2Body* body2 = m_world.CreateBody(&triangleBodyDef);
+		body2.CreateFixture(&triangleShapeDef);
 
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position.Set(-5.0f, 10.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			b2PolygonShape p;
 			p.SetAsBox(0.5f, 1.0f);
-			body->CreateFixture(&p, 1.0f);
+			body.CreateFixture(&p, 1.0f);
 
 			b2PrismaticJointDef jd;
 			jd.bodyA = body2;
@@ -111,7 +111,7 @@ public:
 			jd.lowerTranslation = -1.0f;
 			jd.upperTranslation = 1.0f;
 
-			m_world->CreateJoint(&jd);
+			m_world.CreateJoint(&jd);
 		}
 
 		// Small box
@@ -129,16 +129,16 @@ public:
 		boxBodyDef.type = b2_dynamicBody;
 		boxBodyDef.position.Set(0.0f, 2.0f);
 
-		b2Body* body3 = m_world->CreateBody(&boxBodyDef);
-		body3->CreateFixture(&boxShapeDef);
+		b2Body* body3 = m_world.CreateBody(&boxBodyDef);
+		body3.CreateFixture(&boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
 		boxShapeDef.filter.groupIndex = k_largeGroup;
 		boxBodyDef.position.Set(0.0f, 6.0f);
 
-		b2Body* body4 = m_world->CreateBody(&boxBodyDef);
-		body4->CreateFixture(&boxShapeDef);
+		b2Body* body4 = m_world.CreateBody(&boxBodyDef);
+		body4.CreateFixture(&boxShapeDef);
 
 		// Small circle
 		b2CircleShape circle;
@@ -156,16 +156,16 @@ public:
 		circleBodyDef.type = b2_dynamicBody;
 		circleBodyDef.position.Set(5.0f, 2.0f);
 		
-		b2Body* body5 = m_world->CreateBody(&circleBodyDef);
-		body5->CreateFixture(&circleShapeDef);
+		b2Body* body5 = m_world.CreateBody(&circleBodyDef);
+		body5.CreateFixture(&circleShapeDef);
 
 		// Large circle
 		circle.m_radius *= 2.0f;
 		circleShapeDef.filter.groupIndex = k_largeGroup;
 		circleBodyDef.position.Set(5.0f, 6.0f);
 
-		b2Body* body6 = m_world->CreateBody(&circleBodyDef);
-		body6->CreateFixture(&circleShapeDef);
+		b2Body* body6 = m_world.CreateBody(&circleBodyDef);
+		body6.CreateFixture(&circleShapeDef);
 	}
 
 	static Test* Create()

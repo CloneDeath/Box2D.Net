@@ -14,7 +14,7 @@ namespace Box2D {
 
 		/// Implement b2Shape.
 		public b2Shape Clone(){
-			void* mem = allocator->Allocate(sizeof(b2CircleShape));
+			void* mem = allocator.Allocate(sizeof(b2CircleShape));
 			b2CircleShape* clone = new (mem) b2CircleShape;
 			*clone = *this;
 			return clone;
@@ -64,9 +64,9 @@ namespace Box2D {
 			if (0.0f <= a && a <= input.maxFraction * rr)
 			{
 				a /= rr;
-				output->fraction = a;
-				output->normal = s + a * r;
-				output->normal.Normalize();
+				output.fraction = a;
+				output.normal = s + a * r;
+				output.normal.Normalize();
 				return true;
 			}
 
@@ -78,17 +78,17 @@ namespace Box2D {
 			B2_NOT_USED(childIndex);
 
 			b2Vec2 p = transform.p + b2Mul(transform.q, m_p);
-			aabb->lowerBound.Set(p.x - m_radius, p.y - m_radius);
-			aabb->upperBound.Set(p.x + m_radius, p.y + m_radius);
+			aabb.lowerBound.Set(p.x - m_radius, p.y - m_radius);
+			aabb.upperBound.Set(p.x + m_radius, p.y + m_radius);
 		}
 
 		/// @see b2Shape::ComputeMass
 		public void ComputeMass(out b2MassData massData, float density){
-			massData->mass = density * Math.PI * m_radius * m_radius;
-			massData->center = m_p;
+			massData.mass = density * Math.PI * m_radius * m_radius;
+			massData.center = m_p;
 
 			// inertia about the local origin
-			massData->I = massData->mass * (0.5f * m_radius * m_radius + b2Dot(m_p, m_p));
+			massData.I = massData.mass * (0.5f * m_radius * m_radius + b2Dot(m_p, m_p));
 		}
 
 		/// Get the supporting vertex index in the given direction.

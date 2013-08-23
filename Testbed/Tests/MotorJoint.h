@@ -30,7 +30,7 @@ public:
 		b2Body* ground = null;
 		{
 			b2BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
@@ -38,7 +38,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &shape;
 
-			ground->CreateFixture(&fd);
+			ground.CreateFixture(&fd);
 		}
 
 		// Define motorized body
@@ -46,7 +46,7 @@ public:
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position.Set(0.0f, 8.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.5f);
@@ -55,13 +55,13 @@ public:
 			fd.shape = &shape;
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
-			body->CreateFixture(&fd);
+			body.CreateFixture(&fd);
 
 			b2MotorJointDef mjd;
 			mjd.Initialize(ground, body);
 			mjd.maxForce = 1000.0f;
 			mjd.maxTorque = 1000.0f;
-			m_joint = (b2MotorJoint*)m_world->CreateJoint(&mjd);
+			m_joint = (b2MotorJoint*)m_world.CreateJoint(&mjd);
 		}
 
 		m_go = false;
@@ -80,9 +80,9 @@ public:
 
 	void Step(Settings* settings)
 	{
-		if (m_go && settings->hz > 0.0f)
+		if (m_go && settings.hz > 0.0f)
 		{
-			m_time += 1.0f / settings->hz;
+			m_time += 1.0f / settings.hz;
 		}
 
 		b2Vec2 linearOffset;
@@ -91,8 +91,8 @@ public:
 		
 		float angularOffset = 4.0f * m_time;
 
-		m_joint->SetLinearOffset(linearOffset);
-		m_joint->SetAngularOffset(angularOffset);
+		m_joint.SetLinearOffset(linearOffset);
+		m_joint.SetAngularOffset(angularOffset);
 
 		m_debugDraw.DrawPoint(linearOffset, 4.0f, b2Color(0.9f, 0.9f, 0.9f));
 

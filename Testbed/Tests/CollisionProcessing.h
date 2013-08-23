@@ -37,8 +37,8 @@ public:
 			sd.shape = &shape;;
 
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&sd);
+			b2Body* ground = m_world.CreateBody(&bd);
+			ground.CreateFixture(&sd);
 		}
 
 		float xLo = -5.0f, xHi = 5.0f;
@@ -61,8 +61,8 @@ public:
 		triangleBodyDef.type = b2_dynamicBody;
 		triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body1 = m_world->CreateBody(&triangleBodyDef);
-		body1->CreateFixture(&triangleShapeDef);
+		b2Body* body1 = m_world.CreateBody(&triangleBodyDef);
+		body1.CreateFixture(&triangleShapeDef);
 
 		// Large triangle (recycle definitions)
 		vertices[0] *= 2.0f;
@@ -72,8 +72,8 @@ public:
 
 		triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body2 = m_world->CreateBody(&triangleBodyDef);
-		body2->CreateFixture(&triangleShapeDef);
+		b2Body* body2 = m_world.CreateBody(&triangleBodyDef);
+		body2.CreateFixture(&triangleShapeDef);
 		
 		// Small box
 		polygon.SetAsBox(1.0f, 0.5f);
@@ -86,15 +86,15 @@ public:
 		boxBodyDef.type = b2_dynamicBody;
 		boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body3 = m_world->CreateBody(&boxBodyDef);
-		body3->CreateFixture(&boxShapeDef);
+		b2Body* body3 = m_world.CreateBody(&boxBodyDef);
+		body3.CreateFixture(&boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
 		boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
-		b2Body* body4 = m_world->CreateBody(&boxBodyDef);
-		body4->CreateFixture(&boxShapeDef);
+		b2Body* body4 = m_world.CreateBody(&boxBodyDef);
+		body4.CreateFixture(&boxShapeDef);
 
 		// Small circle
 		b2CircleShape circle;
@@ -108,15 +108,15 @@ public:
 		circleBodyDef.type = b2_dynamicBody;
 		circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body5 = m_world->CreateBody(&circleBodyDef);
-		body5->CreateFixture(&circleShapeDef);
+		b2Body* body5 = m_world.CreateBody(&circleBodyDef);
+		body5.CreateFixture(&circleShapeDef);
 
 		// Large circle
 		circle.m_radius *= 2.0f;
 		circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body6 = m_world->CreateBody(&circleBodyDef);
-		body6->CreateFixture(&circleShapeDef);
+		b2Body* body6 = m_world.CreateBody(&circleBodyDef);
+		body6.CreateFixture(&circleShapeDef);
 	}
 
 	void Step(Settings* settings)
@@ -136,10 +136,10 @@ public:
 		{
 			ContactPoint* point = m_points + i;
 
-			b2Body* body1 = point->fixtureA->GetBody();
-			b2Body* body2 = point->fixtureB->GetBody();
-			float mass1 = body1->GetMass();
-			float mass2 = body2->GetMass();
+			b2Body* body1 = point.fixtureA.GetBody();
+			b2Body* body2 = point.fixtureB.GetBody();
+			float mass1 = body1.GetMass();
+			float mass2 = body2.GetMass();
 
 			if (mass1 > 0.0f && mass2 > 0.0f)
 			{
@@ -174,7 +174,7 @@ public:
 
 			if (b != m_bomb)
 			{
-				m_world->DestroyBody(b);
+				m_world.DestroyBody(b);
 			}
 		}
 	}

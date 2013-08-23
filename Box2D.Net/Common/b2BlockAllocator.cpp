@@ -114,7 +114,7 @@ void* b2BlockAllocator::Allocate(int size)
 	if (m_freeLists[index])
 	{
 		b2Block* block = m_freeLists[index];
-		m_freeLists[index] = block->next;
+		m_freeLists[index] = block.next;
 		return block;
 	}
 	else
@@ -130,27 +130,27 @@ void* b2BlockAllocator::Allocate(int size)
 		}
 
 		b2Chunk* chunk = m_chunks + m_chunkCount;
-		chunk->blocks = (b2Block*)b2Alloc(b2_chunkSize);
+		chunk.blocks = (b2Block*)b2Alloc(b2_chunkSize);
 #if defined(_DEBUG)
-		memset(chunk->blocks, 0xcd, b2_chunkSize);
+		memset(chunk.blocks, 0xcd, b2_chunkSize);
 #endif
 		int blockSize = s_blockSizes[index];
-		chunk->blockSize = blockSize;
+		chunk.blockSize = blockSize;
 		int blockCount = b2_chunkSize / blockSize;
 		b2Assert(blockCount * blockSize <= b2_chunkSize);
 		for (int i = 0; i < blockCount - 1; ++i)
 		{
-			b2Block* block = (b2Block*)((int8*)chunk->blocks + blockSize * i);
-			b2Block* next = (b2Block*)((int8*)chunk->blocks + blockSize * (i + 1));
-			block->next = next;
+			b2Block* block = (b2Block*)((int8*)chunk.blocks + blockSize * i);
+			b2Block* next = (b2Block*)((int8*)chunk.blocks + blockSize * (i + 1));
+			block.next = next;
 		}
-		b2Block* last = (b2Block*)((int8*)chunk->blocks + blockSize * (blockCount - 1));
-		last->next = null;
+		b2Block* last = (b2Block*)((int8*)chunk.blocks + blockSize * (blockCount - 1));
+		last.next = null;
 
-		m_freeLists[index] = chunk->blocks->next;
+		m_freeLists[index] = chunk.blocks.next;
 		++m_chunkCount;
 
-		return chunk->blocks;
+		return chunk.blocks;
 	}
 }
 
@@ -179,14 +179,14 @@ void b2BlockAllocator::Free(void* p, int size)
 	for (int i = 0; i < m_chunkCount; ++i)
 	{
 		b2Chunk* chunk = m_chunks + i;
-		if (chunk->blockSize != blockSize)
+		if (chunk.blockSize != blockSize)
 		{
-			b2Assert(	(int8*)p + blockSize <= (int8*)chunk->blocks ||
-						(int8*)chunk->blocks + b2_chunkSize <= (int8*)p);
+			b2Assert(	(int8*)p + blockSize <= (int8*)chunk.blocks ||
+						(int8*)chunk.blocks + b2_chunkSize <= (int8*)p);
 		}
 		else
 		{
-			if ((int8*)chunk->blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk->blocks + b2_chunkSize)
+			if ((int8*)chunk.blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk.blocks + b2_chunkSize)
 			{
 				found = true;
 			}
@@ -199,7 +199,7 @@ void b2BlockAllocator::Free(void* p, int size)
 #endif
 
 	b2Block* block = (b2Block*)p;
-	block->next = m_freeLists[index];
+	block.next = m_freeLists[index];
 	m_freeLists[index] = block;
 }
 

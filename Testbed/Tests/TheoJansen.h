@@ -84,11 +84,11 @@ public:
 		bd1.angularDamping = 10.0f;
 		bd2.angularDamping = 10.0f;
 
-		b2Body* body1 = m_world->CreateBody(&bd1);
-		b2Body* body2 = m_world->CreateBody(&bd2);
+		b2Body* body1 = m_world.CreateBody(&bd1);
+		b2Body* body2 = m_world.CreateBody(&bd2);
 
-		body1->CreateFixture(&fd1);
-		body2->CreateFixture(&fd2);
+		body1.CreateFixture(&fd1);
+		body2.CreateFixture(&fd2);
 
 		b2DistanceJointDef djd;
 
@@ -99,21 +99,21 @@ public:
 		djd.frequencyHz = 10.0f;
 
 		djd.Initialize(body1, body2, p2 + m_offset, p5 + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world.CreateJoint(&djd);
 
 		djd.Initialize(body1, body2, p3 + m_offset, p4 + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world.CreateJoint(&djd);
 
 		djd.Initialize(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world.CreateJoint(&djd);
 
 		djd.Initialize(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world.CreateJoint(&djd);
 
 		b2RevoluteJointDef rjd;
 
 		rjd.Initialize(body2, m_chassis, p4 + m_offset);
-		m_world->CreateJoint(&rjd);
+		m_world.CreateJoint(&rjd);
 	}
 
 	TheoJansen()
@@ -126,17 +126,17 @@ public:
 		// Ground
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(50.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 
 			shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(-50.0f, 10.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 
 			shape.Set(b2Vec2(50.0f, 0.0f), b2Vec2(50.0f, 10.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Balls
@@ -149,8 +149,8 @@ public:
 			bd.type = b2_dynamicBody;
 			bd.position.Set(-40.0f + 2.0f * i, 0.5f);
 
-			b2Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 1.0f);
+			b2Body* body = m_world.CreateBody(&bd);
+			body.CreateFixture(&shape, 1.0f);
 		}
 
 		// Chassis
@@ -165,8 +165,8 @@ public:
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position = pivot + m_offset;
-			m_chassis = m_world->CreateBody(&bd);
-			m_chassis->CreateFixture(&sd);
+			m_chassis = m_world.CreateBody(&bd);
+			m_chassis.CreateFixture(&sd);
 		}
 
 		{
@@ -180,8 +180,8 @@ public:
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.position = pivot + m_offset;
-			m_wheel = m_world->CreateBody(&bd);
-			m_wheel->CreateFixture(&sd);
+			m_wheel = m_world.CreateBody(&bd);
+			m_wheel.CreateFixture(&sd);
 		}
 
 		{
@@ -191,7 +191,7 @@ public:
 			jd.motorSpeed = m_motorSpeed;
 			jd.maxMotorTorque = 400.0f;
 			jd.enableMotor = m_motorOn;
-			m_motorJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_motorJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
 		}
 
 		b2Vec2 wheelAnchor;
@@ -201,11 +201,11 @@ public:
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
 
-		m_wheel->SetTransform(m_wheel->GetPosition(), 120.0f * Math.PI / 180.0f);
+		m_wheel.SetTransform(m_wheel.GetPosition(), 120.0f * Math.PI / 180.0f);
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
 
-		m_wheel->SetTransform(m_wheel->GetPosition(), -120.0f * Math.PI / 180.0f);
+		m_wheel.SetTransform(m_wheel.GetPosition(), -120.0f * Math.PI / 180.0f);
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
 	}
@@ -223,19 +223,19 @@ public:
 		switch (key)
 		{
 		case 'a':
-			m_motorJoint->SetMotorSpeed(-m_motorSpeed);
+			m_motorJoint.SetMotorSpeed(-m_motorSpeed);
 			break;
 
 		case 's':
-			m_motorJoint->SetMotorSpeed(0.0f);
+			m_motorJoint.SetMotorSpeed(0.0f);
 			break;
 
 		case 'd':
-			m_motorJoint->SetMotorSpeed(m_motorSpeed);
+			m_motorJoint.SetMotorSpeed(m_motorSpeed);
 			break;
 
 		case 'm':
-			m_motorJoint->EnableMotor(!m_motorJoint->IsMotorEnabled());
+			m_motorJoint.EnableMotor(!m_motorJoint.IsMotorEnabled());
 			break;
 		}
 	}

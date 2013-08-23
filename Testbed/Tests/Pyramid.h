@@ -31,11 +31,11 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -57,8 +57,8 @@ public:
 					b2BodyDef bd;
 					bd.type = b2_dynamicBody;
 					bd.position = y;
-					b2Body* body = m_world->CreateBody(&bd);
-					body->CreateFixture(&shape, 5.0f);
+					b2Body* body = m_world.CreateBody(&bd);
+					body.CreateFixture(&shape, 5.0f);
 
 					y += deltaY;
 				}
@@ -72,11 +72,11 @@ public:
 	{
 		Test::Step(settings);
 
-		//b2DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
+		//b2DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
 
 		//if (m_stepCount == 400)
 		//{
-		//	tree->RebuildBottomUp();
+		//	tree.RebuildBottomUp();
 		//}
 	}
 

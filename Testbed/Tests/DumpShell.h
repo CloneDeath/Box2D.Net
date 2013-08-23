@@ -28,7 +28,7 @@ public:
 	{
 
 b2Vec2 g(0.000000000000000e+000f, 0.00000000000000e+00f);
-m_world->SetGravity(g);
+m_world.SetGravity(g);
 b2Body** bodies = (b2Body**)b2Alloc(2 * sizeof(b2Body*));
 b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
 
@@ -47,7 +47,7 @@ b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
   bd.bullet = bool(0);
   bd.active = bool(32);
   bd.gravityScale = 1.000000000000000e+000f;
-  bodies[0] = m_world->CreateBody(&bd);
+  bodies[0] = m_world.CreateBody(&bd);
   {
     b2FixtureDef fd;
     fd.friction = 6.000000238418579e-001f;
@@ -67,7 +67,7 @@ b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
 
     fd.shape = &shape;
 
-    bodies[0]->CreateFixture(&fd);
+    bodies[0].CreateFixture(&fd);
   }
 }
 
@@ -86,7 +86,7 @@ b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
   bd.bullet = bool(0);
   bd.active = bool(32);
   bd.gravityScale = 1.000000000000000e+000f;
-  bodies[1] = m_world->CreateBody(&bd);
+  bodies[1] = m_world.CreateBody(&bd);
   {
     b2FixtureDef fd;
     fd.friction = 0.000000000000000e+000f;
@@ -106,7 +106,7 @@ b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
 
     fd.shape = &shape;
 
-    bodies[1]->CreateFixture(&fd);
+    bodies[1].CreateFixture(&fd);
   }
 }
 

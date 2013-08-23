@@ -24,7 +24,7 @@ namespace Box2D {
 		/// Implement b2Shape.
 		public b2Shape Clone() {
 			throw new NotImplementedException();
-			//void* mem = allocator->Allocate(sizeof(b2PolygonShape));
+			//void* mem = allocator.Allocate(sizeof(b2PolygonShape));
 			//b2PolygonShape* clone = new (mem) b2PolygonShape;
 			//*clone = *this;
 			//return clone;
@@ -313,8 +313,8 @@ namespace Box2D {
 
 			//if (index >= 0)
 			//{
-			//    output->fraction = lower;
-			//    output->normal = b2Mul(xf.q, m_normals[index]);
+			//    output.fraction = lower;
+			//    output.normal = b2Mul(xf.q, m_normals[index]);
 			//    return true;
 			//}
 
@@ -337,8 +337,8 @@ namespace Box2D {
 			//}
 
 			//b2Vec2 r(m_radius, m_radius);
-			//aabb->lowerBound = lower - r;
-			//aabb->upperBound = upper + r;
+			//aabb.lowerBound = lower - r;
+			//aabb.upperBound = upper + r;
 		}
 
 		/// @see b2Shape::ComputeMass
@@ -411,18 +411,18 @@ namespace Box2D {
 			//}
 
 			//// Total mass
-			//massData->mass = density * area;
+			//massData.mass = density * area;
 
 			//// Center of mass
 			//b2Assert(area > b2_epsilon);
 			//center *= 1.0f / area;
-			//massData->center = center + s;
+			//massData.center = center + s;
 
 			//// Inertia tensor relative to the local origin (point s).
-			//massData->I = density * I;
+			//massData.I = density * I;
 			
 			//// Shift to center of mass then to original body origin.
-			//massData->I += massData->mass * (b2Dot(massData->center, massData->center) - b2Dot(center, center));
+			//massData.I += massData.mass * (b2Dot(massData.center, massData.center) - b2Dot(center, center));
 		}
 
 		/// Get the vertex count.

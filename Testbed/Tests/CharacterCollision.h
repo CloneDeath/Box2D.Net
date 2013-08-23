@@ -30,11 +30,11 @@ public:
 		// Ground body
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Collinear edges with no adjacency information.
@@ -42,22 +42,22 @@ public:
 		// an internal vertex.
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-8.0f, 1.0f), b2Vec2(-6.0f, 1.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 			shape.Set(b2Vec2(-6.0f, 1.0f), b2Vec2(-4.0f, 1.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 			shape.Set(b2Vec2(-4.0f, 1.0f), b2Vec2(-2.0f, 1.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Chain shape
 		{
 			b2BodyDef bd;
 			bd.angle = 0.25f * Math.PI;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2Vec2 vs[4];
 			vs[0].Set(5.0f, 7.0f);
@@ -66,7 +66,7 @@ public:
 			vs[3].Set(8.0f, 7.0f);
 			b2ChainShape shape;
 			shape.CreateChain(vs, 4);
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Square tiles. This shows that adjacency shapes may
@@ -74,21 +74,21 @@ public:
 		// to this problem.
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(1.0f, 1.0f, b2Vec2(4.0f, 3.0f), 0.0f);
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 			shape.SetAsBox(1.0f, 1.0f, b2Vec2(6.0f, 3.0f), 0.0f);
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 			shape.SetAsBox(1.0f, 1.0f, b2Vec2(8.0f, 3.0f), 0.0f);
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Square made from an edge loop. Collision should be smooth.
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2Vec2 vs[4];
 			vs[0].Set(-1.0f, 3.0f);
@@ -97,14 +97,14 @@ public:
 			vs[3].Set(-1.0f, 5.0f);
 			b2ChainShape shape;
 			shape.CreateLoop(vs, 4);
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Edge loop. Collision should be smooth.
 		{
 			b2BodyDef bd;
 			bd.position.Set(-10.0f, 4.0f);
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2Vec2 vs[10];
 			vs[0].Set(0.0f, 0.0f);
@@ -119,7 +119,7 @@ public:
 			vs[9].Set(-6.0f, 0.0f);
 			b2ChainShape shape;
 			shape.CreateLoop(vs, 10);
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		// Square character 1
@@ -130,7 +130,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
@@ -138,7 +138,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body.CreateFixture(&fd);
 		}
 
 		// Square character 2
@@ -149,7 +149,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.25f, 0.25f);
@@ -157,7 +157,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body.CreateFixture(&fd);
 		}
 
 		// Hexagon character
@@ -168,7 +168,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			float angle = 0.0f;
 			float delta = Math.PI / 3.0f;
@@ -185,7 +185,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body.CreateFixture(&fd);
 		}
 
 		// Circle character
@@ -196,7 +196,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			b2Body* body = m_world.CreateBody(&bd);
 
 			b2CircleShape shape;
 			shape.m_radius = 0.5f;
@@ -204,7 +204,7 @@ public:
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body.CreateFixture(&fd);
 		}
 
 		// Circle character
@@ -214,7 +214,7 @@ public:
 			bd.type = b2_dynamicBody;
 			bd.allowSleep = false;
 
-			m_character = m_world->CreateBody(&bd);
+			m_character = m_world.CreateBody(&bd);
 
 			b2CircleShape shape;
 			shape.m_radius = 0.25f;
@@ -223,15 +223,15 @@ public:
 			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 1.0f;
-			m_character->CreateFixture(&fd);
+			m_character.CreateFixture(&fd);
 		}
 	}
 
 	void Step(Settings* settings)
 	{
-		b2Vec2 v = m_character->GetLinearVelocity();
+		b2Vec2 v = m_character.GetLinearVelocity();
 		v.x = -5.0f;
-		m_character->SetLinearVelocity(v);
+		m_character.SetLinearVelocity(v);
 
 		Test::Step(settings);
 		m_debugDraw.DrawString(5, m_textLine, "This tests various character collision shapes.");

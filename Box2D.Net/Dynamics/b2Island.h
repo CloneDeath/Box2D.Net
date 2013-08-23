@@ -52,7 +52,7 @@ public:
 	void Add(b2Body* body)
 	{
 		b2Assert(m_bodyCount < m_bodyCapacity);
-		body->m_islandIndex = m_bodyCount;
+		body.m_islandIndex = m_bodyCount;
 		m_bodies[m_bodyCount] = body;
 		++m_bodyCount;
 	}

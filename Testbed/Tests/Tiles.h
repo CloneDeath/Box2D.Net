@@ -38,7 +38,7 @@ public:
 			float a = 0.5f;
 			b2BodyDef bd;
 			bd.position.y = -a;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 #if 1
 			int N = 200;
@@ -52,7 +52,7 @@ public:
 				{
 					b2PolygonShape shape;
 					shape.SetAsBox(a, a, position, 0.0f);
-					ground->CreateFixture(&shape, 0.0f);
+					ground.CreateFixture(&shape, 0.0f);
 					++m_fixtureCount;
 					position.x += 2.0f * a;
 				}
@@ -70,7 +70,7 @@ public:
 				{
 					b2PolygonShape shape;
 					shape.SetAsBox(a, a, position, 0.0f);
-					ground->CreateFixture(&shape, 0.0f);
+					ground.CreateFixture(&shape, 0.0f);
 					position.y -= 2.0f * a;
 				}
 				position.x += 2.0f * a;
@@ -107,8 +107,8 @@ public:
 					//	bd.allowSleep = true;
 					//}
 
-					b2Body* body = m_world->CreateBody(&bd);
-					body->CreateFixture(&shape, 5.0f);
+					b2Body* body = m_world.CreateBody(&bd);
+					body.CreateFixture(&shape, 5.0f);
 					++m_fixtureCount;
 					y += deltaY;
 				}
@@ -122,7 +122,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		const b2ContactManager& cm = m_world->GetContactManager();
+		const b2ContactManager& cm = m_world.GetContactManager();
 		int height = cm.m_broadPhase.GetTreeHeight();
 		int leafCount = cm.m_broadPhase.GetProxyCount();
 		int minimumNodeCount = 2 * leafCount - 1;
@@ -136,11 +136,11 @@ public:
 			m_createTime, m_fixtureCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		//b2DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
+		//b2DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
 
 		//if (m_stepCount == 400)
 		//{
-		//	tree->RebuildBottomUp();
+		//	tree.RebuildBottomUp();
 		//}
 	}
 

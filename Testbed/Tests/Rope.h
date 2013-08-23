@@ -70,9 +70,9 @@ public:
 
 	void Step(Settings* settings)
 	{
-		float dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
+		float dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
 
-		if (settings->pause == 1 && settings->singleStep == 0)
+		if (settings.pause == 1 && settings.singleStep == 0)
 		{
 			dt = 0.0f;
 		}

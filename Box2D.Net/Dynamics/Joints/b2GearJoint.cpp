@@ -44,11 +44,11 @@
 b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 : b2Joint(def)
 {
-	m_joint1 = def->joint1;
-	m_joint2 = def->joint2;
+	m_joint1 = def.joint1;
+	m_joint2 = def.joint2;
 
-	m_typeA = m_joint1->GetType();
-	m_typeB = m_joint2->GetType();
+	m_typeA = m_joint1.GetType();
+	m_typeB = m_joint2.GetType();
 
 	b2Assert(m_typeA == e_revoluteJoint || m_typeA == e_prismaticJoint);
 	b2Assert(m_typeB == e_revoluteJoint || m_typeB == e_prismaticJoint);
@@ -57,71 +57,71 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 	// TODO_ERIN there might be some problem with the joint edges in b2Joint.
 
-	m_bodyC = m_joint1->GetBodyA();
-	m_bodyA = m_joint1->GetBodyB();
+	m_bodyC = m_joint1.GetBodyA();
+	m_bodyA = m_joint1.GetBodyB();
 
 	// Get geometry of joint1
-	b2Transform xfA = m_bodyA->m_xf;
-	float aA = m_bodyA->m_sweep.a;
-	b2Transform xfC = m_bodyC->m_xf;
-	float aC = m_bodyC->m_sweep.a;
+	b2Transform xfA = m_bodyA.m_xf;
+	float aA = m_bodyA.m_sweep.a;
+	b2Transform xfC = m_bodyC.m_xf;
+	float aC = m_bodyC.m_sweep.a;
 
 	if (m_typeA == e_revoluteJoint)
 	{
-		b2RevoluteJoint* revolute = (b2RevoluteJoint*)def->joint1;
-		m_localAnchorC = revolute->m_localAnchorA;
-		m_localAnchorA = revolute->m_localAnchorB;
-		m_referenceAngleA = revolute->m_referenceAngle;
+		b2RevoluteJoint* revolute = (b2RevoluteJoint*)def.joint1;
+		m_localAnchorC = revolute.m_localAnchorA;
+		m_localAnchorA = revolute.m_localAnchorB;
+		m_referenceAngleA = revolute.m_referenceAngle;
 		m_localAxisC.SetZero();
 
 		coordinateA = aA - aC - m_referenceAngleA;
 	}
 	else
 	{
-		b2PrismaticJoint* prismatic = (b2PrismaticJoint*)def->joint1;
-		m_localAnchorC = prismatic->m_localAnchorA;
-		m_localAnchorA = prismatic->m_localAnchorB;
-		m_referenceAngleA = prismatic->m_referenceAngle;
-		m_localAxisC = prismatic->m_localXAxisA;
+		b2PrismaticJoint* prismatic = (b2PrismaticJoint*)def.joint1;
+		m_localAnchorC = prismatic.m_localAnchorA;
+		m_localAnchorA = prismatic.m_localAnchorB;
+		m_referenceAngleA = prismatic.m_referenceAngle;
+		m_localAxisC = prismatic.m_localXAxisA;
 
 		b2Vec2 pC = m_localAnchorC;
 		b2Vec2 pA = b2MulT(xfC.q, b2Mul(xfA.q, m_localAnchorA) + (xfA.p - xfC.p));
 		coordinateA = b2Dot(pA - pC, m_localAxisC);
 	}
 
-	m_bodyD = m_joint2->GetBodyA();
-	m_bodyB = m_joint2->GetBodyB();
+	m_bodyD = m_joint2.GetBodyA();
+	m_bodyB = m_joint2.GetBodyB();
 
 	// Get geometry of joint2
-	b2Transform xfB = m_bodyB->m_xf;
-	float aB = m_bodyB->m_sweep.a;
-	b2Transform xfD = m_bodyD->m_xf;
-	float aD = m_bodyD->m_sweep.a;
+	b2Transform xfB = m_bodyB.m_xf;
+	float aB = m_bodyB.m_sweep.a;
+	b2Transform xfD = m_bodyD.m_xf;
+	float aD = m_bodyD.m_sweep.a;
 
 	if (m_typeB == e_revoluteJoint)
 	{
-		b2RevoluteJoint* revolute = (b2RevoluteJoint*)def->joint2;
-		m_localAnchorD = revolute->m_localAnchorA;
-		m_localAnchorB = revolute->m_localAnchorB;
-		m_referenceAngleB = revolute->m_referenceAngle;
+		b2RevoluteJoint* revolute = (b2RevoluteJoint*)def.joint2;
+		m_localAnchorD = revolute.m_localAnchorA;
+		m_localAnchorB = revolute.m_localAnchorB;
+		m_referenceAngleB = revolute.m_referenceAngle;
 		m_localAxisD.SetZero();
 
 		coordinateB = aB - aD - m_referenceAngleB;
 	}
 	else
 	{
-		b2PrismaticJoint* prismatic = (b2PrismaticJoint*)def->joint2;
-		m_localAnchorD = prismatic->m_localAnchorA;
-		m_localAnchorB = prismatic->m_localAnchorB;
-		m_referenceAngleB = prismatic->m_referenceAngle;
-		m_localAxisD = prismatic->m_localXAxisA;
+		b2PrismaticJoint* prismatic = (b2PrismaticJoint*)def.joint2;
+		m_localAnchorD = prismatic.m_localAnchorA;
+		m_localAnchorB = prismatic.m_localAnchorB;
+		m_referenceAngleB = prismatic.m_referenceAngle;
+		m_localAxisD = prismatic.m_localXAxisA;
 
 		b2Vec2 pD = m_localAnchorD;
 		b2Vec2 pB = b2MulT(xfD.q, b2Mul(xfB.q, m_localAnchorB) + (xfB.p - xfD.p));
 		coordinateB = b2Dot(pB - pD, m_localAxisD);
 	}
 
-	m_ratio = def->ratio;
+	m_ratio = def.ratio;
 
 	m_constant = coordinateA + m_ratio * coordinateB;
 
@@ -130,22 +130,22 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_indexC = m_bodyC->m_islandIndex;
-	m_indexD = m_bodyD->m_islandIndex;
-	m_lcA = m_bodyA->m_sweep.localCenter;
-	m_lcB = m_bodyB->m_sweep.localCenter;
-	m_lcC = m_bodyC->m_sweep.localCenter;
-	m_lcD = m_bodyD->m_sweep.localCenter;
-	m_mA = m_bodyA->m_invMass;
-	m_mB = m_bodyB->m_invMass;
-	m_mC = m_bodyC->m_invMass;
-	m_mD = m_bodyD->m_invMass;
-	m_iA = m_bodyA->m_invI;
-	m_iB = m_bodyB->m_invI;
-	m_iC = m_bodyC->m_invI;
-	m_iD = m_bodyD->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_indexC = m_bodyC.m_islandIndex;
+	m_indexD = m_bodyD.m_islandIndex;
+	m_lcA = m_bodyA.m_sweep.localCenter;
+	m_lcB = m_bodyB.m_sweep.localCenter;
+	m_lcC = m_bodyC.m_sweep.localCenter;
+	m_lcD = m_bodyD.m_sweep.localCenter;
+	m_mA = m_bodyA.m_invMass;
+	m_mB = m_bodyB.m_invMass;
+	m_mC = m_bodyC.m_invMass;
+	m_mD = m_bodyD.m_invMass;
+	m_iA = m_bodyA.m_invI;
+	m_iB = m_bodyB.m_invI;
+	m_iC = m_bodyC.m_invI;
+	m_iD = m_bodyD.m_invI;
 
 	float aA = data.positions[m_indexA].a;
 	b2Vec2 vA = data.velocities[m_indexA].v;
@@ -369,12 +369,12 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2GearJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2GearJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2GearJoint::GetReactionForce(float inv_dt) const
@@ -402,11 +402,11 @@ float b2GearJoint::GetRatio() const
 
 void b2GearJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
-	int index1 = m_joint1->m_index;
-	int index2 = m_joint2->m_index;
+	int index1 = m_joint1.m_index;
+	int index2 = m_joint2.m_index;
 
 	b2Settings.b2Log("  b2GearJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -415,5 +415,5 @@ void b2GearJoint::Dump()
 	b2Settings.b2Log("  jd.joint1 = joints[%d];\n", index1);
 	b2Settings.b2Log("  jd.joint2 = joints[%d];\n", index2);
 	b2Settings.b2Log("  jd.ratio = %.15lef;\n", m_ratio);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

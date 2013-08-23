@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Box2D.Dynamics {
+namespace Box2D {
 	/// Callback class for AABB queries.
 	/// See b2World::Query
 	abstract class b2QueryCallback

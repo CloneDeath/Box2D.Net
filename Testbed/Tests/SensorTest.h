@@ -33,12 +33,12 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			{
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground->CreateFixture(&shape, 0.0f);
+				ground.CreateFixture(&shape, 0.0f);
 			}
 
 #if 0
@@ -46,7 +46,7 @@ public:
 				b2FixtureDef sd;
 				sd.SetAsBox(10.0f, 2.0f, b2Vec2(0.0f, 20.0f), 0.0f);
 				sd.isSensor = true;
-				m_sensor = ground->CreateFixture(&sd);
+				m_sensor = ground.CreateFixture(&sd);
 			}
 #else
 			{
@@ -57,7 +57,7 @@ public:
 				b2FixtureDef fd;
 				fd.shape = &shape;
 				fd.isSensor = true;
-				m_sensor = ground->CreateFixture(&fd);
+				m_sensor = ground.CreateFixture(&fd);
 			}
 #endif
 		}
@@ -74,9 +74,9 @@ public:
 				bd.userData = m_touching + i;
 
 				m_touching[i] = false;
-				m_bodies[i] = m_world->CreateBody(&bd);
+				m_bodies[i] = m_world.CreateBody(&bd);
 
-				m_bodies[i]->CreateFixture(&shape, 1.0f);
+				m_bodies[i].CreateFixture(&shape, 1.0f);
 			}
 		}
 	}
@@ -84,12 +84,12 @@ public:
 	// Implement contact listener.
 	void BeginContact(b2Contact* contact)
 	{
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
+		b2Fixture* fixtureA = contact.GetFixtureA();
+		b2Fixture* fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
-			void* userData = fixtureB->GetBody()->GetUserData();
+			void* userData = fixtureB.GetBody().GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -99,7 +99,7 @@ public:
 
 		if (fixtureB == m_sensor)
 		{
-			void* userData = fixtureA->GetBody()->GetUserData();
+			void* userData = fixtureA.GetBody().GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -111,12 +111,12 @@ public:
 	// Implement contact listener.
 	void EndContact(b2Contact* contact)
 	{
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
+		b2Fixture* fixtureA = contact.GetFixtureA();
+		b2Fixture* fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
-			void* userData = fixtureB->GetBody()->GetUserData();
+			void* userData = fixtureB.GetBody().GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -126,7 +126,7 @@ public:
 
 		if (fixtureB == m_sensor)
 		{
-			void* userData = fixtureA->GetBody()->GetUserData();
+			void* userData = fixtureA.GetBody().GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -149,12 +149,12 @@ public:
 			}
 
 			b2Body* body = m_bodies[i];
-			b2Body* ground = m_sensor->GetBody();
+			b2Body* ground = m_sensor.GetBody();
 
-			b2CircleShape* circle = (b2CircleShape*)m_sensor->GetShape();
-			b2Vec2 center = ground->GetWorldPoint(circle->m_p);
+			b2CircleShape* circle = (b2CircleShape*)m_sensor.GetShape();
+			b2Vec2 center = ground.GetWorldPoint(circle.m_p);
 
-			b2Vec2 position = body->GetPosition();
+			b2Vec2 position = body.GetPosition();
 
 			b2Vec2 d = center - position;
 			if (d.LengthSquared() < FLT_EPSILON * FLT_EPSILON)
@@ -164,7 +164,7 @@ public:
 
 			d.Normalize();
 			b2Vec2 F = 100.0f * d;
-			body->ApplyForce(F, position, false);
+			body.ApplyForce(F, position, false);
 		}
 	}
 

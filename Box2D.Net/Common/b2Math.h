@@ -534,12 +534,12 @@ inline bool b2IsPowerOfTwo(uint x)
 
 inline void b2Sweep::GetTransform(b2Transform* xf, float beta) const
 {
-	xf->p = (1.0f - beta) * c0 + beta * c;
+	xf.p = (1.0f - beta) * c0 + beta * c;
 	float angle = (1.0f - beta) * a0 + beta * a;
-	xf->q.Set(angle);
+	xf.q.Set(angle);
 
 	// Shift to origin
-	xf->p -= b2Mul(xf->q, localCenter);
+	xf.p -= b2Mul(xf.q, localCenter);
 }
 
 inline void b2Sweep::Advance(float alpha)

@@ -56,7 +56,7 @@ public:
 		// Ground body
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			float x1 = -20.0f;
 			float y1 = 2.0f * cosf(x1 / 10.0f * Math.PI);
@@ -67,7 +67,7 @@ public:
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(x1, y1), b2Vec2(x2, y2));
-				ground->CreateFixture(&shape, 0.0f);
+				ground.CreateFixture(&shape, 0.0f);
 
 				x1 = x2;
 				y1 = y2;
@@ -126,7 +126,7 @@ public:
 	{
 		if (m_bodies[m_bodyIndex] != null)
 		{
-			m_world->DestroyBody(m_bodies[m_bodyIndex]);
+			m_world.DestroyBody(m_bodies[m_bodyIndex]);
 			m_bodies[m_bodyIndex] = null;
 		}
 
@@ -143,7 +143,7 @@ public:
 			bd.angularDamping = 0.02f;
 		}
 
-		m_bodies[m_bodyIndex] = m_world->CreateBody(&bd);
+		m_bodies[m_bodyIndex] = m_world.CreateBody(&bd);
 
 		if (index < 4)
 		{
@@ -151,7 +151,7 @@ public:
 			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex].CreateFixture(&fd);
 		}
 		else
 		{
@@ -159,7 +159,7 @@ public:
 			fd.shape = &m_circle;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex].CreateFixture(&fd);
 		}
 
 		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
@@ -171,7 +171,7 @@ public:
 		{
 			if (m_bodies[i] != null)
 			{
-				m_world->DestroyBody(m_bodies[i]);
+				m_world.DestroyBody(m_bodies[i]);
 				m_bodies[i] = null;
 				return;
 			}
@@ -198,7 +198,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		bool advanceRay = settings->pause == 0 || settings->singleStep;
+		bool advanceRay = settings.pause == 0 || settings.singleStep;
 
 		Test::Step(settings);
 		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
@@ -211,7 +211,7 @@ public:
 
 		EdgeShapesCallback callback;
 
-		m_world->RayCast(&callback, point1, point2);
+		m_world.RayCast(&callback, point1, point2);
 
 		if (callback.m_fixture)
 		{

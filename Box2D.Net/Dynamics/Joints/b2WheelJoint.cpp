@@ -40,17 +40,17 @@ void b2WheelJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor, c
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = bodyA->GetLocalPoint(anchor);
-	localAnchorB = bodyB->GetLocalPoint(anchor);
-	localAxisA = bodyA->GetLocalVector(axis);
+	localAnchorA = bodyA.GetLocalPoint(anchor);
+	localAnchorB = bodyB.GetLocalPoint(anchor);
+	localAxisA = bodyA.GetLocalVector(axis);
 }
 
 b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 : b2Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_localXAxisA = def->localAxisA;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_localXAxisA = def.localAxisA;
 	m_localYAxisA = b2Cross(1.0f, m_localXAxisA);
 
 	m_mass = 0.0f;
@@ -60,12 +60,12 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 	m_springMass = 0.0f;
 	m_springImpulse = 0.0f;
 
-	m_maxMotorTorque = def->maxMotorTorque;
-	m_motorSpeed = def->motorSpeed;
-	m_enableMotor = def->enableMotor;
+	m_maxMotorTorque = def.maxMotorTorque;
+	m_motorSpeed = def.motorSpeed;
+	m_enableMotor = def.enableMotor;
 
-	m_frequencyHz = def->frequencyHz;
-	m_dampingRatio = def->dampingRatio;
+	m_frequencyHz = def.frequencyHz;
+	m_dampingRatio = def.dampingRatio;
 
 	m_bias = 0.0f;
 	m_gamma = 0.0f;
@@ -76,14 +76,14 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 
 void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	float mA = m_invMassA, mB = m_invMassB;
 	float iA = m_invIA, iB = m_invIB;
@@ -328,12 +328,12 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2WheelJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2WheelJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2WheelJoint::GetReactionForce(float inv_dt) const
@@ -351,10 +351,10 @@ float b2WheelJoint::GetJointTranslation() const
 	b2Body* bA = m_bodyA;
 	b2Body* bB = m_bodyB;
 
-	b2Vec2 pA = bA->GetWorldPoint(m_localAnchorA);
-	b2Vec2 pB = bB->GetWorldPoint(m_localAnchorB);
+	b2Vec2 pA = bA.GetWorldPoint(m_localAnchorA);
+	b2Vec2 pB = bB.GetWorldPoint(m_localAnchorB);
 	b2Vec2 d = pB - pA;
-	b2Vec2 axis = bA->GetWorldVector(m_localXAxisA);
+	b2Vec2 axis = bA.GetWorldVector(m_localXAxisA);
 
 	float translation = b2Dot(d, axis);
 	return translation;
@@ -362,8 +362,8 @@ float b2WheelJoint::GetJointTranslation() const
 
 float b2WheelJoint::GetJointSpeed() const
 {
-	float wA = m_bodyA->m_angularVelocity;
-	float wB = m_bodyB->m_angularVelocity;
+	float wA = m_bodyA.m_angularVelocity;
+	float wB = m_bodyB.m_angularVelocity;
 	return wB - wA;
 }
 
@@ -374,22 +374,22 @@ bool b2WheelJoint::IsMotorEnabled() const
 
 void b2WheelJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_enableMotor = flag;
 }
 
 void b2WheelJoint::SetMotorSpeed(float speed)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_motorSpeed = speed;
 }
 
 void b2WheelJoint::SetMaxMotorTorque(float torque)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_maxMotorTorque = torque;
 }
 
@@ -400,8 +400,8 @@ float b2WheelJoint::GetMotorTorque(float inv_dt) const
 
 void b2WheelJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2WheelJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -415,5 +415,5 @@ void b2WheelJoint::Dump()
 	b2Settings.b2Log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);
 	b2Settings.b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	b2Settings.b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

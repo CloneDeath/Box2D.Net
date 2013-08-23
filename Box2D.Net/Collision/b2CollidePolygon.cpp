@@ -23,13 +23,13 @@
 static float b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& xf1, int edge1,
 							  const b2PolygonShape* poly2, const b2Transform& xf2)
 {
-	const b2Vec2* vertices1 = poly1->m_vertices;
-	const b2Vec2* normals1 = poly1->m_normals;
+	const b2Vec2* vertices1 = poly1.m_vertices;
+	const b2Vec2* normals1 = poly1.m_normals;
 
-	int count2 = poly2->m_count;
-	const b2Vec2* vertices2 = poly2->m_vertices;
+	int count2 = poly2.m_count;
+	const b2Vec2* vertices2 = poly2.m_vertices;
 
-	b2Assert(0 <= edge1 && edge1 < poly1->m_count);
+	b2Assert(0 <= edge1 && edge1 < poly1.m_count);
 
 	// Convert normal from poly1's frame into poly2's frame.
 	b2Vec2 normal1World = b2Mul(xf1.q, normals1[edge1]);
@@ -60,11 +60,11 @@ static float b2FindMaxSeparation(int* edgeIndex,
 								 const b2PolygonShape* poly1, const b2Transform& xf1,
 								 const b2PolygonShape* poly2, const b2Transform& xf2)
 {
-	int count1 = poly1->m_count;
-	const b2Vec2* normals1 = poly1->m_normals;
+	int count1 = poly1.m_count;
+	const b2Vec2* normals1 = poly1.m_normals;
 
 	// Vector pointing from the centroid of poly1 to the centroid of poly2.
-	b2Vec2 d = b2Mul(xf2, poly2->m_centroid) - b2Mul(xf1, poly1->m_centroid);
+	b2Vec2 d = b2Mul(xf2, poly2.m_centroid) - b2Mul(xf1, poly1.m_centroid);
 	b2Vec2 dLocal1 = b2MulT(xf1.q, d);
 
 	// Find edge normal on poly1 that has the largest projection onto d.
@@ -142,13 +142,13 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 							 const b2PolygonShape* poly1, const b2Transform& xf1, int edge1,
 							 const b2PolygonShape* poly2, const b2Transform& xf2)
 {
-	const b2Vec2* normals1 = poly1->m_normals;
+	const b2Vec2* normals1 = poly1.m_normals;
 
-	int count2 = poly2->m_count;
-	const b2Vec2* vertices2 = poly2->m_vertices;
-	const b2Vec2* normals2 = poly2->m_normals;
+	int count2 = poly2.m_count;
+	const b2Vec2* vertices2 = poly2.m_vertices;
+	const b2Vec2* normals2 = poly2.m_normals;
 
-	b2Assert(0 <= edge1 && edge1 < poly1->m_count);
+	b2Assert(0 <= edge1 && edge1 < poly1.m_count);
 
 	// Get the normal of the reference edge in poly2's frame.
 	b2Vec2 normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
@@ -194,8 +194,8 @@ void b2CollidePolygons(b2Manifold* manifold,
 					  const b2PolygonShape* polyA, const b2Transform& xfA,
 					  const b2PolygonShape* polyB, const b2Transform& xfB)
 {
-	manifold->pointCount = 0;
-	float totalRadius = polyA->m_radius + polyB->m_radius;
+	manifold.pointCount = 0;
+	float totalRadius = polyA.m_radius + polyB.m_radius;
 
 	int edgeA = 0;
 	float separationA = b2FindMaxSeparation(&edgeA, polyA, xfA, polyB, xfB);
@@ -222,7 +222,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 		xf1 = xfB;
 		xf2 = xfA;
 		edge1 = edgeB;
-		manifold->type = b2Manifold::e_faceB;
+		manifold.type = b2Manifold::e_faceB;
 		flip = 1;
 	}
 	else
@@ -232,15 +232,15 @@ void b2CollidePolygons(b2Manifold* manifold,
 		xf1 = xfA;
 		xf2 = xfB;
 		edge1 = edgeA;
-		manifold->type = b2Manifold::e_faceA;
+		manifold.type = b2Manifold::e_faceA;
 		flip = 0;
 	}
 
 	b2ClipVertex incidentEdge[2];
 	b2FindIncidentEdge(incidentEdge, poly1, xf1, edge1, poly2, xf2);
 
-	int count1 = poly1->m_count;
-	const b2Vec2* vertices1 = poly1->m_vertices;
+	int count1 = poly1.m_count;
+	const b2Vec2* vertices1 = poly1.m_vertices;
 
 	int iv1 = edge1;
 	int iv2 = edge1 + 1 < count1 ? edge1 + 1 : 0;
@@ -287,8 +287,8 @@ void b2CollidePolygons(b2Manifold* manifold,
 	}
 
 	// Now clipPoints2 contains the clipped points.
-	manifold->localNormal = localNormal;
-	manifold->localPoint = planePoint;
+	manifold.localNormal = localNormal;
+	manifold.localPoint = planePoint;
 
 	int pointCount = 0;
 	for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
@@ -297,21 +297,21 @@ void b2CollidePolygons(b2Manifold* manifold,
 
 		if (separation <= totalRadius)
 		{
-			b2ManifoldPoint* cp = manifold->points + pointCount;
-			cp->localPoint = b2MulT(xf2, clipPoints2[i].v);
-			cp->id = clipPoints2[i].id;
+			b2ManifoldPoint* cp = manifold.points + pointCount;
+			cp.localPoint = b2MulT(xf2, clipPoints2[i].v);
+			cp.id = clipPoints2[i].id;
 			if (flip)
 			{
 				// Swap features
-				b2ContactFeature cf = cp->id.cf;
-				cp->id.cf.indexA = cf.indexB;
-				cp->id.cf.indexB = cf.indexA;
-				cp->id.cf.typeA = cf.typeB;
-				cp->id.cf.typeB = cf.typeA;
+				b2ContactFeature cf = cp.id.cf;
+				cp.id.cf.indexA = cf.indexB;
+				cp.id.cf.indexB = cf.indexA;
+				cp.id.cf.typeA = cf.typeB;
+				cp.id.cf.typeB = cf.typeA;
 			}
 			++pointCount;
 		}
 	}
 
-	manifold->pointCount = pointCount;
+	manifold.pointCount = pointCount;
 }

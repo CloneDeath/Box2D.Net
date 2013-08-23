@@ -13,16 +13,21 @@ namespace Box2D {
 	/// You should strive to make your callbacks efficient because there may be
 	/// many callbacks per time step.
 	/// @warning You cannot create/destroy Box2D entities inside these callbacks.
-	class b2ContactListener
+	abstract class b2ContactListener
 	{
-	:
 		public virtual ~b2ContactListener() {}
 
 		/// Called when two fixtures begin to touch.
-		public virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
+		public virtual void BeginContact(b2Contact contact) { 
+			throw new NotImplementedException();
+			//B2_NOT_USED(contact); 
+		}
 
 		/// Called when two fixtures cease to touch.
-		public virtual void EndContact(b2Contact* contact) { B2_NOT_USED(contact); }
+		public virtual void EndContact(b2Contact contact) { 
+			throw new NotImplementedException();
+			//B2_NOT_USED(contact); 
+		}
 
 		/// This is called after a contact is updated. This allows you to inspect a
 		/// contact before it goes to the solver. If you are careful, you can modify the
@@ -34,10 +39,11 @@ namespace Box2D {
 		/// Note: if you set the number of contact points to zero, you will not
 		/// get an EndContact callback. However, you may get a BeginContact callback
 		/// the next step.
-		public virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+		public virtual void PreSolve(b2Contact contact, b2Manifold oldManifold)
 		{
-			B2_NOT_USED(contact);
-			B2_NOT_USED(oldManifold);
+			throw new NotImplementedException();
+			//B2_NOT_USED(contact);
+			//B2_NOT_USED(oldManifold);
 		}
 
 		/// This lets you inspect a contact after the solver is finished. This is useful
@@ -46,10 +52,11 @@ namespace Box2D {
 		/// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
 		/// in a separate data structure.
 		/// Note: this is only called for contacts that are touching, solid, and awake.
-		public virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+		public virtual void PostSolve(b2Contact contact, b2ContactImpulse impulse)
 		{
-			B2_NOT_USED(contact);
-			B2_NOT_USED(impulse);
+			throw new NotImplementedException();
+			//B2_NOT_USED(contact);
+			//B2_NOT_USED(impulse);
 		}
 	};
 }

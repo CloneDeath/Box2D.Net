@@ -92,7 +92,7 @@ namespace Box2D {
 
 		/// Scale the gravity applied to this body.
 		public float gravityScale;
-	};
+	}
 
 	/// A rigid body. These are created via b2World::CreateBody.
 	public class b2Body
@@ -333,9 +333,9 @@ namespace Box2D {
 		/// Get the mass data of the body.
 		/// @return a struct containing the mass, inertia and center of the body.
 		public void GetMassData(b2MassData* data){
-			data->mass = m_mass;
-			data->I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
-			data->center = m_sweep.localCenter;
+			data.mass = m_mass;
+			data.I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+			data.center = m_sweep.localCenter;
 		}
 
 		/// Set the mass properties to override the mass properties of the fixtures.

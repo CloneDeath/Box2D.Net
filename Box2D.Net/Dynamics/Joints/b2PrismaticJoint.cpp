@@ -91,32 +91,32 @@ void b2PrismaticJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& ancho
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = bodyA->GetLocalPoint(anchor);
-	localAnchorB = bodyB->GetLocalPoint(anchor);
-	localAxisA = bodyA->GetLocalVector(axis);
-	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
+	localAnchorA = bodyA.GetLocalPoint(anchor);
+	localAnchorB = bodyB.GetLocalPoint(anchor);
+	localAxisA = bodyA.GetLocalVector(axis);
+	referenceAngle = bodyB.GetAngle() - bodyA.GetAngle();
 }
 
 b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 : b2Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_localXAxisA = def->localAxisA;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_localXAxisA = def.localAxisA;
 	m_localXAxisA.Normalize();
 	m_localYAxisA = b2Cross(1.0f, m_localXAxisA);
-	m_referenceAngle = def->referenceAngle;
+	m_referenceAngle = def.referenceAngle;
 
 	m_impulse.SetZero();
 	m_motorMass = 0.0f;
 	m_motorImpulse = 0.0f;
 
-	m_lowerTranslation = def->lowerTranslation;
-	m_upperTranslation = def->upperTranslation;
-	m_maxMotorForce = def->maxMotorForce;
-	m_motorSpeed = def->motorSpeed;
-	m_enableLimit = def->enableLimit;
-	m_enableMotor = def->enableMotor;
+	m_lowerTranslation = def.lowerTranslation;
+	m_upperTranslation = def.upperTranslation;
+	m_maxMotorForce = def.maxMotorForce;
+	m_motorSpeed = def.motorSpeed;
+	m_enableLimit = def.enableLimit;
+	m_enableMotor = def.enableMotor;
 	m_limitState = e_inactiveLimit;
 
 	m_axis.SetZero();
@@ -125,14 +125,14 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 
 void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	b2Vec2 cA = data.positions[m_indexA].c;
 	float aA = data.positions[m_indexA].a;
@@ -483,12 +483,12 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2PrismaticJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return m_bodyA.GetWorldPoint(m_localAnchorA);
 }
 
 b2Vec2 b2PrismaticJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return m_bodyB.GetWorldPoint(m_localAnchorB);
 }
 
 b2Vec2 b2PrismaticJoint::GetReactionForce(float inv_dt) const
@@ -503,10 +503,10 @@ float b2PrismaticJoint::GetReactionTorque(float inv_dt) const
 
 float b2PrismaticJoint::GetJointTranslation() const
 {
-	b2Vec2 pA = m_bodyA->GetWorldPoint(m_localAnchorA);
-	b2Vec2 pB = m_bodyB->GetWorldPoint(m_localAnchorB);
+	b2Vec2 pA = m_bodyA.GetWorldPoint(m_localAnchorA);
+	b2Vec2 pB = m_bodyB.GetWorldPoint(m_localAnchorB);
 	b2Vec2 d = pB - pA;
-	b2Vec2 axis = m_bodyA->GetWorldVector(m_localXAxisA);
+	b2Vec2 axis = m_bodyA.GetWorldVector(m_localXAxisA);
 
 	float translation = b2Dot(d, axis);
 	return translation;
@@ -517,17 +517,17 @@ float b2PrismaticJoint::GetJointSpeed() const
 	b2Body* bA = m_bodyA;
 	b2Body* bB = m_bodyB;
 
-	b2Vec2 rA = b2Mul(bA->m_xf.q, m_localAnchorA - bA->m_sweep.localCenter);
-	b2Vec2 rB = b2Mul(bB->m_xf.q, m_localAnchorB - bB->m_sweep.localCenter);
-	b2Vec2 p1 = bA->m_sweep.c + rA;
-	b2Vec2 p2 = bB->m_sweep.c + rB;
+	b2Vec2 rA = b2Mul(bA.m_xf.q, m_localAnchorA - bA.m_sweep.localCenter);
+	b2Vec2 rB = b2Mul(bB.m_xf.q, m_localAnchorB - bB.m_sweep.localCenter);
+	b2Vec2 p1 = bA.m_sweep.c + rA;
+	b2Vec2 p2 = bB.m_sweep.c + rB;
 	b2Vec2 d = p2 - p1;
-	b2Vec2 axis = b2Mul(bA->m_xf.q, m_localXAxisA);
+	b2Vec2 axis = b2Mul(bA.m_xf.q, m_localXAxisA);
 
-	b2Vec2 vA = bA->m_linearVelocity;
-	b2Vec2 vB = bB->m_linearVelocity;
-	float wA = bA->m_angularVelocity;
-	float wB = bB->m_angularVelocity;
+	b2Vec2 vA = bA.m_linearVelocity;
+	b2Vec2 vB = bB.m_linearVelocity;
+	float wA = bA.m_angularVelocity;
+	float wB = bB.m_angularVelocity;
 
 	float speed = b2Dot(d, b2Cross(wA, axis)) + b2Dot(axis, vB + b2Cross(wB, rB) - vA - b2Cross(wA, rA));
 	return speed;
@@ -542,8 +542,8 @@ void b2PrismaticJoint::EnableLimit(bool flag)
 {
 	if (flag != m_enableLimit)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA.SetAwake(true);
+		m_bodyB.SetAwake(true);
 		m_enableLimit = flag;
 		m_impulse.z = 0.0f;
 	}
@@ -564,8 +564,8 @@ void b2PrismaticJoint::SetLimits(float lower, float upper)
 	b2Assert(lower <= upper);
 	if (lower != m_lowerTranslation || upper != m_upperTranslation)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA.SetAwake(true);
+		m_bodyB.SetAwake(true);
 		m_lowerTranslation = lower;
 		m_upperTranslation = upper;
 		m_impulse.z = 0.0f;
@@ -579,22 +579,22 @@ bool b2PrismaticJoint::IsMotorEnabled() const
 
 void b2PrismaticJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_enableMotor = flag;
 }
 
 void b2PrismaticJoint::SetMotorSpeed(float speed)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_motorSpeed = speed;
 }
 
 void b2PrismaticJoint::SetMaxMotorForce(float force)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA.SetAwake(true);
+	m_bodyB.SetAwake(true);
 	m_maxMotorForce = force;
 }
 
@@ -605,8 +605,8 @@ float b2PrismaticJoint::GetMotorForce(float inv_dt) const
 
 void b2PrismaticJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2PrismaticJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -622,5 +622,5 @@ void b2PrismaticJoint::Dump()
 	b2Settings.b2Log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
 	b2Settings.b2Log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 	b2Settings.b2Log("  jd.maxMotorForce = %.15lef;\n", m_maxMotorForce);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

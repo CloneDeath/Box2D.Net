@@ -36,38 +36,38 @@ void b2MotorJointDef::Initialize(b2Body* bA, b2Body* bB)
 {
 	bodyA = bA;
 	bodyB = bB;
-	b2Vec2 xB = bodyB->GetPosition();
-	linearOffset = bodyA->GetLocalPoint(xB);
+	b2Vec2 xB = bodyB.GetPosition();
+	linearOffset = bodyA.GetLocalPoint(xB);
 
-	float angleA = bodyA->GetAngle();
-	float angleB = bodyB->GetAngle();
+	float angleA = bodyA.GetAngle();
+	float angleB = bodyB.GetAngle();
 	angularOffset = angleB - angleA;
 }
 
 b2MotorJoint::b2MotorJoint(const b2MotorJointDef* def)
 : b2Joint(def)
 {
-	m_linearOffset = def->linearOffset;
-	m_angularOffset = def->angularOffset;
+	m_linearOffset = def.linearOffset;
+	m_angularOffset = def.angularOffset;
 
 	m_linearImpulse.SetZero();
 	m_angularImpulse = 0.0f;
 
-	m_maxForce = def->maxForce;
-	m_maxTorque = def->maxTorque;
-	m_correctionFactor = def->correctionFactor;
+	m_maxForce = def.maxForce;
+	m_maxTorque = def.maxTorque;
+	m_correctionFactor = def.correctionFactor;
 }
 
 void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_indexA = m_bodyA.m_islandIndex;
+	m_indexB = m_bodyB.m_islandIndex;
+	m_localCenterA = m_bodyA.m_sweep.localCenter;
+	m_localCenterB = m_bodyB.m_sweep.localCenter;
+	m_invMassA = m_bodyA.m_invMass;
+	m_invMassB = m_bodyB.m_invMass;
+	m_invIA = m_bodyA.m_invI;
+	m_invIB = m_bodyB.m_invI;
 
 	b2Vec2 cA = data.positions[m_indexA].c;
 	float aA = data.positions[m_indexA].a;
@@ -205,12 +205,12 @@ bool b2MotorJoint::SolvePositionConstraints(const b2SolverData& data)
 
 b2Vec2 b2MotorJoint::GetAnchorA() const
 {
-	return m_bodyA->GetPosition();
+	return m_bodyA.GetPosition();
 }
 
 b2Vec2 b2MotorJoint::GetAnchorB() const
 {
-	return m_bodyB->GetPosition();
+	return m_bodyB.GetPosition();
 }
 
 b2Vec2 b2MotorJoint::GetReactionForce(float inv_dt) const
@@ -249,8 +249,8 @@ void b2MotorJoint::SetLinearOffset(const b2Vec2& linearOffset)
 {
 	if (linearOffset.x != m_linearOffset.x || linearOffset.y != m_linearOffset.y)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA.SetAwake(true);
+		m_bodyB.SetAwake(true);
 		m_linearOffset = linearOffset;
 	}
 }
@@ -264,8 +264,8 @@ void b2MotorJoint::SetAngularOffset(float angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA.SetAwake(true);
+		m_bodyB.SetAwake(true);
 		m_angularOffset = angularOffset;
 	}
 }
@@ -277,8 +277,8 @@ float b2MotorJoint::GetAngularOffset() const
 
 void b2MotorJoint::Dump()
 {
-	int indexA = m_bodyA->m_islandIndex;
-	int indexB = m_bodyB->m_islandIndex;
+	int indexA = m_bodyA.m_islandIndex;
+	int indexB = m_bodyB.m_islandIndex;
 
 	b2Settings.b2Log("  b2MotorJointDef jd;\n");
 	b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
@@ -289,5 +289,5 @@ void b2MotorJoint::Dump()
 	b2Settings.b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 	b2Settings.b2Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
 	b2Settings.b2Log("  jd.correctionFactor = %.15lef;\n", m_correctionFactor);
-	b2Settings.b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }

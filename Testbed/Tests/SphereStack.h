@@ -32,11 +32,11 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			b2Body* ground = m_world.CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground.CreateFixture(&shape, 0.0f);
 		}
 
 		{
@@ -49,11 +49,11 @@ public:
 				bd.type = b2_dynamicBody;
 				bd.position.Set(0.0, 4.0f + 3.0f * i);
 
-				m_bodies[i] = m_world->CreateBody(&bd);
+				m_bodies[i] = m_world.CreateBody(&bd);
 
-				m_bodies[i]->CreateFixture(&shape, 1.0f);
+				m_bodies[i].CreateFixture(&shape, 1.0f);
 
-				m_bodies[i]->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+				m_bodies[i].SetLinearVelocity(b2Vec2(0.0f, -50.0f));
 			}
 		}
 	}
@@ -64,12 +64,12 @@ public:
 
 		//for (int i = 0; i < e_count; ++i)
 		//{
-		//	printf("%g ", m_bodies[i]->GetWorldCenter().y);
+		//	printf("%g ", m_bodies[i].GetWorldCenter().y);
 		//}
 
 		//for (int i = 0; i < e_count; ++i)
 		//{
-		//	printf("%g ", m_bodies[i]->GetLinearVelocity().y);
+		//	printf("%g ", m_bodies[i].GetLinearVelocity().y);
 		//}
 
 		//printf("\n");

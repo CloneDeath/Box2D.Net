@@ -100,13 +100,13 @@ static void SimulationLoop()
 
 	b2Vec2 oldCenter = settings.viewCenter;
 	settings.hz = settingsHz;
-	test->Step(&settings);
+	test.Step(&settings);
 	if (oldCenter.x != settings.viewCenter.x || oldCenter.y != settings.viewCenter.y)
 	{
 		Resize(width, height);
 	}
 
-	test->DrawTitle(entry->name);
+	test.DrawTitle(entry.name);
 
 	glutSwapBuffers();
 
@@ -115,7 +115,7 @@ static void SimulationLoop()
 		testIndex = testSelection;
 		delete test;
 		entry = g_testEntries + testIndex;
-		test = entry->createFcn();
+		test = entry.createFcn();
 		viewZoom = 1.0f;
 		settings.viewCenter.Set(0.0f, 20.0f);
 		Resize(width, height);
@@ -152,14 +152,14 @@ static void Keyboard(unsigned char key, int x, int y)
 		// Press 'r' to reset.
 	case 'r':
 		delete test;
-		test = entry->createFcn();
+		test = entry.createFcn();
 		break;
 
 		// Press space to launch a bomb.
 	case ' ':
 		if (test)
 		{
-			test->LaunchBomb();
+			test.LaunchBomb();
 		}
 		break;
  
@@ -174,7 +174,7 @@ static void Keyboard(unsigned char key, int x, int y)
 		{
 			testSelection = testCount - 1;
 		}
-		glui->sync_live();
+		glui.sync_live();
 		break;
 
 		// Press ] to next test.
@@ -184,13 +184,13 @@ static void Keyboard(unsigned char key, int x, int y)
 		{
 			testSelection = 0;
 		}
-		glui->sync_live();
+		glui.sync_live();
 		break;
 		
 	default:
 		if (test)
 		{
-			test->Keyboard(key);
+			test.Keyboard(key);
 		}
 	}
 }
@@ -209,7 +209,7 @@ static void KeyboardSpecial(int key, int x, int y)
 		if (mod == GLUT_ACTIVE_CTRL)
 		{
 			b2Vec2 newOrigin(2.0f, 0.0f);
-			test->ShiftOrigin(newOrigin);
+			test.ShiftOrigin(newOrigin);
 		}
 		else
 		{
@@ -223,7 +223,7 @@ static void KeyboardSpecial(int key, int x, int y)
 		if (mod == GLUT_ACTIVE_CTRL)
 		{
 			b2Vec2 newOrigin(-2.0f, 0.0f);
-			test->ShiftOrigin(newOrigin);
+			test.ShiftOrigin(newOrigin);
 		}
 		else
 		{
@@ -237,7 +237,7 @@ static void KeyboardSpecial(int key, int x, int y)
 		if (mod == GLUT_ACTIVE_CTRL)
 		{
 			b2Vec2 newOrigin(0.0f, 2.0f);
-			test->ShiftOrigin(newOrigin);
+			test.ShiftOrigin(newOrigin);
 		}
 		else
 		{
@@ -251,7 +251,7 @@ static void KeyboardSpecial(int key, int x, int y)
 		if (mod == GLUT_ACTIVE_CTRL)
 		{
 			b2Vec2 newOrigin(0.0f, -2.0f);
-			test->ShiftOrigin(newOrigin);
+			test.ShiftOrigin(newOrigin);
 		}
 		else
 		{
@@ -276,7 +276,7 @@ static void KeyboardUp(unsigned char key, int x, int y)
 
 	if (test)
 	{
-		test->KeyboardUp(key);
+		test.KeyboardUp(key);
 	}
 }
 
@@ -292,17 +292,17 @@ static void Mouse(int button, int state, int x, int y)
 			b2Vec2 p = ConvertScreenToWorld(x, y);
 			if (mod == GLUT_ACTIVE_SHIFT)
 			{
-				test->ShiftMouseDown(p);
+				test.ShiftMouseDown(p);
 			}
 			else
 			{
-				test->MouseDown(p);
+				test.MouseDown(p);
 			}
 		}
 		
 		if (state == GLUT_UP)
 		{
-			test->MouseUp(p);
+			test.MouseUp(p);
 		}
 	}
 	else if (button == GLUT_RIGHT_BUTTON)
@@ -323,7 +323,7 @@ static void Mouse(int button, int state, int x, int y)
 static void MouseMotion(int x, int y)
 {
 	b2Vec2 p = ConvertScreenToWorld(x, y);
-	test->MouseMove(p);
+	test.MouseMove(p);
 	
 	if (rMouseDown)
 	{
@@ -355,7 +355,7 @@ static void Restart(int)
 {
 	delete test;
 	entry = g_testEntries + testIndex;
-	test = entry->createFcn();
+	test = entry.createFcn();
     Resize(width, height);
 }
 
@@ -391,7 +391,7 @@ int main(int argc, char** argv)
 	testSelection = testIndex;
 
 	entry = g_testEntries + testIndex;
-	test = entry->createFcn();
+	test = entry.createFcn();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
@@ -416,59 +416,59 @@ int main(int argc, char** argv)
 	glui = GLUI_Master.create_glui_subwindow( mainWindow, 
 		GLUI_SUBWINDOW_RIGHT );
 
-	glui->add_statictext("Tests");
+	glui.add_statictext("Tests");
 	GLUI_Listbox* testList =
-		glui->add_listbox("", &testSelection);
+		glui.add_listbox("", &testSelection);
 
-	glui->add_separator();
+	glui.add_separator();
 
 	GLUI_Spinner* velocityIterationSpinner =
-		glui->add_spinner("Vel Iters", GLUI_SPINNER_INT, &settings.velocityIterations);
-	velocityIterationSpinner->set_int_limits(1, 500);
+		glui.add_spinner("Vel Iters", GLUI_SPINNER_INT, &settings.velocityIterations);
+	velocityIterationSpinner.set_int_limits(1, 500);
 
 	GLUI_Spinner* positionIterationSpinner =
-		glui->add_spinner("Pos Iters", GLUI_SPINNER_INT, &settings.positionIterations);
-	positionIterationSpinner->set_int_limits(0, 100);
+		glui.add_spinner("Pos Iters", GLUI_SPINNER_INT, &settings.positionIterations);
+	positionIterationSpinner.set_int_limits(0, 100);
 
 	GLUI_Spinner* hertzSpinner =
-		glui->add_spinner("Hertz", GLUI_SPINNER_FLOAT, &settingsHz);
+		glui.add_spinner("Hertz", GLUI_SPINNER_FLOAT, &settingsHz);
 
-	hertzSpinner->set_float_limits(5.0f, 200.0f);
+	hertzSpinner.set_float_limits(5.0f, 200.0f);
 
-	glui->add_checkbox("Sleep", &settings.enableSleep);
-	glui->add_checkbox("Warm Starting", &settings.enableWarmStarting);
-	glui->add_checkbox("Time of Impact", &settings.enableContinuous);
-	glui->add_checkbox("Sub-Stepping", &settings.enableSubStepping);
+	glui.add_checkbox("Sleep", &settings.enableSleep);
+	glui.add_checkbox("Warm Starting", &settings.enableWarmStarting);
+	glui.add_checkbox("Time of Impact", &settings.enableContinuous);
+	glui.add_checkbox("Sub-Stepping", &settings.enableSubStepping);
 
-	//glui->add_separator();
+	//glui.add_separator();
 
-	GLUI_Panel* drawPanel =	glui->add_panel("Draw");
-	glui->add_checkbox_to_panel(drawPanel, "Shapes", &settings.drawShapes);
-	glui->add_checkbox_to_panel(drawPanel, "Joints", &settings.drawJoints);
-	glui->add_checkbox_to_panel(drawPanel, "AABBs", &settings.drawAABBs);
-	glui->add_checkbox_to_panel(drawPanel, "Contact Points", &settings.drawContactPoints);
-	glui->add_checkbox_to_panel(drawPanel, "Contact Normals", &settings.drawContactNormals);
-	glui->add_checkbox_to_panel(drawPanel, "Contact Impulses", &settings.drawContactImpulse);
-	glui->add_checkbox_to_panel(drawPanel, "Friction Impulses", &settings.drawFrictionImpulse);
-	glui->add_checkbox_to_panel(drawPanel, "Center of Masses", &settings.drawCOMs);
-	glui->add_checkbox_to_panel(drawPanel, "Statistics", &settings.drawStats);
-	glui->add_checkbox_to_panel(drawPanel, "Profile", &settings.drawProfile);
+	GLUI_Panel* drawPanel =	glui.add_panel("Draw");
+	glui.add_checkbox_to_panel(drawPanel, "Shapes", &settings.drawShapes);
+	glui.add_checkbox_to_panel(drawPanel, "Joints", &settings.drawJoints);
+	glui.add_checkbox_to_panel(drawPanel, "AABBs", &settings.drawAABBs);
+	glui.add_checkbox_to_panel(drawPanel, "Contact Points", &settings.drawContactPoints);
+	glui.add_checkbox_to_panel(drawPanel, "Contact Normals", &settings.drawContactNormals);
+	glui.add_checkbox_to_panel(drawPanel, "Contact Impulses", &settings.drawContactImpulse);
+	glui.add_checkbox_to_panel(drawPanel, "Friction Impulses", &settings.drawFrictionImpulse);
+	glui.add_checkbox_to_panel(drawPanel, "Center of Masses", &settings.drawCOMs);
+	glui.add_checkbox_to_panel(drawPanel, "Statistics", &settings.drawStats);
+	glui.add_checkbox_to_panel(drawPanel, "Profile", &settings.drawProfile);
 
 	int testCount = 0;
 	TestEntry* e = g_testEntries;
-	while (e->createFcn)
+	while (e.createFcn)
 	{
-		testList->add_item(testCount, e->name);
+		testList.add_item(testCount, e.name);
 		++testCount;
 		++e;
 	}
 
-	glui->add_button("Pause", 0, Pause);
-	glui->add_button("Single Step", 0, SingleStep);
-	glui->add_button("Restart", 0, Restart);
+	glui.add_button("Pause", 0, Pause);
+	glui.add_button("Single Step", 0, SingleStep);
+	glui.add_button("Restart", 0, Restart);
 
-	glui->add_button("Quit", 0,(GLUI_Update_CB)Exit);
-	glui->set_main_gfx_window( mainWindow );
+	glui.add_button("Quit", 0,(GLUI_Update_CB)Exit);
+	glui.set_main_gfx_window( mainWindow );
 
 	// Use a timer to control the frame rate.
 	glutTimerFunc(framePeriod, Timer, 0);

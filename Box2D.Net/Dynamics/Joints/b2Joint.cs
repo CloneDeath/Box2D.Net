@@ -25,17 +25,17 @@ namespace Box2D {
 
 		protected b2Joint(b2JointDef def){
 			throw new NotImplementedException();
-			//b2Assert(def->bodyA != def->bodyB);
+			//b2Assert(def.bodyA != def.bodyB);
 
-			//m_type = def->type;
+			//m_type = def.type;
 			//m_prev = null;
 			//m_next = null;
-			//m_bodyA = def->bodyA;
-			//m_bodyB = def->bodyB;
+			//m_bodyA = def.bodyA;
+			//m_bodyB = def.bodyB;
 			//m_index = 0;
-			//m_collideConnected = def->collideConnected;
+			//m_collideConnected = def.collideConnected;
 			//m_islandFlag = false;
-			//m_userData = def->userData;
+			//m_userData = def.userData;
 
 			//m_edgeA.joint = null;
 			//m_edgeA.other = null;
@@ -121,81 +121,81 @@ namespace Box2D {
 		protected static b2Joint* Create(const b2JointDef* def, b2BlockAllocator* allocator){
 			b2Joint* joint = null;
 
-			switch (def->type)
+			switch (def.type)
 			{
 			case e_distanceJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2DistanceJoint));
+					void* mem = allocator.Allocate(sizeof(b2DistanceJoint));
 					joint = new (mem) b2DistanceJoint((b2DistanceJointDef*)def);
 				}
 				break;
 
 			case e_mouseJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2MouseJoint));
+					void* mem = allocator.Allocate(sizeof(b2MouseJoint));
 					joint = new (mem) b2MouseJoint((b2MouseJointDef*)def);
 				}
 				break;
 
 			case e_prismaticJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2PrismaticJoint));
+					void* mem = allocator.Allocate(sizeof(b2PrismaticJoint));
 					joint = new (mem) b2PrismaticJoint((b2PrismaticJointDef*)def);
 				}
 				break;
 
 			case e_revoluteJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2RevoluteJoint));
+					void* mem = allocator.Allocate(sizeof(b2RevoluteJoint));
 					joint = new (mem) b2RevoluteJoint((b2RevoluteJointDef*)def);
 				}
 				break;
 
 			case e_pulleyJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2PulleyJoint));
+					void* mem = allocator.Allocate(sizeof(b2PulleyJoint));
 					joint = new (mem) b2PulleyJoint((b2PulleyJointDef*)def);
 				}
 				break;
 
 			case e_gearJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2GearJoint));
+					void* mem = allocator.Allocate(sizeof(b2GearJoint));
 					joint = new (mem) b2GearJoint((b2GearJointDef*)def);
 				}
 				break;
 
 			case e_wheelJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2WheelJoint));
+					void* mem = allocator.Allocate(sizeof(b2WheelJoint));
 					joint = new (mem) b2WheelJoint((b2WheelJointDef*)def);
 				}
 				break;
 
 			case e_weldJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2WeldJoint));
+					void* mem = allocator.Allocate(sizeof(b2WeldJoint));
 					joint = new (mem) b2WeldJoint((b2WeldJointDef*)def);
 				}
 				break;
         
 			case e_frictionJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2FrictionJoint));
+					void* mem = allocator.Allocate(sizeof(b2FrictionJoint));
 					joint = new (mem) b2FrictionJoint((b2FrictionJointDef*)def);
 				}
 				break;
 
 			case e_ropeJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2RopeJoint));
+					void* mem = allocator.Allocate(sizeof(b2RopeJoint));
 					joint = new (mem) b2RopeJoint((b2RopeJointDef*)def);
 				}
 				break;
 
 			case e_motorJoint:
 				{
-					void* mem = allocator->Allocate(sizeof(b2MotorJoint));
+					void* mem = allocator.Allocate(sizeof(b2MotorJoint));
 					joint = new (mem) b2MotorJoint((b2MotorJointDef*)def);
 				}
 				break;
@@ -208,51 +208,51 @@ namespace Box2D {
 			return joint;
 		}
 		protected static void Destroy(b2Joint* joint, b2BlockAllocator* allocator){
-			joint->~b2Joint();
-			switch (joint->m_type)
+			joint.~b2Joint();
+			switch (joint.m_type)
 			{
 			case e_distanceJoint:
-				allocator->Free(joint, sizeof(b2DistanceJoint));
+				allocator.Free(joint, sizeof(b2DistanceJoint));
 				break;
 
 			case e_mouseJoint:
-				allocator->Free(joint, sizeof(b2MouseJoint));
+				allocator.Free(joint, sizeof(b2MouseJoint));
 				break;
 
 			case e_prismaticJoint:
-				allocator->Free(joint, sizeof(b2PrismaticJoint));
+				allocator.Free(joint, sizeof(b2PrismaticJoint));
 				break;
 
 			case e_revoluteJoint:
-				allocator->Free(joint, sizeof(b2RevoluteJoint));
+				allocator.Free(joint, sizeof(b2RevoluteJoint));
 				break;
 
 			case e_pulleyJoint:
-				allocator->Free(joint, sizeof(b2PulleyJoint));
+				allocator.Free(joint, sizeof(b2PulleyJoint));
 				break;
 
 			case e_gearJoint:
-				allocator->Free(joint, sizeof(b2GearJoint));
+				allocator.Free(joint, sizeof(b2GearJoint));
 				break;
 
 			case e_wheelJoint:
-				allocator->Free(joint, sizeof(b2WheelJoint));
+				allocator.Free(joint, sizeof(b2WheelJoint));
 				break;
     
 			case e_weldJoint:
-				allocator->Free(joint, sizeof(b2WeldJoint));
+				allocator.Free(joint, sizeof(b2WeldJoint));
 				break;
 
 			case e_frictionJoint:
-				allocator->Free(joint, sizeof(b2FrictionJoint));
+				allocator.Free(joint, sizeof(b2FrictionJoint));
 				break;
 
 			case e_ropeJoint:
-				allocator->Free(joint, sizeof(b2RopeJoint));
+				allocator.Free(joint, sizeof(b2RopeJoint));
 				break;
 
 			case e_motorJoint:
-				allocator->Free(joint, sizeof(b2MotorJoint));
+				allocator.Free(joint, sizeof(b2MotorJoint));
 				break;
 
 			default:
