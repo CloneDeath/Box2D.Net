@@ -77,7 +77,7 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 
-	b2PointState state1[b2_maxManifoldPoints], state2[b2_maxManifoldPoints];
+	b2PointState state1[b2Settings.b2_maxManifoldPoints], state2[b2Settings.b2_maxManifoldPoints];
 	b2GetPointStates(state1, state2, oldManifold, manifold);
 
 	b2WorldManifold worldManifold;

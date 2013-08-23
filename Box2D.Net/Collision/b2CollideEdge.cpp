@@ -560,7 +560,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	// Clip to box side 1
 	np = b2ClipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1);
 	
-	if (np < b2_maxManifoldPoints)
+	if (np < b2Settings.b2_maxManifoldPoints)
 	{
 		return;
 	}
@@ -568,7 +568,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	// Clip to negative box side 1
 	np = b2ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2);
 	
-	if (np < b2_maxManifoldPoints)
+	if (np < b2Settings.b2_maxManifoldPoints)
 	{
 		return;
 	}
@@ -586,7 +586,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	}
 	
 	int pointCount = 0;
-	for (int i = 0; i < b2_maxManifoldPoints; ++i)
+	for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
 	{
 		float separation;
 		

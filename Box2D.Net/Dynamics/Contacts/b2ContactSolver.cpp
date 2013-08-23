@@ -28,7 +28,7 @@
 
 struct b2ContactPositionConstraint
 {
-	b2Vec2 localPoints[b2_maxManifoldPoints];
+	b2Vec2 localPoints[b2Settings.b2_maxManifoldPoints];
 	b2Vec2 localNormal;
 	b2Vec2 localPoint;
 	int indexA;

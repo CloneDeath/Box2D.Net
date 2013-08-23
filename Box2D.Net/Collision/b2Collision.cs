@@ -56,7 +56,7 @@ namespace Box2D {
 		
 		/// Compute the point states given two manifolds. The states pertain to the transition from manifold1
 		/// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-		public void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState state2[b2_maxManifoldPoints],
+		public void b2GetPointStates(b2PointState state1[b2Settings.b2_maxManifoldPoints], b2PointState state2[b2Settings.b2_maxManifoldPoints],
 							  const b2Manifold* manifold1, const b2Manifold* manifold2);
 	}
 
@@ -130,7 +130,7 @@ namespace Box2D {
 			e_faceB
 		};
 
-		public b2ManifoldPoint[] points = new b2ManifoldPoint[Settings.b2_maxManifoldPoints];	///< the points of contact
+		public b2ManifoldPoint[] points = new b2ManifoldPoint[Settings.b2Settings.b2_maxManifoldPoints];	///< the points of contact
 		public b2Vec2 localNormal;								///< not use for Type::e_points
 		public b2Vec2 localPoint;								///< usage depends on manifold type
 		public ManifoldType type;
@@ -149,7 +149,7 @@ namespace Box2D {
 								b2Transform xfB, float radiusB);
 
 		public b2Vec2 normal;							///< world vector pointing from A to B
-		public b2Vec2 points[b2_maxManifoldPoints];	///< world contact point (point of intersection)
+		public b2Vec2 points[b2Settings.b2_maxManifoldPoints];	///< world contact point (point of intersection)
 	}
 
 	/// This is used for determining the state of contact points.

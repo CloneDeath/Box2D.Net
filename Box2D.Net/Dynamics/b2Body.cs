@@ -26,9 +26,9 @@ namespace Box2D {
 		public b2BodyDef()
 		{
 			userData = null;
-			position.Set(0.0f, 0.0f);
+			position = new b2Vec2(0.0f, 0.0f);
 			angle = 0.0f;
-			linearVelocity.Set(0.0f, 0.0f);
+			linearVelocity = new b2Vec2(0.0f, 0.0f);
 			angularVelocity = 0.0f;
 			linearDamping = 0.0f;
 			angularDamping = 0.0f;
@@ -36,7 +36,7 @@ namespace Box2D {
 			awake = true;
 			fixedRotation = false;
 			bullet = false;
-			type = b2_staticBody;
+			type = b2BodyType.b2_staticBody;
 			active = true;
 			gravityScale = 1.0f;
 		}
@@ -620,7 +620,7 @@ namespace Box2D {
 
 		private b2BodyType m_type;
 
-		private uint16 m_flags;
+		private ushort m_flags;
 
 		private int m_islandIndex;
 

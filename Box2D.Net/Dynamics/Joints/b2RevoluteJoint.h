@@ -151,7 +151,7 @@ public:
 	/// Unit is N*m.
 	float GetMotorTorque(float inv_dt) const;
 
-	/// Dump to b2Log.
+	/// Dump to b2Settings.b2Log.
 	void Dump();
 
 protected:

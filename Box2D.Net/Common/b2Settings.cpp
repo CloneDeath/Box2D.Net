@@ -35,7 +35,7 @@ void b2Free(void* mem)
 }
 
 // You can modify this to use your logging facility.
-void b2Log(const char* string, ...)
+void b2Settings.b2Log(const char* string, ...)
 {
 	va_list args;
 	va_start(args, string);

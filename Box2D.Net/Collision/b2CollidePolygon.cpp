@@ -291,7 +291,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 	manifold->localPoint = planePoint;
 
 	int pointCount = 0;
-	for (int i = 0; i < b2_maxManifoldPoints; ++i)
+	for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
 	{
 		float separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
 

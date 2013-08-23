@@ -82,10 +82,10 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 	}
 }
 
-void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState state2[b2_maxManifoldPoints],
+void b2GetPointStates(b2PointState state1[b2Settings.b2_maxManifoldPoints], b2PointState state2[b2Settings.b2_maxManifoldPoints],
 					  const b2Manifold* manifold1, const b2Manifold* manifold2)
 {
-	for (int i = 0; i < b2_maxManifoldPoints; ++i)
+	for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
 	{
 		state1[i] = b2_nullState;
 		state2[i] = b2_nullState;

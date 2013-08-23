@@ -144,7 +144,7 @@ public:
 	/// Get the current motor force given the inverse time step, usually in N.
 	float GetMotorForce(float inv_dt) const;
 
-	/// Dump to b2Log
+	/// Dump to b2Settings.b2Log
 	void Dump();
 
 protected:

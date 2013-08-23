@@ -41,7 +41,7 @@ struct b2VelocityConstraintPoint
 
 struct b2ContactVelocityConstraint
 {
-	b2VelocityConstraintPoint points[b2_maxManifoldPoints];
+	b2VelocityConstraintPoint points[b2Settings.b2_maxManifoldPoints];
 	b2Vec2 normal;
 	b2Mat22 normalMass;
 	b2Mat22 K;

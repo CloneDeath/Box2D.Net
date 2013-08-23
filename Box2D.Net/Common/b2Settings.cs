@@ -98,7 +98,7 @@ namespace Box2D {
 		// Memory Allocation
 
 		/// Logging function.
-		void b2Log(string message, params object[] etc ){
+		public static void b2Log(string message, params object[] etc ){
 			Console.WriteLine(String.Format(message, etc));
 		}
 

@@ -149,7 +149,7 @@ struct b2Simplex
 	void WriteCache(b2SimplexCache* cache) const
 	{
 		cache->metric = GetMetric();
-		cache->count = uint16(m_count);
+		cache->count = ushort(m_count);
 		const b2SimplexVertex* vertices = &m_v1;
 		for (int i = 0; i < m_count; ++i)
 		{

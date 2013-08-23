@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// A 2D column vector.
 	public struct b2Vec2 {
-		float x, y;
+		public float x, y;
 
 		/// Default constructor does nothing (for performance).
 		public b2Vec2() {
@@ -27,56 +27,53 @@ namespace Box2D {
 		public void Set(float x_, float y_) { x = x_; y = y_; }
 
 		/// Negate this vector.
-		public b2Vec2 operator -() const { b2Vec2 v; v.Set(-x, -y); return v; }
+		public static b2Vec2 operator-(b2Vec2 self){
+			return new b2Vec2(-self.x, -self.y);
+		}
+
+		public static b2Vec2 operator +(b2Vec2 lhs, b2Vec2 rhs) {
+			return new b2Vec2(lhs.x + rhs.x, lhs.y + rhs.y);
+		}
+
+		public static b2Vec2 operator -(b2Vec2 lhs, b2Vec2 rhs) {
+			return new b2Vec2(lhs.x - rhs.x, lhs.y - rhs.y);
+		}
 	
 		/// Read from and indexed element.
-		public float operator () (int i) const
+		public float this[int i]
 		{
-			return (&x)[i];
-		}
-
-		/// Write to an indexed element.
-		public float& operator () (int i)
-		{
-			return (&x)[i];
-		}
-
-		/// Add a vector to this vector.
-		public void operator += (const b2Vec2& v)
-		{
-			x += v.x; y += v.y;
-		}
-	
-		/// Subtract a vector from this vector.
-		public void operator -= (const b2Vec2& v)
-		{
-			x -= v.x; y -= v.y;
-		}
-
-		/// Multiply this vector by a scalar.
-		public void operator *= (float a)
-		{
-			x *= a; y *= a;
+			get {
+				if (i > 1) throw new IndexOutOfRangeException();
+				return (i == 0)? x: y;
+			}
+			set {
+				if (i == 0){
+					x = value;
+				} else {
+					y = value;
+				}
+			}
 		}
 
 		/// Get the length of this vector (the norm).
-		public float Length() const
+		public float Length()
 		{
-			return b2Sqrt(x * x + y * y);
+			throw new NotImplementedException();
+			//return b2Sqrt(x * x + y * y);
 		}
 
 		/// Get the length squared. For performance, use this instead of
 		/// b2Vec2::Length (if possible).
-		public float LengthSquared() const
+		public float LengthSquared()
 		{
-			return x * x + y * y;
+			return (x * x) + (y * y);
 		}
 
 		/// Convert this vector into a unit vector. Returns the length.
 		public float Normalize()
 		{
 			float length = Length();
-			if (length < b2_epsilon)
+			if (length < Single.Epsilon)
 			{
 				return 0.0f;
 			}
@@ -88,15 +85,16 @@ namespace Box2D {
 		}
 
 		/// Does this vector contain finite coordinates?
-		public bool IsValid() const
+		public bool IsValid()
 		{
-			return b2IsValid(x) && b2IsValid(y);
+			throw new NotImplementedException();
+			//return b2IsValid(x) && b2IsValid(y);
 		}
 
 		/// Get the skew vector such that dot(skew_vec, other) == cross(vec, other)
-		public b2Vec2 Skew() const
+		public b2Vec2 Skew()
 		{
-			return b2Vec2(-y, x);
+			return new b2Vec2(-y, x);
 		}
 	}
 }

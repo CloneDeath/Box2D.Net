@@ -57,7 +57,7 @@ struct b2DistanceProxy
 struct b2SimplexCache
 {
 	float metric;		///< length or area
-	uint16 count;
+	ushort count;
 	byte indexA[3];	///< vertices on shape A
 	byte indexB[3];	///< vertices on shape B
 };

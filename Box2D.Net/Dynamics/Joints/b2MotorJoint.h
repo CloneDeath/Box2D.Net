@@ -85,7 +85,7 @@ public:
 	/// Get the maximum friction torque in N*m.
 	float GetMaxTorque() const;
 
-	/// Dump to b2Log
+	/// Dump to b2Settings.b2Log
 	void Dump();
 
 protected:
