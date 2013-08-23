@@ -42,6 +42,10 @@ namespace Box2D {
 		public static b2Vec2 operator *(float lhs, b2Vec2 rhs) {
 			return new b2Vec2(rhs.x * lhs, rhs.y * lhs);
 		}
+
+		public static b2Vec2 operator *(b2Vec2 lhs, float rhs) {
+			return new b2Vec2(rhs * lhs.x, rhs * lhs.y);
+		}
 	
 		/// Read from and indexed element.
 		public float this[int i]
@@ -91,14 +95,21 @@ namespace Box2D {
 		/// Does this vector contain finite coordinates?
 		public bool IsValid()
 		{
-			throw new NotImplementedException();
-			//return b2IsValid(x) && b2IsValid(y);
+			return Utilities.IsValid(x) && Utilities.IsValid(y);
 		}
 
 		/// Get the skew vector such that dot(skew_vec, other) == cross(vec, other)
 		public b2Vec2 Skew()
 		{
 			return new b2Vec2(-y, x);
+		}
+
+		public static bool operator ==(b2Vec2 a, b2Vec2 b) {
+			return a.x == b.x && a.y == b.y;
+		}
+
+		public static bool operator !=(b2Vec2 lhs, b2Vec2 rhs) {
+			return lhs.x != rhs.x || lhs.y != rhs.y;
 		}
 	}
 }

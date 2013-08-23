@@ -75,8 +75,8 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 	b2Rot qA(aA), qB(aB);
 
 	// Compute the effective mass matrix.
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -112,9 +112,9 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 
 		b2Vec2 P(m_linearImpulse.x, m_linearImpulse.y);
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + m_angularImpulse);
+		wA -= iA * (Utilities.b2Cross(m_rA, P) + m_angularImpulse);
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + m_angularImpulse);
+		wB += iB * (Utilities.b2Cross(m_rB, P) + m_angularImpulse);
 	}
 	else
 	{
@@ -156,9 +156,9 @@ void b2FrictionJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Solve linear friction
 	{
-		b2Vec2 Cdot = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		b2Vec2 Cdot = vB + Utilities.b2Cross(wB, m_rB) - vA - Utilities.b2Cross(wA, m_rA);
 
-		b2Vec2 impulse = -b2Mul(m_linearMass, Cdot);
+		b2Vec2 impulse = -Utilities.b2Mul(m_linearMass, Cdot);
 		b2Vec2 oldImpulse = m_linearImpulse;
 		m_linearImpulse += impulse;
 
@@ -173,10 +173,10 @@ void b2FrictionJoint::SolveVelocityConstraints(const b2SolverData& data)
 		impulse = m_linearImpulse - oldImpulse;
 
 		vA -= mA * impulse;
-		wA -= iA * b2Cross(m_rA, impulse);
+		wA -= iA * Utilities.b2Cross(m_rA, impulse);
 
 		vB += mB * impulse;
-		wB += iB * b2Cross(m_rB, impulse);
+		wB += iB * Utilities.b2Cross(m_rB, impulse);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -214,7 +214,7 @@ float b2FrictionJoint::GetReactionTorque(float inv_dt) const
 
 void b2FrictionJoint::SetMaxForce(float force)
 {
-	b2Assert(b2IsValid(force) && force >= 0.0f);
+	Utilities.Assert(Utilities.IsValid(force) && force >= 0.0f);
 	m_maxForce = force;
 }
 
@@ -225,7 +225,7 @@ float b2FrictionJoint::GetMaxForce() const
 
 void b2FrictionJoint::SetMaxTorque(float torque)
 {
-	b2Assert(b2IsValid(torque) && torque >= 0.0f);
+	Utilities.Assert(Utilities.IsValid(torque) && torque >= 0.0f);
 	m_maxTorque = torque;
 }
 

@@ -66,7 +66,7 @@ public:
 
 		{
 			b2PolygonShape shape;
-			shape.SetAsBox(7.0f, 0.25f, b2Vec2_zero, 0.3f);
+			shape.SetAsBox(7.0f, 0.25f, new b2Vec2(0, 0), 0.3f);
 
 			b2BodyDef bd;
 			bd.position.Set(1.0f, 6.0f);

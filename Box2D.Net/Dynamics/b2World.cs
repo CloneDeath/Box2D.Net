@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Box2D {
+	// m_flags
+	internal enum WorldFlags {
+		e_newFixture = 0x0001,
+		e_locked = 0x0002,
+		e_clearForces = 0x0004
+	}
+
 	/// The world class manages all physics entities, dynamic simulation,
 	/// and asynchronous queries. The world also contains efficient memory
 	/// management facilities.
@@ -12,32 +20,28 @@ namespace Box2D {
 		/// Construct a world object.
 		/// @param gravity the world gravity vector.
 		public b2World(b2Vec2 gravity){
-			throw new NotImplementedException();
-			//m_destructionListener = null;
-			//m_debugDraw = null;
+			m_destructionListener = null;
+			m_debugDraw = null;
 
-			//m_bodyList = null;
-			//m_jointList = null;
+			m_bodyList = new List<b2Body>();
+			m_jointList = new List<b2Joint>();
 
-			//m_bodyCount = 0;
-			//m_jointCount = 0;
+			m_jointCount = 0;
 
-			//m_warmStarting = true;
-			//m_continuousPhysics = true;
-			//m_subStepping = false;
+			m_warmStarting = true;
+			m_continuousPhysics = true;
+			m_subStepping = false;
 
-			//m_stepComplete = true;
+			m_stepComplete = true;
 
-			//m_allowSleep = true;
-			//m_gravity = gravity;
+			m_allowSleep = true;
+			m_gravity = gravity;
 
-			//m_flags = e_clearForces;
+			m_flags = WorldFlags.e_clearForces;
 
-			//m_inv_dt0 = 0.0f;
+			m_inv_dt0 = 0.0f;
 
-			//m_contactManager.m_allocator = &m_blockAllocator;
-
-			//memset(&m_profile, 0, sizeof(b2Profile));
+			m_profile = new b2Profile();
 		}
 
 		/// Destruct the world. All physics entities are destroyed and all heap memory is released.
@@ -96,27 +100,18 @@ namespace Box2D {
 		/// is retained.
 		/// @warning This function is locked during callbacks.
 		public b2Body CreateBody(b2BodyDef def){
-			throw new NotImplementedException();
-			//b2Assert(IsLocked() == false);
-			//if (IsLocked())
-			//{
-			//    return null;
-			//}
+			Utilities.Assert(IsLocked() == false);
+			if (IsLocked())
+			{
+			    return null;
+			}
+			
+			b2Body b = new b2Body(def, this);
 
-			//void* mem = m_blockAllocator.Allocate(sizeof(b2Body));
-			//b2Body* b = new (mem) b2Body(def, this);
+			// Add to world doubly linked list.
+			m_bodyList.Add(b);
 
-			//// Add to world doubly linked list.
-			//b.m_prev = null;
-			//b.m_next = m_bodyList;
-			//if (m_bodyList)
-			//{
-			//    m_bodyList.m_prev = b;
-			//}
-			//m_bodyList = b;
-			//++m_bodyCount;
-
-			//return b;
+			return b;
 		}
 
 		/// Destroy a rigid body given a definition. No reference to the definition
@@ -125,8 +120,8 @@ namespace Box2D {
 		/// @warning This function is locked during callbacks.
 		public void DestroyBody(b2Body body){
 			throw new NotImplementedException();
-			//b2Assert(m_bodyCount > 0);
-			//b2Assert(IsLocked() == false);
+			//Utilities.Assert(m_bodyCount > 0);
+			//Utilities.Assert(IsLocked() == false);
 			//if (IsLocked())
 			//{
 			//    return;
@@ -209,7 +204,7 @@ namespace Box2D {
 		/// @warning This function is locked during callbacks.
 		public b2Joint CreateJoint(b2JointDef def){
 			throw new NotImplementedException();
-			//b2Assert(IsLocked() == false);
+			//Utilities.Assert(IsLocked() == false);
 			//if (IsLocked())
 			//{
 			//    return null;
@@ -271,7 +266,7 @@ namespace Box2D {
 		/// @warning This function is locked during callbacks.
 		public void DestroyJoint(b2Joint joint){
 			throw new NotImplementedException();
-			//b2Assert(IsLocked() == false);
+			//Utilities.Assert(IsLocked() == false);
 			//if (IsLocked())
 			//{
 			//    return;
@@ -343,7 +338,7 @@ namespace Box2D {
 
 			//b2Joint::Destroy(j, &m_blockAllocator);
 
-			//b2Assert(m_jointCount > 0);
+			//Utilities.Assert(m_jointCount > 0);
 			//--m_jointCount;
 
 			//// If the joint prevents collisions, then flag any contacts for filtering.
@@ -369,72 +364,63 @@ namespace Box2D {
 		/// @param timeStep the amount of time to simulate, this should not vary.
 		/// @param velocityIterations for the velocity constraint solver.
 		/// @param positionIterations for the position constraint solver.
-		public void Step(	float timeStep, int velocityIterations, int positionIterations){
-			throw new NotImplementedException();
-			//b2Timer stepTimer;
+		public void Step(float timeStep, int velocityIterations, int positionIterations){
+			Stopwatch stepTimer;
 
-			//// If new fixtures were added, we need to find the new contacts.
-			//if (m_flags & e_newFixture)
-			//{
-			//    m_contactManager.FindNewContacts();
-			//    m_flags &= ~e_newFixture;
-			//}
+			// If new fixtures were added, we need to find the new contacts.
+			if (m_flags.HasFlag(WorldFlags.e_newFixture)) {
+				m_contactManager.FindNewContacts();
+				m_flags &= ~WorldFlags.e_newFixture;
+			}
 
-			//m_flags |= e_locked;
+			m_flags |= WorldFlags.e_locked;
 
-			//b2TimeStep step;
-			//step.dt = dt;
-			//step.velocityIterations	= velocityIterations;
-			//step.positionIterations = positionIterations;
-			//if (dt > 0.0f)
-			//{
-			//    step.inv_dt = 1.0f / dt;
-			//}
-			//else
-			//{
-			//    step.inv_dt = 0.0f;
-			//}
+			b2TimeStep step;
+			step.dt = timeStep;
+			step.velocityIterations = velocityIterations;
+			step.positionIterations = positionIterations;
+			if (timeStep > 0.0f) {
+				step.inv_dt = 1.0f / timeStep;
+			} else {
+				step.inv_dt = 0.0f;
+			}
 
-			//step.dtRatio = m_inv_dt0 * dt;
+			step.dtRatio = m_inv_dt0 * timeStep;
 
-			//step.warmStarting = m_warmStarting;
-	
-			//// Update contacts. This is where some contacts are destroyed.
-			//{
-			//    b2Timer timer;
-			//    m_contactManager.Collide();
-			//    m_profile.collide = timer.GetMilliseconds();
-			//}
+			step.warmStarting = m_warmStarting;
 
-			//// Integrate velocities, solve velocity constraints, and integrate positions.
-			//if (m_stepComplete && step.dt > 0.0f)
-			//{
-			//    b2Timer timer;
-			//    Solve(step);
-			//    m_profile.solve = timer.GetMilliseconds();
-			//}
+			// Update contacts. This is where some contacts are destroyed.
+			{
+				b2Timer timer;
+				m_contactManager.Collide();
+				m_profile.collide = timer.GetMilliseconds();
+			}
 
-			//// Handle TOI events.
-			//if (m_continuousPhysics && step.dt > 0.0f)
-			//{
-			//    b2Timer timer;
-			//    SolveTOI(step);
-			//    m_profile.solveTOI = timer.GetMilliseconds();
-			//}
+			// Integrate velocities, solve velocity constraints, and integrate positions.
+			if (m_stepComplete && step.dt > 0.0f) {
+				b2Timer timer;
+				Solve(step);
+				m_profile.solve = timer.GetMilliseconds();
+			}
 
-			//if (step.dt > 0.0f)
-			//{
-			//    m_inv_dt0 = step.inv_dt;
-			//}
+			// Handle TOI events.
+			if (m_continuousPhysics && step.dt > 0.0f) {
+				b2Timer timer;
+				SolveTOI(step);
+				m_profile.solveTOI = timer.GetMilliseconds();
+			}
 
-			//if (m_flags & e_clearForces)
-			//{
-			//    ClearForces();
-			//}
+			if (step.dt > 0.0f) {
+				m_inv_dt0 = step.inv_dt;
+			}
 
-			//m_flags &= ~e_locked;
+			if (m_flags & e_clearForces) {
+				ClearForces();
+			}
 
-			//m_profile.step = stepTimer.GetMilliseconds();
+			m_flags &= ~e_locked;
+
+			m_profile.step = stepTimer.GetMilliseconds();
 		}
 
 		/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
@@ -652,7 +638,7 @@ namespace Box2D {
 
 		/// Get the number of bodies.
 		public int GetBodyCount(){
-			return m_bodyCount;
+			return m_bodyList.Count();
 		}
 
 		/// Get the number of joints.
@@ -719,7 +705,7 @@ namespace Box2D {
 		/// @param newOrigin the new origin with respect to the old origin
 		public void ShiftOrigin(b2Vec2 newOrigin){
 			throw new NotImplementedException();
-			//b2Assert((m_flags & WorldFlags.e_locked) == 0);
+			//Utilities.Assert((m_flags & WorldFlags.e_locked) == 0);
 			//if ((m_flags & e_locked) == e_locked)
 			//{
 			//    return;
@@ -811,13 +797,7 @@ namespace Box2D {
 			//b2Settings.b2Log("bodies = null;\n");
 		}
 
-		// m_flags
-		private enum WorldFlags
-		{
-			e_newFixture	= 0x0001,
-			e_locked		= 0x0002,
-			e_clearForces	= 0x0004
-		}
+		
 
 		private void Solve(b2TimeStep step){
 			throw new NotImplementedException();
@@ -878,7 +858,7 @@ namespace Box2D {
 			//    {
 			//        // Grab the next body off the stack and add it to the island.
 			//        b2Body* b = stack[--stackCount];
-			//        b2Assert(b.IsActive() == true);
+			//        Utilities.Assert(b.IsActive() == true);
 			//        island.Add(b);
 
 			//        // Make sure the body is awake.
@@ -928,7 +908,7 @@ namespace Box2D {
 			//                continue;
 			//            }
 
-			//            b2Assert(stackCount < stackSize);
+			//            Utilities.Assert(stackCount < stackSize);
 			//            stack[stackCount++] = other;
 			//            other.m_flags |= b2Body::e_islandFlag;
 			//        }
@@ -957,7 +937,7 @@ namespace Box2D {
 			//                continue;
 			//            }
 
-			//            b2Assert(stackCount < stackSize);
+			//            Utilities.Assert(stackCount < stackSize);
 			//            stack[stackCount++] = other;
 			//            other.m_flags |= b2Body::e_islandFlag;
 			//        }
@@ -1072,7 +1052,7 @@ namespace Box2D {
 
 			//            b2BodyType typeA = bA.m_type;
 			//            b2BodyType typeB = bB.m_type;
-			//            b2Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
+			//            Utilities.Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
 
 			//            bool activeA = bA.IsAwake() && typeA != b2_staticBody;
 			//            bool activeB = bB.IsAwake() && typeB != b2_staticBody;
@@ -1107,7 +1087,7 @@ namespace Box2D {
 			//                bB.m_sweep.Advance(alpha0);
 			//            }
 
-			//            b2Assert(alpha0 < 1.0f);
+			//            Utilities.Assert(alpha0 < 1.0f);
 
 			//            int indexA = c.GetChildIndexA();
 			//            int indexB = c.GetChildIndexB();
@@ -1146,7 +1126,7 @@ namespace Box2D {
 			//        }
 			//    }
 
-			//    if (minContact == null || 1.0f - 10.0f * b2_epsilon < minAlpha)
+			//    if (minContact == null || 1.0f - 10.0f * Single.Epsilon < minAlpha)
 			//    {
 			//        // No more TOI events. Done!
 			//        m_stepComplete = true;
@@ -1378,9 +1358,9 @@ namespace Box2D {
 			//    {
 			//        b2CircleShape* circle = (b2CircleShape*)fixture.GetShape();
 
-			//        b2Vec2 center = b2Mul(xf, circle.m_p);
+			//        b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
 			//        float radius = circle.m_radius;
-			//        b2Vec2 axis = b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
+			//        b2Vec2 axis = Utilities.b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
 
 			//        m_debugDraw.DrawSolidCircle(center, radius, axis, color);
 			//    }
@@ -1389,8 +1369,8 @@ namespace Box2D {
 			//case b2Shape::e_edge:
 			//    {
 			//        b2EdgeShape* edge = (b2EdgeShape*)fixture.GetShape();
-			//        b2Vec2 v1 = b2Mul(xf, edge.m_vertex1);
-			//        b2Vec2 v2 = b2Mul(xf, edge.m_vertex2);
+			//        b2Vec2 v1 = Utilities.b2Mul(xf, edge.m_vertex1);
+			//        b2Vec2 v2 = Utilities.b2Mul(xf, edge.m_vertex2);
 			//        m_debugDraw.DrawSegment(v1, v2, color);
 			//    }
 			//    break;
@@ -1401,10 +1381,10 @@ namespace Box2D {
 			//        int count = chain.m_count;
 			//        const b2Vec2* vertices = chain.m_vertices;
 
-			//        b2Vec2 v1 = b2Mul(xf, vertices[0]);
+			//        b2Vec2 v1 = Utilities.b2Mul(xf, vertices[0]);
 			//        for (int i = 1; i < count; ++i)
 			//        {
-			//            b2Vec2 v2 = b2Mul(xf, vertices[i]);
+			//            b2Vec2 v2 = Utilities.b2Mul(xf, vertices[i]);
 			//            m_debugDraw.DrawSegment(v1, v2, color);
 			//            m_debugDraw.DrawCircle(v1, 0.05f, color);
 			//            v1 = v2;
@@ -1416,12 +1396,12 @@ namespace Box2D {
 			//    {
 			//        b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
 			//        int vertexCount = poly.m_count;
-			//        b2Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
+			//        Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
 			//        b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
 
 			//        for (int i = 0; i < vertexCount; ++i)
 			//        {
-			//            vertices[i] = b2Mul(xf, poly.m_vertices[i]);
+			//            vertices[i] = Utilities.b2Mul(xf, poly.m_vertices[i]);
 			//        }
 
 			//        m_debugDraw.DrawSolidPolygon(vertices, vertexCount, color);
@@ -1433,14 +1413,13 @@ namespace Box2D {
 			//}
 		}
 
-		private WorldFlags m_flags;
+		internal WorldFlags m_flags;
 
-		private b2ContactManager m_contactManager;
+		internal b2ContactManager m_contactManager;
 
 		private List<b2Body> m_bodyList;//pointer
 		private List<b2Joint> m_jointList;//pointer
 
-		private int m_bodyCount;
 		private int m_jointCount;
 
 		private b2Vec2 m_gravity;

@@ -48,7 +48,7 @@ void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
 	b2Vec2 dB = anchorB - groundB;
 	lengthB = dB.Length();
 	ratio = r;
-	b2Assert(ratio > b2_epsilon);
+	Utilities.Assert(ratio > Single.Epsilon);
 }
 
 b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
@@ -62,7 +62,7 @@ b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
 	m_lengthA = def.lengthA;
 	m_lengthB = def.lengthB;
 
-	b2Assert(def.ratio != 0.0f);
+	Utilities.Assert(def.ratio != 0.0f);
 	m_ratio = def.ratio;
 
 	m_constant = def.lengthA + m_ratio * def.lengthB;
@@ -93,8 +93,8 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	b2Rot qA(aA), qB(aB);
 
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// Get the pulley axes.
 	m_uA = cA + m_rA - m_groundAnchorA;
@@ -122,8 +122,8 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 
 	// Compute effective mass.
-	float ruA = b2Cross(m_rA, m_uA);
-	float ruB = b2Cross(m_rB, m_uB);
+	float ruA = Utilities.b2Cross(m_rA, m_uA);
+	float ruB = Utilities.b2Cross(m_rB, m_uB);
 
 	float mA = m_invMassA + m_invIA * ruA * ruA;
 	float mB = m_invMassB + m_invIB * ruB * ruB;
@@ -145,9 +145,9 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 		b2Vec2 PB = (-m_ratio * m_impulse) * m_uB;
 
 		vA += m_invMassA * PA;
-		wA += m_invIA * b2Cross(m_rA, PA);
+		wA += m_invIA * Utilities.b2Cross(m_rA, PA);
 		vB += m_invMassB * PB;
-		wB += m_invIB * b2Cross(m_rB, PB);
+		wB += m_invIB * Utilities.b2Cross(m_rB, PB);
 	}
 	else
 	{
@@ -167,19 +167,19 @@ void b2PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
 	b2Vec2 vB = data.velocities[m_indexB].v;
 	float wB = data.velocities[m_indexB].w;
 
-	b2Vec2 vpA = vA + b2Cross(wA, m_rA);
-	b2Vec2 vpB = vB + b2Cross(wB, m_rB);
+	b2Vec2 vpA = vA + Utilities.b2Cross(wA, m_rA);
+	b2Vec2 vpB = vB + Utilities.b2Cross(wB, m_rB);
 
-	float Cdot = -b2Dot(m_uA, vpA) - m_ratio * b2Dot(m_uB, vpB);
+	float Cdot = -Utilities.b2Dot(m_uA, vpA) - m_ratio * Utilities.b2Dot(m_uB, vpB);
 	float impulse = -m_mass * Cdot;
 	m_impulse += impulse;
 
 	b2Vec2 PA = -impulse * m_uA;
 	b2Vec2 PB = -m_ratio * impulse * m_uB;
 	vA += m_invMassA * PA;
-	wA += m_invIA * b2Cross(m_rA, PA);
+	wA += m_invIA * Utilities.b2Cross(m_rA, PA);
 	vB += m_invMassB * PB;
-	wB += m_invIB * b2Cross(m_rB, PB);
+	wB += m_invIB * Utilities.b2Cross(m_rB, PB);
 
 	data.velocities[m_indexA].v = vA;
 	data.velocities[m_indexA].w = wA;
@@ -196,8 +196,8 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 
 	b2Rot qA(aA), qB(aB);
 
-	b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// Get the pulley axes.
 	b2Vec2 uA = cA + rA - m_groundAnchorA;
@@ -225,8 +225,8 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	}
 
 	// Compute effective mass.
-	float ruA = b2Cross(rA, uA);
-	float ruB = b2Cross(rB, uB);
+	float ruA = Utilities.b2Cross(rA, uA);
+	float ruB = Utilities.b2Cross(rB, uB);
 
 	float mA = m_invMassA + m_invIA * ruA * ruA;
 	float mB = m_invMassB + m_invIB * ruB * ruB;
@@ -247,9 +247,9 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	b2Vec2 PB = -m_ratio * impulse * uB;
 
 	cA += m_invMassA * PA;
-	aA += m_invIA * b2Cross(rA, PA);
+	aA += m_invIA * Utilities.b2Cross(rA, PA);
 	cB += m_invMassB * PB;
-	aB += m_invIB * b2Cross(rB, PB);
+	aB += m_invIB * Utilities.b2Cross(rB, PB);
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;

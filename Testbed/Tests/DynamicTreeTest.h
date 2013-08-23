@@ -302,7 +302,7 @@ private:
 
 			bool overlap = b2TestOverlap(m_queryAABB, m_actors[i].aabb);
 			B2_NOT_USED(overlap);
-			b2Assert(overlap == m_actors[i].overlap);
+			Utilities.Assert(overlap == m_actors[i].overlap);
 		}
 	}
 
@@ -337,7 +337,7 @@ private:
 
 		if (bruteActor != null)
 		{
-			b2Assert(bruteOutput.fraction == m_rayCastOutput.fraction);
+			Utilities.Assert(bruteOutput.fraction == m_rayCastOutput.fraction);
 		}
 	}
 

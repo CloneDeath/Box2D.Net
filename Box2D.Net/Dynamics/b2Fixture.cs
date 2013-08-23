@@ -11,10 +11,10 @@ namespace Box2D {
 	/// @warning you cannot reuse fixtures.
 	public class b2Fixture
 	{
-		protected float m_density;
+		internal float m_density;
 
 		protected b2Fixture m_next; //pointer
-		protected b2Body m_body; //pointer
+		internal b2Body m_body; //pointer
 
 		protected b2Shape m_shape; //pointer
 
@@ -22,7 +22,6 @@ namespace Box2D {
 		internal float m_restitution;
 
 		protected List<b2FixtureProxy> m_proxies; //pointer
-		protected int m_proxyCount;
 
 		protected b2Filter m_filter;
 
@@ -158,7 +157,7 @@ namespace Box2D {
 		/// of the body. You must call b2Body::ResetMassData to update the body's mass.
 		public void SetDensity(float density){
 			throw new NotImplementedException();
-			//b2Assert(b2IsValid(density) && density >= 0.0f);
+			//Utilities.Assert(Utilities.IsValid(density) && density >= 0.0f);
 			//m_density = density;
 		}
 
@@ -196,7 +195,7 @@ namespace Box2D {
 		/// the body transform.
 		public b2AABB GetAABB(int childIndex){
 			throw new NotImplementedException();
-			//b2Assert(0 <= childIndex && childIndex < m_proxyCount);
+			//Utilities.Assert(0 <= childIndex && childIndex < m_proxyCount);
 			//return m_proxies[childIndex].aabb;
 		}
 
@@ -278,19 +277,18 @@ namespace Box2D {
 		}
 
 
-		protected b2Fixture(){
+		internal b2Fixture(){
 			m_userData = null;
 			m_body = null;
 			m_next = null;
 			m_proxies = new List<b2FixtureProxy>();
-			m_proxyCount = 0;
 			m_shape = null;
 			m_density = 0.0f;
 		}
 
 		// We need separation create/destroy functions from the constructor/destructor because
 		// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-		protected void Create(b2Body body, b2FixtureDef def){
+		internal void Create(b2Body body, b2FixtureDef def){
 			m_userData = def.userData;
 			m_friction = def.friction;
 			m_restitution = def.restitution;
@@ -304,24 +302,17 @@ namespace Box2D {
 
 			m_shape = def.shape.Clone();
 
-			throw new NotImplementedException();
-			//// Reserve proxy space
-			//int childCount = m_shape.GetChildCount();
-			//m_proxies = (b2FixtureProxy*)allocator.Allocate(childCount * sizeof(b2FixtureProxy));
-			//for (int i = 0; i < childCount; ++i)
-			//{
-			//    m_proxies[i].fixture = null;
-			//    m_proxies[i].proxyId = b2BroadPhase::e_nullProxy;
-			//}
-			//m_proxyCount = 0;
+			// Reserve proxy space
+			int childCount = m_shape.GetChildCount();
+			m_proxies = new List<b2FixtureProxy>();
 
-			//m_density = def.density;
+			m_density = def.density;
 		}
 
 		protected void Destroy(){
 			throw new NotImplementedException();
 			//// The proxies must be destroyed before calling this.
-			//b2Assert(m_proxyCount == 0);
+			//Utilities.Assert(m_proxyCount == 0);
 
 			//// Free the proxy array.
 			//int childCount = m_shape.GetChildCount();
@@ -364,7 +355,7 @@ namespace Box2D {
 			//    break;
 
 			//default:
-			//    b2Assert(false);
+			//    Utilities.Assert(false);
 			//    break;
 			//}
 
@@ -372,9 +363,9 @@ namespace Box2D {
 		}
 
 		// These support body activation/deactivation.
-		protected void CreateProxies(b2BroadPhase broadPhase, b2Transform xf){ //broadPhase was pointer
+		internal void CreateProxies(b2BroadPhase broadPhase, b2Transform xf){ //broadPhase was pointer
 			throw new NotImplementedException();
-			//b2Assert(m_proxyCount == 0);
+			//Utilities.Assert(m_proxyCount == 0);
 
 			//// Create proxies in the broad-phase.
 			//m_proxyCount = m_shape.GetChildCount();

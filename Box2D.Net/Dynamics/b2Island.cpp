@@ -281,7 +281,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 		// Check for large velocities
 		b2Vec2 translation = h * v;
-		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
+		if (Utilities.b2Dot(translation, translation) > b2_maxTranslationSquared)
 		{
 			float ratio = b2_maxTranslation / translation.Length();
 			v *= ratio;
@@ -358,7 +358,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 			if ((b.m_flags & b2Body::e_autoSleepFlag) == 0 ||
 				b.m_angularVelocity * b.m_angularVelocity > angTolSqr ||
-				b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr)
+				Utilities.b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr)
 			{
 				b.m_sleepTime = 0.0f;
 				minSleepTime = 0.0f;
@@ -383,8 +383,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 void b2Island::SolveTOI(const b2TimeStep& subStep, int toiIndexA, int toiIndexB)
 {
-	b2Assert(toiIndexA < m_bodyCount);
-	b2Assert(toiIndexB < m_bodyCount);
+	Utilities.Assert(toiIndexA < m_bodyCount);
+	Utilities.Assert(toiIndexB < m_bodyCount);
 
 	// Initialize the body state.
 	for (int i = 0; i < m_bodyCount; ++i)
@@ -479,7 +479,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int toiIndexA, int toiIndexB)
 
 		// Check for large velocities
 		b2Vec2 translation = h * v;
-		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
+		if (Utilities.b2Dot(translation, translation) > b2_maxTranslationSquared)
 		{
 			float ratio = b2_maxTranslation / translation.Length();
 			v *= ratio;

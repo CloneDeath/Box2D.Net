@@ -29,11 +29,11 @@ static float b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& xf
 	int count2 = poly2.m_count;
 	const b2Vec2* vertices2 = poly2.m_vertices;
 
-	b2Assert(0 <= edge1 && edge1 < poly1.m_count);
+	Utilities.Assert(0 <= edge1 && edge1 < poly1.m_count);
 
 	// Convert normal from poly1's frame into poly2's frame.
-	b2Vec2 normal1World = b2Mul(xf1.q, normals1[edge1]);
-	b2Vec2 normal1 = b2MulT(xf2.q, normal1World);
+	b2Vec2 normal1World = Utilities.b2Mul(xf1.q, normals1[edge1]);
+	b2Vec2 normal1 = Utilities.b2MulT(xf2.q, normal1World);
 
 	// Find support vertex on poly2 for -normal.
 	int index = 0;
@@ -41,7 +41,7 @@ static float b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& xf
 
 	for (int i = 0; i < count2; ++i)
 	{
-		float dot = b2Dot(vertices2[i], normal1);
+		float dot = Utilities.b2Dot(vertices2[i], normal1);
 		if (dot < minDot)
 		{
 			minDot = dot;
@@ -49,9 +49,9 @@ static float b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& xf
 		}
 	}
 
-	b2Vec2 v1 = b2Mul(xf1, vertices1[edge1]);
-	b2Vec2 v2 = b2Mul(xf2, vertices2[index]);
-	float separation = b2Dot(v2 - v1, normal1World);
+	b2Vec2 v1 = Utilities.b2Mul(xf1, vertices1[edge1]);
+	b2Vec2 v2 = Utilities.b2Mul(xf2, vertices2[index]);
+	float separation = Utilities.b2Dot(v2 - v1, normal1World);
 	return separation;
 }
 
@@ -64,15 +64,15 @@ static float b2FindMaxSeparation(int* edgeIndex,
 	const b2Vec2* normals1 = poly1.m_normals;
 
 	// Vector pointing from the centroid of poly1 to the centroid of poly2.
-	b2Vec2 d = b2Mul(xf2, poly2.m_centroid) - b2Mul(xf1, poly1.m_centroid);
-	b2Vec2 dLocal1 = b2MulT(xf1.q, d);
+	b2Vec2 d = Utilities.b2Mul(xf2, poly2.m_centroid) - Utilities.b2Mul(xf1, poly1.m_centroid);
+	b2Vec2 dLocal1 = Utilities.b2MulT(xf1.q, d);
 
 	// Find edge normal on poly1 that has the largest projection onto d.
 	int edge = 0;
 	float maxDot = -b2_maxFloat;
 	for (int i = 0; i < count1; ++i)
 	{
-		float dot = b2Dot(normals1[i], dLocal1);
+		float dot = Utilities.b2Dot(normals1[i], dLocal1);
 		if (dot > maxDot)
 		{
 			maxDot = dot;
@@ -148,17 +148,17 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 	const b2Vec2* vertices2 = poly2.m_vertices;
 	const b2Vec2* normals2 = poly2.m_normals;
 
-	b2Assert(0 <= edge1 && edge1 < poly1.m_count);
+	Utilities.Assert(0 <= edge1 && edge1 < poly1.m_count);
 
 	// Get the normal of the reference edge in poly2's frame.
-	b2Vec2 normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
+	b2Vec2 normal1 = Utilities.b2MulT(xf2.q, Utilities.b2Mul(xf1.q, normals1[edge1]));
 
 	// Find the incident edge on poly2.
 	int index = 0;
 	float minDot = b2_maxFloat;
 	for (int i = 0; i < count2; ++i)
 	{
-		float dot = b2Dot(normal1, normals2[i]);
+		float dot = Utilities.b2Dot(normal1, normals2[i]);
 		if (dot < minDot)
 		{
 			minDot = dot;
@@ -170,13 +170,13 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 	int i1 = index;
 	int i2 = i1 + 1 < count2 ? i1 + 1 : 0;
 
-	c[0].v = b2Mul(xf2, vertices2[i1]);
+	c[0].v = Utilities.b2Mul(xf2, vertices2[i1]);
 	c[0].id.cf.indexA = (byte)edge1;
 	c[0].id.cf.indexB = (byte)i1;
 	c[0].id.cf.typeA = b2ContactFeature::e_face;
 	c[0].id.cf.typeB = b2ContactFeature::e_vertex;
 
-	c[1].v = b2Mul(xf2, vertices2[i2]);
+	c[1].v = Utilities.b2Mul(xf2, vertices2[i2]);
 	c[1].id.cf.indexA = (byte)edge1;
 	c[1].id.cf.indexB = (byte)i2;
 	c[1].id.cf.typeA = b2ContactFeature::e_face;
@@ -251,21 +251,21 @@ void b2CollidePolygons(b2Manifold* manifold,
 	b2Vec2 localTangent = v12 - v11;
 	localTangent.Normalize();
 	
-	b2Vec2 localNormal = b2Cross(localTangent, 1.0f);
+	b2Vec2 localNormal = Utilities.b2Cross(localTangent, 1.0f);
 	b2Vec2 planePoint = 0.5f * (v11 + v12);
 
-	b2Vec2 tangent = b2Mul(xf1.q, localTangent);
-	b2Vec2 normal = b2Cross(tangent, 1.0f);
+	b2Vec2 tangent = Utilities.b2Mul(xf1.q, localTangent);
+	b2Vec2 normal = Utilities.b2Cross(tangent, 1.0f);
 	
-	v11 = b2Mul(xf1, v11);
-	v12 = b2Mul(xf1, v12);
+	v11 = Utilities.b2Mul(xf1, v11);
+	v12 = Utilities.b2Mul(xf1, v12);
 
 	// Face offset.
-	float frontOffset = b2Dot(normal, v11);
+	float frontOffset = Utilities.b2Dot(normal, v11);
 
 	// Side offsets, extended by polytope skin thickness.
-	float sideOffset1 = -b2Dot(tangent, v11) + totalRadius;
-	float sideOffset2 = b2Dot(tangent, v12) + totalRadius;
+	float sideOffset1 = -Utilities.b2Dot(tangent, v11) + totalRadius;
+	float sideOffset2 = Utilities.b2Dot(tangent, v12) + totalRadius;
 
 	// Clip incident edge against extruded edge1 side edges.
 	b2ClipVertex clipPoints1[2];
@@ -293,12 +293,12 @@ void b2CollidePolygons(b2Manifold* manifold,
 	int pointCount = 0;
 	for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
 	{
-		float separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
+		float separation = Utilities.b2Dot(normal, clipPoints2[i].v) - frontOffset;
 
 		if (separation <= totalRadius)
 		{
 			b2ManifoldPoint* cp = manifold.points + pointCount;
-			cp.localPoint = b2MulT(xf2, clipPoints2[i].v);
+			cp.localPoint = Utilities.b2MulT(xf2, clipPoints2[i].v);
 			cp.id = clipPoints2[i].id;
 			if (flip)
 			{

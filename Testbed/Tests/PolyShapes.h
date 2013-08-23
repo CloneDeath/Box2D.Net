@@ -52,7 +52,7 @@ public:
 			{
 				b2CircleShape* circle = (b2CircleShape*)fixture.GetShape();
 
-				b2Vec2 center = b2Mul(xf, circle.m_p);
+				b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
 				float radius = circle.m_radius;
 
 				m_debugDraw.DrawCircle(center, radius, color);
@@ -63,12 +63,12 @@ public:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
 				int vertexCount = poly.m_count;
-				b2Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
+				Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
 				b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
 
 				for (int i = 0; i < vertexCount; ++i)
 				{
-					vertices[i] = b2Mul(xf, poly.m_vertices[i]);
+					vertices[i] = Utilities.b2Mul(xf, poly.m_vertices[i]);
 				}
 
 				m_debugDraw.DrawPolygon(vertices, vertexCount, color);

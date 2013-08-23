@@ -51,7 +51,7 @@ public:
 
 	void Add(b2Body* body)
 	{
-		b2Assert(m_bodyCount < m_bodyCapacity);
+		Utilities.Assert(m_bodyCount < m_bodyCapacity);
 		body.m_islandIndex = m_bodyCount;
 		m_bodies[m_bodyCount] = body;
 		++m_bodyCount;
@@ -59,13 +59,13 @@ public:
 
 	void Add(b2Contact* contact)
 	{
-		b2Assert(m_contactCount < m_contactCapacity);
+		Utilities.Assert(m_contactCount < m_contactCapacity);
 		m_contacts[m_contactCount++] = contact;
 	}
 
 	void Add(b2Joint* joint)
 	{
-		b2Assert(m_jointCount < m_jointCapacity);
+		Utilities.Assert(m_jointCount < m_jointCapacity);
 		m_joints[m_jointCount++] = joint;
 	}
 

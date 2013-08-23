@@ -33,9 +33,9 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 	case b2Manifold::e_circles:
 		{
 			normal.Set(1.0f, 0.0f);
-			b2Vec2 pointA = b2Mul(xfA, manifold.localPoint);
-			b2Vec2 pointB = b2Mul(xfB, manifold.points[0].localPoint);
-			if (b2DistanceSquared(pointA, pointB) > b2_epsilon * b2_epsilon)
+			b2Vec2 pointA = Utilities.b2Mul(xfA, manifold.localPoint);
+			b2Vec2 pointB = Utilities.b2Mul(xfB, manifold.points[0].localPoint);
+			if (b2DistanceSquared(pointA, pointB) > Single.Epsilon * Single.Epsilon)
 			{
 				normal = pointB - pointA;
 				normal.Normalize();
@@ -49,13 +49,13 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 
 	case b2Manifold::e_faceA:
 		{
-			normal = b2Mul(xfA.q, manifold.localNormal);
-			b2Vec2 planePoint = b2Mul(xfA, manifold.localPoint);
+			normal = Utilities.b2Mul(xfA.q, manifold.localNormal);
+			b2Vec2 planePoint = Utilities.b2Mul(xfA, manifold.localPoint);
 			
 			for (int i = 0; i < manifold.pointCount; ++i)
 			{
-				b2Vec2 clipPoint = b2Mul(xfB, manifold.points[i].localPoint);
-				b2Vec2 cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
+				b2Vec2 clipPoint = Utilities.b2Mul(xfB, manifold.points[i].localPoint);
+				b2Vec2 cA = clipPoint + (radiusA - Utilities.b2Dot(clipPoint - planePoint, normal)) * normal;
 				b2Vec2 cB = clipPoint - radiusB * normal;
 				points[i] = 0.5f * (cA + cB);
 			}
@@ -64,13 +64,13 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 
 	case b2Manifold::e_faceB:
 		{
-			normal = b2Mul(xfB.q, manifold.localNormal);
-			b2Vec2 planePoint = b2Mul(xfB, manifold.localPoint);
+			normal = Utilities.b2Mul(xfB.q, manifold.localNormal);
+			b2Vec2 planePoint = Utilities.b2Mul(xfB, manifold.localPoint);
 
 			for (int i = 0; i < manifold.pointCount; ++i)
 			{
-				b2Vec2 clipPoint = b2Mul(xfA, manifold.points[i].localPoint);
-				b2Vec2 cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
+				b2Vec2 clipPoint = Utilities.b2Mul(xfA, manifold.points[i].localPoint);
+				b2Vec2 cB = clipPoint + (radiusB - Utilities.b2Dot(clipPoint - planePoint, normal)) * normal;
 				b2Vec2 cA = clipPoint - radiusA * normal;
 				points[i] = 0.5f * (cA + cB);
 			}
@@ -140,7 +140,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	for (int i = 0; i < 2; ++i)
 	{
-		if (absD(i) < b2_epsilon)
+		if (absD(i) < Single.Epsilon)
 		{
 			// Parallel.
 			if (p(i) < lowerBound(i) || upperBound(i) < p(i))
@@ -202,8 +202,8 @@ int b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
 	int numOut = 0;
 
 	// Calculate the distance of end points to the line
-	float distance0 = b2Dot(normal, vIn[0].v) - offset;
-	float distance1 = b2Dot(normal, vIn[1].v) - offset;
+	float distance0 = Utilities.b2Dot(normal, vIn[0].v) - offset;
+	float distance1 = Utilities.b2Dot(normal, vIn[1].v) - offset;
 
 	// If the points are behind the plane
 	if (distance0 <= 0.0f) vOut[numOut++] = vIn[0];
@@ -245,5 +245,5 @@ bool b2TestOverlap(	const b2Shape* shapeA, int indexA,
 
 	b2Distance(&output, &cache, &input);
 
-	return output.distance < 10.0f * b2_epsilon;
+	return output.distance < 10.0f * Single.Epsilon;
 }

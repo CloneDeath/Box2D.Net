@@ -68,7 +68,7 @@ public:
 	void Launch()
 	{
 		m_body.SetTransform(b2Vec2(0.0f, 4.0f), 0.0f);
-		m_body.SetLinearVelocity(b2Vec2_zero);
+		m_body.SetLinearVelocity(new b2Vec2(0, 0));
 		m_body.SetAngularVelocity(0.0f);
 
 		m_x = RandomFloat(-1.0f, 1.0f);

@@ -29,9 +29,9 @@ namespace Box2D {
 		/// Implement b2Shape.
 		public override bool TestPoint(b2Transform transform, b2Vec2 p) {
 			throw new NotImplementedException();
-			//b2Vec2 center = transform.p + b2Mul(transform.q, m_p);
+			//b2Vec2 center = transform.p + Utilities.b2Mul(transform.q, m_p);
 			//b2Vec2 d = p - center;
-			//return b2Dot(d, d) <= m_radius * m_radius;
+			//return Utilities.b2Dot(d, d) <= m_radius * m_radius;
 		}
 
 		/// Implement b2Shape.
@@ -44,18 +44,18 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//B2_NOT_USED(childIndex);
 
-			//b2Vec2 position = transform.p + b2Mul(transform.q, m_p);
+			//b2Vec2 position = transform.p + Utilities.b2Mul(transform.q, m_p);
 			//b2Vec2 s = input.p1 - position;
-			//float b = b2Dot(s, s) - m_radius * m_radius;
+			//float b = Utilities.b2Dot(s, s) - m_radius * m_radius;
 
 			//// Solve quadratic equation.
 			//b2Vec2 r = input.p2 - input.p1;
-			//float c =  b2Dot(s, r);
-			//float rr = b2Dot(r, r);
+			//float c =  Utilities.b2Dot(s, r);
+			//float rr = Utilities.b2Dot(r, r);
 			//float sigma = c * c - rr * b;
 
 			//// Check for negative discriminant and short segment.
-			//if (sigma < 0.0f || rr < b2_epsilon)
+			//if (sigma < 0.0f || rr < Single.Epsilon)
 			//{
 			//    return false;
 			//}
@@ -81,7 +81,7 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//B2_NOT_USED(childIndex);
 
-			//b2Vec2 p = transform.p + b2Mul(transform.q, m_p);
+			//b2Vec2 p = transform.p + Utilities.b2Mul(transform.q, m_p);
 			//aabb.lowerBound.Set(p.x - m_radius, p.y - m_radius);
 			//aabb.upperBound.Set(p.x + m_radius, p.y + m_radius);
 		}
@@ -93,7 +93,7 @@ namespace Box2D {
 			//massData.center = m_p;
 
 			//// inertia about the local origin
-			//massData.I = massData.mass * (0.5f * m_radius * m_radius + b2Dot(m_p, m_p));
+			//massData.I = massData.mass * (0.5f * m_radius * m_radius + Utilities.b2Dot(m_p, m_p));
 		}
 
 		/// Get the supporting vertex index in the given direction.
@@ -117,7 +117,7 @@ namespace Box2D {
 		public b2Vec2 GetVertex(int index){
 			throw new NotImplementedException();
 			//B2_NOT_USED(index);
-			//b2Assert(index == 0);
+			//Utilities.Assert(index == 0);
 			//return m_p;
 		}
 

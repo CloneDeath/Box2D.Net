@@ -105,42 +105,36 @@ namespace Box2D {
 		/// @param def the fixture definition.
 		/// @warning This function is locked during callbacks.
 		public b2Fixture CreateFixture(b2FixtureDef def){
-			throw new NotImplementedException();
-			//b2Assert(m_world.IsLocked() == false);
-			//if (m_world.IsLocked() == true)
-			//{
-			//    return null;
-			//}
+			Utilities.Assert(m_world.IsLocked() == false);
+			if (m_world.IsLocked() == true)
+			{
+			    return null;
+			}
 
-			//b2BlockAllocator* allocator = &m_world.m_blockAllocator;
+			b2Fixture fixture = new b2Fixture();
+			fixture.Create(this, def);
 
-			//void* memory = allocator.Allocate(sizeof(b2Fixture));
-			//b2Fixture* fixture = new (memory) b2Fixture;
-			//fixture.Create(allocator, this, def);
+			if (m_flags.HasFlag(BodyFlags.e_activeFlag))
+			{
+			    b2BroadPhase broadPhase = m_world.m_contactManager.m_broadPhase;
+			    fixture.CreateProxies(broadPhase, m_xf);
+			}
 
-			//if (m_flags & e_activeFlag)
-			//{
-			//    b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
-			//    fixture.CreateProxies(broadPhase, m_xf);
-			//}
+			m_fixtureList.Add(fixture);
 
-			//fixture.m_next = m_fixtureList;
-			//m_fixtureList = fixture;
-			//++m_fixtureCount;
+			fixture.m_body = this;
 
-			//fixture.m_body = this;
+			// Adjust mass properties if needed.
+			if (fixture.m_density > 0.0f)
+			{
+			    ResetMassData();
+			}
 
-			//// Adjust mass properties if needed.
-			//if (fixture.m_density > 0.0f)
-			//{
-			//    ResetMassData();
-			//}
+			// Let the world know we have a new fixture. This will cause new contacts
+			// to be created at the beginning of the next time step.
+			m_world.m_flags |= WorldFlags.e_newFixture;
 
-			//// Let the world know we have a new fixture. This will cause new contacts
-			//// to be created at the beginning of the next time step.
-			//m_world.m_flags |= b2World::e_newFixture;
-
-			//return fixture;
+			return fixture;
 		}
 
 		/// Creates a fixture from a shape and attach it to this body.
@@ -151,12 +145,11 @@ namespace Box2D {
 		/// @param density the shape density (set to zero for static bodies).
 		/// @warning This function is locked during callbacks.
 		public b2Fixture CreateFixture(b2Shape shape, float density){
-			throw new NotImplementedException();
-			//b2FixtureDef def;
-			//def.shape = shape;
-			//def.density = density;
+			b2FixtureDef def = new b2FixtureDef();
+			def.shape = shape;
+			def.density = density;
 
-			//return CreateFixture(&def);
+			return CreateFixture(def);
 		}
 
 		/// Destroy a fixture. This removes the fixture from the broad-phase and
@@ -168,16 +161,16 @@ namespace Box2D {
 		/// @warning This function is locked during callbacks.
 		public void DestroyFixture(b2Fixture fixture){
 			throw new NotImplementedException();
-			//b2Assert(m_world.IsLocked() == false);
+			//Utilities.Assert(m_world.IsLocked() == false);
 			//if (m_world.IsLocked() == true)
 			//{
 			//    return;
 			//}
 
-			//b2Assert(fixture.m_body == this);
+			//Utilities.Assert(fixture.m_body == this);
 
 			//// Remove the fixture from this body's singly linked list.
-			//b2Assert(m_fixtureCount > 0);
+			//Utilities.Assert(m_fixtureCount > 0);
 			//b2Fixture** node = &m_fixtureList;
 			//bool found = false;
 			//while (*node != null)
@@ -193,7 +186,7 @@ namespace Box2D {
 			//}
 
 			//// You tried to remove a shape that is not attached to this body.
-			//b2Assert(found);
+			//Utilities.Assert(found);
 
 			//// Destroy any contacts associated with the fixture.
 			//b2ContactEdge* edge = m_contactList;
@@ -240,7 +233,7 @@ namespace Box2D {
 		/// @param angle the world rotation in radians.
 		public void SetTransform(b2Vec2 position, float angle){
 			throw new NotImplementedException();
-			//b2Assert(m_world.IsLocked() == false);
+			//Utilities.Assert(m_world.IsLocked() == false);
 			//if (m_world.IsLocked() == true)
 			//{
 			//    return;
@@ -249,7 +242,7 @@ namespace Box2D {
 			//m_xf.q.Set(angle);
 			//m_xf.p = position;
 
-			//m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+			//m_sweep.c = Utilities.b2Mul(m_xf, m_sweep.localCenter);
 			//m_sweep.a = angle;
 
 			//m_sweep.c0 = m_sweep.c;
@@ -301,7 +294,7 @@ namespace Box2D {
 			//    return;
 			//}
 
-			//if (b2Dot(v,v) > 0.0f)
+			//if (Utilities.b2Dot(v,v) > 0.0f)
 			//{
 			//    SetAwake(true);
 			//}
@@ -360,7 +353,7 @@ namespace Box2D {
 			//if (m_flags & e_awakeFlag)
 			//{
 			//    m_force += force;
-			//    m_torque += b2Cross(point - m_sweep.c, force);
+			//    m_torque += Utilities.b2Cross(point - m_sweep.c, force);
 			//}
 		}
 
@@ -432,7 +425,7 @@ namespace Box2D {
 			//if (m_flags & e_awakeFlag)
 			//{
 			//    m_linearVelocity += m_invMass * impulse;
-			//    m_angularVelocity += m_invI * b2Cross(point - m_sweep.c, impulse);
+			//    m_angularVelocity += m_invI * Utilities.b2Cross(point - m_sweep.c, impulse);
 			//}
 		}
 
@@ -468,7 +461,7 @@ namespace Box2D {
 		/// @return the rotational inertia, usually in kg-m^2.
 		public float GetInertia(){
 			throw new NotImplementedException();
-			//return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+			//return m_I + m_mass * Utilities.b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 		}
 
 		/// Get the mass data of the body.
@@ -476,7 +469,7 @@ namespace Box2D {
 		public void GetMassData(out b2MassData data){
 			throw new NotImplementedException();
 			//data.mass = m_mass;
-			//data.I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+			//data.I = m_I + m_mass * Utilities.b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 			//data.center = m_sweep.localCenter;
 		}
 
@@ -487,7 +480,7 @@ namespace Box2D {
 		/// @param massData the mass properties.
 		public void SetMassData(b2MassData data){
 			throw new NotImplementedException();
-			//b2Assert(m_world.IsLocked() == false);
+			//Utilities.Assert(m_world.IsLocked() == false);
 			//if (m_world.IsLocked() == true)
 			//{
 			//    return;
@@ -512,93 +505,83 @@ namespace Box2D {
 
 			//if (massData.I > 0.0f && (m_flags & b2Body::e_fixedRotationFlag) == 0)
 			//{
-			//    m_I = massData.I - m_mass * b2Dot(massData.center, massData.center);
-			//    b2Assert(m_I > 0.0f);
+			//    m_I = massData.I - m_mass * Utilities.b2Dot(massData.center, massData.center);
+			//    Utilities.Assert(m_I > 0.0f);
 			//    m_invI = 1.0f / m_I;
 			//}
 
 			//// Move center of mass.
 			//b2Vec2 oldCenter = m_sweep.c;
 			//m_sweep.localCenter =  massData.center;
-			//m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+			//m_sweep.c0 = m_sweep.c = Utilities.b2Mul(m_xf, m_sweep.localCenter);
 
 			//// Update center of mass velocity.
-			//m_linearVelocity += b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
+			//m_linearVelocity += Utilities.b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
 		}
 
 		/// This resets the mass properties to the sum of the mass properties of the fixtures.
 		/// This normally does not need to be called unless you called SetMassData to override
 		/// the mass and you later want to reset the mass.
 		public void ResetMassData(){
-			throw new NotImplementedException();
-			//// Compute mass data from shapes. Each shape has its own density.
-			//m_mass = 0.0f;
-			//m_invMass = 0.0f;
-			//m_I = 0.0f;
-			//m_invI = 0.0f;
-			//m_sweep.localCenter.SetZero();
+			// Compute mass data from shapes. Each shape has its own density.
+			m_mass = 0.0f;
+			m_invMass = 0.0f;
+			m_I = 0.0f;
+			m_invI = 0.0f;
+			m_sweep.localCenter.SetZero();
 
-			//// Static and kinematic bodies have zero mass.
-			//if (m_type == b2_staticBody || m_type == b2_kinematicBody)
-			//{
-			//    m_sweep.c0 = m_xf.p;
-			//    m_sweep.c = m_xf.p;
-			//    m_sweep.a0 = m_sweep.a;
-			//    return;
-			//}
+			// Static and kinematic bodies have zero mass.
+			if (m_type == b2BodyType.b2_staticBody || m_type == b2BodyType.b2_kinematicBody) {
+				m_sweep.c0 = m_xf.p;
+				m_sweep.c = m_xf.p;
+				m_sweep.a0 = m_sweep.a;
+				return;
+			}
 
-			//b2Assert(m_type == b2_dynamicBody);
+			Utilities.Assert(m_type == b2BodyType.b2_dynamicBody);
 
-			//// Accumulate mass over all fixtures.
-			//b2Vec2 localCenter = b2Vec2_zero;
-			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
-			//{
-			//    if (f.m_density == 0.0f)
-			//    {
-			//        continue;
-			//    }
+			// Accumulate mass over all fixtures.
+			b2Vec2 localCenter = new b2Vec2(0, 0);
+			foreach (b2Fixture f in m_fixtureList){
+				if (f.m_density == 0.0f) {
+					continue;
+				}
 
-			//    b2MassData massData;
-			//    f.GetMassData(&massData);
-			//    m_mass += massData.mass;
-			//    localCenter += massData.mass * massData.center;
-			//    m_I += massData.I;
-			//}
+				b2MassData massData;
+				f.GetMassData(out massData);
+				m_mass += massData.mass;
+				localCenter += massData.mass * massData.center;
+				m_I += massData.I;
+			}
 
-			//// Compute center of mass.
-			//if (m_mass > 0.0f)
-			//{
-			//    m_invMass = 1.0f / m_mass;
-			//    localCenter *= m_invMass;
-			//}
-			//else
-			//{
-			//    // Force all dynamic bodies to have a positive mass.
-			//    m_mass = 1.0f;
-			//    m_invMass = 1.0f;
-			//}
+			// Compute center of mass.
+			if (m_mass > 0.0f) {
+				m_invMass = 1.0f / m_mass;
+				localCenter *= m_invMass;
+			} else {
+				// Force all dynamic bodies to have a positive mass.
+				m_mass = 1.0f;
+				m_invMass = 1.0f;
+			}
 
-			//if (m_I > 0.0f && (m_flags & e_fixedRotationFlag) == 0)
-			//{
-			//    // Center the inertia about the center of mass.
-			//    m_I -= m_mass * b2Dot(localCenter, localCenter);
-			//    b2Assert(m_I > 0.0f);
-			//    m_invI = 1.0f / m_I;
+			if (m_I > 0.0f && (m_flags & BodyFlags.e_fixedRotationFlag) == 0) {
+				// Center the inertia about the center of mass.
+				m_I -= m_mass * Utilities.b2Dot(localCenter, localCenter);
+				Utilities.Assert(m_I > 0.0f);
+				m_invI = 1.0f / m_I;
 
-			//}
-			//else
-			//{
-			//    m_I = 0.0f;
-			//    m_invI = 0.0f;
-			//}
+			} else {
+				m_I = 0.0f;
+				m_invI = 0.0f;
+			}
 
-			//// Move center of mass.
-			//b2Vec2 oldCenter = m_sweep.c;
-			//m_sweep.localCenter = localCenter;
-			//m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+			// Move center of mass.
+			b2Vec2 oldCenter = m_sweep.c;
+			m_sweep.localCenter = localCenter;
+			m_sweep.c0 = m_sweep.c = Utilities.b2Mul(m_xf, m_sweep.localCenter);
 
-			//// Update center of mass velocity.
-			//m_linearVelocity += b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
+			// Update center of mass velocity.
+			m_linearVelocity += Utilities.b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
 		}
 
 		/// Get the world coordinates of a point given the local coordinates.
@@ -606,7 +589,7 @@ namespace Box2D {
 		/// @return the same point expressed in world coordinates.
 		public b2Vec2 GetWorldPoint(b2Vec2 localPoint){
 			throw new NotImplementedException();
-			//return b2Mul(m_xf, localPoint);
+			//return Utilities.b2Mul(m_xf, localPoint);
 		}
 
 		/// Get the world coordinates of a vector given the local coordinates.
@@ -614,7 +597,7 @@ namespace Box2D {
 		/// @return the same vector expressed in world coordinates.
 		public b2Vec2 GetWorldVector(b2Vec2 localVector){
 			throw new NotImplementedException();
-			//return b2Mul(m_xf.q, localVector);
+			//return Utilities.b2Mul(m_xf.q, localVector);
 		}
 
 		/// Gets a local point relative to the body's origin given a world point.
@@ -622,7 +605,7 @@ namespace Box2D {
 		/// @return the corresponding local point relative to the body's origin.
 		public b2Vec2 GetLocalPoint(b2Vec2 worldPoint){
 			throw new NotImplementedException();
-			//return b2MulT(m_xf, worldPoint);
+			//return Utilities.b2MulT(m_xf, worldPoint);
 		}
 
 		/// Gets a local vector given a world vector.
@@ -630,7 +613,7 @@ namespace Box2D {
 		/// @return the corresponding local vector.
 		public b2Vec2 GetLocalVector(b2Vec2 worldVector) {
 			throw new NotImplementedException();
-			//return b2MulT(m_xf.q, worldVector);
+			//return Utilities.b2MulT(m_xf.q, worldVector);
 		}
 
 
@@ -639,7 +622,7 @@ namespace Box2D {
 		/// @return the world velocity of a point.
 		public b2Vec2 GetLinearVelocityFromWorldPoint(b2Vec2 worldPoint){
 			throw new NotImplementedException();
-			//return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
+			//return m_linearVelocity + Utilities.b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
 		}
 
 		/// Get the world velocity of a local point.
@@ -683,7 +666,7 @@ namespace Box2D {
 		/// Set the type of this body. This may alter the mass and velocity.
 		public void SetType(b2BodyType type){
 			throw new NotImplementedException();
-			//b2Assert(m_world.IsLocked() == false);
+			//Utilities.Assert(m_world.IsLocked() == false);
 			//if (m_world.IsLocked() == true)
 			//{
 			//    return;
@@ -826,7 +809,7 @@ namespace Box2D {
 		/// in the body list.
 		public void SetActive(bool flag){
 			throw new NotImplementedException();
-			//b2Assert(m_world.IsLocked() == false);
+			//Utilities.Assert(m_world.IsLocked() == false);
 
 			//if (flag == IsActive())
 			//{
@@ -984,87 +967,77 @@ namespace Box2D {
 			e_toiFlag			= 0x0040
 		};
 
-		private b2Body(b2BodyDef bd, b2World world){
-			throw new NotImplementedException();
-			//b2Assert(bd.position.IsValid());
-			//b2Assert(bd.linearVelocity.IsValid());
-			//b2Assert(b2IsValid(bd.angle));
-			//b2Assert(b2IsValid(bd.angularVelocity));
-			//b2Assert(b2IsValid(bd.angularDamping) && bd.angularDamping >= 0.0f);
-			//b2Assert(b2IsValid(bd.linearDamping) && bd.linearDamping >= 0.0f);
+		internal b2Body(b2BodyDef bd, b2World world){
+			Utilities.Assert(bd.position.IsValid());
+			Utilities.Assert(bd.linearVelocity.IsValid());
+			Utilities.Assert(Utilities.IsValid(bd.angle));
+			Utilities.Assert(Utilities.IsValid(bd.angularVelocity));
+			Utilities.Assert(Utilities.IsValid(bd.angularDamping) && bd.angularDamping >= 0.0f);
+			Utilities.Assert(Utilities.IsValid(bd.linearDamping) && bd.linearDamping >= 0.0f);
 
-			//m_flags = 0;
+			m_flags = 0;
 
-			//if (bd.bullet)
-			//{
-			//    m_flags |= e_bulletFlag;
-			//}
-			//if (bd.fixedRotation)
-			//{
-			//    m_flags |= e_fixedRotationFlag;
-			//}
-			//if (bd.allowSleep)
-			//{
-			//    m_flags |= e_autoSleepFlag;
-			//}
-			//if (bd.awake)
-			//{
-			//    m_flags |= e_awakeFlag;
-			//}
-			//if (bd.active)
-			//{
-			//    m_flags |= e_activeFlag;
-			//}
+			if (bd.bullet) {
+				m_flags |= BodyFlags.e_bulletFlag;
+			}
+			if (bd.fixedRotation) {
+				m_flags |= BodyFlags.e_fixedRotationFlag;
+			}
+			if (bd.allowSleep) {
+				m_flags |= BodyFlags.e_autoSleepFlag;
+			}
+			if (bd.awake) {
+				m_flags |= BodyFlags.e_awakeFlag;
+			}
+			if (bd.active) {
+				m_flags |= BodyFlags.e_activeFlag;
+			}
 
-			//m_world = world;
+			m_world = world;
 
-			//m_xf.p = bd.position;
-			//m_xf.q.Set(bd.angle);
+			m_xf.p = bd.position;
+			m_xf.q.Set(bd.angle);
 
-			//m_sweep.localCenter.SetZero();
-			//m_sweep.c0 = m_xf.p;
-			//m_sweep.c = m_xf.p;
-			//m_sweep.a0 = bd.angle;
-			//m_sweep.a = bd.angle;
-			//m_sweep.alpha0 = 0.0f;
+			m_sweep.localCenter.SetZero();
+			m_sweep.c0 = m_xf.p;
+			m_sweep.c = m_xf.p;
+			m_sweep.a0 = bd.angle;
+			m_sweep.a = bd.angle;
+			m_sweep.alpha0 = 0.0f;
 
-			//m_jointList = null;
-			//m_contactList = null;
-			//m_prev = null;
-			//m_next = null;
+			m_jointList = null;
+			m_contactList = null;
+			m_prev = null;
+			m_next = null;
 
-			//m_linearVelocity = bd.linearVelocity;
-			//m_angularVelocity = bd.angularVelocity;
+			m_linearVelocity = bd.linearVelocity;
+			m_angularVelocity = bd.angularVelocity;
 
-			//m_linearDamping = bd.linearDamping;
-			//m_angularDamping = bd.angularDamping;
-			//m_gravityScale = bd.gravityScale;
+			m_linearDamping = bd.linearDamping;
+			m_angularDamping = bd.angularDamping;
+			m_gravityScale = bd.gravityScale;
 
-			//m_force.SetZero();
-			//m_torque = 0.0f;
+			m_force.SetZero();
+			m_torque = 0.0f;
 
-			//m_sleepTime = 0.0f;
+			m_sleepTime = 0.0f;
 
-			//m_type = bd.type;
+			m_type = bd.type;
 
-			//if (m_type == b2_dynamicBody)
-			//{
-			//    m_mass = 1.0f;
-			//    m_invMass = 1.0f;
-			//}
-			//else
-			//{
-			//    m_mass = 0.0f;
-			//    m_invMass = 0.0f;
-			//}
+			if (m_type == b2BodyType.b2_dynamicBody) {
+				m_mass = 1.0f;
+				m_invMass = 1.0f;
+			} else {
+				m_mass = 0.0f;
+				m_invMass = 0.0f;
+			}
 
-			//m_I = 0.0f;
-			//m_invI = 0.0f;
+			m_I = 0.0f;
+			m_invI = 0.0f;
 
-			//m_userData = bd.userData;
+			m_userData = bd.userData;
 
-			//m_fixtureList = null;
-			//m_fixtureCount = 0;
+			m_fixtureList = new List<b2Fixture>();
 		}
 
 		~b2Body(){
@@ -1075,7 +1048,7 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//b2Transform xf1;
 			//xf1.q.Set(m_sweep.a0);
-			//xf1.p = m_sweep.c0 - b2Mul(xf1.q, m_sweep.localCenter);
+			//xf1.p = m_sweep.c0 - Utilities.b2Mul(xf1.q, m_sweep.localCenter);
 
 			//b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
 			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
@@ -1086,7 +1059,7 @@ namespace Box2D {
 		private void SynchronizeTransform(){
 			throw new NotImplementedException();
 			//m_xf.q.Set(m_sweep.a);
-			//m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
+			//m_xf.p = m_sweep.c - Utilities.b2Mul(m_xf.q, m_sweep.localCenter);
 		}
 
 		// This is used to prevent connected bodies from colliding.
@@ -1121,12 +1094,12 @@ namespace Box2D {
 			//m_sweep.c = m_sweep.c0;
 			//m_sweep.a = m_sweep.a0;
 			//m_xf.q.Set(m_sweep.a);
-			//m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
+			//m_xf.p = m_sweep.c - Utilities.b2Mul(m_xf.q, m_sweep.localCenter);
 		}
 
 		private b2BodyType m_type;
 
-		private ushort m_flags;
+		private BodyFlags m_flags;
 
 		private int m_islandIndex;
 
@@ -1144,7 +1117,6 @@ namespace Box2D {
 		private b2Body m_next; //pointer
 
 		private List<b2Fixture> m_fixtureList; //pointer
-		private int m_fixtureCount;
 
 		private List<b2JointEdge> m_jointList;//pointer
 		private List<b2ContactEdge> m_contactList;//pointer

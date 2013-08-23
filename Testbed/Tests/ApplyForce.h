@@ -64,9 +64,9 @@ public:
 			xf1.p = xf1.q.GetXAxis();
 
 			b2Vec2 vertices[3];
-			vertices[0] = b2Mul(xf1, b2Vec2(-1.0f, 0.0f));
-			vertices[1] = b2Mul(xf1, b2Vec2(1.0f, 0.0f));
-			vertices[2] = b2Mul(xf1, b2Vec2(0.0f, 0.5f));
+			vertices[0] = Utilities.b2Mul(xf1, b2Vec2(-1.0f, 0.0f));
+			vertices[1] = Utilities.b2Mul(xf1, b2Vec2(1.0f, 0.0f));
+			vertices[2] = Utilities.b2Mul(xf1, b2Vec2(0.0f, 0.5f));
 			
 			b2PolygonShape poly1;
 			poly1.Set(vertices, 3);
@@ -79,9 +79,9 @@ public:
 			xf2.q.Set(-0.3524f * Math.PI);
 			xf2.p = -xf2.q.GetXAxis();
 
-			vertices[0] = b2Mul(xf2, b2Vec2(-1.0f, 0.0f));
-			vertices[1] = b2Mul(xf2, b2Vec2(1.0f, 0.0f));
-			vertices[2] = b2Mul(xf2, b2Vec2(0.0f, 0.5f));
+			vertices[0] = Utilities.b2Mul(xf2, b2Vec2(-1.0f, 0.0f));
+			vertices[1] = Utilities.b2Mul(xf2, b2Vec2(1.0f, 0.0f));
+			vertices[2] = Utilities.b2Mul(xf2, b2Vec2(0.0f, 0.5f));
 			
 			b2PolygonShape poly2;
 			poly2.Set(vertices, 3);

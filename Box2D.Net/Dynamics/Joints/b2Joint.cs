@@ -25,7 +25,7 @@ namespace Box2D {
 
 		protected b2Joint(b2JointDef def){
 			throw new NotImplementedException();
-			//b2Assert(def.bodyA != def.bodyB);
+			//Utilities.Assert(def.bodyA != def.bodyB);
 
 			//m_type = def.type;
 			//m_prev = null;
@@ -203,7 +203,7 @@ namespace Box2D {
 			//    break;
 
 			//default:
-			//    b2Assert(false);
+			//    Utilities.Assert(false);
 			//    break;
 			//}
 
@@ -259,7 +259,7 @@ namespace Box2D {
 			//    break;
 
 			//default:
-			//    b2Assert(false);
+			//    Utilities.Assert(false);
 			//    break;
 			//}
 		}

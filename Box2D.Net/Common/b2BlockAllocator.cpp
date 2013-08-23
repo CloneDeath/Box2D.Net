@@ -56,7 +56,7 @@ struct b2Block
 
 b2BlockAllocator::b2BlockAllocator()
 {
-	b2Assert(b2_blockSizes < UCHAR_MAX);
+	Utilities.Assert(b2_blockSizes < UCHAR_MAX);
 
 	m_chunkSpace = b2_chunkArrayIncrement;
 	m_chunkCount = 0;
@@ -70,7 +70,7 @@ b2BlockAllocator::b2BlockAllocator()
 		int j = 0;
 		for (int i = 1; i <= b2_maxBlockSize; ++i)
 		{
-			b2Assert(j < b2_blockSizes);
+			Utilities.Assert(j < b2_blockSizes);
 			if (i <= s_blockSizes[j])
 			{
 				s_blockSizeLookup[i] = (byte)j;
@@ -101,7 +101,7 @@ void* b2BlockAllocator::Allocate(int size)
 	if (size == 0)
 		return null;
 
-	b2Assert(0 < size);
+	Utilities.Assert(0 < size);
 
 	if (size > b2_maxBlockSize)
 	{
@@ -109,7 +109,7 @@ void* b2BlockAllocator::Allocate(int size)
 	}
 
 	int index = s_blockSizeLookup[size];
-	b2Assert(0 <= index && index < b2_blockSizes);
+	Utilities.Assert(0 <= index && index < b2_blockSizes);
 
 	if (m_freeLists[index])
 	{
@@ -137,7 +137,7 @@ void* b2BlockAllocator::Allocate(int size)
 		int blockSize = s_blockSizes[index];
 		chunk.blockSize = blockSize;
 		int blockCount = b2_chunkSize / blockSize;
-		b2Assert(blockCount * blockSize <= b2_chunkSize);
+		Utilities.Assert(blockCount * blockSize <= b2_chunkSize);
 		for (int i = 0; i < blockCount - 1; ++i)
 		{
 			b2Block* block = (b2Block*)((int8*)chunk.blocks + blockSize * i);
@@ -161,7 +161,7 @@ void b2BlockAllocator::Free(void* p, int size)
 		return;
 	}
 
-	b2Assert(0 < size);
+	Utilities.Assert(0 < size);
 
 	if (size > b2_maxBlockSize)
 	{
@@ -170,7 +170,7 @@ void b2BlockAllocator::Free(void* p, int size)
 	}
 
 	int index = s_blockSizeLookup[size];
-	b2Assert(0 <= index && index < b2_blockSizes);
+	Utilities.Assert(0 <= index && index < b2_blockSizes);
 
 #ifdef _DEBUG
 	// Verify the memory address and size is valid.
@@ -181,7 +181,7 @@ void b2BlockAllocator::Free(void* p, int size)
 		b2Chunk* chunk = m_chunks + i;
 		if (chunk.blockSize != blockSize)
 		{
-			b2Assert(	(int8*)p + blockSize <= (int8*)chunk.blocks ||
+			Utilities.Assert(	(int8*)p + blockSize <= (int8*)chunk.blocks ||
 						(int8*)chunk.blocks + b2_chunkSize <= (int8*)p);
 		}
 		else
@@ -193,7 +193,7 @@ void b2BlockAllocator::Free(void* p, int size)
 		}
 	}
 
-	b2Assert(found);
+	Utilities.Assert(found);
 
 	memset(p, 0xfd, blockSize);
 #endif

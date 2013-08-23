@@ -52,7 +52,7 @@ public:
 			vertices[2] = p3;
 			poly1.Set(vertices, 3);
 
-			vertices[0] = b2Vec2_zero;
+			vertices[0] = new b2Vec2(0, 0);
 			vertices[1] = p5 - p4;
 			vertices[2] = p6 - p4;
 			poly2.Set(vertices, 3);
@@ -66,7 +66,7 @@ public:
 			vertices[2] = p2;
 			poly1.Set(vertices, 3);
 
-			vertices[0] = b2Vec2_zero;
+			vertices[0] = new b2Vec2(0, 0);
 			vertices[1] = p6 - p4;
 			vertices[2] = p5 - p4;
 			poly2.Set(vertices, 3);

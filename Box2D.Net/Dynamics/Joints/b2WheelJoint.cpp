@@ -51,7 +51,7 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 	m_localAnchorA = def.localAnchorA;
 	m_localAnchorB = def.localAnchorB;
 	m_localXAxisA = def.localAxisA;
-	m_localYAxisA = b2Cross(1.0f, m_localXAxisA);
+	m_localYAxisA = Utilities.b2Cross(1.0f, m_localXAxisA);
 
 	m_mass = 0.0f;
 	m_impulse = 0.0f;
@@ -101,15 +101,15 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	b2Rot qA(aA), qB(aB);
 
 	// Compute the effective masses.
-	b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 	b2Vec2 d = cB + rB - cA - rA;
 
 	// Point to line constraint
 	{
-		m_ay = b2Mul(qA, m_localYAxisA);
-		m_sAy = b2Cross(d + rA, m_ay);
-		m_sBy = b2Cross(rB, m_ay);
+		m_ay = Utilities.b2Mul(qA, m_localYAxisA);
+		m_sAy = Utilities.b2Cross(d + rA, m_ay);
+		m_sBy = Utilities.b2Cross(rB, m_ay);
 
 		m_mass = mA + mB + iA * m_sAy * m_sAy + iB * m_sBy * m_sBy;
 
@@ -125,9 +125,9 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_gamma = 0.0f;
 	if (m_frequencyHz > 0.0f)
 	{
-		m_ax = b2Mul(qA, m_localXAxisA);
-		m_sAx = b2Cross(d + rA, m_ax);
-		m_sBx = b2Cross(rB, m_ax);
+		m_ax = Utilities.b2Mul(qA, m_localXAxisA);
+		m_sAx = Utilities.b2Cross(d + rA, m_ax);
+		m_sBx = Utilities.b2Cross(rB, m_ax);
 
 		float invMass = mA + mB + iA * m_sAx * m_sAx + iB * m_sBx * m_sBx;
 
@@ -135,7 +135,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 		{
 			m_springMass = 1.0f / invMass;
 
-			float C = b2Dot(d, m_ax);
+			float C = Utilities.b2Dot(d, m_ax);
 
 			// Frequency
 			float omega = 2.0f * Math.PI * m_frequencyHz;
@@ -225,7 +225,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Solve spring constraint
 	{
-		float Cdot = b2Dot(m_ax, vB - vA) + m_sBx * wB - m_sAx * wA;
+		float Cdot = Utilities.b2Dot(m_ax, vB - vA) + m_sBx * wB - m_sAx * wA;
 		float impulse = -m_springMass * (Cdot + m_bias + m_gamma * m_springImpulse);
 		m_springImpulse += impulse;
 
@@ -256,7 +256,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Solve point to line constraint
 	{
-		float Cdot = b2Dot(m_ay, vB - vA) + m_sBy * wB - m_sAy * wA;
+		float Cdot = Utilities.b2Dot(m_ay, vB - vA) + m_sBy * wB - m_sAy * wA;
 		float impulse = -m_mass * Cdot;
 		m_impulse += impulse;
 
@@ -286,16 +286,16 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 
 	b2Rot qA(aA), qB(aB);
 
-	b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 	b2Vec2 d = (cB - cA) + rB - rA;
 
-	b2Vec2 ay = b2Mul(qA, m_localYAxisA);
+	b2Vec2 ay = Utilities.b2Mul(qA, m_localYAxisA);
 
-	float sAy = b2Cross(d + rA, ay);
-	float sBy = b2Cross(rB, ay);
+	float sAy = Utilities.b2Cross(d + rA, ay);
+	float sBy = Utilities.b2Cross(rB, ay);
 
-	float C = b2Dot(d, ay);
+	float C = Utilities.b2Dot(d, ay);
 
 	float k = m_invMassA + m_invMassB + m_invIA * m_sAy * m_sAy + m_invIB * m_sBy * m_sBy;
 
@@ -356,7 +356,7 @@ float b2WheelJoint::GetJointTranslation() const
 	b2Vec2 d = pB - pA;
 	b2Vec2 axis = bA.GetWorldVector(m_localXAxisA);
 
-	float translation = b2Dot(d, axis);
+	float translation = Utilities.b2Dot(d, axis);
 	return translation;
 }
 

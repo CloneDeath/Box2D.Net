@@ -132,7 +132,7 @@ public:
 			}
 		}
 
-		b2Assert(m_count < e_maxCount);
+		Utilities.Assert(m_count < e_maxCount);
 
 		m_points[m_count] = point;
 		m_normals[m_count] = normal;
@@ -439,7 +439,7 @@ public:
 			b2Vec2 vs[4];
 			for (int i = 0; i < 4; ++i)
 			{
-				vs[i] = b2Mul(xf, shape.m_vertices[i]);
+				vs[i] = Utilities.b2Mul(xf, shape.m_vertices[i]);
 			}
 
 			m_debugDraw.DrawPolygon(vs, 4, color);

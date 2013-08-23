@@ -199,8 +199,8 @@ namespace Box2D {
 		protected static void AddType(b2ContactCreateFcn createFcn, b2ContactDestroyFcn destroyFcn,
 							ShapeType typeA, ShapeType typeB){
 			throw new NotImplementedException();
-			//b2Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-			//b2Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
 	
 			//s_registers[type1][type2].createFcn = createFcn;
 			//s_registers[type1][type2].destroyFcn = destoryFcn;
@@ -236,8 +236,8 @@ namespace Box2D {
 			//b2Shape::Type type1 = fixtureA.GetType();
 			//b2Shape::Type type2 = fixtureB.GetType();
 
-			//b2Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-			//b2Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
 	
 			//b2ContactCreateFcn* createFcn = s_registers[type1][type2].createFcn;
 			//if (createFcn)
@@ -260,7 +260,7 @@ namespace Box2D {
 		//protected static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
 		protected static void Destroy(b2Contact contact){
 			throw new NotImplementedException();
-			//b2Assert(s_initialized == true);
+			//Utilities.Assert(s_initialized == true);
 
 			//b2Fixture* fixtureA = contact.m_fixtureA;
 			//b2Fixture* fixtureB = contact.m_fixtureB;
@@ -276,8 +276,8 @@ namespace Box2D {
 			//b2Shape::Type typeA = fixtureA.GetType();
 			//b2Shape::Type typeB = fixtureB.GetType();
 
-			//b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
-			//b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
 
 			//b2ContactDestroyFcn* destroyFcn = s_registers[typeA][typeB].destroyFcn;
 			//destroyFcn(contact, allocator);

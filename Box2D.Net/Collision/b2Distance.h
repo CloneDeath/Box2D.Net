@@ -100,17 +100,17 @@ inline int b2DistanceProxy::GetVertexCount() const
 
 inline const b2Vec2& b2DistanceProxy::GetVertex(int index) const
 {
-	b2Assert(0 <= index && index < m_count);
+	Utilities.Assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
 inline int b2DistanceProxy::GetSupport(const b2Vec2& d) const
 {
 	int bestIndex = 0;
-	float bestValue = b2Dot(m_vertices[0], d);
+	float bestValue = Utilities.b2Dot(m_vertices[0], d);
 	for (int i = 1; i < m_count; ++i)
 	{
-		float value = b2Dot(m_vertices[i], d);
+		float value = Utilities.b2Dot(m_vertices[i], d);
 		if (value > bestValue)
 		{
 			bestIndex = i;
@@ -124,10 +124,10 @@ inline int b2DistanceProxy::GetSupport(const b2Vec2& d) const
 inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
 {
 	int bestIndex = 0;
-	float bestValue = b2Dot(m_vertices[0], d);
+	float bestValue = Utilities.b2Dot(m_vertices[0], d);
 	for (int i = 1; i < m_count; ++i)
 	{
-		float value = b2Dot(m_vertices[i], d);
+		float value = Utilities.b2Dot(m_vertices[i], d);
 		if (value > bestValue)
 		{
 			bestIndex = i;

@@ -5,9 +5,6 @@ using System.Text;
 
 namespace Box2D {
 	class b2Settings {
-		//#define B2_NOT_USED(x) ((void)(x))
-		//#define b2Assert(A) assert(A)
-
 		/// @file
 		/// Global tuning constants based on meters-kilograms-seconds (MKS) units.
 		///

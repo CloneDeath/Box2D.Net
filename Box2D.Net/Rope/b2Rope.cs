@@ -50,7 +50,7 @@ namespace Box2D {
 		///
 		public void Initialize(b2RopeDef def){
 			throw new NotImplementedException();
-			//b2Assert(def.count >= 3);
+			//Utilities.Assert(def.count >= 3);
 			//m_count = def.count;
 			//m_ps = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
 			//m_p0s = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
@@ -95,8 +95,8 @@ namespace Box2D {
 			//    b2Vec2 d1 = p2 - p1;
 			//    b2Vec2 d2 = p3 - p2;
 
-			//    float a = b2Cross(d1, d2);
-			//    float b = b2Dot(d1, d2);
+			//    float a = Utilities.b2Cross(d1, d2);
+			//    float b = Utilities.b2Dot(d1, d2);
 
 			//    m_as[i] = b2Atan2(a, b);
 			//}
@@ -231,8 +231,8 @@ namespace Box2D {
 			//        continue;
 			//    }
 
-			//    float a = b2Cross(d1, d2);
-			//    float b = b2Dot(d1, d2);
+			//    float a = Utilities.b2Cross(d1, d2);
+			//    float b = Utilities.b2Dot(d1, d2);
 
 			//    float angle = b2Atan2(a, b);
 
@@ -243,7 +243,7 @@ namespace Box2D {
 			//    b2Vec2 J2 = Jd1 - Jd2;
 			//    b2Vec2 J3 = Jd2;
 
-			//    float mass = m1 * b2Dot(J1, J1) + m2 * b2Dot(J2, J2) + m3 * b2Dot(J3, J3);
+			//    float mass = m1 * Utilities.b2Dot(J1, J1) + m2 * Utilities.b2Dot(J2, J2) + m3 * Utilities.b2Dot(J3, J3);
 			//    if (mass == 0.0f) {
 			//        continue;
 			//    }

@@ -60,13 +60,13 @@ public:
 			b2Vec2 v[b2Settings.b2_maxPolygonVertices];
 			for (int i = 0; i < m_polygonA.m_count; ++i)
 			{
-				v[i] = b2Mul(m_transformA, m_polygonA.m_vertices[i]);
+				v[i] = Utilities.b2Mul(m_transformA, m_polygonA.m_vertices[i]);
 			}
 			m_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
 
 			for (int i = 0; i < m_polygonB.m_count; ++i)
 			{
-				v[i] = b2Mul(m_transformB, m_polygonB.m_vertices[i]);
+				v[i] = Utilities.b2Mul(m_transformB, m_polygonB.m_vertices[i]);
 			}
 			m_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
 		}

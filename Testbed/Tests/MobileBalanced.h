@@ -42,7 +42,7 @@ public:
 		float a = 0.5f;
 		b2Vec2 h(0.0f, a);
 
-		b2Body* root = AddNode(ground, b2Vec2_zero, 0, 3.0f, a);
+		b2Body* root = AddNode(ground, new b2Vec2(0, 0), 0, 3.0f, a);
 
 		b2RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;

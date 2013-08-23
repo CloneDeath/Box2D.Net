@@ -19,14 +19,14 @@ namespace Box2D {
 			//xf.q.Set(angle);
 
 			//// Shift to origin
-			//xf.p -= b2Mul(xf.q, localCenter);
+			//xf.p -= Utilities.b2Mul(xf.q, localCenter);
 		}
 
 		/// Advance the sweep forward, yielding a new initial state.
 		/// @param alpha the new initial time.
 		public void Advance(float alpha) {
 			throw new NotImplementedException();
-			//b2Assert(alpha0 < 1.0f);
+			//Utilities.Assert(alpha0 < 1.0f);
 			//float beta = (alpha - alpha0) / (1.0f - alpha0);
 			//c0 += beta * (c - c0);
 			//a0 += beta * (a - a0);

@@ -86,9 +86,9 @@ public:
 			b2Vec2 vertices[3];
 
 			b2PolygonShape triangle1;
-			vertices[0] = b2Mul(xf1, b2Vec2(-1.0f, 0.0f));
-			vertices[1] = b2Mul(xf1, b2Vec2(1.0f, 0.0f));
-			vertices[2] = b2Mul(xf1, b2Vec2(0.0f, 0.5f));
+			vertices[0] = Utilities.b2Mul(xf1, b2Vec2(-1.0f, 0.0f));
+			vertices[1] = Utilities.b2Mul(xf1, b2Vec2(1.0f, 0.0f));
+			vertices[2] = Utilities.b2Mul(xf1, b2Vec2(0.0f, 0.5f));
 			triangle1.Set(vertices, 3);
 
 			b2Transform xf2;
@@ -96,9 +96,9 @@ public:
 			xf2.p = -xf2.q.GetXAxis();
 
 			b2PolygonShape triangle2;
-			vertices[0] = b2Mul(xf2, b2Vec2(-1.0f, 0.0f));
-			vertices[1] = b2Mul(xf2, b2Vec2(1.0f, 0.0f));
-			vertices[2] = b2Mul(xf2, b2Vec2(0.0f, 0.5f));
+			vertices[0] = Utilities.b2Mul(xf2, b2Vec2(-1.0f, 0.0f));
+			vertices[1] = Utilities.b2Mul(xf2, b2Vec2(1.0f, 0.0f));
+			vertices[2] = Utilities.b2Mul(xf2, b2Vec2(0.0f, 0.5f));
 			triangle2.Set(vertices, 3);
 
 			for (int i = 0; i < 10; ++i)

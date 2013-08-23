@@ -76,8 +76,8 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	b2Rot qA(aA), qB(aB);
 
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -144,10 +144,10 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 		b2Vec2 P(m_impulse.x, m_impulse.y);
 
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + m_impulse.z);
+		wA -= iA * (Utilities.b2Cross(m_rA, P) + m_impulse.z);
 
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + m_impulse.z);
+		wB += iB * (Utilities.b2Cross(m_rB, P) + m_impulse.z);
 	}
 	else
 	{
@@ -180,36 +180,36 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 		wA -= iA * impulse2;
 		wB += iB * impulse2;
 
-		b2Vec2 Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		b2Vec2 Cdot1 = vB + Utilities.b2Cross(wB, m_rB) - vA - Utilities.b2Cross(wA, m_rA);
 
-		b2Vec2 impulse1 = -b2Mul22(m_mass, Cdot1);
+		b2Vec2 impulse1 = -Utilities.b2Mul22(m_mass, Cdot1);
 		m_impulse.x += impulse1.x;
 		m_impulse.y += impulse1.y;
 
 		b2Vec2 P = impulse1;
 
 		vA -= mA * P;
-		wA -= iA * b2Cross(m_rA, P);
+		wA -= iA * Utilities.b2Cross(m_rA, P);
 
 		vB += mB * P;
-		wB += iB * b2Cross(m_rB, P);
+		wB += iB * Utilities.b2Cross(m_rB, P);
 	}
 	else
 	{
-		b2Vec2 Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		b2Vec2 Cdot1 = vB + Utilities.b2Cross(wB, m_rB) - vA - Utilities.b2Cross(wA, m_rA);
 		float Cdot2 = wB - wA;
 		b2Vec3 Cdot(Cdot1.x, Cdot1.y, Cdot2);
 
-		b2Vec3 impulse = -b2Mul(m_mass, Cdot);
+		b2Vec3 impulse = -Utilities.b2Mul(m_mass, Cdot);
 		m_impulse += impulse;
 
 		b2Vec2 P(impulse.x, impulse.y);
 
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + impulse.z);
+		wA -= iA * (Utilities.b2Cross(m_rA, P) + impulse.z);
 
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + impulse.z);
+		wB += iB * (Utilities.b2Cross(m_rB, P) + impulse.z);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -230,8 +230,8 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	float mA = m_invMassA, mB = m_invMassB;
 	float iA = m_invIA, iB = m_invIB;
 
-	b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+	b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 
 	float positionError, angularError;
 
@@ -256,10 +256,10 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		b2Vec2 P = -K.Solve22(C1);
 
 		cA -= mA * P;
-		aA -= iA * b2Cross(rA, P);
+		aA -= iA * Utilities.b2Cross(rA, P);
 
 		cB += mB * P;
-		aB += iB * b2Cross(rB, P);
+		aB += iB * Utilities.b2Cross(rB, P);
 	}
 	else
 	{
@@ -275,10 +275,10 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		b2Vec2 P(impulse.x, impulse.y);
 
 		cA -= mA * P;
-		aA -= iA * (b2Cross(rA, P) + impulse.z);
+		aA -= iA * (Utilities.b2Cross(rA, P) + impulse.z);
 
 		cB += mB * P;
-		aB += iB * (b2Cross(rB, P) + impulse.z);
+		aB += iB * (Utilities.b2Cross(rB, P) + impulse.z);
 	}
 
 	data.positions[m_indexA].c = cA;

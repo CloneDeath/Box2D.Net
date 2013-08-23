@@ -80,8 +80,8 @@ namespace Box2D {
 		/// Destroy a proxy. This asserts if the id is invalid.
 		public void DestroyProxy(int proxyId){
 			throw new NotImplementedException();
-			//b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
-			//b2Assert(m_nodes[proxyId].IsLeaf());
+			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+			//Utilities.Assert(m_nodes[proxyId].IsLeaf());
 
 			//RemoveLeaf(proxyId);
 			//FreeNode(proxyId);
@@ -93,9 +93,9 @@ namespace Box2D {
 		/// @return true if the proxy was re-inserted.
 		public bool MoveProxy(int proxyId, b2AABB aabb1, b2Vec2 displacement){
 			throw new NotImplementedException();
-			//b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 
-			//b2Assert(m_nodes[proxyId].IsLeaf());
+			//Utilities.Assert(m_nodes[proxyId].IsLeaf());
 
 			//if (m_nodes[proxyId].aabb.Contains(aabb))
 			//{
@@ -141,14 +141,14 @@ namespace Box2D {
 		/// @return the proxy user data or 0 if the id is invalid.
 		public object GetUserData(int proxyId){
 			throw new NotImplementedException();
-			//b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 			//return m_nodes[proxyId].userData;
 		}
 
 		/// Get the fat AABB for a proxy.
 		public b2AABB GetFatAABB(int proxyId){
 			throw new NotImplementedException();
-			//b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 			//return m_nodes[proxyId].aabb;
 		}
 
@@ -200,11 +200,11 @@ namespace Box2D {
 			//b2Vec2 p1 = input.p1;
 			//b2Vec2 p2 = input.p2;
 			//b2Vec2 r = p2 - p1;
-			//b2Assert(r.LengthSquared() > 0.0f);
+			//Utilities.Assert(r.LengthSquared() > 0.0f);
 			//r.Normalize();
 
 			//// v is perpendicular to the segment.
-			//b2Vec2 v = b2Cross(1.0f, r);
+			//b2Vec2 v = Utilities.b2Cross(1.0f, r);
 			//b2Vec2 abs_v = b2Abs(v);
 
 			//// Separating axis for segment (Gino, p80).
@@ -242,7 +242,7 @@ namespace Box2D {
 			//    // |dot(v, p1 - c)| > dot(|v|, h)
 			//    b2Vec2 c = node.aabb.GetCenter();
 			//    b2Vec2 h = node.aabb.GetExtents();
-			//    float separation = b2Abs(b2Dot(v, p1 - c)) - b2Dot(abs_v, h);
+			//    float separation = b2Abs(Utilities.b2Dot(v, p1 - c)) - Utilities.b2Dot(abs_v, h);
 			//    if (separation > 0.0f)
 			//    {
 			//        continue;
@@ -290,14 +290,14 @@ namespace Box2D {
 			//int freeIndex = m_freeList;
 			//while (freeIndex != b2_nullNode)
 			//{
-			//    b2Assert(0 <= freeIndex && freeIndex < m_nodeCapacity);
+			//    Utilities.Assert(0 <= freeIndex && freeIndex < m_nodeCapacity);
 			//    freeIndex = m_nodes[freeIndex].next;
 			//    ++freeCount;
 			//}
 
-			//b2Assert(GetHeight() == ComputeHeight());
+			//Utilities.Assert(GetHeight() == ComputeHeight());
 
-			//b2Assert(m_nodeCount + freeCount == m_nodeCapacity);
+			//Utilities.Assert(m_nodeCount + freeCount == m_nodeCapacity);
 		}
 
 		/// Compute the height of the binary tree in O(N) time. Should not be
@@ -325,7 +325,7 @@ namespace Box2D {
 			//        continue;
 			//    }
 
-			//    b2Assert(node.IsLeaf() == false);
+			//    Utilities.Assert(node.IsLeaf() == false);
 
 			//    int child1 = node.child1;
 			//    int child2 = node.child2;
@@ -458,7 +458,7 @@ namespace Box2D {
 			//// Expand the node pool as needed.
 			//if (m_freeList == b2_nullNode)
 			//{
-			//    b2Assert(m_nodeCount == m_nodeCapacity);
+			//    Utilities.Assert(m_nodeCount == m_nodeCapacity);
 
 			//    // The free list is empty. Rebuild a bigger pool.
 			//    b2TreeNode* oldNodes = m_nodes;
@@ -492,8 +492,8 @@ namespace Box2D {
 		}
 		private void FreeNode(int node){
 			throw new NotImplementedException();
-			//b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
-			//b2Assert(0 < m_nodeCount);
+			//Utilities.Assert(0 <= nodeId && nodeId < m_nodeCapacity);
+			//Utilities.Assert(0 < m_nodeCount);
 			//m_nodes[nodeId].next = m_freeList;
 			//m_nodes[nodeId].height = -1;
 			//m_freeList = nodeId;
@@ -628,8 +628,8 @@ namespace Box2D {
 			//    int child1 = m_nodes[index].child1;
 			//    int child2 = m_nodes[index].child2;
 
-			//    b2Assert(child1 != b2_nullNode);
-			//    b2Assert(child2 != b2_nullNode);
+			//    Utilities.Assert(child1 != b2_nullNode);
+			//    Utilities.Assert(child2 != b2_nullNode);
 
 			//    m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
 			//    m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
@@ -700,7 +700,7 @@ namespace Box2D {
 
 		private int Balance(int index){
 			throw new NotImplementedException();
-			//b2Assert(iA != b2_nullNode);
+			//Utilities.Assert(iA != b2_nullNode);
 
 			//b2TreeNode* A = m_nodes + iA;
 			//if (A.IsLeaf() || A.height < 2)
@@ -710,8 +710,8 @@ namespace Box2D {
 
 			//int iB = A.child1;
 			//int iC = A.child2;
-			//b2Assert(0 <= iB && iB < m_nodeCapacity);
-			//b2Assert(0 <= iC && iC < m_nodeCapacity);
+			//Utilities.Assert(0 <= iB && iB < m_nodeCapacity);
+			//Utilities.Assert(0 <= iC && iC < m_nodeCapacity);
 
 			//b2TreeNode* B = m_nodes + iB;
 			//b2TreeNode* C = m_nodes + iC;
@@ -725,8 +725,8 @@ namespace Box2D {
 			//    int iG = C.child2;
 			//    b2TreeNode* F = m_nodes + iF;
 			//    b2TreeNode* G = m_nodes + iG;
-			//    b2Assert(0 <= iF && iF < m_nodeCapacity);
-			//    b2Assert(0 <= iG && iG < m_nodeCapacity);
+			//    Utilities.Assert(0 <= iF && iF < m_nodeCapacity);
+			//    Utilities.Assert(0 <= iG && iG < m_nodeCapacity);
 
 			//    // Swap A and C
 			//    C.child1 = iA;
@@ -742,7 +742,7 @@ namespace Box2D {
 			//        }
 			//        else
 			//        {
-			//            b2Assert(m_nodes[C.parent].child2 == iA);
+			//            Utilities.Assert(m_nodes[C.parent].child2 == iA);
 			//            m_nodes[C.parent].child2 = iC;
 			//        }
 			//    }
@@ -785,8 +785,8 @@ namespace Box2D {
 			//    int iE = B.child2;
 			//    b2TreeNode* D = m_nodes + iD;
 			//    b2TreeNode* E = m_nodes + iE;
-			//    b2Assert(0 <= iD && iD < m_nodeCapacity);
-			//    b2Assert(0 <= iE && iE < m_nodeCapacity);
+			//    Utilities.Assert(0 <= iD && iD < m_nodeCapacity);
+			//    Utilities.Assert(0 <= iE && iE < m_nodeCapacity);
 
 			//    // Swap A and B
 			//    B.child1 = iA;
@@ -802,7 +802,7 @@ namespace Box2D {
 			//        }
 			//        else
 			//        {
-			//            b2Assert(m_nodes[B.parent].child2 == iA);
+			//            Utilities.Assert(m_nodes[B.parent].child2 == iA);
 			//            m_nodes[B.parent].child2 = iB;
 			//        }
 			//    }
@@ -847,7 +847,7 @@ namespace Box2D {
 			
 		private int ComputeHeight(int nodeId) {
 			throw new NotImplementedException();
-			//b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
+			//Utilities.Assert(0 <= nodeId && nodeId < m_nodeCapacity);
 			//b2TreeNode* node = m_nodes + nodeId;
 
 			//if (node.IsLeaf())
@@ -869,7 +869,7 @@ namespace Box2D {
 
 			//if (index == m_root)
 			//{
-			//    b2Assert(m_nodes[index].parent == b2_nullNode);
+			//    Utilities.Assert(m_nodes[index].parent == b2_nullNode);
 			//}
 
 			//const b2TreeNode* node = m_nodes + index;
@@ -879,17 +879,17 @@ namespace Box2D {
 
 			//if (node.IsLeaf())
 			//{
-			//    b2Assert(child1 == b2_nullNode);
-			//    b2Assert(child2 == b2_nullNode);
-			//    b2Assert(node.height == 0);
+			//    Utilities.Assert(child1 == b2_nullNode);
+			//    Utilities.Assert(child2 == b2_nullNode);
+			//    Utilities.Assert(node.height == 0);
 			//    return;
 			//}
 
-			//b2Assert(0 <= child1 && child1 < m_nodeCapacity);
-			//b2Assert(0 <= child2 && child2 < m_nodeCapacity);
+			//Utilities.Assert(0 <= child1 && child1 < m_nodeCapacity);
+			//Utilities.Assert(0 <= child2 && child2 < m_nodeCapacity);
 
-			//b2Assert(m_nodes[child1].parent == index);
-			//b2Assert(m_nodes[child2].parent == index);
+			//Utilities.Assert(m_nodes[child1].parent == index);
+			//Utilities.Assert(m_nodes[child2].parent == index);
 
 			//ValidateStructure(child1);
 			//ValidateStructure(child2);
@@ -908,26 +908,26 @@ namespace Box2D {
 
 			//if (node.IsLeaf())
 			//{
-			//    b2Assert(child1 == b2_nullNode);
-			//    b2Assert(child2 == b2_nullNode);
-			//    b2Assert(node.height == 0);
+			//    Utilities.Assert(child1 == b2_nullNode);
+			//    Utilities.Assert(child2 == b2_nullNode);
+			//    Utilities.Assert(node.height == 0);
 			//    return;
 			//}
 
-			//b2Assert(0 <= child1 && child1 < m_nodeCapacity);
-			//b2Assert(0 <= child2 && child2 < m_nodeCapacity);
+			//Utilities.Assert(0 <= child1 && child1 < m_nodeCapacity);
+			//Utilities.Assert(0 <= child2 && child2 < m_nodeCapacity);
 
 			//int height1 = m_nodes[child1].height;
 			//int height2 = m_nodes[child2].height;
 			//int height;
 			//height = 1 + b2Max(height1, height2);
-			//b2Assert(node.height == height);
+			//Utilities.Assert(node.height == height);
 
 			//b2AABB aabb;
 			//aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
-			//b2Assert(aabb.lowerBound == node.aabb.lowerBound);
-			//b2Assert(aabb.upperBound == node.aabb.upperBound);
+			//Utilities.Assert(aabb.lowerBound == node.aabb.lowerBound);
+			//Utilities.Assert(aabb.upperBound == node.aabb.upperBound);
 
 			//ValidateMetrics(child1);
 			//ValidateMetrics(child2);

@@ -60,8 +60,8 @@ namespace Box2D {
 			//B2_NOT_USED(childIndex);
 
 			//// Put the ray into the edge's frame of reference.
-			//b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
-			//b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
+			//b2Vec2 p1 = Utilities.b2MulT(xf.q, input.p1 - xf.p);
+			//b2Vec2 p2 = Utilities.b2MulT(xf.q, input.p2 - xf.p);
 			//b2Vec2 d = p2 - p1;
 
 			//b2Vec2 v1 = m_vertex1;
@@ -73,8 +73,8 @@ namespace Box2D {
 			//// q = p1 + t * d
 			//// dot(normal, q - v1) = 0
 			//// dot(normal, p1 - v1) + t * dot(normal, d) = 0
-			//float numerator = b2Dot(normal, v1 - p1);
-			//float denominator = b2Dot(normal, d);
+			//float numerator = Utilities.b2Dot(normal, v1 - p1);
+			//float denominator = Utilities.b2Dot(normal, d);
 
 			//if (denominator == 0.0f)
 			//{
@@ -92,13 +92,13 @@ namespace Box2D {
 			//// q = v1 + s * r
 			//// s = dot(q - v1, r) / dot(r, r)
 			//b2Vec2 r = v2 - v1;
-			//float rr = b2Dot(r, r);
+			//float rr = Utilities.b2Dot(r, r);
 			//if (rr == 0.0f)
 			//{
 			//    return false;
 			//}
 
-			//float s = b2Dot(q - v1, r) / rr;
+			//float s = Utilities.b2Dot(q - v1, r) / rr;
 			//if (s < 0.0f || 1.0f < s)
 			//{
 			//    return false;
@@ -121,8 +121,8 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//B2_NOT_USED(childIndex);
 
-			//b2Vec2 v1 = b2Mul(xf, m_vertex1);
-			//b2Vec2 v2 = b2Mul(xf, m_vertex2);
+			//b2Vec2 v1 = Utilities.b2Mul(xf, m_vertex1);
+			//b2Vec2 v2 = Utilities.b2Mul(xf, m_vertex2);
 
 			//b2Vec2 lower = Math.Min(v1, v2);
 			//b2Vec2 upper = b2Max(v1, v2);

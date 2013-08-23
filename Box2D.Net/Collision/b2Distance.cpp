@@ -50,7 +50,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int index)
 	case b2Shape::e_chain:
 		{
 			const b2ChainShape* chain = (b2ChainShape*)shape;
-			b2Assert(0 <= index && index < chain.m_count);
+			Utilities.Assert(0 <= index && index < chain.m_count);
 
 			m_buffer[0] = chain.m_vertices[index];
 			if (index + 1 < chain.m_count)
@@ -78,7 +78,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int index)
 		break;
 
 	default:
-		b2Assert(false);
+		Utilities.Assert(false);
 	}
 }
 
@@ -99,7 +99,7 @@ struct b2Simplex
 					const b2DistanceProxy* proxyA, const b2Transform& transformA,
 					const b2DistanceProxy* proxyB, const b2Transform& transformB)
 	{
-		b2Assert(cache.count <= 3);
+		Utilities.Assert(cache.count <= 3);
 		
 		// Copy data from cache.
 		m_count = cache.count;
@@ -111,8 +111,8 @@ struct b2Simplex
 			v.indexB = cache.indexB[i];
 			b2Vec2 wALocal = proxyA.GetVertex(v.indexA);
 			b2Vec2 wBLocal = proxyB.GetVertex(v.indexB);
-			v.wA = b2Mul(transformA, wALocal);
-			v.wB = b2Mul(transformB, wBLocal);
+			v.wA = Utilities.b2Mul(transformA, wALocal);
+			v.wB = Utilities.b2Mul(transformB, wBLocal);
 			v.w = v.wB - v.wA;
 			v.a = 0.0f;
 		}
@@ -123,7 +123,7 @@ struct b2Simplex
 		{
 			float metric1 = cache.metric;
 			float metric2 = GetMetric();
-			if (metric2 < 0.5f * metric1 || 2.0f * metric1 < metric2 || metric2 < b2_epsilon)
+			if (metric2 < 0.5f * metric1 || 2.0f * metric1 < metric2 || metric2 < Single.Epsilon)
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -138,8 +138,8 @@ struct b2Simplex
 			v.indexB = 0;
 			b2Vec2 wALocal = proxyA.GetVertex(0);
 			b2Vec2 wBLocal = proxyB.GetVertex(0);
-			v.wA = b2Mul(transformA, wALocal);
-			v.wB = b2Mul(transformB, wBLocal);
+			v.wA = Utilities.b2Mul(transformA, wALocal);
+			v.wB = Utilities.b2Mul(transformB, wBLocal);
 			v.w = v.wB - v.wA;
 			v.a = 1.0f;
 			m_count = 1;
@@ -168,22 +168,22 @@ struct b2Simplex
 		case 2:
 			{
 				b2Vec2 e12 = m_v2.w - m_v1.w;
-				float sgn = b2Cross(e12, -m_v1.w);
+				float sgn = Utilities.b2Cross(e12, -m_v1.w);
 				if (sgn > 0.0f)
 				{
 					// Origin is left of e12.
-					return b2Cross(1.0f, e12);
+					return Utilities.b2Cross(1.0f, e12);
 				}
 				else
 				{
 					// Origin is right of e12.
-					return b2Cross(e12, 1.0f);
+					return Utilities.b2Cross(e12, 1.0f);
 				}
 			}
 
 		default:
-			b2Assert(false);
-			return b2Vec2_zero;
+			Utilities.Assert(false);
+			return new b2Vec2(0, 0);
 		}
 	}
 
@@ -192,8 +192,8 @@ struct b2Simplex
 		switch (m_count)
 		{
 		case 0:
-			b2Assert(false);
-			return b2Vec2_zero;
+			Utilities.Assert(false);
+			return new b2Vec2(0, 0);
 
 		case 1:
 			return m_v1.w;
@@ -202,11 +202,11 @@ struct b2Simplex
 			return m_v1.a * m_v1.w + m_v2.a * m_v2.w;
 
 		case 3:
-			return b2Vec2_zero;
+			return new b2Vec2(0, 0);
 
 		default:
-			b2Assert(false);
-			return b2Vec2_zero;
+			Utilities.Assert(false);
+			return new b2Vec2(0, 0);
 		}
 	}
 
@@ -215,7 +215,7 @@ struct b2Simplex
 		switch (m_count)
 		{
 		case 0:
-			b2Assert(false);
+			Utilities.Assert(false);
 			break;
 
 		case 1:
@@ -234,7 +234,7 @@ struct b2Simplex
 			break;
 
 		default:
-			b2Assert(false);
+			Utilities.Assert(false);
 			break;
 		}
 	}
@@ -244,7 +244,7 @@ struct b2Simplex
 		switch (m_count)
 		{
 		case 0:
-			b2Assert(false);
+			Utilities.Assert(false);
 			return 0.0f;
 
 		case 1:
@@ -254,10 +254,10 @@ struct b2Simplex
 			return b2Distance(m_v1.w, m_v2.w);
 
 		case 3:
-			return b2Cross(m_v2.w - m_v1.w, m_v3.w - m_v1.w);
+			return Utilities.b2Cross(m_v2.w - m_v1.w, m_v3.w - m_v1.w);
 
 		default:
-			b2Assert(false);
+			Utilities.Assert(false);
 			return 0.0f;
 		}
 	}
@@ -300,7 +300,7 @@ void b2Simplex::Solve2()
 	b2Vec2 e12 = w2 - w1;
 
 	// w1 region
-	float d12_2 = -b2Dot(w1, e12);
+	float d12_2 = -Utilities.b2Dot(w1, e12);
 	if (d12_2 <= 0.0f)
 	{
 		// a2 <= 0, so we clamp it to 0
@@ -310,7 +310,7 @@ void b2Simplex::Solve2()
 	}
 
 	// w2 region
-	float d12_1 = b2Dot(w2, e12);
+	float d12_1 = Utilities.b2Dot(w2, e12);
 	if (d12_1 <= 0.0f)
 	{
 		// a1 <= 0, so we clamp it to 0
@@ -343,8 +343,8 @@ void b2Simplex::Solve3()
 	// [w1.e12 w2.e12][a2] = [0]
 	// a3 = 0
 	b2Vec2 e12 = w2 - w1;
-	float w1e12 = b2Dot(w1, e12);
-	float w2e12 = b2Dot(w2, e12);
+	float w1e12 = Utilities.b2Dot(w1, e12);
+	float w2e12 = Utilities.b2Dot(w2, e12);
 	float d12_1 = w2e12;
 	float d12_2 = -w1e12;
 
@@ -353,8 +353,8 @@ void b2Simplex::Solve3()
 	// [w1.e13 w3.e13][a3] = [0]
 	// a2 = 0
 	b2Vec2 e13 = w3 - w1;
-	float w1e13 = b2Dot(w1, e13);
-	float w3e13 = b2Dot(w3, e13);
+	float w1e13 = Utilities.b2Dot(w1, e13);
+	float w3e13 = Utilities.b2Dot(w3, e13);
 	float d13_1 = w3e13;
 	float d13_2 = -w1e13;
 
@@ -363,17 +363,17 @@ void b2Simplex::Solve3()
 	// [w2.e23 w3.e23][a3] = [0]
 	// a1 = 0
 	b2Vec2 e23 = w3 - w2;
-	float w2e23 = b2Dot(w2, e23);
-	float w3e23 = b2Dot(w3, e23);
+	float w2e23 = Utilities.b2Dot(w2, e23);
+	float w3e23 = Utilities.b2Dot(w3, e23);
 	float d23_1 = w3e23;
 	float d23_2 = -w2e23;
 	
 	// Triangle123
-	float n123 = b2Cross(e12, e13);
+	float n123 = Utilities.b2Cross(e12, e13);
 
-	float d123_1 = n123 * b2Cross(w2, w3);
-	float d123_2 = n123 * b2Cross(w3, w1);
-	float d123_3 = n123 * b2Cross(w1, w2);
+	float d123_1 = n123 * Utilities.b2Cross(w2, w3);
+	float d123_2 = n123 * Utilities.b2Cross(w3, w1);
+	float d123_3 = n123 * Utilities.b2Cross(w1, w2);
 
 	// w1 region
 	if (d12_2 <= 0.0f && d13_2 <= 0.0f)
@@ -495,7 +495,7 @@ void b2Distance(b2DistanceOutput* output,
 			break;
 
 		default:
-			b2Assert(false);
+			Utilities.Assert(false);
 		}
 
 		// If we have 3 points, then the origin is in the corresponding triangle.
@@ -519,7 +519,7 @@ void b2Distance(b2DistanceOutput* output,
 		b2Vec2 d = simplex.GetSearchDirection();
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < b2_epsilon * b2_epsilon)
+		if (d.LengthSquared() < Single.Epsilon * Single.Epsilon)
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.
@@ -532,11 +532,11 @@ void b2Distance(b2DistanceOutput* output,
 
 		// Compute a tentative new simplex vertex using support points.
 		b2SimplexVertex* vertex = vertices + simplex.m_count;
-		vertex.indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
-		vertex.wA = b2Mul(transformA, proxyA.GetVertex(vertex.indexA));
+		vertex.indexA = proxyA.GetSupport(Utilities.b2MulT(transformA.q, -d));
+		vertex.wA = Utilities.b2Mul(transformA, proxyA.GetVertex(vertex.indexA));
 		b2Vec2 wBLocal;
-		vertex.indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
-		vertex.wB = b2Mul(transformB, proxyB.GetVertex(vertex.indexB));
+		vertex.indexB = proxyB.GetSupport(Utilities.b2MulT(transformB.q, d));
+		vertex.wB = Utilities.b2Mul(transformB, proxyB.GetVertex(vertex.indexB));
 		vertex.w = vertex.wB - vertex.wA;
 
 		// Iteration count is equated to the number of support point calls.
@@ -580,7 +580,7 @@ void b2Distance(b2DistanceOutput* output,
 		float rA = proxyA.m_radius;
 		float rB = proxyB.m_radius;
 
-		if (output.distance > rA + rB && output.distance > b2_epsilon)
+		if (output.distance > rA + rB && output.distance > Single.Epsilon)
 		{
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.

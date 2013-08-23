@@ -31,14 +31,14 @@ namespace Box2D {
 		/// @param count the vertex count
 		public void CreateLoop(b2Vec2 vertices, int count){
 			throw new NotImplementedException();
-			//b2Assert(m_vertices == null && m_count == 0);
-			//b2Assert(count >= 3);
+			//Utilities.Assert(m_vertices == null && m_count == 0);
+			//Utilities.Assert(count >= 3);
 			//for (int i = 1; i < count; ++i)
 			//{
 			//    b2Vec2 v1 = vertices[i-1];
 			//    b2Vec2 v2 = vertices[i];
 			//    // If the code crashes here, it means your vertices are too close together.
-			//    b2Assert(b2DistanceSquared(v1, v2) > b2_linearSlop * b2_linearSlop);
+			//    Utilities.Assert(b2DistanceSquared(v1, v2) > b2_linearSlop * b2_linearSlop);
 			//}
 
 			//m_count = count + 1;
@@ -56,14 +56,14 @@ namespace Box2D {
 		/// @param count the vertex count
 		public void CreateChain(b2Vec2 vertices, int count){
 			throw new NotImplementedException();
-			//b2Assert(m_vertices == null && m_count == 0);
-			//b2Assert(count >= 2);
+			//Utilities.Assert(m_vertices == null && m_count == 0);
+			//Utilities.Assert(count >= 2);
 			//for (int i = 1; i < count; ++i)
 			//{
 			//    b2Vec2 v1 = vertices[i-1];
 			//    b2Vec2 v2 = vertices[i];
 			//    // If the code crashes here, it means your vertices are too close together.
-			//    b2Assert(b2DistanceSquared(v1, v2) > b2_linearSlop * b2_linearSlop);
+			//    Utilities.Assert(b2DistanceSquared(v1, v2) > b2_linearSlop * b2_linearSlop);
 			//}
 
 			//m_count = count;
@@ -110,7 +110,7 @@ namespace Box2D {
 		/// Get a child edge.
 		public void GetChildEdge(out b2EdgeShape edge, int index){
 			throw new NotImplementedException();
-			//b2Assert(0 <= index && index < m_count - 1);
+			//Utilities.Assert(0 <= index && index < m_count - 1);
 			//edge.m_type = b2Shape::e_edge;
 			//edge.m_radius = m_radius;
 
@@ -153,7 +153,7 @@ namespace Box2D {
 		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input,
 						b2Transform transform, int childIndex){
 			throw new NotImplementedException();
-			//b2Assert(childIndex < m_count);
+			//Utilities.Assert(childIndex < m_count);
 
 			//b2EdgeShape edgeShape;
 
@@ -173,7 +173,7 @@ namespace Box2D {
 		/// @see b2Shape::ComputeAABB
 		public override void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex) {
 			throw new NotImplementedException();
-			//b2Assert(childIndex < m_count);
+			//Utilities.Assert(childIndex < m_count);
 
 			//int i1 = childIndex;
 			//int i2 = childIndex + 1;
@@ -182,8 +182,8 @@ namespace Box2D {
 			//    i2 = 0;
 			//}
 
-			//b2Vec2 v1 = b2Mul(xf, m_vertices[i1]);
-			//b2Vec2 v2 = b2Mul(xf, m_vertices[i2]);
+			//b2Vec2 v1 = Utilities.b2Mul(xf, m_vertices[i1]);
+			//b2Vec2 v2 = Utilities.b2Mul(xf, m_vertices[i2]);
 
 			//aabb.lowerBound = Math.Min(v1, v2);
 			//aabb.upperBound = b2Max(v1, v2);

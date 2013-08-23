@@ -63,7 +63,7 @@ public:
 				bd.type = b2_dynamicBody;
 
 				int n = j * e_rowCount + i;
-				b2Assert(n < e_rowCount * e_columnCount);
+				Utilities.Assert(n < e_rowCount * e_columnCount);
 				m_indices[n] = n;
 				bd.userData = m_indices + n;
 

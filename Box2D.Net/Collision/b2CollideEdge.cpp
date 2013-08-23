@@ -31,14 +31,14 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	manifold.pointCount = 0;
 	
 	// Compute circle in frame of edge
-	b2Vec2 Q = b2MulT(xfA, b2Mul(xfB, circleB.m_p));
+	b2Vec2 Q = Utilities.b2MulT(xfA, Utilities.b2Mul(xfB, circleB.m_p));
 	
 	b2Vec2 A = edgeA.m_vertex1, B = edgeA.m_vertex2;
 	b2Vec2 e = B - A;
 	
 	// Barycentric coordinates
-	float u = b2Dot(e, B - Q);
-	float v = b2Dot(e, Q - A);
+	float u = Utilities.b2Dot(e, B - Q);
+	float v = Utilities.b2Dot(e, Q - A);
 	
 	float radius = edgeA.m_radius + circleB.m_radius;
 	
@@ -51,7 +51,7 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	{
 		b2Vec2 P = A;
 		b2Vec2 d = Q - P;
-		float dd = b2Dot(d, d);
+		float dd = Utilities.b2Dot(d, d);
 		if (dd > radius * radius)
 		{
 			return;
@@ -63,7 +63,7 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 			b2Vec2 A1 = edgeA.m_vertex0;
 			b2Vec2 B1 = A;
 			b2Vec2 e1 = B1 - A1;
-			float u1 = b2Dot(e1, B1 - Q);
+			float u1 = Utilities.b2Dot(e1, B1 - Q);
 			
 			// Is the circle in Region AB of the previous edge?
 			if (u1 > 0.0f)
@@ -89,7 +89,7 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	{
 		b2Vec2 P = B;
 		b2Vec2 d = Q - P;
-		float dd = b2Dot(d, d);
+		float dd = Utilities.b2Dot(d, d);
 		if (dd > radius * radius)
 		{
 			return;
@@ -101,7 +101,7 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 			b2Vec2 B2 = edgeA.m_vertex3;
 			b2Vec2 A2 = B;
 			b2Vec2 e2 = B2 - A2;
-			float v2 = b2Dot(e2, Q - A2);
+			float v2 = Utilities.b2Dot(e2, Q - A2);
 			
 			// Is the circle in Region AB of the next edge?
 			if (v2 > 0.0f)
@@ -123,18 +123,18 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	}
 	
 	// Region AB
-	float den = b2Dot(e, e);
-	b2Assert(den > 0.0f);
+	float den = Utilities.b2Dot(e, e);
+	Utilities.Assert(den > 0.0f);
 	b2Vec2 P = (1.0f / den) * (u * A + v * B);
 	b2Vec2 d = Q - P;
-	float dd = b2Dot(d, d);
+	float dd = Utilities.b2Dot(d, d);
 	if (dd > radius * radius)
 	{
 		return;
 	}
 	
 	b2Vec2 n(-e.y, e.x);
-	if (b2Dot(n, Q - A) < 0.0f)
+	if (Utilities.b2Dot(n, Q - A) < 0.0f)
 	{
 		n.Set(-n.x, -n.y);
 	}
@@ -230,9 +230,9 @@ struct b2EPCollider
 void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const b2Transform& xfA,
 						   const b2PolygonShape* polygonB, const b2Transform& xfB)
 {
-	m_xf = b2MulT(xfA, xfB);
+	m_xf = Utilities.b2MulT(xfA, xfB);
 	
-	m_centroidB = b2Mul(m_xf, polygonB.m_centroid);
+	m_centroidB = Utilities.b2Mul(m_xf, polygonB.m_centroid);
 	
 	m_v0 = edgeA.m_vertex0;
 	m_v1 = edgeA.m_vertex1;
@@ -245,7 +245,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	b2Vec2 edge1 = m_v2 - m_v1;
 	edge1.Normalize();
 	m_normal1.Set(edge1.y, -edge1.x);
-	float offset1 = b2Dot(m_normal1, m_centroidB - m_v1);
+	float offset1 = Utilities.b2Dot(m_normal1, m_centroidB - m_v1);
 	float offset0 = 0.0f, offset2 = 0.0f;
 	bool convex1 = false, convex2 = false;
 	
@@ -255,8 +255,8 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		b2Vec2 edge0 = m_v1 - m_v0;
 		edge0.Normalize();
 		m_normal0.Set(edge0.y, -edge0.x);
-		convex1 = b2Cross(edge0, edge1) >= 0.0f;
-		offset0 = b2Dot(m_normal0, m_centroidB - m_v0);
+		convex1 = Utilities.b2Cross(edge0, edge1) >= 0.0f;
+		offset0 = Utilities.b2Dot(m_normal0, m_centroidB - m_v0);
 	}
 	
 	// Is there a following edge?
@@ -265,8 +265,8 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		b2Vec2 edge2 = m_v3 - m_v2;
 		edge2.Normalize();
 		m_normal2.Set(edge2.y, -edge2.x);
-		convex2 = b2Cross(edge1, edge2) > 0.0f;
-		offset2 = b2Dot(m_normal2, m_centroidB - m_v2);
+		convex2 = Utilities.b2Cross(edge1, edge2) > 0.0f;
+		offset2 = Utilities.b2Dot(m_normal2, m_centroidB - m_v2);
 	}
 	
 	// Determine front or back collision. Determine collision normal limits.
@@ -428,8 +428,8 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	m_polygonB.count = polygonB.m_count;
 	for (int i = 0; i < polygonB.m_count; ++i)
 	{
-		m_polygonB.vertices[i] = b2Mul(m_xf, polygonB.m_vertices[i]);
-		m_polygonB.normals[i] = b2Mul(m_xf.q, polygonB.m_normals[i]);
+		m_polygonB.vertices[i] = Utilities.b2Mul(m_xf, polygonB.m_vertices[i]);
+		m_polygonB.normals[i] = Utilities.b2Mul(m_xf.q, polygonB.m_normals[i]);
 	}
 	
 	m_radius = 2.0f * b2Settings.b2_polygonRadius;
@@ -481,10 +481,10 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
 		int bestIndex = 0;
-		float bestValue = b2Dot(m_normal, m_polygonB.normals[0]);
+		float bestValue = Utilities.b2Dot(m_normal, m_polygonB.normals[0]);
 		for (int i = 1; i < m_polygonB.count; ++i)
 		{
-			float value = b2Dot(m_normal, m_polygonB.normals[i]);
+			float value = Utilities.b2Dot(m_normal, m_polygonB.normals[i]);
 			if (value < bestValue)
 			{
 				bestValue = value;
@@ -549,8 +549,8 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	
 	rf.sideNormal1.Set(rf.normal.y, -rf.normal.x);
 	rf.sideNormal2 = -rf.sideNormal1;
-	rf.sideOffset1 = b2Dot(rf.sideNormal1, rf.v1);
-	rf.sideOffset2 = b2Dot(rf.sideNormal2, rf.v2);
+	rf.sideOffset1 = Utilities.b2Dot(rf.sideNormal1, rf.v1);
+	rf.sideOffset2 = Utilities.b2Dot(rf.sideNormal2, rf.v2);
 	
 	// Clip incident edge against extruded edge1 side edges.
 	b2ClipVertex clipPoints1[2];
@@ -590,7 +590,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	{
 		float separation;
 		
-		separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+		separation = Utilities.b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
 		
 		if (separation <= m_radius)
 		{
@@ -598,7 +598,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 			
 			if (primaryAxis.type == b2EPAxis::e_edgeA)
 			{
-				cp.localPoint = b2MulT(m_xf, clipPoints2[i].v);
+				cp.localPoint = Utilities.b2MulT(m_xf, clipPoints2[i].v);
 				cp.id = clipPoints2[i].id;
 			}
 			else
@@ -626,7 +626,7 @@ b2EPAxis b2EPCollider::ComputeEdgeSeparation()
 	
 	for (int i = 0; i < m_polygonB.count; ++i)
 	{
-		float s = b2Dot(m_normal, m_polygonB.vertices[i] - m_v1);
+		float s = Utilities.b2Dot(m_normal, m_polygonB.vertices[i] - m_v1);
 		if (s < axis.separation)
 		{
 			axis.separation = s;
@@ -649,8 +649,8 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation()
 	{
 		b2Vec2 n = -m_polygonB.normals[i];
 		
-		float s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1);
-		float s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2);
+		float s1 = Utilities.b2Dot(n, m_polygonB.vertices[i] - m_v1);
+		float s2 = Utilities.b2Dot(n, m_polygonB.vertices[i] - m_v2);
 		float s = Math.Min(s1, s2);
 		
 		if (s > m_radius)
@@ -663,16 +663,16 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation()
 		}
 		
 		// Adjacency
-		if (b2Dot(n, perp) >= 0.0f)
+		if (Utilities.b2Dot(n, perp) >= 0.0f)
 		{
-			if (b2Dot(n - m_upperLimit, m_normal) < -b2_angularSlop)
+			if (Utilities.b2Dot(n - m_upperLimit, m_normal) < -b2_angularSlop)
 			{
 				continue;
 			}
 		}
 		else
 		{
-			if (b2Dot(n - m_lowerLimit, m_normal) < -b2_angularSlop)
+			if (Utilities.b2Dot(n - m_lowerLimit, m_normal) < -b2_angularSlop)
 			{
 				continue;
 			}
