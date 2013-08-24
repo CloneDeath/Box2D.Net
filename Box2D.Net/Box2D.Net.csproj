@@ -40,8 +40,10 @@
   <ItemGroup>
     <Compile Include="Collision\b2BroadPhase.cs" />
     <Compile Include="Collision\b2Collision.cs" />
+    <Compile Include="Collision\b2DistanceProxy.cs" />
     <Compile Include="Collision\b2DynamicTree.cs" />
     <Compile Include="Collision\b2Pair.cs" />
+    <Compile Include="Collision\b2TOIInput.cs" />
     <Compile Include="Collision\b2TreeNode.cs" />
     <Compile Include="Collision\Shapes\b2ChainShape.cs" />
     <Compile Include="Collision\Shapes\b2CircleShape.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Dynamics\b2Filter.cs" />
     <Compile Include="Dynamics\b2Fixture.cs" />
     <Compile Include="Dynamics\b2FixtureProxy.cs" />
+    <Compile Include="Dynamics\b2Island.cs" />
     <Compile Include="Dynamics\b2QueryCallback.cs" />
     <Compile Include="Dynamics\b2RayCastCallback.cs" />
     <Compile Include="Dynamics\b2World.cs" />
@@ -78,6 +81,8 @@
     <Compile Include="Dynamics\Contacts\b2Contact.cs" />
     <Compile Include="Dynamics\Contacts\b2ContactEdge.cs" />
     <Compile Include="Dynamics\Contacts\b2ContactRegister.cs" />
+    <Compile Include="Dynamics\Contacts\b2ContactVelocityConstraint.cs" />
+    <Compile Include="Dynamics\Contacts\b2VelocityConstraintPoint.cs" />
     <Compile Include="Dynamics\Joints\b2Jacobian.cs" />
     <Compile Include="Dynamics\Joints\b2Joint.cs" />
     <Compile Include="Dynamics\Joints\b2JointDef.cs" />
@@ -104,10 +109,6 @@
     <Content Include="Common\b2Settings.cpp" />
     <Content Include="Common\b2StackAllocator.cpp" />
     <Content Include="Common\b2StackAllocator.h" />
-    <Content Include="Common\b2Timer.cpp" />
-    <Content Include="Dynamics\b2ContactManager.cpp" />
-    <Content Include="Dynamics\b2Island.cpp" />
-    <Content Include="Dynamics\b2Island.h" />
     <Content Include="Dynamics\b2WorldCallbacks.cpp" />
     <Content Include="Dynamics\Contacts\b2ChainAndCircleContact.cpp" />
     <Content Include="Dynamics\Contacts\b2ChainAndCircleContact.h" />

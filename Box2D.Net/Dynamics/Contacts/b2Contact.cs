@@ -4,31 +4,53 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
+	// Flags stored in m_flags
+	[Flags]
+	internal enum ContactFlags {
+		// Used when crawling contact graph when forming islands.
+		e_islandFlag = 0x0001,
+
+		// Set when the shapes are touching.
+		e_touchingFlag = 0x0002,
+
+		// This contact can be disabled (by user)
+		e_enabledFlag = 0x0004,
+
+		// This contact needs filtering because a fixture filter was changed.
+		e_filterFlag = 0x0008,
+
+		// This bullet contact had a TOI event
+		e_bulletHitFlag = 0x0010,
+
+		// This contact has a valid TOI in m_toi
+		e_toiFlag = 0x0020
+	};
+
 	/// The class manages contact between two shapes. A contact exists for each overlapping
 	/// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 	/// that has no contact points.
 	public abstract class b2Contact
 	{
-		protected uint m_flags;
+		internal ContactFlags m_flags;
 
 		// World pool and list pointers.
-		protected b2Contact m_prev; //pointer
-		protected b2Contact m_next;//pointer
+		//protected b2Contact m_prev; //pointer
+		//protected b2Contact m_next;//pointer
 
 		// Nodes for connecting bodies.
-		protected b2ContactEdge m_nodeA;
-		protected b2ContactEdge m_nodeB;
+		internal b2ContactEdge m_nodeA;
+		internal b2ContactEdge m_nodeB;
 
-		protected b2Fixture m_fixtureA;//pointer
-		protected b2Fixture m_fixtureB;//pointer
+		internal b2Fixture m_fixtureA;//pointer
+		internal b2Fixture m_fixtureB;//pointer
 
 		protected int m_indexA;
 		protected int m_indexB;
 
 		protected b2Manifold m_manifold;
 
-		protected int m_toiCount;
-		protected float m_toi;
+		internal int m_toiCount;
+		internal float m_toi;
 
 		protected float m_friction;
 		protected float m_restitution;
@@ -98,9 +120,9 @@ namespace Box2D {
 		}
 
 		/// Get the next contact in the world's contact list.
-		public b2Contact GetNext(){
-			return m_next;
-		}
+		//public b2Contact GetNext(){
+		//    return m_next;
+		//}
 
 		/// Get fixture A in this contact.
 		public b2Fixture GetFixtureA(){
@@ -167,28 +189,7 @@ namespace Box2D {
 		/// Evaluate this contact with your own manifold and transforms.
 		public abstract void Evaluate(b2Manifold manifold, b2Transform xfA, b2Transform xfB); //manifold was pointer
 
-		// Flags stored in m_flags
-		[Flags]
-		protected enum ContactFlags
-		{
-			// Used when crawling contact graph when forming islands.
-			e_islandFlag		= 0x0001,
-
-			// Set when the shapes are touching.
-			e_touchingFlag		= 0x0002,
-
-			// This contact can be disabled (by user)
-			e_enabledFlag		= 0x0004,
-
-			// This contact needs filtering because a fixture filter was changed.
-			e_filterFlag		= 0x0008,
-
-			// This bullet contact had a TOI event
-			e_bulletHitFlag		= 0x0010,
-
-			// This contact has a valid TOI in m_toi
-			e_toiFlag			= 0x0020
-		};
+		
 
 		/// Flag this contact for filtering. Filtering will occur the next time step.
 		protected void FlagForFiltering(){
@@ -225,7 +226,7 @@ namespace Box2D {
 			//AddType(b2ChainAndPolygonContact::Create, b2ChainAndPolygonContact::Destroy, b2Shape::e_chain, b2Shape::e_polygon);
 		}
 
-		protected static b2Contact Create(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
+		internal static b2Contact Create(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
 			throw new NotImplementedException();
 			//if (s_initialized == false)
 			//{

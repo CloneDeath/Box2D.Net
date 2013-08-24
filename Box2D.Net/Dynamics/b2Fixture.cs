@@ -25,7 +25,7 @@ namespace Box2D {
 
 		protected b2Filter m_filter;
 
-		protected bool m_isSensor;
+		internal bool m_isSensor;
 
 		protected object m_userData;
 

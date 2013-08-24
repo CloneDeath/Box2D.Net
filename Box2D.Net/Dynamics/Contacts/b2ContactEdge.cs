@@ -10,8 +10,8 @@ namespace Box2D {
 	/// maintained in each attached body. Each contact has two contact
 	/// nodes, one for each attached body.
 	public struct b2ContactEdge {
-		b2Body other; //pointer			///< provides quick access to the other body attached.
-		b2Contact contact;//pointer		///< the contact
+		public b2Body other; //pointer			///< provides quick access to the other body attached.
+		public b2Contact contact;//pointer		///< the contact
 		//b2ContactEdge prev; //pointer	///< the previous contact edge in the body's contact list
 		//b2ContactEdge next;//pointer	///< the next contact edge in the body's contact list
 	};

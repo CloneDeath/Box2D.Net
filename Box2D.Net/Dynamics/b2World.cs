@@ -26,8 +26,6 @@ namespace Box2D {
 			m_bodyList = new List<b2Body>();
 			m_jointList = new List<b2Joint>();
 
-			m_jointCount = 0;
-
 			m_warmStarting = true;
 			m_continuousPhysics = true;
 			m_subStepping = false;
@@ -121,7 +119,7 @@ namespace Box2D {
 		/// @warning This function is locked during callbacks.
 		public void DestroyBody(b2Body body){
 			throw new NotImplementedException();
-			//Utilities.Assert(m_bodyCount > 0);
+			//Utilities.Assert(m_bodyList.Count() > 0);
 			//Utilities.Assert(IsLocked() == false);
 			//if (IsLocked())
 			//{
@@ -195,7 +193,7 @@ namespace Box2D {
 			//    m_bodyList = b.m_next;
 			//}
 
-			//--m_bodyCount;
+			//--m_bodyList.Count();
 			//b.~b2Body();
 			//m_blockAllocator.Free(b, sizeof(b2Body));
 		}
@@ -612,7 +610,7 @@ namespace Box2D {
 			//m_allowSleep = flag;
 			//if (m_allowSleep == false)
 			//{
-			//    for (b2Body* b = m_bodyList; b; b = b.m_next)
+			//    foreach (b2Body b in m_bodyList)
 			//    {
 			//        b.SetAwake(true);
 			//    }
@@ -644,12 +642,12 @@ namespace Box2D {
 
 		/// Get the number of joints.
 		public int GetJointCount(){
-			return m_jointCount;
+			return m_jointList.Count();
 		}
 
 		/// Get the number of contacts (each may have 0 or more contact points).
 		public int GetContactCount(){
-			return m_contactManager.m_contactCount;
+			return m_contactManager.m_contactList.Count();
 		}
 
 		/// Get the height of the dynamic tree.
@@ -712,7 +710,7 @@ namespace Box2D {
 			//    return;
 			//}
 
-			//for (b2Body* b = m_bodyList; b; b = b.m_next)
+			//foreach (b2Body b in m_bodyList)
 			//{
 			//    b.m_xf.p -= newOrigin;
 			//    b.m_sweep.c0 -= newOrigin;
@@ -749,10 +747,10 @@ namespace Box2D {
 			//b2Settings.b2Log("b2Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
 			//b2Settings.b2Log("m_world.SetGravity(g);\n");
 
-			//b2Settings.b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
+			//b2Settings.b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyList.Count());
 			//b2Settings.b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
 			//int i = 0;
-			//for (b2Body* b = m_bodyList; b; b = b.m_next)
+			//foreach (b2Body b in m_bodyList)
 			//{
 			//    b.m_islandIndex = i;
 			//    b.Dump();
@@ -801,512 +799,505 @@ namespace Box2D {
 		
 
 		private void Solve(b2TimeStep step){
-			throw new NotImplementedException();
-			//m_profile.solveInit = 0.0f;
-			//m_profile.solveVelocity = 0.0f;
-			//m_profile.solvePosition = 0.0f;
+			m_profile.solveInit = 0.0f;
+			m_profile.solveVelocity = 0.0f;
+			m_profile.solvePosition = 0.0f;
 
-			//// Size the island for the worst case.
-			//b2Island island(m_bodyCount,
-			//                m_contactManager.m_contactCount,
-			//                m_jointCount,
-			//                &m_stackAllocator,
-			//                m_contactManager.m_contactListener);
+			// Size the island for the worst case.
+			b2Island island = new b2Island(m_contactManager.m_contactListener);
 
-			//// Clear all the island flags.
-			//for (b2Body* b = m_bodyList; b; b = b.m_next)
-			//{
-			//    b.m_flags &= ~b2Body::e_islandFlag;
-			//}
-			//for (b2Contact* c = m_contactManager.m_contactList; c; c = c.m_next)
-			//{
-			//    c.m_flags &= ~b2Contact::e_islandFlag;
-			//}
-			//for (b2Joint* j = m_jointList; j; j = j.m_next)
-			//{
-			//    j.m_islandFlag = false;
-			//}
+			// Clear all the island flags.
+			foreach (b2Body b in m_bodyList)
+			{
+			    b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+			}
+			foreach (b2Contact c in m_contactManager.m_contactList)
+			{
+			    c.m_flags &= ~ContactFlags.e_islandFlag;
+			}
+			foreach (b2Joint j in m_jointList)
+			{
+			    j.m_islandFlag = false;
+			}
 
-			//// Build and simulate all awake islands.
-			//int stackSize = m_bodyCount;
-			//b2Body** stack = (b2Body**)m_stackAllocator.Allocate(stackSize * sizeof(b2Body*));
-			//for (b2Body* seed = m_bodyList; seed; seed = seed.m_next)
-			//{
-			//    if (seed.m_flags & b2Body::e_islandFlag)
-			//    {
-			//        continue;
-			//    }
+			// Build and simulate all awake islands.
+			List<b2Body> stack = new List<b2Body>(m_bodyList.Count());
+			foreach (b2Body seed in m_bodyList)
+			{
+			    if (seed.m_flags.HasFlag(b2Body.BodyFlags.e_islandFlag))
+			    {
+			        continue;
+			    }
 
-			//    if (seed.IsAwake() == false || seed.IsActive() == false)
-			//    {
-			//        continue;
-			//    }
+			    if (seed.IsAwake() == false || seed.IsActive() == false)
+			    {
+			        continue;
+			    }
 
-			//    // The seed can be dynamic or kinematic.
-			//    if (seed.GetType() == b2_staticBody)
-			//    {
-			//        continue;
-			//    }
+			    // The seed can be dynamic or kinematic.
+			    if (seed.GetBodyType() == b2BodyType.b2_staticBody)
+			    {
+			        continue;
+			    }
 
-			//    // Reset island and stack.
-			//    island.Clear();
-			//    int stackCount = 0;
-			//    stack[stackCount++] = seed;
-			//    seed.m_flags |= b2Body::e_islandFlag;
+			    // Reset island and stack.
+			    island.Clear();
+			    int stackCount = 0;
+			    stack[stackCount++] = seed;
+			    seed.m_flags |= b2Body.BodyFlags.e_islandFlag;
 
-			//    // Perform a depth first search (DFS) on the constraint graph.
-			//    while (stackCount > 0)
-			//    {
-			//        // Grab the next body off the stack and add it to the island.
-			//        b2Body* b = stack[--stackCount];
-			//        Utilities.Assert(b.IsActive() == true);
-			//        island.Add(b);
+			    // Perform a depth first search (DFS) on the constraint graph.
+			    while (stackCount > 0)
+			    {
+			        // Grab the next body off the stack and add it to the island.
+			        b2Body b = stack[--stackCount];
+			        Utilities.Assert(b.IsActive() == true);
+			        island.Add(b);
 
-			//        // Make sure the body is awake.
-			//        b.SetAwake(true);
+			        // Make sure the body is awake.
+			        b.SetAwake(true);
 
-			//        // To keep islands as small as possible, we don't
-			//        // propagate islands across static bodies.
-			//        if (b.GetType() == b2_staticBody)
-			//        {
-			//            continue;
-			//        }
+			        // To keep islands as small as possible, we don't
+			        // propagate islands across static bodies.
+			        if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			        {
+			            continue;
+			        }
 
-			//        // Search all contacts connected to this body.
-			//        for (b2ContactEdge* ce = b.m_contactList; ce; ce = ce.next)
-			//        {
-			//            b2Contact* contact = ce.contact;
+			        // Search all contacts connected to this body.
+			        foreach (b2ContactEdge ce in b.m_contactList)
+			        {
+			            b2Contact contact = ce.contact;
 
-			//            // Has this contact already been added to an island?
-			//            if (contact.m_flags & b2Contact::e_islandFlag)
-			//            {
-			//                continue;
-			//            }
+			            // Has this contact already been added to an island?
+			            if (contact.m_flags.HasFlag(ContactFlags.e_islandFlag))
+			            {
+			                continue;
+			            }
 
-			//            // Is this contact solid and touching?
-			//            if (contact.IsEnabled() == false ||
-			//                contact.IsTouching() == false)
-			//            {
-			//                continue;
-			//            }
+			            // Is this contact solid and touching?
+			            if (contact.IsEnabled() == false ||
+			                contact.IsTouching() == false)
+			            {
+			                continue;
+			            }
 
-			//            // Skip sensors.
-			//            bool sensorA = contact.m_fixtureA.m_isSensor;
-			//            bool sensorB = contact.m_fixtureB.m_isSensor;
-			//            if (sensorA || sensorB)
-			//            {
-			//                continue;
-			//            }
+			            // Skip sensors.
+			            bool sensorA = contact.m_fixtureA.m_isSensor;
+			            bool sensorB = contact.m_fixtureB.m_isSensor;
+			            if (sensorA || sensorB)
+			            {
+			                continue;
+			            }
 
-			//            island.Add(contact);
-			//            contact.m_flags |= b2Contact::e_islandFlag;
+			            island.Add(contact);
+			            contact.m_flags |= ContactFlags.e_islandFlag;
 
-			//            b2Body* other = ce.other;
+			            b2Body other = ce.other;
 
-			//            // Was the other body already added to this island?
-			//            if (other.m_flags & b2Body::e_islandFlag)
-			//            {
-			//                continue;
-			//            }
+			            // Was the other body already added to this island?
+			            if (other.m_flags.HasFlag(b2Body.BodyFlags.e_islandFlag))
+			            {
+			                continue;
+			            }
 
-			//            Utilities.Assert(stackCount < stackSize);
-			//            stack[stackCount++] = other;
-			//            other.m_flags |= b2Body::e_islandFlag;
-			//        }
+			            Utilities.Assert(stackCount < m_bodyList.Count());
+			            stack[stackCount++] = other;
+			            other.m_flags |= b2Body.BodyFlags.e_islandFlag;
+			        }
 
-			//        // Search all joints connect to this body.
-			//        for (b2JointEdge* je = b.m_jointList; je; je = je.next)
-			//        {
-			//            if (je.joint.m_islandFlag == true)
-			//            {
-			//                continue;
-			//            }
+					throw new NotImplementedException();
+					//// Search all joints connect to this body.
+					//for (b2JointEdge* je = b.m_jointList; je; je = je.next)
+					//{
+					//    if (je.joint.m_islandFlag == true)
+					//    {
+					//        continue;
+					//    }
 
-			//            b2Body* other = je.other;
+					//    b2Body* other = je.other;
 
-			//            // Don't simulate joints connected to inactive bodies.
-			//            if (other.IsActive() == false)
-			//            {
-			//                continue;
-			//            }
+					//    // Don't simulate joints connected to inactive bodies.
+					//    if (other.IsActive() == false)
+					//    {
+					//        continue;
+					//    }
 
-			//            island.Add(je.joint);
-			//            je.joint.m_islandFlag = true;
+					//    island.Add(je.joint);
+					//    je.joint.m_islandFlag = true;
 
-			//            if (other.m_flags & b2Body::e_islandFlag)
-			//            {
-			//                continue;
-			//            }
+					//    if (other.m_flags & b2Body.BodyFlags.e_islandFlag)
+					//    {
+					//        continue;
+					//    }
 
-			//            Utilities.Assert(stackCount < stackSize);
-			//            stack[stackCount++] = other;
-			//            other.m_flags |= b2Body::e_islandFlag;
-			//        }
-			//    }
+					//    Utilities.Assert(stackCount < stackSize);
+					//    stack[stackCount++] = other;
+					//    other.m_flags |= b2Body.BodyFlags.e_islandFlag;
+					//}
+			    }
 
-			//    b2Profile profile;
-			//    island.Solve(&profile, step, m_gravity, m_allowSleep);
-			//    m_profile.solveInit += profile.solveInit;
-			//    m_profile.solveVelocity += profile.solveVelocity;
-			//    m_profile.solvePosition += profile.solvePosition;
+			    b2Profile profile = new b2Profile();
+				throw new NotImplementedException();
+				//island.Solve(&profile, step, m_gravity, m_allowSleep);
+				//m_profile.solveInit += profile.solveInit;
+				//m_profile.solveVelocity += profile.solveVelocity;
+				//m_profile.solvePosition += profile.solvePosition;
 
-			//    // Post solve cleanup.
-			//    for (int i = 0; i < island.m_bodyCount; ++i)
-			//    {
-			//        // Allow static bodies to participate in other islands.
-			//        b2Body* b = island.m_bodies[i];
-			//        if (b.GetType() == b2_staticBody)
-			//        {
-			//            b.m_flags &= ~b2Body::e_islandFlag;
-			//        }
-			//    }
-			//}
+				//// Post solve cleanup.
+				//for (int i = 0; i < island.m_bodyList.Count(); ++i)
+				//{
+				//    // Allow static bodies to participate in other islands.
+				//    b2Body* b = island.m_bodies[i];
+				//    if (b.GetType() == b2_staticBody)
+				//    {
+				//        b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+				//    }
+				//}
+			}
 
-			//m_stackAllocator.Free(stack);
+			{
+			    b2Timer timer = new b2Timer();
+			    // Synchronize fixtures, check for out of range bodies.
+			    foreach (b2Body b in m_bodyList)
+			    {
+			        // If a body was not in an island then it did not move.
+			        if ((b.m_flags & b2Body.BodyFlags.e_islandFlag) == 0)
+			        {
+			            continue;
+			        }
 
-			//{
-			//    b2Timer timer;
-			//    // Synchronize fixtures, check for out of range bodies.
-			//    for (b2Body* b = m_bodyList; b; b = b.GetNext())
-			//    {
-			//        // If a body was not in an island then it did not move.
-			//        if ((b.m_flags & b2Body::e_islandFlag) == 0)
-			//        {
-			//            continue;
-			//        }
+			        if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			        {
+			            continue;
+			        }
 
-			//        if (b.GetType() == b2_staticBody)
-			//        {
-			//            continue;
-			//        }
+			        // Update fixtures (for broad-phase).
+			        b.SynchronizeFixtures();
+			    }
 
-			//        // Update fixtures (for broad-phase).
-			//        b.SynchronizeFixtures();
-			//    }
-
-			//    // Look for new contacts.
-			//    m_contactManager.FindNewContacts();
-			//    m_profile.broadphase = timer.GetMilliseconds();
-			//}
+			    // Look for new contacts.
+			    m_contactManager.FindNewContacts();
+			    m_profile.broadphase = timer.GetMilliseconds();
+			}
 		}
 		private void SolveTOI(b2TimeStep step){
-			throw new NotImplementedException();
-			//b2Island island(2 * b2_maxTOIContacts, b2_maxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
+			b2Island island = new b2Island(m_contactManager.m_contactListener);
 
-			//if (m_stepComplete)
-			//{
-			//    for (b2Body* b = m_bodyList; b; b = b.m_next)
-			//    {
-			//        b.m_flags &= ~b2Body::e_islandFlag;
-			//        b.m_sweep.alpha0 = 0.0f;
-			//    }
+			if (m_stepComplete)
+			{
+			    foreach (b2Body b in m_bodyList)
+			    {
+			        b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+			        b.m_sweep.alpha0 = 0.0f;
+			    }
 
-			//    for (b2Contact* c = m_contactManager.m_contactList; c; c = c.m_next)
-			//    {
-			//        // Invalidate TOI
-			//        c.m_flags &= ~(b2Contact::e_toiFlag | b2Contact::e_islandFlag);
-			//        c.m_toiCount = 0;
-			//        c.m_toi = 1.0f;
-			//    }
-			//}
+			    foreach (b2Contact c in m_contactManager.m_contactList)
+			    {
+			        // Invalidate TOI
+			        c.m_flags &= ~(ContactFlags.e_toiFlag | ContactFlags.e_islandFlag);
+			        c.m_toiCount = 0;
+			        c.m_toi = 1.0f;
+			    }
+			}
 
-			//// Find TOI events and solve them.
-			//for (;;)
-			//{
-			//    // Find the first TOI.
-			//    b2Contact* minContact = null;
-			//    float minAlpha = 1.0f;
+			// Find TOI events and solve them.
+			for (;;)
+			{
+			    // Find the first TOI.
+			    b2Contact minContact = null;
+			    float minAlpha = 1.0f;
 
-			//    for (b2Contact* c = m_contactManager.m_contactList; c; c = c.m_next)
-			//    {
-			//        // Is this contact disabled?
-			//        if (c.IsEnabled() == false)
-			//        {
-			//            continue;
-			//        }
+			    foreach (b2Contact c in m_contactManager.m_contactList)
+			    {
+			        // Is this contact disabled?
+			        if (c.IsEnabled() == false)
+			        {
+			            continue;
+			        }
 
-			//        // Prevent excessive sub-stepping.
-			//        if (c.m_toiCount > b2_maxSubSteps)
-			//        {
-			//            continue;
-			//        }
+			        // Prevent excessive sub-stepping.
+			        if (c.m_toiCount > b2Settings.b2_maxSubSteps)
+			        {
+			            continue;
+			        }
 
-			//        float alpha = 1.0f;
-			//        if (c.m_flags & b2Contact::e_toiFlag)
-			//        {
-			//            // This contact has a valid cached TOI.
-			//            alpha = c.m_toi;
-			//        }
-			//        else
-			//        {
-			//            b2Fixture* fA = c.GetFixtureA();
-			//            b2Fixture* fB = c.GetFixtureB();
+			        float alpha = 1.0f;
+			        if (c.m_flags.HasFlag(ContactFlags.e_toiFlag))
+			        {
+			            // This contact has a valid cached TOI.
+			            alpha = c.m_toi;
+			        }
+			        else
+			        {
+			            b2Fixture fA = c.GetFixtureA();
+			            b2Fixture fB = c.GetFixtureB();
 
-			//            // Is there a sensor?
-			//            if (fA.IsSensor() || fB.IsSensor())
-			//            {
-			//                continue;
-			//            }
+			            // Is there a sensor?
+			            if (fA.IsSensor() || fB.IsSensor())
+			            {
+			                continue;
+			            }
 
-			//            b2Body* bA = fA.GetBody();
-			//            b2Body* bB = fB.GetBody();
+			            b2Body bA = fA.GetBody();
+			            b2Body bB = fB.GetBody();
 
-			//            b2BodyType typeA = bA.m_type;
-			//            b2BodyType typeB = bB.m_type;
-			//            Utilities.Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
+			            b2BodyType typeA = bA.m_type;
+			            b2BodyType typeB = bB.m_type;
+			            Utilities.Assert(typeA == b2BodyType.b2_dynamicBody || typeB == b2BodyType.b2_dynamicBody);
 
-			//            bool activeA = bA.IsAwake() && typeA != b2_staticBody;
-			//            bool activeB = bB.IsAwake() && typeB != b2_staticBody;
+			            bool activeA = bA.IsAwake() && typeA != b2BodyType.b2_staticBody;
+			            bool activeB = bB.IsAwake() && typeB != b2BodyType.b2_staticBody;
 
-			//            // Is at least one body active (awake and dynamic or kinematic)?
-			//            if (activeA == false && activeB == false)
-			//            {
-			//                continue;
-			//            }
+			            // Is at least one body active (awake and dynamic or kinematic)?
+			            if (activeA == false && activeB == false)
+			            {
+			                continue;
+			            }
 
-			//            bool collideA = bA.IsBullet() || typeA != b2_dynamicBody;
-			//            bool collideB = bB.IsBullet() || typeB != b2_dynamicBody;
+			            bool collideA = bA.IsBullet() || typeA != b2BodyType.b2_dynamicBody;
+			            bool collideB = bB.IsBullet() || typeB != b2BodyType.b2_dynamicBody;
 
-			//            // Are these two non-bullet dynamic bodies?
-			//            if (collideA == false && collideB == false)
-			//            {
-			//                continue;
-			//            }
+			            // Are these two non-bullet dynamic bodies?
+			            if (collideA == false && collideB == false)
+			            {
+			                continue;
+			            }
 
-			//            // Compute the TOI for this contact.
-			//            // Put the sweeps onto the same time interval.
-			//            float alpha0 = bA.m_sweep.alpha0;
+			            // Compute the TOI for this contact.
+			            // Put the sweeps onto the same time interval.
+			            float alpha0 = bA.m_sweep.alpha0;
 
-			//            if (bA.m_sweep.alpha0 < bB.m_sweep.alpha0)
-			//            {
-			//                alpha0 = bB.m_sweep.alpha0;
-			//                bA.m_sweep.Advance(alpha0);
-			//            }
-			//            else if (bB.m_sweep.alpha0 < bA.m_sweep.alpha0)
-			//            {
-			//                alpha0 = bA.m_sweep.alpha0;
-			//                bB.m_sweep.Advance(alpha0);
-			//            }
+			            if (bA.m_sweep.alpha0 < bB.m_sweep.alpha0)
+			            {
+			                alpha0 = bB.m_sweep.alpha0;
+			                bA.m_sweep.Advance(alpha0);
+			            }
+			            else if (bB.m_sweep.alpha0 < bA.m_sweep.alpha0)
+			            {
+			                alpha0 = bA.m_sweep.alpha0;
+			                bB.m_sweep.Advance(alpha0);
+			            }
 
-			//            Utilities.Assert(alpha0 < 1.0f);
+			            Utilities.Assert(alpha0 < 1.0f);
 
-			//            int indexA = c.GetChildIndexA();
-			//            int indexB = c.GetChildIndexB();
+			            int indexA = c.GetChildIndexA();
+			            int indexB = c.GetChildIndexB();
 
-			//            // Compute the time of impact in interval [0, minTOI]
-			//            b2TOIInput input;
-			//            input.proxyA.Set(fA.GetShape(), indexA);
-			//            input.proxyB.Set(fB.GetShape(), indexB);
-			//            input.sweepA = bA.m_sweep;
-			//            input.sweepB = bB.m_sweep;
-			//            input.tMax = 1.0f;
+			            // Compute the time of impact in interval [0, minTOI]
+			            b2TOIInput input;
+			            input.proxyA.Set(fA.GetShape(), indexA);
+			            input.proxyB.Set(fB.GetShape(), indexB);
+			            input.sweepA = bA.m_sweep;
+			            input.sweepB = bB.m_sweep;
+			            input.tMax = 1.0f;
 
-			//            b2TOIOutput output;
-			//            b2TimeOfImpact(&output, &input);
+			            b2TOIOutput output;
+			            b2TimeOfImpact(&output, &input);
 
-			//            // Beta is the fraction of the remaining portion of the .
-			//            float beta = output.t;
-			//            if (output.state == b2TOIOutput::e_touching)
-			//            {
-			//                alpha = Math.Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
-			//            }
-			//            else
-			//            {
-			//                alpha = 1.0f;
-			//            }
+			            // Beta is the fraction of the remaining portion of the .
+			            float beta = output.t;
+			            if (output.state == b2TOIOutput::e_touching)
+			            {
+			                alpha = Math.Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
+			            }
+			            else
+			            {
+			                alpha = 1.0f;
+			            }
 
-			//            c.m_toi = alpha;
-			//            c.m_flags |= b2Contact::e_toiFlag;
-			//        }
+			            c.m_toi = alpha;
+			            c.m_flags |= ContactFlags.e_toiFlag;
+			        }
 
-			//        if (alpha < minAlpha)
-			//        {
-			//            // This is the minimum TOI found so far.
-			//            minContact = c;
-			//            minAlpha = alpha;
-			//        }
-			//    }
+			        if (alpha < minAlpha)
+			        {
+			            // This is the minimum TOI found so far.
+			            minContact = c;
+			            minAlpha = alpha;
+			        }
+			    }
 
-			//    if (minContact == null || 1.0f - 10.0f * Single.Epsilon < minAlpha)
-			//    {
-			//        // No more TOI events. Done!
-			//        m_stepComplete = true;
-			//        break;
-			//    }
+			    if (minContact == null || 1.0f - 10.0f * Single.Epsilon < minAlpha)
+			    {
+			        // No more TOI events. Done!
+			        m_stepComplete = true;
+			        break;
+			    }
 
-			//    // Advance the bodies to the TOI.
-			//    b2Fixture* fA = minContact.GetFixtureA();
-			//    b2Fixture* fB = minContact.GetFixtureB();
-			//    b2Body* bA = fA.GetBody();
-			//    b2Body* bB = fB.GetBody();
+			    // Advance the bodies to the TOI.
+			    b2Fixture* fA = minContact.GetFixtureA();
+			    b2Fixture* fB = minContact.GetFixtureB();
+			    b2Body* bA = fA.GetBody();
+			    b2Body* bB = fB.GetBody();
 
-			//    b2Sweep backup1 = bA.m_sweep;
-			//    b2Sweep backup2 = bB.m_sweep;
+			    b2Sweep backup1 = bA.m_sweep;
+			    b2Sweep backup2 = bB.m_sweep;
 
-			//    bA.Advance(minAlpha);
-			//    bB.Advance(minAlpha);
+			    bA.Advance(minAlpha);
+			    bB.Advance(minAlpha);
 
-			//    // The TOI contact likely has some new contact points.
-			//    minContact.Update(m_contactManager.m_contactListener);
-			//    minContact.m_flags &= ~b2Contact::e_toiFlag;
-			//    ++minContact.m_toiCount;
+			    // The TOI contact likely has some new contact points.
+			    minContact.Update(m_contactManager.m_contactListener);
+			    minContact.m_flags &= ~ContactFlags.e_toiFlag;
+			    ++minContact.m_toiCount;
 
-			//    // Is the contact solid?
-			//    if (minContact.IsEnabled() == false || minContact.IsTouching() == false)
-			//    {
-			//        // Restore the sweeps.
-			//        minContact.SetEnabled(false);
-			//        bA.m_sweep = backup1;
-			//        bB.m_sweep = backup2;
-			//        bA.SynchronizeTransform();
-			//        bB.SynchronizeTransform();
-			//        continue;
-			//    }
+			    // Is the contact solid?
+			    if (minContact.IsEnabled() == false || minContact.IsTouching() == false)
+			    {
+			        // Restore the sweeps.
+			        minContact.SetEnabled(false);
+			        bA.m_sweep = backup1;
+			        bB.m_sweep = backup2;
+			        bA.SynchronizeTransform();
+			        bB.SynchronizeTransform();
+			        continue;
+			    }
 
-			//    bA.SetAwake(true);
-			//    bB.SetAwake(true);
+			    bA.SetAwake(true);
+			    bB.SetAwake(true);
 
-			//    // Build the island
-			//    island.Clear();
-			//    island.Add(bA);
-			//    island.Add(bB);
-			//    island.Add(minContact);
+			    // Build the island
+			    island.Clear();
+			    island.Add(bA);
+			    island.Add(bB);
+			    island.Add(minContact);
 
-			//    bA.m_flags |= b2Body::e_islandFlag;
-			//    bB.m_flags |= b2Body::e_islandFlag;
-			//    minContact.m_flags |= b2Contact::e_islandFlag;
+			    bA.m_flags |= b2Body.BodyFlags.e_islandFlag;
+			    bB.m_flags |= b2Body.BodyFlags.e_islandFlag;
+			    minContact.m_flags |= ContactFlags.e_islandFlag;
 
-			//    // Get contacts on bodyA and bodyB.
-			//    b2Body* bodies[2] = {bA, bB};
-			//    for (int i = 0; i < 2; ++i)
-			//    {
-			//        b2Body* body = bodies[i];
-			//        if (body.m_type == b2_dynamicBody)
-			//        {
-			//            for (b2ContactEdge* ce = body.m_contactList; ce; ce = ce.next)
-			//            {
-			//                if (island.m_bodyCount == island.m_bodyCapacity)
-			//                {
-			//                    break;
-			//                }
+			    // Get contacts on bodyA and bodyB.
+			    b2Body* bodies[2] = {bA, bB};
+			    for (int i = 0; i < 2; ++i)
+			    {
+			        b2Body* body = bodies[i];
+			        if (body.m_type == b2_dynamicBody)
+			        {
+			            for (b2ContactEdge* ce = body.m_contactList; ce; ce = ce.next)
+			            {
+			                if (island.m_bodyList.Count() == island.m_bodyCapacity)
+			                {
+			                    break;
+			                }
 
-			//                if (island.m_contactCount == island.m_contactCapacity)
-			//                {
-			//                    break;
-			//                }
+			                if (island.m_contactList.Count() == island.m_contactCapacity)
+			                {
+			                    break;
+			                }
 
-			//                b2Contact* contact = ce.contact;
+			                b2Contact* contact = ce.contact;
 
-			//                // Has this contact already been added to the island?
-			//                if (contact.m_flags & b2Contact::e_islandFlag)
-			//                {
-			//                    continue;
-			//                }
+			                // Has this contact already been added to the island?
+			                if (contact.m_flags & ContactFlags.e_islandFlag)
+			                {
+			                    continue;
+			                }
 
-			//                // Only add static, kinematic, or bullet bodies.
-			//                b2Body* other = ce.other;
-			//                if (other.m_type == b2_dynamicBody &&
-			//                    body.IsBullet() == false && other.IsBullet() == false)
-			//                {
-			//                    continue;
-			//                }
+			                // Only add static, kinematic, or bullet bodies.
+			                b2Body* other = ce.other;
+			                if (other.m_type == b2_dynamicBody &&
+			                    body.IsBullet() == false && other.IsBullet() == false)
+			                {
+			                    continue;
+			                }
 
-			//                // Skip sensors.
-			//                bool sensorA = contact.m_fixtureA.m_isSensor;
-			//                bool sensorB = contact.m_fixtureB.m_isSensor;
-			//                if (sensorA || sensorB)
-			//                {
-			//                    continue;
-			//                }
+			                // Skip sensors.
+			                bool sensorA = contact.m_fixtureA.m_isSensor;
+			                bool sensorB = contact.m_fixtureB.m_isSensor;
+			                if (sensorA || sensorB)
+			                {
+			                    continue;
+			                }
 
-			//                // Tentatively advance the body to the TOI.
-			//                b2Sweep backup = other.m_sweep;
-			//                if ((other.m_flags & b2Body::e_islandFlag) == 0)
-			//                {
-			//                    other.Advance(minAlpha);
-			//                }
+			                // Tentatively advance the body to the TOI.
+			                b2Sweep backup = other.m_sweep;
+			                if ((other.m_flags & b2Body.BodyFlags.e_islandFlag) == 0)
+			                {
+			                    other.Advance(minAlpha);
+			                }
 
-			//                // Update the contact points
-			//                contact.Update(m_contactManager.m_contactListener);
+			                // Update the contact points
+			                contact.Update(m_contactManager.m_contactListener);
 
-			//                // Was the contact disabled by the user?
-			//                if (contact.IsEnabled() == false)
-			//                {
-			//                    other.m_sweep = backup;
-			//                    other.SynchronizeTransform();
-			//                    continue;
-			//                }
+			                // Was the contact disabled by the user?
+			                if (contact.IsEnabled() == false)
+			                {
+			                    other.m_sweep = backup;
+			                    other.SynchronizeTransform();
+			                    continue;
+			                }
 
-			//                // Are there contact points?
-			//                if (contact.IsTouching() == false)
-			//                {
-			//                    other.m_sweep = backup;
-			//                    other.SynchronizeTransform();
-			//                    continue;
-			//                }
+			                // Are there contact points?
+			                if (contact.IsTouching() == false)
+			                {
+			                    other.m_sweep = backup;
+			                    other.SynchronizeTransform();
+			                    continue;
+			                }
 
-			//                // Add the contact to the island
-			//                contact.m_flags |= b2Contact::e_islandFlag;
-			//                island.Add(contact);
+			                // Add the contact to the island
+			                contact.m_flags |= ContactFlags.e_islandFlag;
+			                island.Add(contact);
 
-			//                // Has the other body already been added to the island?
-			//                if (other.m_flags & b2Body::e_islandFlag)
-			//                {
-			//                    continue;
-			//                }
+			                // Has the other body already been added to the island?
+			                if (other.m_flags & b2Body.BodyFlags.e_islandFlag)
+			                {
+			                    continue;
+			                }
 					
-			//                // Add the other body to the island.
-			//                other.m_flags |= b2Body::e_islandFlag;
+			                // Add the other body to the island.
+			                other.m_flags |= b2Body.BodyFlags.e_islandFlag;
 
-			//                if (other.m_type != b2_staticBody)
-			//                {
-			//                    other.SetAwake(true);
-			//                }
+			                if (other.m_type != b2_staticBody)
+			                {
+			                    other.SetAwake(true);
+			                }
 
-			//                island.Add(other);
-			//            }
-			//        }
-			//    }
+			                island.Add(other);
+			            }
+			        }
+			    }
 
-			//    b2TimeStep subStep;
-			//    subStep.dt = (1.0f - minAlpha) * step.dt;
-			//    subStep.inv_dt = 1.0f / subStep.dt;
-			//    subStep.dtRatio = 1.0f;
-			//    subStep.positionIterations = 20;
-			//    subStep.velocityIterations = step.velocityIterations;
-			//    subStep.warmStarting = false;
-			//    island.SolveTOI(subStep, bA.m_islandIndex, bB.m_islandIndex);
+			    b2TimeStep subStep;
+			    subStep.dt = (1.0f - minAlpha) * step.dt;
+			    subStep.inv_dt = 1.0f / subStep.dt;
+			    subStep.dtRatio = 1.0f;
+			    subStep.positionIterations = 20;
+			    subStep.velocityIterations = step.velocityIterations;
+			    subStep.warmStarting = false;
+			    island.SolveTOI(subStep, bA.m_islandIndex, bB.m_islandIndex);
 
-			//    // Reset island flags and synchronize broad-phase proxies.
-			//    for (int i = 0; i < island.m_bodyCount; ++i)
-			//    {
-			//        b2Body* body = island.m_bodies[i];
-			//        body.m_flags &= ~b2Body::e_islandFlag;
+			    // Reset island flags and synchronize broad-phase proxies.
+			    for (int i = 0; i < island.m_bodyList.Count(); ++i)
+			    {
+			        b2Body* body = island.m_bodies[i];
+			        body.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
 
-			//        if (body.m_type != b2_dynamicBody)
-			//        {
-			//            continue;
-			//        }
+			        if (body.m_type != b2_dynamicBody)
+			        {
+			            continue;
+			        }
 
-			//        body.SynchronizeFixtures();
+			        body.SynchronizeFixtures();
 
-			//        // Invalidate all contact TOIs on this displaced body.
-			//        for (b2ContactEdge* ce = body.m_contactList; ce; ce = ce.next)
-			//        {
-			//            ce.contact.m_flags &= ~(b2Contact::e_toiFlag | b2Contact::e_islandFlag);
-			//        }
-			//    }
+			        // Invalidate all contact TOIs on this displaced body.
+			        for (b2ContactEdge* ce = body.m_contactList; ce; ce = ce.next)
+			        {
+			            ce.contact.m_flags &= ~(ContactFlags.e_toiFlag | ContactFlags.e_islandFlag);
+			        }
+			    }
 
-			//    // Commit fixture proxy movements to the broad-phase so that new contacts are created.
-			//    // Also, some contacts can be destroyed.
-			//    m_contactManager.FindNewContacts();
+			    // Commit fixture proxy movements to the broad-phase so that new contacts are created.
+			    // Also, some contacts can be destroyed.
+			    m_contactManager.FindNewContacts();
 
-			//    if (m_subStepping)
-			//    {
-			//        m_stepComplete = false;
-			//        break;
-			//    }
-			//}
+			    if (m_subStepping)
+			    {
+			        m_stepComplete = false;
+			        break;
+			    }
+			}
 		}
 
 
@@ -1420,8 +1411,6 @@ namespace Box2D {
 
 		private List<b2Body> m_bodyList;//pointer
 		private List<b2Joint> m_jointList;//pointer
-
-		private int m_jointCount;
 
 		private b2Vec2 m_gravity;
 		private bool m_allowSleep;

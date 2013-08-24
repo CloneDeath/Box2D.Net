@@ -503,7 +503,7 @@ namespace Box2D {
 
 			//m_invMass = 1.0f / m_mass;
 
-			//if (massData.I > 0.0f && (m_flags & b2Body::e_fixedRotationFlag) == 0)
+			//if (massData.I > 0.0f && (m_flags & b2Body.BodyFlags.e_fixedRotationFlag) == 0)
 			//{
 			//    m_I = massData.I - m_mass * Utilities.b2Dot(massData.center, massData.center);
 			//    Utilities.Assert(m_I > 0.0f);
@@ -790,8 +790,7 @@ namespace Box2D {
 		/// Get the sleeping state of this body.
 		/// @return true if the body is sleeping.
 		public bool IsAwake(){
-			throw new NotImplementedException();
-			//return (m_flags & e_awakeFlag) == e_awakeFlag;
+			return (m_flags & BodyFlags.e_awakeFlag) == BodyFlags.e_awakeFlag;
 		}
 
 		/// Set the active state of the body. An inactive body is not
@@ -1044,7 +1043,7 @@ namespace Box2D {
 			// shapes and joints are destroyed in b2World::Destroy
 		}
 
-		private void SynchronizeFixtures(){
+		internal void SynchronizeFixtures(){
 			throw new NotImplementedException();
 			//b2Transform xf1;
 			//xf1.q.Set(m_sweep.a0);
@@ -1064,7 +1063,7 @@ namespace Box2D {
 
 		// This is used to prevent connected bodies from colliding.
 		// It may lie, depending on the collideConnected flag.
-		private bool ShouldCollide(b2Body other){
+		internal bool ShouldCollide(b2Body other){
 			throw new NotImplementedException();
 			//// At least one body should be dynamic.
 			//if (m_type != b2_dynamicBody && other.m_type != b2_dynamicBody)
@@ -1097,14 +1096,14 @@ namespace Box2D {
 			//m_xf.p = m_sweep.c - Utilities.b2Mul(m_xf.q, m_sweep.localCenter);
 		}
 
-		private b2BodyType m_type;
+		internal b2BodyType m_type;
 
-		private BodyFlags m_flags;
+		internal BodyFlags m_flags;
 
 		private int m_islandIndex;
 
 		private b2Transform m_xf;		// the body origin transform
-		private b2Sweep m_sweep;		// the swept motion for CCD
+		internal b2Sweep m_sweep;		// the swept motion for CCD
 
 		private b2Vec2 m_linearVelocity;
 		private float m_angularVelocity;
@@ -1119,7 +1118,7 @@ namespace Box2D {
 		private List<b2Fixture> m_fixtureList; //pointer
 
 		private List<b2JointEdge> m_jointList;//pointer
-		private List<b2ContactEdge> m_contactList;//pointer
+		internal List<b2ContactEdge> m_contactList;//pointer
 
 		private float m_mass, m_invMass;
 

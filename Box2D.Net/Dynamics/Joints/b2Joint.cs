@@ -18,7 +18,7 @@ namespace Box2D {
 
 		protected int m_index;
 
-		protected bool m_islandFlag;
+		internal bool m_islandFlag;
 		protected bool m_collideConnected;
 
 		protected object m_userData;

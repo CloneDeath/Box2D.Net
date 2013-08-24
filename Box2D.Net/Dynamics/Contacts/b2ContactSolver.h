@@ -28,33 +28,9 @@ class b2Body;
 class b2StackAllocator;
 struct b2ContactPositionConstraint;
 
-struct b2VelocityConstraintPoint
-{
-	b2Vec2 rA;
-	b2Vec2 rB;
-	float normalImpulse;
-	float tangentImpulse;
-	float normalMass;
-	float tangentMass;
-	float velocityBias;
-};
 
-struct b2ContactVelocityConstraint
-{
-	b2VelocityConstraintPoint points[b2Settings.b2_maxManifoldPoints];
-	b2Vec2 normal;
-	b2Mat22 normalMass;
-	b2Mat22 K;
-	int indexA;
-	int indexB;
-	float invMassA, invMassB;
-	float invIA, invIB;
-	float friction;
-	float restitution;
-	float tangentSpeed;
-	int pointCount;
-	int contactIndex;
-};
+
+
 
 struct b2ContactSolverDef
 {

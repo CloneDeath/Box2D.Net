@@ -30,16 +30,9 @@ namespace Box2D {
 		}
 
 		public b2BroadPhase(){
-			throw new NotImplementedException();
-			//m_proxyCount = 0;
-
-			//m_pairCapacity = 16;
-			//m_pairCount = 0;
-			//m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
-
-			//m_moveCapacity = 16;
-			//m_moveCount = 0;
-			//m_moveBuffer = (float*)b2Alloc(m_moveCapacity * sizeof(float));
+			m_proxyCount = 0;
+			m_pairBuffer = new List<b2Pair>();
+			m_moveBuffer = new List<int>();
 		}
 
 		~b2BroadPhase(){
@@ -108,59 +101,58 @@ namespace Box2D {
 		}
 
 		/// Update the pairs. This results in pair callbacks. This can only add pairs.
-		public void UpdatePairs<T>(T callback){
-			throw new NotImplementedException();
-			//// Reset pair buffer
-			//m_pairCount = 0;
+		public void UpdatePairs(b2ContactManager callback){ //Was generic function, accepting any class
+			// Reset pair buffer
+			m_pairBuffer.Clear();
 
-			//// Perform tree queries for all moving proxies.
-			//for (int i = 0; i < m_moveCount; ++i)
-			//{
-			//    m_queryProxyId = m_moveBuffer[i];
-			//    if (m_queryProxyId == e_nullProxy)
-			//    {
-			//        continue;
-			//    }
+			// Perform tree queries for all moving proxies.
+			for (int i = 0; i < m_moveBuffer.Count(); ++i)
+			{
+			    m_queryProxyId = m_moveBuffer[i];
+			    if (m_queryProxyId == (int)NullProxy.e_nullProxy)
+			    {
+			        continue;
+			    }
 
-			//    // We have to query the tree with the fat AABB so that
-			//    // we don't fail to create a pair that may touch later.
-			//    const b2AABB& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+			    // We have to query the tree with the fat AABB so that
+			    // we don't fail to create a pair that may touch later.
+			    b2AABB fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
-			//    // Query tree, create pairs and add them pair buffer.
-			//    m_tree.Query(this, fatAABB);
-			//}
+			    // Query tree, create pairs and add them pair buffer.
+			    m_tree.Query(this, fatAABB);
+			}
 
-			//// Reset move buffer
-			//m_moveCount = 0;
+			// Reset move buffer
+			m_moveBuffer.Clear();
 
-			//// Sort the pair buffer to expose duplicates.
-			//std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, b2PairLessThan);
+			// Sort the pair buffer to expose duplicates.
+			m_pairBuffer.Sort((l, r) => b2PairLessThan(l, r) ? -1 : 1);
 
-			//// Send the pairs back to the client.
-			//int i = 0;
-			//while (i < m_pairCount)
-			//{
-			//    b2Pair* primaryPair = m_pairBuffer + i;
-			//    void* userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
-			//    void* userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
+			// Send the pairs back to the client.
+			int n = 0;
+			while (n < m_pairBuffer.Count()){
+				b2Pair primaryPair = m_pairBuffer[n];
+			    object userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
+				object userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
 
-			//    callback.AddPair(userDataA, userDataB);
-			//    ++i;
+			    callback.AddPair(userDataA, userDataB);
+				
+				n++;
+			    
+				// Skip any duplicate pairs.
+			    while (n < m_pairBuffer.Count())
+			    {
+					b2Pair pair = m_pairBuffer[n];
+			        if (pair.proxyIdA != primaryPair.proxyIdA || pair.proxyIdB != primaryPair.proxyIdB)
+			        {
+			            break;
+			        }
+			        n++;
+			    }
+			}
 
-			//    // Skip any duplicate pairs.
-			//    while (i < m_pairCount)
-			//    {
-			//        b2Pair* pair = m_pairBuffer + i;
-			//        if (pair.proxyIdA != primaryPair.proxyIdA || pair.proxyIdB != primaryPair.proxyIdB)
-			//        {
-			//            break;
-			//        }
-			//        ++i;
-			//    }
-			//}
-
-			//// Try to keep the tree balanced.
-			////m_tree.Rebalance(4);
+			// Try to keep the tree balanced.
+			//m_tree.Rebalance(4);
 		}
 
 		/// Query an AABB for overlapping proxies. The callback class
@@ -236,18 +228,18 @@ namespace Box2D {
 			//}
 
 			//// Grow the pair buffer as needed.
-			//if (m_pairCount == m_pairCapacity)
+			//if (m_pairBuffer.Count() == m_pairCapacity)
 			//{
 			//    b2Pair* oldBuffer = m_pairBuffer;
 			//    m_pairCapacity *= 2;
 			//    m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
-			//    memcpy(m_pairBuffer, oldBuffer, m_pairCount * sizeof(b2Pair));
+			//    memcpy(m_pairBuffer, oldBuffer, m_pairBuffer.Count() * sizeof(b2Pair));
 			//    b2Free(oldBuffer);
 			//}
 
-			//m_pairBuffer[m_pairCount].proxyIdA = Math.Min(proxyId, m_queryProxyId);
-			//m_pairBuffer[m_pairCount].proxyIdB = b2Max(proxyId, m_queryProxyId);
-			//++m_pairCount;
+			//m_pairBuffer[m_pairBuffer.Count()].proxyIdA = Math.Min(proxyId, m_queryProxyId);
+			//m_pairBuffer[m_pairBuffer.Count()].proxyIdB = b2Max(proxyId, m_queryProxyId);
+			//++m_pairBuffer.Count();
 
 			//return true;
 		}
@@ -257,13 +249,8 @@ namespace Box2D {
 
 		private int m_proxyCount;
 
-		private int m_moveBuffer; //pointer
-		private int m_moveCapacity;
-		private int m_moveCount;
-
-		private b2Pair m_pairBuffer; //pointer
-		private int m_pairCapacity;
-		private int m_pairCount;
+		private List<int> m_moveBuffer; //pointer
+		private List<b2Pair> m_pairBuffer; //pointer
 
 		private int m_queryProxyId;
 	};
