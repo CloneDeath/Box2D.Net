@@ -36,7 +36,7 @@ namespace Box2D {
 		/// @warning the points may be re-ordered, even if they form a convex polygon
 		/// @warning collinear points are handled but not removed. Collinear points
 		/// may lead to poor stacking behavior.
-		public void Set(b2Vec2 points, int count){
+		public void Set(b2Vec2[] points, int count){
 			throw new NotImplementedException();
 			//Utilities.Assert(3 <= count && count <= b2Settings.b2_maxPolygonVertices);
 			//if (count < 3)

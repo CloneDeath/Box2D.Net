@@ -43,26 +43,49 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GLImp">
+      <HintPath>..\External\GLImp.dll</HintPath>
+    </Reference>
+    <Reference Include="Gwen">
+      <HintPath>..\External\Gwen.dll</HintPath>
+    </Reference>
+    <Reference Include="Gwen.Renderer.OpenTK">
+      <HintPath>..\External\Gwen.Renderer.OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.Compatibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\OpenTK.Compatibility.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\OpenTK.GLControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\ContactPoint.cs" />
+    <Compile Include="Framework\DestructionListener.cs" />
+    <Compile Include="Framework\Settings.cs" />
+    <Compile Include="Framework\Test.cs" />
+    <Compile Include="Framework\TestEntry.cs" />
+    <Compile Include="MainCanvas.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\ApplyForce.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Framework\Main.cpp" />
     <Content Include="Framework\Render.cpp" />
     <Content Include="Framework\Render.h" />
     <Content Include="Framework\Test.cpp" />
-    <Content Include="Framework\Test.h" />
     <Content Include="Tests\AddPair.h" />
-    <Content Include="Tests\ApplyForce.h" />
     <Content Include="Tests\BodyTypes.h" />
     <Content Include="Tests\Breakable.h" />
     <Content Include="Tests\Bridge.h" />
@@ -112,6 +135,12 @@
     <Content Include="Tests\VaryingRestitution.h" />
     <Content Include="Tests\VerticalStack.h" />
     <Content Include="Tests\Web.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Box2D.Net\Box2D.Net.csproj">
+      <Project>{267CB172-9F35-414C-A059-E54901B14F3F}</Project>
+      <Name>Box2D.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
