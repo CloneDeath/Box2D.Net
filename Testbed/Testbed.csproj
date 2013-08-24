@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Framework\ContactPoint.cs" />
     <Compile Include="Framework\DestructionListener.cs" />
+    <Compile Include="Framework\QueryCallback.cs" />
     <Compile Include="Framework\Settings.cs" />
     <Compile Include="Framework\Test.cs" />
     <Compile Include="Framework\TestEntry.cs" />
@@ -84,7 +85,6 @@
     <Content Include="Framework\Main.cpp" />
     <Content Include="Framework\Render.cpp" />
     <Content Include="Framework\Render.h" />
-    <Content Include="Framework\Test.cpp" />
     <Content Include="Tests\AddPair.h" />
     <Content Include="Tests\BodyTypes.h" />
     <Content Include="Tests\Breakable.h" />
