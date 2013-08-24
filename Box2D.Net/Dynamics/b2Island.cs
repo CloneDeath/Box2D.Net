@@ -531,5 +531,6 @@ namespace Box2D {
 
 		public List<b2Position> m_positions; //pointer
 		public List<b2Velocity> m_velocities; //pointer
+		
 	}
 }

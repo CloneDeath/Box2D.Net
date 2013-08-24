@@ -25,63 +25,6 @@
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
 int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 
-void b2DistanceProxy::Set(const b2Shape* shape, int index)
-{
-	switch (shape.GetType())
-	{
-	case b2Shape::e_circle:
-		{
-			const b2CircleShape* circle = (b2CircleShape*)shape;
-			m_vertices = &circle.m_p;
-			m_count = 1;
-			m_radius = circle.m_radius;
-		}
-		break;
-
-	case b2Shape::e_polygon:
-		{
-			const b2PolygonShape* polygon = (b2PolygonShape*)shape;
-			m_vertices = polygon.m_vertices;
-			m_count = polygon.m_count;
-			m_radius = polygon.m_radius;
-		}
-		break;
-
-	case b2Shape::e_chain:
-		{
-			const b2ChainShape* chain = (b2ChainShape*)shape;
-			Utilities.Assert(0 <= index && index < chain.m_count);
-
-			m_buffer[0] = chain.m_vertices[index];
-			if (index + 1 < chain.m_count)
-			{
-				m_buffer[1] = chain.m_vertices[index + 1];
-			}
-			else
-			{
-				m_buffer[1] = chain.m_vertices[0];
-			}
-
-			m_vertices = m_buffer;
-			m_count = 2;
-			m_radius = chain.m_radius;
-		}
-		break;
-
-	case b2Shape::e_edge:
-		{
-			const b2EdgeShape* edge = (b2EdgeShape*)shape;
-			m_vertices = &edge.m_vertex1;
-			m_count = 2;
-			m_radius = edge.m_radius;
-		}
-		break;
-
-	default:
-		Utilities.Assert(false);
-	}
-}
-
 
 struct b2SimplexVertex
 {

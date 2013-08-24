@@ -43,7 +43,9 @@
     <Compile Include="Collision\b2DistanceProxy.cs" />
     <Compile Include="Collision\b2DynamicTree.cs" />
     <Compile Include="Collision\b2Pair.cs" />
+    <Compile Include="Collision\b2TimeOfImpact.cs" />
     <Compile Include="Collision\b2TOIInput.cs" />
+    <Compile Include="Collision\b2TOIOutput.cs" />
     <Compile Include="Collision\b2TreeNode.cs" />
     <Compile Include="Collision\Shapes\b2ChainShape.cs" />
     <Compile Include="Collision\Shapes\b2CircleShape.cs" />
@@ -101,7 +103,6 @@
     <Content Include="Collision\b2Distance.cpp" />
     <Content Include="Collision\b2Distance.h" />
     <Content Include="Collision\b2TimeOfImpact.cpp" />
-    <Content Include="Collision\b2TimeOfImpact.h" />
     <Content Include="Common\b2BlockAllocator.cpp" />
     <Content Include="Common\b2BlockAllocator.h" />
     <Content Include="Common\b2GrowableStack.h" />

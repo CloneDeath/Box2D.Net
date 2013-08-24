@@ -1055,7 +1055,8 @@ namespace Box2D {
 			//    f.Synchronize(broadPhase, xf1, m_xf);
 			//}
 		}
-		private void SynchronizeTransform(){
+
+		internal void SynchronizeTransform(){
 			throw new NotImplementedException();
 			//m_xf.q.Set(m_sweep.a);
 			//m_xf.p = m_sweep.c - Utilities.b2Mul(m_xf.q, m_sweep.localCenter);
@@ -1086,7 +1087,7 @@ namespace Box2D {
 			//return true;
 		}
 
-		private void Advance(float t){
+		internal void Advance(float t){
 			throw new NotImplementedException();
 			//// Advance to the new safe time. This doesn't sync the broad-phase.
 			//m_sweep.Advance(alpha);
@@ -1100,7 +1101,7 @@ namespace Box2D {
 
 		internal BodyFlags m_flags;
 
-		private int m_islandIndex;
+		internal int m_islandIndex;
 
 		private b2Transform m_xf;		// the body origin transform
 		internal b2Sweep m_sweep;		// the swept motion for CCD
@@ -1108,8 +1109,8 @@ namespace Box2D {
 		private b2Vec2 m_linearVelocity;
 		private float m_angularVelocity;
 
-		private b2Vec2 m_force;
-		private float m_torque;
+		internal b2Vec2 m_force;
+		internal float m_torque;
 
 		private b2World m_world; //pointer
 		private b2Body m_prev; //pointer

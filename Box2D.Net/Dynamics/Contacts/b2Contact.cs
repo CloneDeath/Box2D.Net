@@ -325,7 +325,7 @@ namespace Box2D {
 
 		// Update the contact manifold and touching status.
 		// Note: do not assume the fixture AABBs are overlapping or are valid.
-		protected void Update(b2ContactListener listener){
+		internal void Update(b2ContactListener listener){
 			throw new NotImplementedException();
 			//b2Manifold oldManifold = m_manifold;
 

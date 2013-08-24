@@ -65,51 +65,5 @@ void b2Distance(b2DistanceOutput* output,
 				const b2DistanceInput* input);
 
 
-//////////////////////////////////////////////////////////////////////////
-
-inline int b2DistanceProxy::GetVertexCount() const
-{
-	return m_count;
-}
-
-inline const b2Vec2& b2DistanceProxy::GetVertex(int index) const
-{
-	Utilities.Assert(0 <= index && index < m_count);
-	return m_vertices[index];
-}
-
-inline int b2DistanceProxy::GetSupport(const b2Vec2& d) const
-{
-	int bestIndex = 0;
-	float bestValue = Utilities.b2Dot(m_vertices[0], d);
-	for (int i = 1; i < m_count; ++i)
-	{
-		float value = Utilities.b2Dot(m_vertices[i], d);
-		if (value > bestValue)
-		{
-			bestIndex = i;
-			bestValue = value;
-		}
-	}
-
-	return bestIndex;
-}
-
-inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
-{
-	int bestIndex = 0;
-	float bestValue = Utilities.b2Dot(m_vertices[0], d);
-	for (int i = 1; i < m_count; ++i)
-	{
-		float value = Utilities.b2Dot(m_vertices[i], d);
-		if (value > bestValue)
-		{
-			bestIndex = i;
-			bestValue = value;
-		}
-	}
-
-	return m_vertices[bestIndex];
-}
 
 #endif

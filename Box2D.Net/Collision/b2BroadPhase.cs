@@ -35,12 +35,6 @@ namespace Box2D {
 			m_moveBuffer = new List<int>();
 		}
 
-		~b2BroadPhase(){
-			throw new NotImplementedException();
-			//b2Free(m_moveBuffer);
-			//b2Free(m_pairBuffer);
-		}
-
 		/// Create a proxy with an initial AABB. Pairs are not reported until
 		/// UpdatePairs is called.
 		public int CreateProxy(b2AABB aabb, object userData){
