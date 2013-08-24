@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	class b2Settings {
+	public class b2Settings {
 		/// @file
 		/// Global tuning constants based on meters-kilograms-seconds (MKS) units.
 		///
@@ -101,14 +101,19 @@ namespace Box2D {
 
 		/// Version numbering scheme.
 		/// See http://en.wikipedia.org/wiki/Software_versioning
-		struct b2Version
+		public struct b2Version
 		{
-			int major;		///< significant changes
-			int minor;		///< incremental changes
-			int revision;		///< bug fixes
+			internal b2Version(int a, int b, int c) {
+				major = a;
+				minor = b;
+				revision = c;
+			}
+			public int major;		///< significant changes
+			public int minor;		///< incremental changes
+			public int revision;		///< bug fixes
 		};
 
 		/// Current version.
-		b2Version b2_version;
+		public static b2Version b2_version = new b2Version(1, 0, 0);
 	}
 }

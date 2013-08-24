@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Framework\ContactPoint.cs" />
     <Compile Include="Framework\DestructionListener.cs" />
+    <Compile Include="Framework\DebugDraw.cs" />
     <Compile Include="Framework\QueryCallback.cs" />
     <Compile Include="Framework\Settings.cs" />
     <Compile Include="Framework\Test.cs" />
@@ -82,9 +83,6 @@
     <Compile Include="Tests\ApplyForce.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Framework\Main.cpp" />
-    <Content Include="Framework\Render.cpp" />
-    <Content Include="Framework\Render.h" />
     <Content Include="Tests\AddPair.h" />
     <Content Include="Tests\BodyTypes.h" />
     <Content Include="Tests\Breakable.h" />
@@ -143,6 +141,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /E /C /Y "$(ProjectDir)media\*.*" "$(TargetDir)media\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

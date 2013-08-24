@@ -13,7 +13,7 @@ namespace Testbed.Framework {
 			m_fixture = null;
 		}
 
-		public bool ReportFixture(b2Fixture fixture)
+		public override bool ReportFixture(b2Fixture fixture)
 		{
 			throw new NotImplementedException();
 			//b2Body* body = fixture.GetBody();

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// A 2D column vector with 3 elements.
-	struct b2Vec3
+	public struct b2Vec3
 	{
 		/// Construct using coordinates.
 		public b2Vec3(float x, float y, float z) {

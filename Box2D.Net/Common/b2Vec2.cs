@@ -66,8 +66,7 @@ namespace Box2D {
 		/// Get the length of this vector (the norm).
 		public float Length()
 		{
-			throw new NotImplementedException();
-			//return b2Sqrt(x * x + y * y);
+			return (float)Math.Sqrt((x * x) + (y * y));
 		}
 
 		/// Get the length squared. For performance, use this instead of

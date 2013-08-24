@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	static class Utilities {
+	public static class Utilities {
 		public static void Assert(bool Value) {
 			if (!Value) {
 				string Message = "Assert failed @ " + Environment.StackTrace.ToString();
@@ -196,6 +196,15 @@ namespace Box2D {
 			C.q = Utilities.b2MulT(A.q, B.q);
 			C.p = Utilities.b2MulT(A.q, B.p - A.p);
 			return C;
+		}
+
+		public static b2Vec2 Min(b2Vec2 a, b2Vec2 b)
+		{
+			return new b2Vec2(Math.Min(a.x, b.x), Math.Min(a.y, b.y));
+		}
+		public static b2Vec2 Max(b2Vec2 a, b2Vec2 b)
+		{
+			return new b2Vec2(Math.Max(a.x, b.x), Math.Max(a.y, b.y));
 		}
 	}
 }

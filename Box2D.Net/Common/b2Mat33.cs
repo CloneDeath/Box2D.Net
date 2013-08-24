@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// A 3-by-3 matrix. Stored in column-major order.
-	struct b2Mat33
+	public struct b2Mat33
 	{
 		/// Construct this matrix using columns.
 		public b2Mat33(b2Vec3 c1, b2Vec3 c2, b2Vec3 c3)

@@ -29,11 +29,7 @@ namespace Box2D {
 
 		/// Implement b2Shape.
 		public override b2Shape Clone(){
-			throw new NotImplementedException();
-			//void* mem = allocator.Allocate(sizeof(b2EdgeShape));
-			//b2EdgeShape* clone = new (mem) b2EdgeShape;
-			//*clone = *this;
-			//return clone;
+			return (b2Shape)this.MemberwiseClone();
 		}
 
 		/// @see b2Shape::GetChildCount
@@ -117,19 +113,16 @@ namespace Box2D {
 		}
 
 		/// @see b2Shape::ComputeAABB
-		public override void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex) {
-			throw new NotImplementedException();
-			//B2_NOT_USED(childIndex);
+		public override void ComputeAABB(out b2AABB aabb, b2Transform xf, int childIndex) {
+			b2Vec2 v1 = Utilities.b2Mul(xf, m_vertex1);
+			b2Vec2 v2 = Utilities.b2Mul(xf, m_vertex2);
 
-			//b2Vec2 v1 = Utilities.b2Mul(xf, m_vertex1);
-			//b2Vec2 v2 = Utilities.b2Mul(xf, m_vertex2);
+			b2Vec2 lower = Utilities.Min(v1, v2);
+			b2Vec2 upper = Utilities.Max(v1, v2);
 
-			//b2Vec2 lower = Math.Min(v1, v2);
-			//b2Vec2 upper = b2Max(v1, v2);
-
-			//b2Vec2 r(m_radius, m_radius);
-			//aabb.lowerBound = lower - r;
-			//aabb.upperBound = upper + r;
+			b2Vec2 r = new b2Vec2(m_radius, m_radius);
+			aabb.lowerBound = lower - r;
+			aabb.upperBound = upper + r;
 		}
 
 		/// @see b2Shape::ComputeMass

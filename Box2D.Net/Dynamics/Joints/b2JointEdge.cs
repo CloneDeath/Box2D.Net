@@ -12,6 +12,11 @@ namespace Box2D {
 	public struct b2JointEdge {
 		public b2Body other; //pointer			///< provides quick access to the other body attached.
 		public b2Joint joint; //pointer			///< the joint
+
+		public b2JointEdge(b2Joint j, b2Body body) {
+			this.joint = j;
+			this.other = body;
+		}
 		//public b2JointEdge prev; //pointer		///< the previous joint edge in the body's joint list
 		//public b2JointEdge next; //pointer		///< the next joint edge in the body's joint list
 	}

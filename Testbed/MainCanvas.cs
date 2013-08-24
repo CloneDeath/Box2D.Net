@@ -50,7 +50,7 @@ namespace Testbed
 			GraphicsManager.OnDispose += new GraphicsManager.Disposer(Dispose);
 
 			Renderer = new Gwen.Renderer.OpenTK();
-			Skin = new Gwen.Skin.TexturedBase(Renderer, @"Data\DefaultSkin.png");
+			Skin = new Gwen.Skin.TexturedBase(Renderer, @"media\DefaultSkin.png");
 			canvas = new Canvas(Skin);
 
 			input = new Gwen.Input.OpenTK(GraphicsManager.Instance);

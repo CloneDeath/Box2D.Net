@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// A 2-by-2 matrix. Stored in column-major order.
-	struct b2Mat22
+	public struct b2Mat22
 	{
 		public b2Vec2 ex, ey;
 

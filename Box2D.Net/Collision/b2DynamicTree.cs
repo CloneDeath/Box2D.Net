@@ -31,25 +31,26 @@ namespace Box2D {
 		public b2DynamicTree(){
 			m_root = b2TreeNode.b2_nullNode;
 
-			throw new NotImplementedException();
-			//m_nodeCapacity = 16;
-			//m_nodeCount = 0;
-			//m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode));
-			//memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
+			m_nodeCapacity = 16;
+			m_nodeCount = 0;
+			m_nodes = new List<b2TreeNode>();
 
-			//// Build a linked list for the free list.
-			//for (int i = 0; i < m_nodeCapacity - 1; ++i)
-			//{
-			//    m_nodes[i].next = i + 1;
-			//    m_nodes[i].height = -1;
-			//}
-			//m_nodes[m_nodeCapacity-1].next = b2_nullNode;
-			//m_nodes[m_nodeCapacity-1].height = -1;
-			//m_freeList = 0;
+			// Build a linked list for the free list.
+			for (int i = 0; i < m_nodeCapacity - 1; ++i) {
+				b2TreeNode node = new b2TreeNode();
+				node.next = i + 1;
+				node.height = -1;
+				m_nodes.Add(node);
+			}
+			b2TreeNode node2 = new b2TreeNode();
+			node2.next = b2TreeNode.b2_nullNode;
+			node2.height = -1;
+			m_nodes.Add(node2);
+			m_freeList = 0;
 
-			//m_path = 0;
+			m_path = 0;
 
-			//m_insertionCount = 0;
+			m_insertionCount = 0;
 		}
 
 
@@ -62,19 +63,18 @@ namespace Box2D {
 
 		/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
 		public int CreateProxy(b2AABB aabb, object userData){
-			throw new NotImplementedException();
-			//int proxyId = AllocateNode();
+			int proxyId = AllocateNode();
 
-			//// Fatten the aabb.
-			//b2Vec2 r(b2_aabbExtension, b2_aabbExtension);
-			//m_nodes[proxyId].aabb.lowerBound = aabb.lowerBound - r;
-			//m_nodes[proxyId].aabb.upperBound = aabb.upperBound + r;
-			//m_nodes[proxyId].userData = userData;
-			//m_nodes[proxyId].height = 0;
+			// Fatten the aabb.
+			b2Vec2 r = new b2Vec2(b2Settings.b2_aabbExtension, b2Settings.b2_aabbExtension);
+			m_nodes[proxyId].aabb.lowerBound = aabb.lowerBound - r;
+			m_nodes[proxyId].aabb.upperBound = aabb.upperBound + r;
+			m_nodes[proxyId].userData = userData;
+			m_nodes[proxyId].height = 0;
 
-			//InsertLeaf(proxyId);
+			InsertLeaf(proxyId);
 
-			//return proxyId;
+			return proxyId;
 		}
 
 		/// Destroy a proxy. This asserts if the id is invalid.
@@ -140,52 +140,44 @@ namespace Box2D {
 		/// Get proxy user data.
 		/// @return the proxy user data or 0 if the id is invalid.
 		public object GetUserData(int proxyId){
-			throw new NotImplementedException();
-			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
-			//return m_nodes[proxyId].userData;
+			Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+			return m_nodes[proxyId].userData;
 		}
 
 		/// Get the fat AABB for a proxy.
 		public b2AABB GetFatAABB(int proxyId){
-			throw new NotImplementedException();
-			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
-			//return m_nodes[proxyId].aabb;
+			Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+			return m_nodes[proxyId].aabb;
 		}
 
 		/// Query an AABB for overlapping proxies. The callback class
 		/// is called for each proxy that overlaps the supplied AABB.
-		public void Query<T>(T callback, b2AABB aabb){
-			throw new NotImplementedException();
-			//b2GrowableStack<int, 256> stack;
-			//stack.Push(m_root);
+		public void Query(Func<int, bool> callback, b2AABB aabb) {
+			b2GrowableStack<int> stack = new b2GrowableStack<int>(256);
+			stack.Push(m_root);
 
-			//while (stack.GetCount() > 0)
-			//{
-			//    int nodeId = stack.Pop();
-			//    if (nodeId == b2_nullNode)
-			//    {
-			//        continue;
-			//    }
+			while (stack.GetCount() > 0)
+			{
+			    int nodeId = stack.Pop();
+			    if (nodeId == b2TreeNode.b2_nullNode)
+			    {
+			        continue;
+			    }
 
-			//    const b2TreeNode* node = m_nodes + nodeId;
+			    b2TreeNode node = m_nodes[nodeId];
 
-			//    if (b2TestOverlap(node.aabb, aabb))
-			//    {
-			//        if (node.IsLeaf())
-			//        {
-			//            bool proceed = callback.QueryCallback(nodeId);
-			//            if (proceed == false)
-			//            {
-			//                return;
-			//            }
-			//        }
-			//        else
-			//        {
-			//            stack.Push(node.child1);
-			//            stack.Push(node.child2);
-			//        }
-			//    }
-			//}
+				if (b2Collision.b2TestOverlap(node.aabb, aabb)) {
+					if (node.IsLeaf()) {
+						bool proceed = callback(nodeId);
+						if (proceed == false) {
+							return;
+						}
+					} else {
+						stack.Push(node.child1);
+						stack.Push(node.child2);
+					}
+				}
+			}
 		}
 
 		/// Ray-cast against the proxies in the tree. This relies on the callback
@@ -454,41 +446,43 @@ namespace Box2D {
 		}
 
 		private int AllocateNode(){
-			throw new NotImplementedException();
-			//// Expand the node pool as needed.
-			//if (m_freeList == b2_nullNode)
-			//{
-			//    Utilities.Assert(m_nodeCount == m_nodeCapacity);
+			// Expand the node pool as needed.
+			if (m_freeList == b2TreeNode.b2_nullNode) {
+				Utilities.Assert(m_nodeCount == m_nodeCapacity);
 
-			//    // The free list is empty. Rebuild a bigger pool.
-			//    b2TreeNode* oldNodes = m_nodes;
-			//    m_nodeCapacity *= 2;
-			//    m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode));
-			//    memcpy(m_nodes, oldNodes, m_nodeCount * sizeof(b2TreeNode));
-			//    b2Free(oldNodes);
+				// The free list is empty. Rebuild a bigger pool.
+				List<b2TreeNode> oldNodes = m_nodes;
+				m_nodeCapacity *= 2;
+				m_nodes = new List<b2TreeNode>(m_nodeCapacity);
+				foreach (b2TreeNode node in oldNodes) {
+					m_nodes.Add(node);
+				}
 
-			//    // Build a linked list for the free list. The parent
-			//    // pointer becomes the "next" pointer.
-			//    for (int i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
-			//    {
-			//        m_nodes[i].next = i + 1;
-			//        m_nodes[i].height = -1;
-			//    }
-			//    m_nodes[m_nodeCapacity-1].next = b2_nullNode;
-			//    m_nodes[m_nodeCapacity-1].height = -1;
-			//    m_freeList = m_nodeCount;
-			//}
+				// Build a linked list for the free list. The parent
+				// pointer becomes the "next" pointer.
+				for (int i = m_nodeCount; i < m_nodeCapacity - 1; ++i) {
+					b2TreeNode node = new b2TreeNode();
+					node.next = i + 1;
+					node.height = -1;
+					m_nodes.Add(node);
+				}
+				b2TreeNode node2 = new b2TreeNode();
+				node2.next = b2TreeNode.b2_nullNode;
+				node2.height = -1;
+				m_nodes.Add(node2);
+				m_freeList = m_nodeCount;
+			}
 
-			//// Peel a node off the free list.
-			//int nodeId = m_freeList;
-			//m_freeList = m_nodes[nodeId].next;
-			//m_nodes[nodeId].parent = b2_nullNode;
-			//m_nodes[nodeId].child1 = b2_nullNode;
-			//m_nodes[nodeId].child2 = b2_nullNode;
-			//m_nodes[nodeId].height = 0;
-			//m_nodes[nodeId].userData = null;
-			//++m_nodeCount;
-			//return nodeId;
+			// Peel a node off the free list.
+			int nodeId = m_freeList;
+			m_freeList = m_nodes[nodeId].next;
+			m_nodes[nodeId].parent = b2TreeNode.b2_nullNode;
+			m_nodes[nodeId].child1 = b2TreeNode.b2_nullNode;
+			m_nodes[nodeId].child2 = b2TreeNode.b2_nullNode;
+			m_nodes[nodeId].height = 0;
+			m_nodes[nodeId].userData = null;
+			++m_nodeCount;
+			return nodeId;
 		}
 		private void FreeNode(int node){
 			throw new NotImplementedException();
@@ -500,144 +494,124 @@ namespace Box2D {
 			//--m_nodeCount;
 		}
 
-		private void InsertLeaf(int node){
-			throw new NotImplementedException();
-			//++m_insertionCount;
+		private void InsertLeaf(int leaf) {
+			++m_insertionCount;
 
-			//if (m_root == b2_nullNode)
-			//{
-			//    m_root = leaf;
-			//    m_nodes[m_root].parent = b2_nullNode;
-			//    return;
-			//}
+			if (m_root == b2TreeNode.b2_nullNode) {
+				m_root = leaf;
+				m_nodes[m_root].parent = b2TreeNode.b2_nullNode;
+				return;
+			}
 
-			//// Find the best sibling for this node
-			//b2AABB leafAABB = m_nodes[leaf].aabb;
-			//int index = m_root;
-			//while (m_nodes[index].IsLeaf() == false)
-			//{
-			//    int child1 = m_nodes[index].child1;
-			//    int child2 = m_nodes[index].child2;
+			// Find the best sibling for this node
+			b2AABB leafAABB = m_nodes[leaf].aabb;
+			int index = m_root;
+			while (m_nodes[index].IsLeaf() == false) {
+				int child1 = m_nodes[index].child1;
+				int child2 = m_nodes[index].child2;
 
-			//    float area = m_nodes[index].aabb.GetPerimeter();
+				float area = m_nodes[index].aabb.GetPerimeter();
 
-			//    b2AABB combinedAABB;
-			//    combinedAABB.Combine(m_nodes[index].aabb, leafAABB);
-			//    float combinedArea = combinedAABB.GetPerimeter();
+				b2AABB combinedAABB = new b2AABB();
+				combinedAABB.Combine(m_nodes[index].aabb, leafAABB);
+				float combinedArea = combinedAABB.GetPerimeter();
 
-			//    // Cost of creating a new parent for this node and the new leaf
-			//    float cost = 2.0f * combinedArea;
+				// Cost of creating a new parent for this node and the new leaf
+				float cost = 2.0f * combinedArea;
 
-			//    // Minimum cost of pushing the leaf further down the tree
-			//    float inheritanceCost = 2.0f * (combinedArea - area);
+				// Minimum cost of pushing the leaf further down the tree
+				float inheritanceCost = 2.0f * (combinedArea - area);
 
-			//    // Cost of descending into child1
-			//    float cost1;
-			//    if (m_nodes[child1].IsLeaf())
-			//    {
-			//        b2AABB aabb;
-			//        aabb.Combine(leafAABB, m_nodes[child1].aabb);
-			//        cost1 = aabb.GetPerimeter() + inheritanceCost;
-			//    }
-			//    else
-			//    {
-			//        b2AABB aabb;
-			//        aabb.Combine(leafAABB, m_nodes[child1].aabb);
-			//        float oldArea = m_nodes[child1].aabb.GetPerimeter();
-			//        float newArea = aabb.GetPerimeter();
-			//        cost1 = (newArea - oldArea) + inheritanceCost;
-			//    }
+				// Cost of descending into child1
+				float cost1;
+				if (m_nodes[child1].IsLeaf()) {
+					b2AABB aabb = new b2AABB();
+					aabb.Combine(leafAABB, m_nodes[child1].aabb);
+					cost1 = aabb.GetPerimeter() + inheritanceCost;
+				} else {
+					b2AABB aabb = new b2AABB();
+					aabb.Combine(leafAABB, m_nodes[child1].aabb);
+					float oldArea = m_nodes[child1].aabb.GetPerimeter();
+					float newArea = aabb.GetPerimeter();
+					cost1 = (newArea - oldArea) + inheritanceCost;
+				}
 
-			//    // Cost of descending into child2
-			//    float cost2;
-			//    if (m_nodes[child2].IsLeaf())
-			//    {
-			//        b2AABB aabb;
-			//        aabb.Combine(leafAABB, m_nodes[child2].aabb);
-			//        cost2 = aabb.GetPerimeter() + inheritanceCost;
-			//    }
-			//    else
-			//    {
-			//        b2AABB aabb;
-			//        aabb.Combine(leafAABB, m_nodes[child2].aabb);
-			//        float oldArea = m_nodes[child2].aabb.GetPerimeter();
-			//        float newArea = aabb.GetPerimeter();
-			//        cost2 = newArea - oldArea + inheritanceCost;
-			//    }
+				// Cost of descending into child2
+				float cost2;
+				if (m_nodes[child2].IsLeaf()) {
+					b2AABB aabb = new b2AABB();
+					aabb.Combine(leafAABB, m_nodes[child2].aabb);
+					cost2 = aabb.GetPerimeter() + inheritanceCost;
+				} else {
+					b2AABB aabb = new b2AABB();
+					aabb.Combine(leafAABB, m_nodes[child2].aabb);
+					float oldArea = m_nodes[child2].aabb.GetPerimeter();
+					float newArea = aabb.GetPerimeter();
+					cost2 = newArea - oldArea + inheritanceCost;
+				}
 
-			//    // Descend according to the minimum cost.
-			//    if (cost < cost1 && cost < cost2)
-			//    {
-			//        break;
-			//    }
+				// Descend according to the minimum cost.
+				if (cost < cost1 && cost < cost2) {
+					break;
+				}
 
-			//    // Descend
-			//    if (cost1 < cost2)
-			//    {
-			//        index = child1;
-			//    }
-			//    else
-			//    {
-			//        index = child2;
-			//    }
-			//}
+				// Descend
+				if (cost1 < cost2) {
+					index = child1;
+				} else {
+					index = child2;
+				}
+			}
 
-			//int sibling = index;
+			int sibling = index;
 
-			//// Create a new parent.
-			//int oldParent = m_nodes[sibling].parent;
-			//int newParent = AllocateNode();
-			//m_nodes[newParent].parent = oldParent;
-			//m_nodes[newParent].userData = null;
-			//m_nodes[newParent].aabb.Combine(leafAABB, m_nodes[sibling].aabb);
-			//m_nodes[newParent].height = m_nodes[sibling].height + 1;
+			// Create a new parent.
+			int oldParent = m_nodes[sibling].parent;
+			int newParent = AllocateNode();
+			m_nodes[newParent].parent = oldParent;
+			m_nodes[newParent].userData = null;
+			m_nodes[newParent].aabb.Combine(leafAABB, m_nodes[sibling].aabb);
+			m_nodes[newParent].height = m_nodes[sibling].height + 1;
 
-			//if (oldParent != b2_nullNode)
-			//{
-			//    // The sibling was not the root.
-			//    if (m_nodes[oldParent].child1 == sibling)
-			//    {
-			//        m_nodes[oldParent].child1 = newParent;
-			//    }
-			//    else
-			//    {
-			//        m_nodes[oldParent].child2 = newParent;
-			//    }
+			if (oldParent != b2TreeNode.b2_nullNode) {
+				// The sibling was not the root.
+				if (m_nodes[oldParent].child1 == sibling) {
+					m_nodes[oldParent].child1 = newParent;
+				} else {
+					m_nodes[oldParent].child2 = newParent;
+				}
 
-			//    m_nodes[newParent].child1 = sibling;
-			//    m_nodes[newParent].child2 = leaf;
-			//    m_nodes[sibling].parent = newParent;
-			//    m_nodes[leaf].parent = newParent;
-			//}
-			//else
-			//{
-			//    // The sibling was the root.
-			//    m_nodes[newParent].child1 = sibling;
-			//    m_nodes[newParent].child2 = leaf;
-			//    m_nodes[sibling].parent = newParent;
-			//    m_nodes[leaf].parent = newParent;
-			//    m_root = newParent;
-			//}
+				m_nodes[newParent].child1 = sibling;
+				m_nodes[newParent].child2 = leaf;
+				m_nodes[sibling].parent = newParent;
+				m_nodes[leaf].parent = newParent;
+			} else {
+				// The sibling was the root.
+				m_nodes[newParent].child1 = sibling;
+				m_nodes[newParent].child2 = leaf;
+				m_nodes[sibling].parent = newParent;
+				m_nodes[leaf].parent = newParent;
+				m_root = newParent;
+			}
 
-			//// Walk back up the tree fixing heights and AABBs
-			//index = m_nodes[leaf].parent;
-			//while (index != b2_nullNode)
-			//{
-			//    index = Balance(index);
+			// Walk back up the tree fixing heights and AABBs
+			index = m_nodes[leaf].parent;
+			while (index != b2TreeNode.b2_nullNode) {
+				index = Balance(index);
 
-			//    int child1 = m_nodes[index].child1;
-			//    int child2 = m_nodes[index].child2;
+				int child1 = m_nodes[index].child1;
+				int child2 = m_nodes[index].child2;
 
-			//    Utilities.Assert(child1 != b2_nullNode);
-			//    Utilities.Assert(child2 != b2_nullNode);
+				Utilities.Assert(child1 != b2TreeNode.b2_nullNode);
+				Utilities.Assert(child2 != b2TreeNode.b2_nullNode);
 
-			//    m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
-			//    m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
+				m_nodes[index].height = 1 + Math.Max(m_nodes[child1].height, m_nodes[child2].height);
+				m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
-			//    index = m_nodes[index].parent;
-			//}
+				index = m_nodes[index].parent;
+			}
 
-			////Validate();
+			//Validate();
 		}
 		private void RemoveLeaf(int node){
 			throw new NotImplementedException();
@@ -698,147 +672,125 @@ namespace Box2D {
 			////Validate();
 		}
 
-		private int Balance(int index){
-			throw new NotImplementedException();
-			//Utilities.Assert(iA != b2_nullNode);
+		private int Balance(int iA) {
+			Utilities.Assert(iA != b2TreeNode.b2_nullNode);
 
-			//b2TreeNode* A = m_nodes + iA;
-			//if (A.IsLeaf() || A.height < 2)
-			//{
-			//    return iA;
-			//}
+			b2TreeNode A = m_nodes[iA];
+			if (A.IsLeaf() || A.height < 2) {
+				return iA;
+			}
 
-			//int iB = A.child1;
-			//int iC = A.child2;
-			//Utilities.Assert(0 <= iB && iB < m_nodeCapacity);
-			//Utilities.Assert(0 <= iC && iC < m_nodeCapacity);
+			int iB = A.child1;
+			int iC = A.child2;
+			Utilities.Assert(0 <= iB && iB < m_nodeCapacity);
+			Utilities.Assert(0 <= iC && iC < m_nodeCapacity);
 
-			//b2TreeNode* B = m_nodes + iB;
-			//b2TreeNode* C = m_nodes + iC;
+			b2TreeNode B = m_nodes[iB];
+			b2TreeNode C = m_nodes[iC];
 
-			//int balance = C.height - B.height;
+			int balance = C.height - B.height;
 
-			//// Rotate C up
-			//if (balance > 1)
-			//{
-			//    int iF = C.child1;
-			//    int iG = C.child2;
-			//    b2TreeNode* F = m_nodes + iF;
-			//    b2TreeNode* G = m_nodes + iG;
-			//    Utilities.Assert(0 <= iF && iF < m_nodeCapacity);
-			//    Utilities.Assert(0 <= iG && iG < m_nodeCapacity);
+			// Rotate C up
+			if (balance > 1) {
+				int iF = C.child1;
+				int iG = C.child2;
+				b2TreeNode F = m_nodes[iF];
+				b2TreeNode G = m_nodes[iG];
+				Utilities.Assert(0 <= iF && iF < m_nodeCapacity);
+				Utilities.Assert(0 <= iG && iG < m_nodeCapacity);
 
-			//    // Swap A and C
-			//    C.child1 = iA;
-			//    C.parent = A.parent;
-			//    A.parent = iC;
+				// Swap A and C
+				C.child1 = iA;
+				C.parent = A.parent;
+				A.parent = iC;
 
-			//    // A's old parent should point to C
-			//    if (C.parent != b2_nullNode)
-			//    {
-			//        if (m_nodes[C.parent].child1 == iA)
-			//        {
-			//            m_nodes[C.parent].child1 = iC;
-			//        }
-			//        else
-			//        {
-			//            Utilities.Assert(m_nodes[C.parent].child2 == iA);
-			//            m_nodes[C.parent].child2 = iC;
-			//        }
-			//    }
-			//    else
-			//    {
-			//        m_root = iC;
-			//    }
+				// A's old parent should point to C
+				if (C.parent != b2TreeNode.b2_nullNode) {
+					if (m_nodes[C.parent].child1 == iA) {
+						m_nodes[C.parent].child1 = iC;
+					} else {
+						Utilities.Assert(m_nodes[C.parent].child2 == iA);
+						m_nodes[C.parent].child2 = iC;
+					}
+				} else {
+					m_root = iC;
+				}
 
-			//    // Rotate
-			//    if (F.height > G.height)
-			//    {
-			//        C.child2 = iF;
-			//        A.child2 = iG;
-			//        G.parent = iA;
-			//        A.aabb.Combine(B.aabb, G.aabb);
-			//        C.aabb.Combine(A.aabb, F.aabb);
+				// Rotate
+				if (F.height > G.height) {
+					C.child2 = iF;
+					A.child2 = iG;
+					G.parent = iA;
+					A.aabb.Combine(B.aabb, G.aabb);
+					C.aabb.Combine(A.aabb, F.aabb);
 
-			//        A.height = 1 + b2Max(B.height, G.height);
-			//        C.height = 1 + b2Max(A.height, F.height);
-			//    }
-			//    else
-			//    {
-			//        C.child2 = iG;
-			//        A.child2 = iF;
-			//        F.parent = iA;
-			//        A.aabb.Combine(B.aabb, F.aabb);
-			//        C.aabb.Combine(A.aabb, G.aabb);
+					A.height = 1 + Math.Max(B.height, G.height);
+					C.height = 1 + Math.Max(A.height, F.height);
+				} else {
+					C.child2 = iG;
+					A.child2 = iF;
+					F.parent = iA;
+					A.aabb.Combine(B.aabb, F.aabb);
+					C.aabb.Combine(A.aabb, G.aabb);
 
-			//        A.height = 1 + b2Max(B.height, F.height);
-			//        C.height = 1 + b2Max(A.height, G.height);
-			//    }
+					A.height = 1 + Math.Max(B.height, F.height);
+					C.height = 1 + Math.Max(A.height, G.height);
+				}
 
-			//    return iC;
-			//}
-	
-			//// Rotate B up
-			//if (balance < -1)
-			//{
-			//    int iD = B.child1;
-			//    int iE = B.child2;
-			//    b2TreeNode* D = m_nodes + iD;
-			//    b2TreeNode* E = m_nodes + iE;
-			//    Utilities.Assert(0 <= iD && iD < m_nodeCapacity);
-			//    Utilities.Assert(0 <= iE && iE < m_nodeCapacity);
+				return iC;
+			}
 
-			//    // Swap A and B
-			//    B.child1 = iA;
-			//    B.parent = A.parent;
-			//    A.parent = iB;
+			// Rotate B up
+			if (balance < -1) {
+				int iD = B.child1;
+				int iE = B.child2;
+				b2TreeNode D = m_nodes[iD];
+				b2TreeNode E = m_nodes[iE];
+				Utilities.Assert(0 <= iD && iD < m_nodeCapacity);
+				Utilities.Assert(0 <= iE && iE < m_nodeCapacity);
 
-			//    // A's old parent should point to B
-			//    if (B.parent != b2_nullNode)
-			//    {
-			//        if (m_nodes[B.parent].child1 == iA)
-			//        {
-			//            m_nodes[B.parent].child1 = iB;
-			//        }
-			//        else
-			//        {
-			//            Utilities.Assert(m_nodes[B.parent].child2 == iA);
-			//            m_nodes[B.parent].child2 = iB;
-			//        }
-			//    }
-			//    else
-			//    {
-			//        m_root = iB;
-			//    }
+				// Swap A and B
+				B.child1 = iA;
+				B.parent = A.parent;
+				A.parent = iB;
 
-			//    // Rotate
-			//    if (D.height > E.height)
-			//    {
-			//        B.child2 = iD;
-			//        A.child1 = iE;
-			//        E.parent = iA;
-			//        A.aabb.Combine(C.aabb, E.aabb);
-			//        B.aabb.Combine(A.aabb, D.aabb);
+				// A's old parent should point to B
+				if (B.parent != b2TreeNode.b2_nullNode) {
+					if (m_nodes[B.parent].child1 == iA) {
+						m_nodes[B.parent].child1 = iB;
+					} else {
+						Utilities.Assert(m_nodes[B.parent].child2 == iA);
+						m_nodes[B.parent].child2 = iB;
+					}
+				} else {
+					m_root = iB;
+				}
 
-			//        A.height = 1 + b2Max(C.height, E.height);
-			//        B.height = 1 + b2Max(A.height, D.height);
-			//    }
-			//    else
-			//    {
-			//        B.child2 = iE;
-			//        A.child1 = iD;
-			//        D.parent = iA;
-			//        A.aabb.Combine(C.aabb, D.aabb);
-			//        B.aabb.Combine(A.aabb, E.aabb);
+				// Rotate
+				if (D.height > E.height) {
+					B.child2 = iD;
+					A.child1 = iE;
+					E.parent = iA;
+					A.aabb.Combine(C.aabb, E.aabb);
+					B.aabb.Combine(A.aabb, D.aabb);
 
-			//        A.height = 1 + b2Max(C.height, D.height);
-			//        B.height = 1 + b2Max(A.height, E.height);
-			//    }
+					A.height = 1 + Math.Max(C.height, E.height);
+					B.height = 1 + Math.Max(A.height, D.height);
+				} else {
+					B.child2 = iE;
+					A.child1 = iD;
+					D.parent = iA;
+					A.aabb.Combine(C.aabb, D.aabb);
+					B.aabb.Combine(A.aabb, E.aabb);
 
-			//    return iB;
-			//}
+					A.height = 1 + Math.Max(C.height, D.height);
+					B.height = 1 + Math.Max(A.height, E.height);
+				}
 
-			//return iA;
+				return iB;
+			}
+
+			return iA;
 		}
 		private int ComputeHeight(){
 			int height = ComputeHeight(m_root);

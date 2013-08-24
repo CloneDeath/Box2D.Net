@@ -82,7 +82,7 @@ namespace Box2D {
 		}
 
 		/// Get the world manifold.
-		public void GetWorldManifold(b2WorldManifold worldManifold){
+		public void GetWorldManifold(out b2WorldManifold worldManifold){
 			throw new NotImplementedException();
 			//const b2Body* bodyA = m_fixtureA.GetBody();
 			//const b2Body* bodyB = m_fixtureB.GetBody();
@@ -192,13 +192,11 @@ namespace Box2D {
 		
 
 		/// Flag this contact for filtering. Filtering will occur the next time step.
-		protected void FlagForFiltering(){
-			throw new NotImplementedException();
-			//m_flags |= e_filterFlag;
+		internal void FlagForFiltering(){
+			m_flags |= ContactFlags.e_filterFlag;
 		}
 
-		protected static void AddType(b2ContactCreateFcn createFcn, b2ContactDestroyFcn destroyFcn,
-							ShapeType typeA, ShapeType typeB){
+		protected static void AddType(b2ContactCreateFcn createFcn, b2ContactDestroyFcn destroyFcn, ShapeType typeA, ShapeType typeB){
 			throw new NotImplementedException();
 			//Utilities.Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
 			//Utilities.Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
@@ -216,46 +214,44 @@ namespace Box2D {
 		}
 
 		protected static void InitializeRegisters(){
-			throw new NotImplementedException();
-			//AddType(b2CircleContact::Create, b2CircleContact::Destroy, b2Shape::e_circle, b2Shape::e_circle);
-			//AddType(b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, b2Shape::e_polygon, b2Shape::e_circle);
-			//AddType(b2PolygonContact::Create, b2PolygonContact::Destroy, b2Shape::e_polygon, b2Shape::e_polygon);
-			//AddType(b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, b2Shape::e_edge, b2Shape::e_circle);
-			//AddType(b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, b2Shape::e_edge, b2Shape::e_polygon);
-			//AddType(b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, b2Shape::e_chain, b2Shape::e_circle);
-			//AddType(b2ChainAndPolygonContact::Create, b2ChainAndPolygonContact::Destroy, b2Shape::e_chain, b2Shape::e_polygon);
+			AddType(b2CircleContact.Create, b2CircleContact.Destroy, ShapeType.Circle, ShapeType.Circle);
+			AddType(b2PolygonAndCircleContact.Create, b2PolygonAndCircleContact.Destroy, ShapeType.Polygon, ShapeType.Circle);
+			AddType(b2PolygonContact.Create, b2PolygonContact.Destroy, ShapeType.Polygon, ShapeType.Polygon);
+			AddType(b2EdgeAndCircleContact.Create, b2EdgeAndCircleContact.Destroy, ShapeType.Edge, ShapeType.Circle);
+			AddType(b2EdgeAndPolygonContact.Create, b2EdgeAndPolygonContact.Destroy, ShapeType.Edge, ShapeType.Polygon);
+			AddType(b2ChainAndCircleContact.Create, b2ChainAndCircleContact.Destroy, ShapeType.Chain, ShapeType.Circle);
+			AddType(b2ChainAndPolygonContact.Create, b2ChainAndPolygonContact.Destroy, ShapeType.Chain, ShapeType.Polygon);
 		}
 
 		internal static b2Contact Create(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
-			throw new NotImplementedException();
-			//if (s_initialized == false)
-			//{
-			//    InitializeRegisters();
-			//    s_initialized = true;
-			//}
+			if (s_initialized == false)
+			{
+			    InitializeRegisters();
+			    s_initialized = true;
+			}
 
-			//b2Shape::Type type1 = fixtureA.GetType();
-			//b2Shape::Type type2 = fixtureB.GetType();
+			ShapeType type1 = fixtureA.GetShapeType();
+			ShapeType type2 = fixtureB.GetShapeType();
 
-			//Utilities.Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-			//Utilities.Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
+			Utilities.Assert(0 <= type1 && type1 < ShapeType.Count);
+			Utilities.Assert(0 <= type2 && type2 < ShapeType.Count);
 	
-			//b2ContactCreateFcn* createFcn = s_registers[type1][type2].createFcn;
-			//if (createFcn)
-			//{
-			//    if (s_registers[type1][type2].primary)
-			//    {
-			//        return createFcn(fixtureA, indexA, fixtureB, indexB, allocator);
-			//    }
-			//    else
-			//    {
-			//        return createFcn(fixtureB, indexB, fixtureA, indexA, allocator);
-			//    }
-			//}
-			//else
-			//{
-			//    return null;
-			//}
+			b2ContactCreateFcn createFcn = s_registers[(int)type1, (int)type2].createFcn;
+			if (createFcn != null)
+			{
+			    if (s_registers[(int)type1, (int)type2].primary)
+			    {
+			        return createFcn(fixtureA, indexA, fixtureB, indexB);
+			    }
+			    else
+			    {
+			        return createFcn(fixtureB, indexB, fixtureA, indexA);
+			    }
+			}
+			else
+			{
+			    return null;
+			}
 		}
 
 		//protected static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);

@@ -75,10 +75,7 @@ inline T Math.Min(T a, T b)
 	return a < b ? a : b;
 }
 
-inline b2Vec2 Math.Min(const b2Vec2& a, const b2Vec2& b)
-{
-	return b2Vec2(Math.Min(a.x, b.x), Math.Min(a.y, b.y));
-}
+
 
 template <typename T>
 inline T b2Max(T a, T b)
@@ -86,10 +83,8 @@ inline T b2Max(T a, T b)
 	return a > b ? a : b;
 }
 
-inline b2Vec2 b2Max(const b2Vec2& a, const b2Vec2& b)
-{
-	return b2Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y));
-}
+
+
 
 template <typename T>
 inline T b2Clamp(T a, T low, T high)

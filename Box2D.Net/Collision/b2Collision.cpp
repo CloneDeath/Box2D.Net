@@ -82,49 +82,7 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 	}
 }
 
-void b2GetPointStates(b2PointState state1[b2Settings.b2_maxManifoldPoints], b2PointState state2[b2Settings.b2_maxManifoldPoints],
-					  const b2Manifold* manifold1, const b2Manifold* manifold2)
-{
-	for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
-	{
-		state1[i] = b2_nullState;
-		state2[i] = b2_nullState;
-	}
 
-	// Detect persists and removes.
-	for (int i = 0; i < manifold1.pointCount; ++i)
-	{
-		b2ContactID id = manifold1.points[i].id;
-
-		state1[i] = b2_removeState;
-
-		for (int j = 0; j < manifold2.pointCount; ++j)
-		{
-			if (manifold2.points[j].id.key == id.key)
-			{
-				state1[i] = b2_persistState;
-				break;
-			}
-		}
-	}
-
-	// Detect persists and adds.
-	for (int i = 0; i < manifold2.pointCount; ++i)
-	{
-		b2ContactID id = manifold2.points[i].id;
-
-		state2[i] = b2_addState;
-
-		for (int j = 0; j < manifold1.pointCount; ++j)
-		{
-			if (manifold1.points[j].id.key == id.key)
-			{
-				state2[i] = b2_persistState;
-				break;
-			}
-		}
-	}
-}
 
 // From Real-time Collision Detection, p179.
 bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const

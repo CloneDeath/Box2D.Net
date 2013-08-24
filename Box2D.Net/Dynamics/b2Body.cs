@@ -20,12 +20,12 @@ namespace Box2D {
 
 	/// A body definition holds all the data needed to construct a rigid body.
 	/// You can safely re-use body definitions. Shapes are added to a body after construction.
-	public struct b2BodyDef
+	public class b2BodyDef
 	{
 		/// This constructor sets the body definition default values.
-		public b2BodyDef(object UserData)
+		public b2BodyDef()
 		{
-			userData = UserData;
+			userData = null;
 			position = new b2Vec2(0.0f, 0.0f);
 			angle = 0.0f;
 			linearVelocity = new b2Vec2(0.0f, 0.0f);
@@ -288,18 +288,15 @@ namespace Box2D {
 		/// Set the linear velocity of the center of mass.
 		/// @param v the new linear velocity of the center of mass.
 		public void SetLinearVelocity(b2Vec2 v){
-			throw new NotImplementedException();
-			//if (m_type == b2_staticBody)
-			//{
-			//    return;
-			//}
+			if (m_type == b2BodyType.b2_staticBody) {
+				return;
+			}
 
-			//if (Utilities.b2Dot(v,v) > 0.0f)
-			//{
-			//    SetAwake(true);
-			//}
+			if (Utilities.b2Dot(v, v) > 0.0f) {
+				SetAwake(true);
+			}
 
-			//m_linearVelocity = v;
+			m_linearVelocity = v;
 		}
 
 		/// Get the linear velocity of the center of mass.
@@ -338,23 +335,19 @@ namespace Box2D {
 		/// @param point the world position of the point of application.
 		/// @param wake also wake up the body
 		public void ApplyForce(b2Vec2 force, b2Vec2 point, bool wake){
-			throw new NotImplementedException();
-			//if (m_type != b2_dynamicBody)
-			//{
-			//    return;
-			//}
+			if (m_type != b2BodyType.b2_dynamicBody) {
+				return;
+			}
 
-			//if (wake && (m_flags & e_awakeFlag) == 0)
-			//{
-			//    SetAwake(true);
-			//}
+			if (wake && (m_flags & BodyFlags.e_awakeFlag) == 0) {
+				SetAwake(true);
+			}
 
-			//// Don't accumulate a force if the body is sleeping.
-			//if (m_flags & e_awakeFlag)
-			//{
-			//    m_force += force;
-			//    m_torque += Utilities.b2Cross(point - m_sweep.c, force);
-			//}
+			// Don't accumulate a force if the body is sleeping.
+			if (m_flags.HasFlag(BodyFlags.e_awakeFlag)) {
+				m_force += force;
+				m_torque += Utilities.b2Cross(point - m_sweep.c, force);
+			}
 		}
 
 		/// Apply a force to the center of mass. This wakes up the body.
@@ -385,22 +378,19 @@ namespace Box2D {
 		/// @param torque about the z-axis (out of the screen), usually in N-m.
 		/// @param wake also wake up the body
 		public void ApplyTorque(float torque, bool wake){
-			throw new NotImplementedException();
-			//if (m_type != b2_dynamicBody)
-			//{
-			//    return;
-			//}
+			if (m_type != b2BodyType.b2_dynamicBody)
+			{
+			    return;
+			}
 
-			//if (wake && (m_flags & e_awakeFlag) == 0)
-			//{
-			//    SetAwake(true);
-			//}
+			if (wake && (m_flags & BodyFlags.e_awakeFlag) == 0) {
+				SetAwake(true);
+			}
 
-			//// Don't accumulate a force if the body is sleeping
-			//if (m_flags & e_awakeFlag)
-			//{
-			//    m_torque += torque;
-			//}
+			// Don't accumulate a force if the body is sleeping
+			if (m_flags.HasFlag(BodyFlags.e_awakeFlag)) {
+				m_torque += torque;
+			}
 		}
 
 		/// Apply an impulse at a point. This immediately modifies the velocity.
@@ -460,8 +450,7 @@ namespace Box2D {
 		/// Get the rotational inertia of the body about the local origin.
 		/// @return the rotational inertia, usually in kg-m^2.
 		public float GetInertia(){
-			throw new NotImplementedException();
-			//return m_I + m_mass * Utilities.b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+			return m_I + m_mass * Utilities.b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 		}
 
 		/// Get the mass data of the body.
@@ -588,16 +577,14 @@ namespace Box2D {
 		/// @param localPoint a point on the body measured relative the the body's origin.
 		/// @return the same point expressed in world coordinates.
 		public b2Vec2 GetWorldPoint(b2Vec2 localPoint){
-			throw new NotImplementedException();
-			//return Utilities.b2Mul(m_xf, localPoint);
+			return Utilities.b2Mul(m_xf, localPoint);
 		}
 
 		/// Get the world coordinates of a vector given the local coordinates.
 		/// @param localVector a vector fixed in the body.
 		/// @return the same vector expressed in world coordinates.
 		public b2Vec2 GetWorldVector(b2Vec2 localVector){
-			throw new NotImplementedException();
-			//return Utilities.b2Mul(m_xf.q, localVector);
+			return Utilities.b2Mul(m_xf.q, localVector);
 		}
 
 		/// Gets a local point relative to the body's origin given a world point.
@@ -767,24 +754,19 @@ namespace Box2D {
 		/// low CPU cost.
 		/// @param flag set to true to wake the body, false to put it to sleep.
 		public void SetAwake(bool flag){
-			throw new NotImplementedException();
-			//if (flag)
-			//{
-			//    if ((m_flags & e_awakeFlag) == 0)
-			//    {
-			//        m_flags |= e_awakeFlag;
-			//        m_sleepTime = 0.0f;
-			//    }
-			//}
-			//else
-			//{
-			//    m_flags &= ~e_awakeFlag;
-			//    m_sleepTime = 0.0f;
-			//    m_linearVelocity.SetZero();
-			//    m_angularVelocity = 0.0f;
-			//    m_force.SetZero();
-			//    m_torque = 0.0f;
-			//}
+			if (flag) {
+				if ((m_flags & BodyFlags.e_awakeFlag) == 0) {
+					m_flags |= BodyFlags.e_awakeFlag;
+					m_sleepTime = 0.0f;
+				}
+			} else {
+				m_flags &= ~BodyFlags.e_awakeFlag;
+				m_sleepTime = 0.0f;
+				m_linearVelocity.SetZero();
+				m_angularVelocity = 0.0f;
+				m_force.SetZero();
+				m_torque = 0.0f;
+			}
 		}
 
 		/// Get the sleeping state of this body.
@@ -853,8 +835,7 @@ namespace Box2D {
 
 		/// Get the active state of the body.
 		public bool IsActive() {
-			throw new NotImplementedException();
-			//return (m_flags & e_activeFlag) == e_activeFlag;
+			return (m_flags & BodyFlags.e_activeFlag) == BodyFlags.e_activeFlag;
 		}
 
 		/// Set this body to have fixed rotation. This causes the mass
@@ -1004,8 +985,8 @@ namespace Box2D {
 			m_sweep.a = bd.angle;
 			m_sweep.alpha0 = 0.0f;
 
-			m_jointList = null;
-			m_contactList = null;
+			m_jointList = new List<b2JointEdge>();
+			m_contactList = new List<b2ContactEdge>();
 			m_prev = null;
 			m_next = null;
 
@@ -1065,26 +1046,21 @@ namespace Box2D {
 		// This is used to prevent connected bodies from colliding.
 		// It may lie, depending on the collideConnected flag.
 		internal bool ShouldCollide(b2Body other){
-			throw new NotImplementedException();
-			//// At least one body should be dynamic.
-			//if (m_type != b2_dynamicBody && other.m_type != b2_dynamicBody)
-			//{
-			//    return false;
-			//}
+			// At least one body should be dynamic.
+			if (m_type != b2BodyType.b2_dynamicBody && other.m_type != b2BodyType.b2_dynamicBody) {
+				return false;
+			}
 
-			//// Does a joint prevent collision?
-			//for (b2JointEdge* jn = m_jointList; jn; jn = jn.next)
-			//{
-			//    if (jn.other == other)
-			//    {
-			//        if (jn.joint.m_collideConnected == false)
-			//        {
-			//            return false;
-			//        }
-			//    }
-			//}
+			// Does a joint prevent collision?
+			foreach(b2JointEdge jn in m_jointList){
+				if (jn.other == other) {
+					if (jn.joint.m_collideConnected == false) {
+						return false;
+					}
+				}
+			}
 
-			//return true;
+			return true;
 		}
 
 		internal void Advance(float t){
@@ -1118,13 +1094,13 @@ namespace Box2D {
 
 		private List<b2Fixture> m_fixtureList; //pointer
 
-		private List<b2JointEdge> m_jointList;//pointer
+		internal List<b2JointEdge> m_jointList;//pointer
 		internal List<b2ContactEdge> m_contactList;//pointer
 
-		private float m_mass, m_invMass;
+		internal float m_mass, m_invMass;
 
 		// Rotational inertia about the center of mass.
-		private float m_I, m_invI;
+		internal float m_I, m_invI;
 
 		private float m_linearDamping;
 		private float m_angularDamping;

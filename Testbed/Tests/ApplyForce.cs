@@ -4,27 +4,27 @@ using System.Linq;
 using System.Text;
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
-	class ApplyForce : Test
-	{
+	class ApplyForce : Test {
 		b2Body m_body;
 
-		public ApplyForce()
-		{
+		public ApplyForce() {
 			m_world.SetGravity(new b2Vec2(0.0f, 0.0f));
 
 			const float k_restitution = 0.4f;
 
 			b2Body ground;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.Set(0.0f, 20.0f);
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
+				b2EdgeShape shape = new b2EdgeShape();
 
-				b2FixtureDef sd;
+				b2FixtureDef sd = new b2FixtureDef();
 				sd.shape = shape;
 				sd.density = 0.0f;
 				sd.restitution = k_restitution;
@@ -47,7 +47,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Transform xf1;
+				b2Transform xf1 = new b2Transform();
 				xf1.q.Set(0.3524f * (float)Math.PI);
 				xf1.p = xf1.q.GetXAxis();
 
@@ -55,30 +55,30 @@ namespace Testbed.Tests {
 				vertices[0] = Utilities.b2Mul(xf1, new b2Vec2(-1.0f, 0.0f));
 				vertices[1] = Utilities.b2Mul(xf1, new b2Vec2(1.0f, 0.0f));
 				vertices[2] = Utilities.b2Mul(xf1, new b2Vec2(0.0f, 0.5f));
-			
-				b2PolygonShape poly1;
+
+				b2PolygonShape poly1 = new b2PolygonShape();
 				poly1.Set(vertices, 3);
 
-				b2FixtureDef sd1;
+				b2FixtureDef sd1 = new b2FixtureDef();
 				sd1.shape = poly1;
 				sd1.density = 4.0f;
 
-				b2Transform xf2;
+				b2Transform xf2 = new b2Transform();
 				xf2.q.Set(-0.3524f * (float)Math.PI);
 				xf2.p = -xf2.q.GetXAxis();
 
 				vertices[0] = Utilities.b2Mul(xf2, new b2Vec2(-1.0f, 0.0f));
 				vertices[1] = Utilities.b2Mul(xf2, new b2Vec2(1.0f, 0.0f));
 				vertices[2] = Utilities.b2Mul(xf2, new b2Vec2(0.0f, 0.5f));
-			
-				b2PolygonShape poly2;
+
+				b2PolygonShape poly2 = new b2PolygonShape();
 				poly2.Set(vertices, 3);
 
-				b2FixtureDef sd2;
+				b2FixtureDef sd2 = new b2FixtureDef();
 				sd2.shape = poly2;
 				sd2.density = 2.0f;
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.angularDamping = 5.0f;
 				bd.linearDamping = 0.1f;
@@ -92,17 +92,16 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
 
-				for (int i = 0; i < 10; ++i)
-				{
-					b2BodyDef bd;
+				for (int i = 0; i < 10; ++i) {
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 
 					bd.position.Set(0.0f, 5.0f + 1.54f * i);
@@ -117,7 +116,7 @@ namespace Testbed.Tests {
 					// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
 					float radius = (float)Math.Sqrt(2.0f * I / mass);
 
-					b2FrictionJointDef jd;
+					b2FrictionJointDef jd = new b2FrictionJointDef();
 					jd.localAnchorA.SetZero();
 					jd.localAnchorB.SetZero();
 					jd.bodyA = ground;
@@ -126,39 +125,30 @@ namespace Testbed.Tests {
 					jd.maxForce = mass * gravity;
 					jd.maxTorque = mass * radius * gravity;
 
-					m_world.CreateJoint(&jd);
+					m_world.CreateJoint(jd);
 				}
 			}
 		}
 
-		public void Keyboard(char key)
-		{
-			switch (key)
-			{
-			case 'w':
-				{
-					b2Vec2 f = m_body.GetWorldVector(new b2Vec2(0.0f, -200.0f));
-					b2Vec2 p = m_body.GetWorldPoint(new b2Vec2(0.0f, 2.0f));
-					m_body.ApplyForce(f, p, true);
-				}
-				break;
+		public override void Keyboard() {
+			if (KeyboardManager.IsPressed(Key.W)) {
 
-			case 'a':
-				{
-					m_body.ApplyTorque(50.0f, true);
-				}
-				break;
+				b2Vec2 f = m_body.GetWorldVector(new b2Vec2(0.0f, -200.0f));
+				b2Vec2 p = m_body.GetWorldPoint(new b2Vec2(0.0f, 2.0f));
+				m_body.ApplyForce(f, p, true);
+			}
 
-			case 'd':
-				{
-					m_body.ApplyTorque(-50.0f, true);
-				}
-				break;
+			if (KeyboardManager.IsPressed(Key.A)) {
+
+				m_body.ApplyTorque(50.0f, true);
+			}
+
+			if (KeyboardManager.IsPressed(Key.D)) {
+				m_body.ApplyTorque(-50.0f, true);
 			}
 		}
 
-		public static Test Create()
-		{
+		public static Test Create() {
 			return new ApplyForce();
 		}
 	}

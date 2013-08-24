@@ -6,49 +6,49 @@ using Box2D;
 
 namespace Testbed.Framework {
 	/// Test settings. Some can be controlled in the GUI.
-	struct Settings {
-		public Settings(object ignore) {
+	class Settings {
+		public Settings() {
 			viewCenter = new b2Vec2(0.0f, 20.0f);
 			hz = 60.0f;
 			velocityIterations = 8;
 			positionIterations = 3;
-			drawShapes = 1;
-			drawJoints = 1;
-			drawAABBs = 0;
-			drawContactPoints = 0;
+			drawShapes = true;
+			drawJoints = true;
+			drawAABBs = false;
+			drawContactPoints = false;
 			drawContactNormals = 0;
 			drawContactImpulse = 0;
 			drawFrictionImpulse = 0;
-			drawCOMs = 0;
-			drawStats = 0;
-			drawProfile = 0;
-			enableWarmStarting = 1;
-			enableContinuous = 1;
-			enableSubStepping = 0;
-			enableSleep = 1;
-			pause = 0;
-			singleStep = 0;
+			drawCOMs = true;
+			drawStats = false;
+			drawProfile = false;
+			enableWarmStarting = true;
+			enableContinuous = true;
+			enableSubStepping = false;
+			enableSleep = true;
+			pause = false;
+			singleStep = false;
 		}
 
-		b2Vec2 viewCenter;
-		float hz;
-		int velocityIterations;
-		int positionIterations;
-		int drawShapes;
-		int drawJoints;
-		int drawAABBs;
-		int drawContactPoints;
-		int drawContactNormals;
-		int drawContactImpulse;
-		int drawFrictionImpulse;
-		int drawCOMs;
-		int drawStats;
-		int drawProfile;
-		int enableWarmStarting;
-		int enableContinuous;
-		int enableSubStepping;
-		int enableSleep;
-		int pause;
-		int singleStep;
+		public b2Vec2 viewCenter;
+		public float hz;
+		public int velocityIterations;
+		public int positionIterations;
+		public bool drawShapes;
+		public bool drawJoints;
+		public bool drawAABBs;
+		public bool drawContactPoints;
+		public int drawContactNormals;
+		public int drawContactImpulse;
+		public int drawFrictionImpulse;
+		public bool drawCOMs;
+		public bool drawStats;
+		public bool drawProfile;
+		public bool enableWarmStarting;
+		public bool enableContinuous;
+		public bool enableSubStepping;
+		public bool enableSleep;
+		public bool pause;
+		public bool singleStep;
 	}
 }

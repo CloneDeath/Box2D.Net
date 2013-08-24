@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace Box2D {
 	// m_flags
+	[Flags]
 	internal enum WorldFlags {
 		e_newFixture = 0x0001,
 		e_locked = 0x0002,
@@ -46,31 +47,27 @@ namespace Box2D {
 		/// Register a destruction listener. The listener is owned by you and must
 		/// remain in scope.
 		public void SetDestructionListener(b2DestructionListener listener){
-			throw new NotImplementedException();
-			//m_destructionListener = listener;
+			m_destructionListener = listener;
 		}
 
 		/// Register a contact filter to provide specific control over collision.
 		/// Otherwise the default filter is used (b2_defaultFilter). The listener is
 		/// owned by you and must remain in scope. 
 		public void SetContactFilter(b2ContactFilter filter){
-			throw new NotImplementedException();
-			//m_contactManager.m_contactFilter = filter;
+			m_contactManager.m_contactFilter = filter;
 		}
 
 		/// Register a contact event listener. The listener is owned by you and must
 		/// remain in scope.
 		public void SetContactListener(b2ContactListener listener){
-			throw new NotImplementedException();
-			//m_contactManager.m_contactListener = listener;
+			m_contactManager.m_contactListener = listener;
 		}
 
 		/// Register a routine for debug drawing. The debug draw functions are called
 		/// inside with b2World::DrawDebugData method. The debug draw object is owned
 		/// by you and must remain in scope.
 		public void SetDebugDraw(b2Draw debugDraw){
-			throw new NotImplementedException();
-			//m_debugDraw = debugDraw;
+			m_debugDraw = debugDraw;
 		}
 
 		/// Create a rigid body given a definition. No reference to the definition
@@ -180,63 +177,49 @@ namespace Box2D {
 		/// is retained. This may cause the connected bodies to cease colliding.
 		/// @warning This function is locked during callbacks.
 		public b2Joint CreateJoint(b2JointDef def){
-			throw new NotImplementedException();
-			//Utilities.Assert(IsLocked() == false);
-			//if (IsLocked())
-			//{
-			//    return null;
-			//}
+			Utilities.Assert(IsLocked() == false);
+			if (IsLocked())
+			{
+			    return null;
+			}
 
-			//b2Joint* j = b2Joint::Create(def, &m_blockAllocator);
+			b2Joint j = b2Joint.Create(def);
 
-			//// Connect to the world list.
-			//j.m_prev = null;
-			//j.m_next = m_jointList;
-			//if (m_jointList)
-			//{
-			//    m_jointList.m_prev = j;
-			//}
-			//m_jointList = j;
-			//++m_jointCount;
+			// Connect to the world list.
+			m_jointList.Add(j);
 
-			//// Connect to the bodies' doubly linked lists.
-			//j.m_edgeA.joint = j;
-			//j.m_edgeA.other = j.m_bodyB;
-			//j.m_edgeA.prev = null;
-			//j.m_edgeA.next = j.m_bodyA.m_jointList;
-			//if (j.m_bodyA.m_jointList) j.m_bodyA.m_jointList.prev = &j.m_edgeA;
-			//j.m_bodyA.m_jointList = &j.m_edgeA;
+			// Connect to the bodies' doubly linked lists.
+			j.m_edgeA.Clear();
+			j.m_edgeA.Add(new b2JointEdge(j, j.m_bodyB));
 
-			//j.m_edgeB.joint = j;
-			//j.m_edgeB.other = j.m_bodyA;
-			//j.m_edgeB.prev = null;
-			//j.m_edgeB.next = j.m_bodyB.m_jointList;
-			//if (j.m_bodyB.m_jointList) j.m_bodyB.m_jointList.prev = &j.m_edgeB;
-			//j.m_bodyB.m_jointList = &j.m_edgeB;
+			j.m_edgeA.AddRange(j.m_bodyA.m_jointList);
+			j.m_bodyA.m_jointList = j.m_edgeA;
 
-			//b2Body* bodyA = def.bodyA;
-			//b2Body* bodyB = def.bodyB;
+			j.m_edgeB.Clear();
+			j.m_edgeB.Add(new b2JointEdge(j, j.m_bodyA));
+			j.m_edgeB.AddRange(j.m_bodyB.m_jointList);
+			j.m_bodyB.m_jointList = j.m_edgeB;
 
-			//// If the joint prevents collisions, then flag any contacts for filtering.
-			//if (def.collideConnected == false)
-			//{
-			//    b2ContactEdge* edge = bodyB.GetContactList();
-			//    while (edge)
-			//    {
-			//        if (edge.other == bodyA)
-			//        {
-			//            // Flag the contact for filtering at the next time step (where either
-			//            // body is awake).
-			//            edge.contact.FlagForFiltering();
-			//        }
+			b2Body bodyA = def.bodyA;
+			b2Body bodyB = def.bodyB;
 
-			//        edge = edge.next;
-			//    }
-			//}
+			// If the joint prevents collisions, then flag any contacts for filtering.
+			if (def.collideConnected == false)
+			{
+				foreach (b2ContactEdge edge in bodyB.GetContactList())
+			    {
+			        if (edge.other == bodyA)
+			        {
+			            // Flag the contact for filtering at the next time step (where either
+			            // body is awake).
+			            edge.contact.FlagForFiltering();
+			        }
+			    }
+			}
 
-			//// Note: creating a joint doesn't wake the bodies.
+			// Note: creating a joint doesn't wake the bodies.
 
-			//return j;
+			return j;
 		}
 
 		/// Destroy a joint. This may cause the connected bodies to begin colliding.
@@ -416,107 +399,106 @@ namespace Box2D {
 
 		/// Call this to draw shapes and other debug draw data.
 		public void DrawDebugData(){
-			throw new NotImplementedException();
-			//if (m_debugDraw == null)
-			//{
-			//    return;
-			//}
+			if (m_debugDraw == null)
+			{
+			    return;
+			}
 
-			//uint flags = m_debugDraw.GetFlags();
+			b2Draw.DrawFlags flags = m_debugDraw.GetFlags();
 
-			//if (flags & b2Draw::e_shapeBit)
-			//{
-			//    for (b2Body* b = m_bodyList; b; b = b.GetNext())
-			//    {
-			//        const b2Transform& xf = b.GetTransform();
-			//        for (b2Fixture* f = b.GetFixtureList(); f; f = f.GetNext())
-			//        {
-			//            if (b.IsActive() == false)
-			//            {
-			//                DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.3f));
-			//            }
-			//            else if (b.GetType() == b2_staticBody)
-			//            {
-			//                DrawShape(f, xf, b2Color(0.5f, 0.9f, 0.5f));
-			//            }
-			//            else if (b.GetType() == b2_kinematicBody)
-			//            {
-			//                DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.9f));
-			//            }
-			//            else if (b.IsAwake() == false)
-			//            {
-			//                DrawShape(f, xf, b2Color(0.6f, 0.6f, 0.6f));
-			//            }
-			//            else
-			//            {
-			//                DrawShape(f, xf, b2Color(0.9f, 0.7f, 0.7f));
-			//            }
-			//        }
-			//    }
-			//}
+			if (flags.HasFlag(b2Draw.DrawFlags.e_shapeBit))
+			{
+				foreach(b2Body b in m_bodyList)
+			    {
+			        b2Transform xf = b.GetTransform();
+					foreach (b2Fixture f in b.GetFixtureList())
+			        {
+			            if (b.IsActive() == false)
+			            {
+			                DrawShape(f, xf, Color.FromArgb(128, 128, 75));
+			            }
+			            else if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			            {
+							DrawShape(f, xf, Color.FromArgb(128, 225, 128));
+			            }
+			            else if (b.GetBodyType() == b2BodyType.b2_kinematicBody)
+			            {
+							DrawShape(f, xf, Color.FromArgb(128, 128, 225));
+			            }
+			            else if (b.IsAwake() == false)
+			            {
+							DrawShape(f, xf, Color.FromArgb(150, 150, 150));
+			            }
+			            else
+			            {
+							DrawShape(f, xf, Color.FromArgb(225, 175, 175));
+			            }
+			        }
+			    }
+			}
 
-			//if (flags & b2Draw::e_jointBit)
-			//{
-			//    for (b2Joint* j = m_jointList; j; j = j.GetNext())
-			//    {
-			//        DrawJoint(j);
-			//    }
-			//}
+			if (flags.HasFlag(b2Draw.DrawFlags.e_jointBit))
+			{
+				foreach (b2Joint j in m_jointList)
+			    {
+			        DrawJoint(j);
+			    }
+			}
 
-			//if (flags & b2Draw::e_pairBit)
-			//{
-			//    b2Color color(0.3f, 0.9f, 0.9f);
-			//    for (b2Contact* c = m_contactManager.m_contactList; c; c = c.GetNext())
-			//    {
-			//        //b2Fixture* fixtureA = c.GetFixtureA();
-			//        //b2Fixture* fixtureB = c.GetFixtureB();
+			if (flags.HasFlag(b2Draw.DrawFlags.e_pairBit))
+			{
+			    Color color = Color.FromArgb(75, 225, 225);
+				foreach (b2Contact c in m_contactManager.m_contactList)
+			    {
+			        //b2Fixture* fixtureA = c.GetFixtureA();
+			        //b2Fixture* fixtureB = c.GetFixtureB();
 
-			//        //b2Vec2 cA = fixtureA.GetAABB().GetCenter();
-			//        //b2Vec2 cB = fixtureB.GetAABB().GetCenter();
+			        //b2Vec2 cA = fixtureA.GetAABB().GetCenter();
+			        //b2Vec2 cB = fixtureB.GetAABB().GetCenter();
 
-			//        //m_debugDraw.DrawSegment(cA, cB, color);
-			//    }
-			//}
+			        //m_debugDraw.DrawSegment(cA, cB, color);
+			    }
+			}
 
-			//if (flags & b2Draw::e_aabbBit)
-			//{
-			//    b2Color color(0.9f, 0.3f, 0.9f);
-			//    b2BroadPhase* bp = &m_contactManager.m_broadPhase;
+			if (flags.HasFlag(b2Draw.DrawFlags.e_aabbBit))
+			{
+			    Color color = Color.FromArgb(225, 75, 225);
+			    b2BroadPhase bp = m_contactManager.m_broadPhase;
 
-			//    for (b2Body* b = m_bodyList; b; b = b.GetNext())
-			//    {
-			//        if (b.IsActive() == false)
-			//        {
-			//            continue;
-			//        }
+				foreach (b2Body b in m_bodyList)
+			    {
+			        if (b.IsActive() == false)
+			        {
+			            continue;
+			        }
 
-			//        for (b2Fixture* f = b.GetFixtureList(); f; f = f.GetNext())
-			//        {
-			//            for (int i = 0; i < f.m_proxyCount; ++i)
-			//            {
-			//                b2FixtureProxy* proxy = f.m_proxies + i;
-			//                b2AABB aabb = bp.GetFatAABB(proxy.proxyId);
-			//                b2Vec2 vs[4];
-			//                vs[0].Set(aabb.lowerBound.x, aabb.lowerBound.y);
-			//                vs[1].Set(aabb.upperBound.x, aabb.lowerBound.y);
-			//                vs[2].Set(aabb.upperBound.x, aabb.upperBound.y);
-			//                vs[3].Set(aabb.lowerBound.x, aabb.upperBound.y);
+					foreach (b2Fixture f in b.GetFixtureList())
+			        {
+			            for (int i = 0; i < f.m_proxies.Count(); ++i)
+			            {
+			                b2FixtureProxy proxy = f.m_proxies[i];
+			                b2AABB aabb = bp.GetFatAABB(proxy.proxyId);
+			                b2Vec2[] vs = new b2Vec2[4];
+			                vs[0].Set(aabb.lowerBound.x, aabb.lowerBound.y);
+			                vs[1].Set(aabb.upperBound.x, aabb.lowerBound.y);
+			                vs[2].Set(aabb.upperBound.x, aabb.upperBound.y);
+			                vs[3].Set(aabb.lowerBound.x, aabb.upperBound.y);
 
-			//                m_debugDraw.DrawPolygon(vs, 4, color);
-			//            }
-			//        }
-			//    }
-			//}
+			                m_debugDraw.DrawPolygon(vs, 4, color);
+			            }
+			        }
+			    }
+			}
 
-			//if (flags & b2Draw::e_centerOfMassBit)
-			//{
-			//    for (b2Body* b = m_bodyList; b; b = b.GetNext())
-			//    {
-			//        b2Transform xf = b.GetTransform();
-			//        xf.p = b.GetWorldCenter();
-			//        m_debugDraw.DrawTransform(xf);
-			//    }
-			//}
+			if (flags.HasFlag(b2Draw.DrawFlags.e_centerOfMassBit))
+			{
+				foreach(b2Body b in m_bodyList)
+			    {
+			        b2Transform xf = b.GetTransform();
+			        xf.p = b.GetWorldCenter();
+			        m_debugDraw.DrawTransform(xf);
+			    }
+			}
 		}
 
 		/// Query the world for all fixtures that potentially overlap the
@@ -577,20 +559,16 @@ namespace Box2D {
 
 		/// Enable/disable sleep.
 		public void SetAllowSleeping(bool flag){
-			throw new NotImplementedException();
-			//if (flag == m_allowSleep)
-			//{
-			//    return;
-			//}
+			if (flag == m_allowSleep) {
+				return;
+			}
 
-			//m_allowSleep = flag;
-			//if (m_allowSleep == false)
-			//{
-			//    foreach (b2Body b in m_bodyList)
-			//    {
-			//        b.SetAwake(true);
-			//    }
-			//}
+			m_allowSleep = flag;
+			if (m_allowSleep == false) {
+				foreach (b2Body b in m_bodyList) {
+					b.SetAwake(true);
+				}
+			}
 		}
 		public bool GetAllowSleeping() { return m_allowSleep; }
 
@@ -1289,106 +1267,106 @@ namespace Box2D {
 
 		private void DrawJoint(b2Joint joint)
 		{
-			throw new NotImplementedException();
-			//b2Body* bodyA = joint.GetBodyA();
-			//b2Body* bodyB = joint.GetBodyB();
-			//const b2Transform& xf1 = bodyA.GetTransform();
-			//const b2Transform& xf2 = bodyB.GetTransform();
-			//b2Vec2 x1 = xf1.p;
-			//b2Vec2 x2 = xf2.p;
-			//b2Vec2 p1 = joint.GetAnchorA();
-			//b2Vec2 p2 = joint.GetAnchorB();
+			b2Body bodyA = joint.GetBodyA();
+			b2Body bodyB = joint.GetBodyB();
+			b2Transform xf1 = bodyA.GetTransform();
+			b2Transform xf2 = bodyB.GetTransform();
+			b2Vec2 x1 = xf1.p;
+			b2Vec2 x2 = xf2.p;
+			b2Vec2 p1 = joint.GetAnchorA();
+			b2Vec2 p2 = joint.GetAnchorB();
 
-			//b2Color color(0.5f, 0.8f, 0.8f);
+			Color color = Color.FromArgb(128, 200, 200);
 
-			//switch (joint.GetType())
-			//{
-			//case e_distanceJoint:
-			//    m_debugDraw.DrawSegment(p1, p2, color);
-			//    break;
+			switch (joint.GetType())
+			{
+			case b2JointType.e_distanceJoint:
+			    m_debugDraw.DrawSegment(p1, p2, color);
+			    break;
 
-			//case e_pulleyJoint:
-			//    {
-			//        b2PulleyJoint* pulley = (b2PulleyJoint*)joint;
-			//        b2Vec2 s1 = pulley.GetGroundAnchorA();
-			//        b2Vec2 s2 = pulley.GetGroundAnchorB();
-			//        m_debugDraw.DrawSegment(s1, p1, color);
-			//        m_debugDraw.DrawSegment(s2, p2, color);
-			//        m_debugDraw.DrawSegment(s1, s2, color);
-			//    }
-			//    break;
+			case b2JointType.e_pulleyJoint:
+			    {
+					throw new NotImplementedException();
+					//b2PulleyJoint pulley = (b2PulleyJoint)joint;
+					//b2Vec2 s1 = pulley.GetGroundAnchorA();
+					//b2Vec2 s2 = pulley.GetGroundAnchorB();
+					//m_debugDraw.DrawSegment(s1, p1, color);
+					//m_debugDraw.DrawSegment(s2, p2, color);
+					//m_debugDraw.DrawSegment(s1, s2, color);
+			    }
+			    break;
 
-			//case e_mouseJoint:
-			//    // don't draw this
-			//    break;
+			case b2JointType.e_mouseJoint:
+			    // don't draw this
+			    break;
 
-			//default:
-			//    m_debugDraw.DrawSegment(x1, p1, color);
-			//    m_debugDraw.DrawSegment(p1, p2, color);
-			//    m_debugDraw.DrawSegment(x2, p2, color);
-			//}
+			default:
+			    m_debugDraw.DrawSegment(x1, p1, color);
+			    m_debugDraw.DrawSegment(p1, p2, color);
+			    m_debugDraw.DrawSegment(x2, p2, color);
+				break;
+			}
 		}
-		private void DrawShape(b2Fixture shape, b2Transform xf, Color color){
-			throw new NotImplementedException();
-			//switch (fixture.GetType())
-			//{
-			//case b2Shape::e_circle:
-			//    {
-			//        b2CircleShape* circle = (b2CircleShape*)fixture.GetShape();
+		private void DrawShape(b2Fixture fixture, b2Transform xf, Color color){
+			switch (fixture.GetShapeType())
+			{
+			case ShapeType.Circle:
+			    {
+			        b2CircleShape circle = (b2CircleShape)fixture.GetShape();
 
-			//        b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
-			//        float radius = circle.m_radius;
-			//        b2Vec2 axis = Utilities.b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
+			        b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
+			        float radius = circle.m_radius;
+			        b2Vec2 axis = Utilities.b2Mul(xf.q, new b2Vec2(1.0f, 0.0f));
 
-			//        m_debugDraw.DrawSolidCircle(center, radius, axis, color);
-			//    }
-			//    break;
+			        m_debugDraw.DrawSolidCircle(center, radius, axis, color);
+			    }
+			    break;
 
-			//case b2Shape::e_edge:
-			//    {
-			//        b2EdgeShape* edge = (b2EdgeShape*)fixture.GetShape();
-			//        b2Vec2 v1 = Utilities.b2Mul(xf, edge.m_vertex1);
-			//        b2Vec2 v2 = Utilities.b2Mul(xf, edge.m_vertex2);
-			//        m_debugDraw.DrawSegment(v1, v2, color);
-			//    }
-			//    break;
+			case ShapeType.Edge:
+			    {
+			        b2EdgeShape edge = (b2EdgeShape)fixture.GetShape();
+			        b2Vec2 v1 = Utilities.b2Mul(xf, edge.m_vertex1);
+			        b2Vec2 v2 = Utilities.b2Mul(xf, edge.m_vertex2);
+			        m_debugDraw.DrawSegment(v1, v2, color);
+			    }
+			    break;
 
-			//case b2Shape::e_chain:
-			//    {
-			//        b2ChainShape* chain = (b2ChainShape*)fixture.GetShape();
-			//        int count = chain.m_count;
-			//        const b2Vec2* vertices = chain.m_vertices;
+			case ShapeType.Chain:
+			    {
+			        b2ChainShape chain = (b2ChainShape)fixture.GetShape();
+			        int count = chain.m_count;
+			        List<b2Vec2> vertices = chain.m_vertices;
 
-			//        b2Vec2 v1 = Utilities.b2Mul(xf, vertices[0]);
-			//        for (int i = 1; i < count; ++i)
-			//        {
-			//            b2Vec2 v2 = Utilities.b2Mul(xf, vertices[i]);
-			//            m_debugDraw.DrawSegment(v1, v2, color);
-			//            m_debugDraw.DrawCircle(v1, 0.05f, color);
-			//            v1 = v2;
-			//        }
-			//    }
-			//    break;
+			        b2Vec2 v1 = Utilities.b2Mul(xf, vertices[0]);
+			        for (int i = 1; i < count; ++i)
+			        {
+			            b2Vec2 v2 = Utilities.b2Mul(xf, vertices[i]);
+			            m_debugDraw.DrawSegment(v1, v2, color);
+			            m_debugDraw.DrawCircle(v1, 0.05f, color);
+			            v1 = v2;
+			        }
+			    }
+			    break;
 
-			//case b2Shape::e_polygon:
-			//    {
-			//        b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
-			//        int vertexCount = poly.m_count;
-			//        Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
-			//        b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
+			case ShapeType.Polygon:
+			    {
+			        b2PolygonShape poly = (b2PolygonShape)fixture.GetShape();
+			        int vertexCount = poly.m_count;
+			        Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
+			        b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 
-			//        for (int i = 0; i < vertexCount; ++i)
-			//        {
-			//            vertices[i] = Utilities.b2Mul(xf, poly.m_vertices[i]);
-			//        }
+			        for (int i = 0; i < vertexCount; ++i)
+			        {
+			            vertices[i] = Utilities.b2Mul(xf, poly.m_vertices[i]);
+			        }
 
-			//        m_debugDraw.DrawSolidPolygon(vertices, vertexCount, color);
-			//    }
-			//    break;
+			        m_debugDraw.DrawSolidPolygon(vertices, vertexCount, color);
+			    }
+			    break;
             
-			//default:
-			//    break;
-			//}
+			default:
+			    break;
+			}
 		}
 
 		internal WorldFlags m_flags;

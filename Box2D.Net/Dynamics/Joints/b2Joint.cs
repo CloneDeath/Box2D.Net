@@ -11,41 +11,33 @@ namespace Box2D {
 		protected b2JointType m_type;
 		protected b2Joint m_prev;
 		protected b2Joint m_next;
-		protected b2JointEdge m_edgeA;
-		protected b2JointEdge m_edgeB;
-		protected b2Body m_bodyA;
-		protected b2Body m_bodyB;
+		internal List<b2JointEdge> m_edgeA;
+		internal List<b2JointEdge> m_edgeB;
+		internal b2Body m_bodyA;
+		internal b2Body m_bodyB;
 
 		protected int m_index;
 
 		internal bool m_islandFlag;
-		protected bool m_collideConnected;
+		internal bool m_collideConnected;
 
 		protected object m_userData;
 
 		protected b2Joint(b2JointDef def){
-			throw new NotImplementedException();
-			//Utilities.Assert(def.bodyA != def.bodyB);
+			Utilities.Assert(def.bodyA != def.bodyB);
 
-			//m_type = def.type;
-			//m_prev = null;
-			//m_next = null;
-			//m_bodyA = def.bodyA;
-			//m_bodyB = def.bodyB;
-			//m_index = 0;
-			//m_collideConnected = def.collideConnected;
-			//m_islandFlag = false;
-			//m_userData = def.userData;
+			m_type = def.type;
+			m_prev = null;
+			m_next = null;
+			m_bodyA = def.bodyA;
+			m_bodyB = def.bodyB;
+			m_index = 0;
+			m_collideConnected = def.collideConnected;
+			m_islandFlag = false;
+			m_userData = def.userData;
 
-			//m_edgeA.joint = null;
-			//m_edgeA.other = null;
-			//m_edgeA.prev = null;
-			//m_edgeA.next = null;
-
-			//m_edgeB.joint = null;
-			//m_edgeB.other = null;
-			//m_edgeB.prev = null;
-			//m_edgeB.next = null;
+			m_edgeA = new List<b2JointEdge>();
+			m_edgeB = new List<b2JointEdge>();
 		}
 		~b2Joint() {}
 
@@ -119,95 +111,92 @@ namespace Box2D {
 			//B2_NOT_USED(newOrigin);  
 		}
 
-		protected static b2Joint Create(b2JointDef def){
-			throw new NotImplementedException();
-			//b2Joint* joint = null;
+		internal static b2Joint Create(b2JointDef def){
+			b2Joint joint = null;
 
-			//switch (def.type)
-			//{
-			//case e_distanceJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2DistanceJoint));
-			//        joint = new (mem) b2DistanceJoint((b2DistanceJointDef*)def);
-			//    }
-			//    break;
+			switch (def.type)
+			{
+			case b2JointType.e_distanceJoint:
+			    {
+					throw new NotImplementedException();
+					//joint = new b2DistanceJoint((b2DistanceJointDef)def);
+			    }
+			    break;
 
-			//case e_mouseJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2MouseJoint));
-			//        joint = new (mem) b2MouseJoint((b2MouseJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_mouseJoint:
+			    {
+			        joint = new b2MouseJoint((b2MouseJointDef)def);
+			    }
+			    break;
 
-			//case e_prismaticJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2PrismaticJoint));
-			//        joint = new (mem) b2PrismaticJoint((b2PrismaticJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_prismaticJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2PrismaticJoint((b2PrismaticJointDef)def);
+			    }
+			    break;
 
-			//case e_revoluteJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2RevoluteJoint));
-			//        joint = new (mem) b2RevoluteJoint((b2RevoluteJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_revoluteJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2RevoluteJoint((b2RevoluteJointDef)def);
+			    }
+			    break;
 
-			//case e_pulleyJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2PulleyJoint));
-			//        joint = new (mem) b2PulleyJoint((b2PulleyJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_pulleyJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2PulleyJoint((b2PulleyJointDef)def);
+			    }
+			    break;
 
-			//case e_gearJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2GearJoint));
-			//        joint = new (mem) b2GearJoint((b2GearJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_gearJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2GearJoint((b2GearJointDef)def);
+			    }
+			    break;
 
-			//case e_wheelJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2WheelJoint));
-			//        joint = new (mem) b2WheelJoint((b2WheelJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_wheelJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2WheelJoint((b2WheelJointDef)def);
+			    }
+			    break;
 
-			//case e_weldJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2WeldJoint));
-			//        joint = new (mem) b2WeldJoint((b2WeldJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_weldJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2WeldJoint((b2WeldJointDef)def);
+			    }
+			    break;
         
-			//case e_frictionJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2FrictionJoint));
-			//        joint = new (mem) b2FrictionJoint((b2FrictionJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_frictionJoint:
+			    {
+			        joint = new b2FrictionJoint((b2FrictionJointDef)def);
+			    }
+			    break;
 
-			//case e_ropeJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2RopeJoint));
-			//        joint = new (mem) b2RopeJoint((b2RopeJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_ropeJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2RopeJoint((b2RopeJointDef)def);
+			    }
+			    break;
 
-			//case e_motorJoint:
-			//    {
-			//        void* mem = allocator.Allocate(sizeof(b2MotorJoint));
-			//        joint = new (mem) b2MotorJoint((b2MotorJointDef*)def);
-			//    }
-			//    break;
+			case b2JointType.e_motorJoint:
+			    {
+					throw new NotImplementedException();
+			        //joint = new b2MotorJoint((b2MotorJointDef)def);
+			    }
+			    break;
 
-			//default:
-			//    Utilities.Assert(false);
-			//    break;
-			//}
+			default:
+			    Utilities.Assert(false);
+			    break;
+			}
 
-			//return joint;
+			return joint;
 		}
 		protected static void Destroy(b2Joint joint){
 			throw new NotImplementedException();

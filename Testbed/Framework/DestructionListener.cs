@@ -10,8 +10,8 @@ namespace Testbed.Framework {
 	// nullify the mouse joint.
 	class DestructionListener : b2DestructionListener
 	{
-		public void SayGoodbye(b2Fixture fixture) {  }
-		public void SayGoodbye(b2Joint joint) {
+		public override void SayGoodbye(b2Fixture fixture) {  }
+		public override void SayGoodbye(b2Joint joint) {
 			if (test.m_mouseJoint == joint) {
 				test.m_mouseJoint = null;
 			} else {

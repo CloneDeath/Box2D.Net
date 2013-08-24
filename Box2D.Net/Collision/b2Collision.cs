@@ -9,48 +9,48 @@ namespace Box2D {
 		public const byte b2_nullFeature = byte.MaxValue;
 		
 		/// Compute the collision manifold between two circles.
-		public void b2CollideCircles(b2Manifold manifold,
+		public static void b2CollideCircles(b2Manifold manifold,
 							  b2CircleShape circleA, b2Transform xfA,
 							  b2CircleShape circleB, b2Transform xfB) {
 			throw new NotImplementedException();
 		}
 
 		/// Compute the collision manifold between a polygon and a circle.
-		public void b2CollidePolygonAndCircle(b2Manifold manifold,
+		public static void b2CollidePolygonAndCircle(b2Manifold manifold,
 									   b2PolygonShape polygonA, b2Transform xfA,
 									   b2CircleShape circleB, b2Transform xfB) {
 			throw new NotImplementedException();
 		}
 
 		/// Compute the collision manifold between two polygons.
-		public void b2CollidePolygons(b2Manifold manifold,
+		public static void b2CollidePolygons(b2Manifold manifold,
 							   b2PolygonShape polygonA, b2Transform xfA,
 							   b2PolygonShape polygonB, b2Transform xfB) {
 			throw new NotImplementedException();
 		}
 
 		/// Compute the collision manifold between an edge and a circle.
-		public void b2CollideEdgeAndCircle(b2Manifold manifold,
+		public static void b2CollideEdgeAndCircle(b2Manifold manifold,
 									   b2EdgeShape polygonA, b2Transform xfA,
 									   b2CircleShape circleB, b2Transform xfB) {
 			throw new NotImplementedException();
 		}
 
 		/// Compute the collision manifold between an edge and a circle.
-		public void b2CollideEdgeAndPolygon(b2Manifold manifold,
+		public static void b2CollideEdgeAndPolygon(b2Manifold manifold,
 									   b2EdgeShape edgeA, b2Transform xfA,
 									   b2PolygonShape circleB, b2Transform xfB) {
 			throw new NotImplementedException();
 		}
 
 		/// Clipping for contact manifolds.
-		public int b2ClipSegmentToLine(b2ClipVertex[/*2*/] vOut, b2ClipVertex[/*2*/] vIn,
+		public static int b2ClipSegmentToLine(b2ClipVertex[/*2*/] vOut, b2ClipVertex[/*2*/] vIn,
 									b2Vec2 normal, float offset, int vertexIndexA) {
 			throw new NotImplementedException();
 		}
 
 		/// Determine if two generic shapes overlap.
-		public bool b2TestOverlap(b2Shape shapeA, int indexA,
+		public static bool b2TestOverlap(b2Shape shapeA, int indexA,
 							b2Shape shapeB, int indexB,
 							b2Transform xfA, b2Transform xfB){
 			throw new NotImplementedException();								
@@ -69,9 +69,53 @@ namespace Box2D {
 		
 		/// Compute the point states given two manifolds. The states pertain to the transition from manifold1
 		/// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-		public void b2GetPointStates(b2PointState[/*b2Settings.b2_maxManifoldPoints*/] state1, b2PointState[/*b2Settings.b2_maxManifoldPoints*/] state2,
+		public static void b2GetPointStates(b2PointState[/*b2Settings.b2_maxManifoldPoints*/] state1, b2PointState[/*b2Settings.b2_maxManifoldPoints*/] state2,
 							  b2Manifold manifold1, b2Manifold manifold2) {
 			throw new NotImplementedException();
+			//for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
+			//{
+			//    state1[i] = b2_nullState;
+			//    state2[i] = b2_nullState;
+			//}
+
+			//// Detect persists and removes.
+			//for (int i = 0; i < manifold1.pointCount; ++i)
+			//{
+			//    b2ContactID id = manifold1.points[i].id;
+
+			//    state1[i] = b2_removeState;
+
+			//    for (int j = 0; j < manifold2.pointCount; ++j)
+			//    {
+			//        if (manifold2.points[j].id.key == id.key)
+			//        {
+			//            state1[i] = b2_persistState;
+			//            break;
+			//        }
+			//    }
+			//}
+
+			//// Detect persists and adds.
+			//for (int i = 0; i < manifold2.pointCount; ++i)
+			//{
+			//    b2ContactID id = manifold2.points[i].id;
+
+			//    state2[i] = b2_addState;
+
+			//    for (int j = 0; j < manifold1.pointCount; ++j)
+			//    {
+			//        if (manifold1.points[j].id.key == id.key)
+			//        {
+			//            state2[i] = b2_persistState;
+			//            break;
+			//        }
+			//    }
+			//}
+		}
+
+		internal static bool b2TestOverlap(b2AABB a, b2AABB b) {
+			return (a.lowerBound.x <= b.upperBound.x) && (a.lowerBound.y <= b.upperBound.y) &&
+				   (a.upperBound.x >= b.lowerBound.x) && (a.upperBound.y >= b.lowerBound.y);
 		}
 	}
 
@@ -255,9 +299,8 @@ namespace Box2D {
 		/// Combine two AABBs into this one.
 		public void Combine(b2AABB aabb1, b2AABB aabb2)
 		{
-			throw new NotImplementedException();
-			//lowerBound = Math.Min(aabb1.lowerBound, aabb2.lowerBound);
-			//upperBound = b2Max(aabb1.upperBound, aabb2.upperBound);
+			lowerBound = Utilities.Min(aabb1.lowerBound, aabb2.lowerBound);
+			upperBound = Utilities.Max(aabb1.upperBound, aabb2.upperBound);
 		}
 
 		/// Does this aabb contain the provided AABB.

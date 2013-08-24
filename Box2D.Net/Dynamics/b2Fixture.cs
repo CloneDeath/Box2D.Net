@@ -21,7 +21,7 @@ namespace Box2D {
 		internal float m_friction;
 		internal float m_restitution;
 
-		protected List<b2FixtureProxy> m_proxies; //pointer
+		internal List<b2FixtureProxy> m_proxies; //pointer
 
 		protected b2Filter m_filter;
 
@@ -364,20 +364,19 @@ namespace Box2D {
 
 		// These support body activation/deactivation.
 		internal void CreateProxies(b2BroadPhase broadPhase, b2Transform xf){ //broadPhase was pointer
-			throw new NotImplementedException();
-			//Utilities.Assert(m_proxyCount == 0);
+			Utilities.Assert(m_proxies.Count() == 0);
 
-			//// Create proxies in the broad-phase.
-			//m_proxyCount = m_shape.GetChildCount();
+			// Create proxies in the broad-phase.
+			int m_proxyCount = m_shape.GetChildCount();
 
-			//for (int i = 0; i < m_proxyCount; ++i)
-			//{
-			//    b2FixtureProxy* proxy = m_proxies + i;
-			//    m_shape.ComputeAABB(&proxy.aabb, xf, i);
-			//    proxy.proxyId = broadPhase.CreateProxy(proxy.aabb, proxy);
-			//    proxy.fixture = this;
-			//    proxy.childIndex = i;
-			//}
+			for (int i = 0; i < m_proxyCount; ++i) {
+				b2FixtureProxy proxy = new b2FixtureProxy();
+				m_shape.ComputeAABB(out proxy.aabb, xf, i);
+				proxy.proxyId = broadPhase.CreateProxy(proxy.aabb, proxy);
+				proxy.fixture = this;
+				proxy.childIndex = i;
+				m_proxies.Add(proxy);
+			}
 		}
 
 		protected void DestroyProxies(b2BroadPhase broadPhase){ //broadphase was pointer

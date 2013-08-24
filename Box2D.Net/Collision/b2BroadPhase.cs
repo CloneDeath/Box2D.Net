@@ -30,6 +30,7 @@ namespace Box2D {
 		}
 
 		public b2BroadPhase(){
+			m_tree = new b2DynamicTree();
 			m_proxyCount = 0;
 			m_pairBuffer = new List<b2Pair>();
 			m_moveBuffer = new List<int>();
@@ -38,11 +39,10 @@ namespace Box2D {
 		/// Create a proxy with an initial AABB. Pairs are not reported until
 		/// UpdatePairs is called.
 		public int CreateProxy(b2AABB aabb, object userData){
-			throw new NotImplementedException();
-			//float proxyId = m_tree.CreateProxy(aabb, userData);
-			//++m_proxyCount;
-			//BufferMove(proxyId);
-			//return proxyId;
+			int proxyId = m_tree.CreateProxy(aabb, userData);
+			++m_proxyCount;
+			BufferMove(proxyId);
+			return proxyId;
 		}
 
 		/// Destroy a proxy. It is up to the client to remove any pairs.
@@ -113,7 +113,7 @@ namespace Box2D {
 			    b2AABB fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
 			    // Query tree, create pairs and add them pair buffer.
-			    m_tree.Query(this, fatAABB);
+			    m_tree.Query(this.QueryCallback, fatAABB);
 			}
 
 			// Reset move buffer
@@ -151,7 +151,7 @@ namespace Box2D {
 
 		/// Query an AABB for overlapping proxies. The callback class
 		/// is called for each proxy that overlaps the supplied AABB.
-		public void Query<T>(T callback, b2AABB aabb){
+		public void Query(Func<int, bool> callback, b2AABB aabb){
 			m_tree.Query(callback, aabb);
 		}
 
@@ -189,18 +189,7 @@ namespace Box2D {
 		}
 
 		private void BufferMove(int proxyId){
-			throw new NotImplementedException();
-			//if (m_moveCount == m_moveCapacity)
-			//{
-			//    float* oldBuffer = m_moveBuffer;
-			//    m_moveCapacity *= 2;
-			//    m_moveBuffer = (float*)b2Alloc(m_moveCapacity * sizeof(float));
-			//    memcpy(m_moveBuffer, oldBuffer, m_moveCount * sizeof(float));
-			//    b2Free(oldBuffer);
-			//}
-
-			//m_moveBuffer[m_moveCount] = proxyId;
-			//++m_moveCount;
+			m_moveBuffer.Add(proxyId);
 		}
 		private void UnBufferMove(int proxyId){
 			throw new NotImplementedException();
@@ -214,28 +203,17 @@ namespace Box2D {
 		}
 
 		private bool QueryCallback(int proxyId){
-			throw new NotImplementedException();
-			//// A proxy cannot form a pair with itself.
-			//if (proxyId == m_queryProxyId)
-			//{
-			//    return true;
-			//}
+			// A proxy cannot form a pair with itself.
+			if (proxyId == m_queryProxyId) {
+				return true;
+			}
 
-			//// Grow the pair buffer as needed.
-			//if (m_pairBuffer.Count() == m_pairCapacity)
-			//{
-			//    b2Pair* oldBuffer = m_pairBuffer;
-			//    m_pairCapacity *= 2;
-			//    m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
-			//    memcpy(m_pairBuffer, oldBuffer, m_pairBuffer.Count() * sizeof(b2Pair));
-			//    b2Free(oldBuffer);
-			//}
+			b2Pair pair = new b2Pair();
+			pair.proxyIdA = Math.Min(proxyId, m_queryProxyId);
+			pair.proxyIdB = Math.Max(proxyId, m_queryProxyId);
+			m_pairBuffer.Add(pair);
 
-			//m_pairBuffer[m_pairBuffer.Count()].proxyIdA = Math.Min(proxyId, m_queryProxyId);
-			//m_pairBuffer[m_pairBuffer.Count()].proxyIdB = b2Max(proxyId, m_queryProxyId);
-			//++m_pairBuffer.Count();
-
-			//return true;
+			return true;
 		}
 
 
