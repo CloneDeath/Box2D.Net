@@ -14,11 +14,7 @@ namespace Box2D {
 
 		/// Implement b2Shape.
 		public override b2Shape Clone(){
-			throw new NotImplementedException();
-			//void* mem = allocator.Allocate(sizeof(b2CircleShape));
-			//b2CircleShape* clone = new (mem) b2CircleShape;
-			//*clone = *this;
-			//return clone;
+			return (b2Shape)this.MemberwiseClone();
 		}
 
 		/// @see b2Shape::GetChildCount
@@ -78,22 +74,20 @@ namespace Box2D {
 
 		/// @see b2Shape::ComputeAABB
 		public override void ComputeAABB(out b2AABB aabb, b2Transform transform, int childIndex) {
-			throw new NotImplementedException();
-			//B2_NOT_USED(childIndex);
-
-			//b2Vec2 p = transform.p + Utilities.b2Mul(transform.q, m_p);
-			//aabb.lowerBound.Set(p.x - m_radius, p.y - m_radius);
-			//aabb.upperBound.Set(p.x + m_radius, p.y + m_radius);
+			aabb = new b2AABB();
+			b2Vec2 p = transform.p + Utilities.b2Mul(transform.q, m_p);
+			aabb.lowerBound.Set(p.x - m_radius, p.y - m_radius);
+			aabb.upperBound.Set(p.x + m_radius, p.y + m_radius);
 		}
 
 		/// @see b2Shape::ComputeMass
 		public override void ComputeMass(out b2MassData massData, float density) {
-			throw new NotImplementedException();
-			//massData.mass = density * Math.PI * m_radius * m_radius;
-			//massData.center = m_p;
+			massData = new b2MassData();
+			massData.mass = density * (float)Math.PI * m_radius * m_radius;
+			massData.center = m_p;
 
-			//// inertia about the local origin
-			//massData.I = massData.mass * (0.5f * m_radius * m_radius + Utilities.b2Dot(m_p, m_p));
+			// inertia about the local origin
+			massData.I = massData.mass * (0.5f * m_radius * m_radius + Utilities.b2Dot(m_p, m_p));
 		}
 
 		/// Get the supporting vertex index in the given direction.

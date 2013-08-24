@@ -34,7 +34,7 @@
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2WeldJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor)
+void b2WeldJointDef::Initialize(b2Body* bA, b2Body* bB, b2Vec2 anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -267,7 +267,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		float C2 = aB - aA - m_referenceAngle;
 
 		positionError = C1.Length();
-		angularError = b2Abs(C2);
+		angularError = Math.Abs(C2);
 
 		b2Vec3 C(C1.x, C1.y, C2);
 	
@@ -286,7 +286,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return positionError <= b2_linearSlop && angularError <= b2_angularSlop;
+	return positionError <=b2Settings.b2_linearSlop && angularError <= b2Settings.b2_angularSlop;
 }
 
 b2Vec2 b2WeldJoint::GetAnchorA() const

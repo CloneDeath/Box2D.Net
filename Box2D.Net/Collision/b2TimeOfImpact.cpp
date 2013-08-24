@@ -26,9 +26,7 @@
 #include <cstdio>
 using namespace std;
 
-float b2_toiTime, b2_toiMaxTime;
-int b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-int b2_toiRootIters, b2_toiMaxRootIters;
+
 
 //
 struct b2SeparationFunction

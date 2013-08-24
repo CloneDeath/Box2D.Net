@@ -27,13 +27,13 @@ namespace Box2D {
 	}
 
 	/// This is an internal structure.
-	public struct b2Position {
+	public class b2Position { //was struct
 		public b2Vec2 c;
 		public float a;
 	}
 
 	/// This is an internal structure.
-	public struct b2Velocity {
+	public class b2Velocity { //was struct
 		public b2Vec2 v;
 		public float w;
 	}

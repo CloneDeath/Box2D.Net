@@ -54,19 +54,19 @@ inline float b2InvSqrt(float x)
 
 
 template <typename T>
-inline T b2Abs(T a)
+inline T Math.Abs(T a)
 {
 	return a > T(0) ? a : -a;
 }
 
-inline b2Vec2 b2Abs(const b2Vec2& a)
+inline b2Vec2 Math.Abs(b2Vec2 a)
 {
-	return b2Vec2(b2Abs(a.x), b2Abs(a.y));
+	return b2Vec2(Math.Abs(a.x), Math.Abs(a.y));
 }
 
-inline b2Mat22 b2Abs(const b2Mat22& A)
+inline b2Mat22 Math.Abs(const b2Mat22& A)
 {
-	return b2Mat22(b2Abs(A.ex), b2Abs(A.ey));
+	return b2Mat22(Math.Abs(A.ex), Math.Abs(A.ey));
 }
 
 template <typename T>
@@ -78,7 +78,7 @@ inline T Math.Min(T a, T b)
 
 
 template <typename T>
-inline T b2Max(T a, T b)
+inline T Math.Max(T a, T b)
 {
 	return a > b ? a : b;
 }
@@ -89,12 +89,12 @@ inline T b2Max(T a, T b)
 template <typename T>
 inline T b2Clamp(T a, T low, T high)
 {
-	return b2Max(low, Math.Min(a, high));
+	return Math.Max(low, Math.Min(a, high));
 }
 
-inline b2Vec2 b2Clamp(const b2Vec2& a, const b2Vec2& low, const b2Vec2& high)
+inline b2Vec2 b2Clamp(b2Vec2 a, b2Vec2 low, b2Vec2 high)
 {
-	return b2Max(low, Math.Min(a, high));
+	return Math.Max(low, Math.Min(a, high));
 }
 
 template<typename T> inline void b2Swap(T& a, T& b)

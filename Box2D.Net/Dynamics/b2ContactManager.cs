@@ -124,73 +124,32 @@ namespace Box2D {
 		}
 
 		public void Destroy(b2Contact c) {
-			throw new NotImplementedException();
-			//b2Fixture* fixtureA = c.GetFixtureA();
-			//b2Fixture* fixtureB = c.GetFixtureB();
-			//b2Body* bodyA = fixtureA.GetBody();
-			//b2Body* bodyB = fixtureB.GetBody();
+			b2Fixture fixtureA = c.GetFixtureA();
+			b2Fixture fixtureB = c.GetFixtureB();
+			b2Body bodyA = fixtureA.GetBody();
+			b2Body bodyB = fixtureB.GetBody();
 
-			//if (m_contactListener && c.IsTouching())
-			//{
-			//    m_contactListener.EndContact(c);
-			//}
+			if (m_contactListener != null && c.IsTouching())
+			{
+			    m_contactListener.EndContact(c);
+			}
 
-			//// Remove from the world.
-			//if (c.m_prev)
-			//{
-			//    c.m_prev.m_next = c.m_next;
-			//}
+			// Remove from the world.
+			m_contactList.Remove(c);
 
-			//if (c.m_next)
-			//{
-			//    c.m_next.m_prev = c.m_prev;
-			//}
+			// Remove from body 1
+			c.m_nodeA.other.m_contactList.Remove(c.m_nodeA);
 
-			//if (c == m_contactList)
-			//{
-			//    m_contactList = c.m_next;
-			//}
+			// Remove from body 2
+			c.m_nodeB.other.m_contactList.Remove(c.m_nodeA);
 
-			//// Remove from body 1
-			//if (c.m_nodeA.prev)
-			//{
-			//    c.m_nodeA.prev.next = c.m_nodeA.next;
-			//}
-
-			//if (c.m_nodeA.next)
-			//{
-			//    c.m_nodeA.next.prev = c.m_nodeA.prev;
-			//}
-
-			//if (&c.m_nodeA == bodyA.m_contactList)
-			//{
-			//    bodyA.m_contactList = c.m_nodeA.next;
-			//}
-
-			//// Remove from body 2
-			//if (c.m_nodeB.prev)
-			//{
-			//    c.m_nodeB.prev.next = c.m_nodeB.next;
-			//}
-
-			//if (c.m_nodeB.next)
-			//{
-			//    c.m_nodeB.next.prev = c.m_nodeB.prev;
-			//}
-
-			//if (&c.m_nodeB == bodyB.m_contactList)
-			//{
-			//    bodyB.m_contactList = c.m_nodeB.next;
-			//}
-
-			//// Call the factory.
-			//b2Contact::Destroy(c, m_allocator);
-			//--m_contactCount;
+			// Call the factory.
 		}
 
 		public void Collide() {
 			// Update awake contacts.
-			foreach (b2Contact c in m_contactList){
+			for (int i = 0; i < m_contactList.Count(); i++){
+				b2Contact c = m_contactList[i];
 			    b2Fixture fixtureA = c.GetFixtureA();
 			    b2Fixture fixtureB = c.GetFixtureB();
 			    int indexA = c.GetChildIndexA();
@@ -224,35 +183,29 @@ namespace Box2D {
 					//c.m_flags &= ~ContactFlags.e_filterFlag;
 			    }
 
-				throw new NotImplementedException();
-				//bool activeA = bodyA.IsAwake() && bodyA.m_type != b2_staticBody;
-				//bool activeB = bodyB.IsAwake() && bodyB.m_type != b2_staticBody;
+				bool activeA = bodyA.IsAwake() && bodyA.m_type != b2BodyType.b2_staticBody;
+				bool activeB = bodyB.IsAwake() && bodyB.m_type != b2BodyType.b2_staticBody;
 
-				//// At least one body must be awake and it must be dynamic or kinematic.
-				//if (activeA == false && activeB == false)
-				//{
-				//    continue;
-				//}
+				// At least one body must be awake and it must be dynamic or kinematic.
+				if (activeA == false && activeB == false) {
+					continue;
+				}
 
-				//int proxyIdA = fixtureA.m_proxies[indexA].proxyId;
-				//int proxyIdB = fixtureB.m_proxies[indexB].proxyId;
-				//bool overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
+				int proxyIdA = fixtureA.m_proxies[indexA].proxyId;
+				int proxyIdB = fixtureB.m_proxies[indexB].proxyId;
+				bool overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
 
-				//// Here we destroy contacts that cease to overlap in the broad-phase.
-				//if (overlap == false)
-				//{
-				//    b2Contact* cNuke = c;
-				//    c = cNuke.GetNext();
-				//    Destroy(cNuke);
-				//    continue;
-				//}
+				// Here we destroy contacts that cease to overlap in the broad-phase.
+				if (overlap == false) {
+					Destroy(c);
+					continue;
+				}
 
-				//// The contact persists.
-				//c.Update(m_contactListener);
-				//c = c.GetNext();
+				// The contact persists.
+				c.Update(m_contactListener);
 			}
 		}
 
 		
-	};
+	}
 }

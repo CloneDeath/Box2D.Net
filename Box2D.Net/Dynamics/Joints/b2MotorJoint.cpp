@@ -245,7 +245,7 @@ float b2MotorJoint::GetMaxTorque() const
 	return m_maxTorque;
 }
 
-void b2MotorJoint::SetLinearOffset(const b2Vec2& linearOffset)
+void b2MotorJoint::SetLinearOffset(b2Vec2 linearOffset)
 {
 	if (linearOffset.x != m_linearOffset.x || linearOffset.y != m_linearOffset.y)
 	{
@@ -255,7 +255,7 @@ void b2MotorJoint::SetLinearOffset(const b2Vec2& linearOffset)
 	}
 }
 
-const b2Vec2& b2MotorJoint::GetLinearOffset() const
+b2Vec2 b2MotorJoint::GetLinearOffset() const
 {
 	return m_linearOffset;
 }

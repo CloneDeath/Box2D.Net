@@ -35,6 +35,10 @@ namespace Box2D {
 			return new b2Vec3(s * a.x, s * a.y, s * a.z);
 		}
 
+		public static b2Vec3 operator *(b2Vec3 lhs, float rhs) {
+			return new b2Vec3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
+		}
+
 		/// Add two vectors component-wise.
 		public static b2Vec3 operator + (b2Vec3 a, b2Vec3 b)
 		{

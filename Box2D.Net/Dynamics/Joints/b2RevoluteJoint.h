@@ -50,7 +50,7 @@ struct b2RevoluteJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
-	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
+	void Initialize(b2Body* bodyA, b2Body* bodyB, b2Vec2 anchor);
 
 	/// The local anchor point relative to bodyA's origin.
 	b2Vec2 localAnchorA;
@@ -94,10 +94,10 @@ public:
 	b2Vec2 GetAnchorB() const;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	b2Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	b2Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Get the reference angle.
 	float GetReferenceAngle() const { return m_referenceAngle; }

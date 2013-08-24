@@ -83,6 +83,7 @@ namespace HelloWorld {
 
 			// When the world destructor is called, all bodies and joints are freed. This can
 			// create orphaned pointers, so be careful about your world management.
+			Console.WriteLine("Done!");
 			Console.ReadLine();
 			return 0;
 		}

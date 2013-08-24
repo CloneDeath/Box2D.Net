@@ -124,7 +124,7 @@ namespace Box2D {
 			m_gamma = 0.0f;
 		}
 
-		protected override void InitVelocityConstraints(b2SolverData data) {
+		internal override void InitVelocityConstraints(b2SolverData data) {
 			throw new NotImplementedException();
 			//m_indexB = m_bodyB.m_islandIndex;
 			//m_localCenterB = m_bodyB.m_sweep.localCenter;
@@ -196,7 +196,7 @@ namespace Box2D {
 			//data.velocities[m_indexB].w = wB;
 		}
 
-		protected override void SolveVelocityConstraints(b2SolverData data) {
+		internal override void SolveVelocityConstraints(b2SolverData data) {
 			throw new NotImplementedException();
 			//b2Vec2 vB = data.velocities[m_indexB].v;
 			//float wB = data.velocities[m_indexB].w;
@@ -221,7 +221,7 @@ namespace Box2D {
 			//data.velocities[m_indexB].w = wB;
 		}
 
-		protected override bool SolvePositionConstraints(b2SolverData data) {
+		internal override bool SolvePositionConstraints(b2SolverData data) {
 			return true;
 		}
 

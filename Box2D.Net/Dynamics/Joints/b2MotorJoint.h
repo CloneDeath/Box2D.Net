@@ -66,8 +66,8 @@ public:
 	float GetReactionTorque(float inv_dt) const;
 
 	/// Set/get the target linear offset, in frame A, in meters.
-	void SetLinearOffset(const b2Vec2& linearOffset);
-	const b2Vec2& GetLinearOffset() const;
+	void SetLinearOffset(b2Vec2 linearOffset);
+	b2Vec2 GetLinearOffset() const;
 
 	/// Set/get the target angular offset, in radians.
 	void SetAngularOffset(float angularOffset);

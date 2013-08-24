@@ -36,7 +36,7 @@
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
 void b2DistanceJointDef::Initialize(b2Body* b1, b2Body* b2,
-									const b2Vec2& anchor1, const b2Vec2& anchor2)
+									b2Vec2 anchor1, b2Vec2 anchor2)
 {
 	bodyA = b1;
 	bodyB = b2;
@@ -88,7 +88,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	// Handle singularity.
 	float length = m_u.Length();
-	if (length > b2_linearSlop)
+	if (length >b2Settings.b2_linearSlop)
 	{
 		m_u *= 1.0f / length;
 	}
@@ -217,7 +217,7 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return b2Abs(C) < b2_linearSlop;
+	return Math.Abs(C) <b2Settings.b2_linearSlop;
 }
 
 b2Vec2 b2DistanceJoint::GetAnchorA() const

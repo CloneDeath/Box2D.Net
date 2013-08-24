@@ -36,7 +36,7 @@
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-void b2WheelJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor, const b2Vec2& axis)
+void b2WheelJointDef::Initialize(b2Body* bA, b2Body* bB, b2Vec2 anchor, b2Vec2 axis)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -323,7 +323,7 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return b2Abs(C) <= b2_linearSlop;
+	return Math.Abs(C) <=b2Settings.b2_linearSlop;
 }
 
 b2Vec2 b2WheelJoint::GetAnchorA() const

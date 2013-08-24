@@ -52,7 +52,7 @@ void* b2StackAllocator::Allocate(int size)
 	}
 
 	m_allocation += size;
-	m_maxAllocation = b2Max(m_maxAllocation, m_allocation);
+	m_maxAllocation = Math.Max(m_maxAllocation, m_allocation);
 	++m_entryCount;
 
 	return entry.data;

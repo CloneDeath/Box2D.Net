@@ -53,14 +53,6 @@ namespace Box2D {
 			m_insertionCount = 0;
 		}
 
-
-		/// Destroy the tree, freeing the node pool.
-		~b2DynamicTree(){
-			throw new NotImplementedException();
-			//// This frees the entire tree in one shot.
-			//b2Free(m_nodes);
-		}
-
 		/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
 		public int CreateProxy(b2AABB aabb, object userData){
 			int proxyId = AllocateNode();
@@ -91,50 +83,49 @@ namespace Box2D {
 		/// then the proxy is removed from the tree and re-inserted. Otherwise
 		/// the function returns immediately.
 		/// @return true if the proxy was re-inserted.
-		public bool MoveProxy(int proxyId, b2AABB aabb1, b2Vec2 displacement){
-			throw new NotImplementedException();
-			//Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+		public bool MoveProxy(int proxyId, b2AABB aabb, b2Vec2 displacement){
+			Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 
-			//Utilities.Assert(m_nodes[proxyId].IsLeaf());
+			Utilities.Assert(m_nodes[proxyId].IsLeaf());
 
-			//if (m_nodes[proxyId].aabb.Contains(aabb))
-			//{
-			//    return false;
-			//}
+			if (m_nodes[proxyId].aabb.Contains(aabb))
+			{
+			    return false;
+			}
 
-			//RemoveLeaf(proxyId);
+			RemoveLeaf(proxyId);
 
-			//// Extend AABB.
-			//b2AABB b = aabb;
-			//b2Vec2 r(b2_aabbExtension, b2_aabbExtension);
-			//b.lowerBound = b.lowerBound - r;
-			//b.upperBound = b.upperBound + r;
+			// Extend AABB.
+			b2AABB b = aabb;
+			b2Vec2 r = new b2Vec2(b2Settings.b2_aabbExtension, b2Settings.b2_aabbExtension);
+			b.lowerBound = b.lowerBound - r;
+			b.upperBound = b.upperBound + r;
 
-			//// Predict AABB displacement.
-			//b2Vec2 d = b2_aabbMultiplier * displacement;
+			// Predict AABB displacement.
+			b2Vec2 d = b2Settings.b2_aabbMultiplier * displacement;
 
-			//if (d.x < 0.0f)
-			//{
-			//    b.lowerBound.x += d.x;
-			//}
-			//else
-			//{
-			//    b.upperBound.x += d.x;
-			//}
+			if (d.x < 0.0f)
+			{
+			    b.lowerBound.x += d.x;
+			}
+			else
+			{
+			    b.upperBound.x += d.x;
+			}
 
-			//if (d.y < 0.0f)
-			//{
-			//    b.lowerBound.y += d.y;
-			//}
-			//else
-			//{
-			//    b.upperBound.y += d.y;
-			//}
+			if (d.y < 0.0f)
+			{
+			    b.lowerBound.y += d.y;
+			}
+			else
+			{
+			    b.upperBound.y += d.y;
+			}
 
-			//m_nodes[proxyId].aabb = b;
+			m_nodes[proxyId].aabb = b;
 
-			//InsertLeaf(proxyId);
-			//return true;
+			InsertLeaf(proxyId);
+			return true;
 		}
 
 		/// Get proxy user data.
@@ -197,7 +188,7 @@ namespace Box2D {
 
 			//// v is perpendicular to the segment.
 			//b2Vec2 v = Utilities.b2Cross(1.0f, r);
-			//b2Vec2 abs_v = b2Abs(v);
+			//b2Vec2 abs_v = Math.Abs(v);
 
 			//// Separating axis for segment (Gino, p80).
 			//// |dot(v, p1 - c)| > dot(|v|, h)
@@ -209,7 +200,7 @@ namespace Box2D {
 			//{
 			//    b2Vec2 t = p1 + maxFraction * (p2 - p1);
 			//    segmentAABB.lowerBound = Math.Min(p1, t);
-			//    segmentAABB.upperBound = b2Max(p1, t);
+			//    segmentAABB.upperBound = Math.Max(p1, t);
 			//}
 
 			//b2GrowableStack<int, 256> stack;
@@ -234,7 +225,7 @@ namespace Box2D {
 			//    // |dot(v, p1 - c)| > dot(|v|, h)
 			//    b2Vec2 c = node.aabb.GetCenter();
 			//    b2Vec2 h = node.aabb.GetExtents();
-			//    float separation = b2Abs(Utilities.b2Dot(v, p1 - c)) - Utilities.b2Dot(abs_v, h);
+			//    float separation = Math.Abs(Utilities.b2Dot(v, p1 - c)) - Utilities.b2Dot(abs_v, h);
 			//    if (separation > 0.0f)
 			//    {
 			//        continue;
@@ -261,7 +252,7 @@ namespace Box2D {
 			//            maxFraction = value;
 			//            b2Vec2 t = p1 + maxFraction * (p2 - p1);
 			//            segmentAABB.lowerBound = Math.Min(p1, t);
-			//            segmentAABB.upperBound = b2Max(p1, t);
+			//            segmentAABB.upperBound = Math.Max(p1, t);
 			//        }
 			//    }
 			//    else
@@ -321,8 +312,8 @@ namespace Box2D {
 
 			//    int child1 = node.child1;
 			//    int child2 = node.child2;
-			//    int balance = b2Abs(m_nodes[child2].height - m_nodes[child1].height);
-			//    maxBalance = b2Max(maxBalance, balance);
+			//    int balance = Math.Abs(m_nodes[child2].height - m_nodes[child1].height);
+			//    maxBalance = Math.Max(maxBalance, balance);
 			//}
 
 			//return maxBalance;
@@ -384,7 +375,7 @@ namespace Box2D {
 
 			//while (count > 1)
 			//{
-			//    float minCost = b2_maxFloat;
+			//    float minCost = Single.MaxValue;
 			//    int iMin = -1, jMin = -1;
 			//    for (int i = 0; i < count; ++i)
 			//    {
@@ -414,7 +405,7 @@ namespace Box2D {
 			//    b2TreeNode* parent = m_nodes + parentIndex;
 			//    parent.child1 = index1;
 			//    parent.child2 = index2;
-			//    parent.height = 1 + b2Max(child1.height, child2.height);
+			//    parent.height = 1 + Math.Max(child1.height, child2.height);
 			//    parent.aabb.Combine(child1.aabb, child2.aabb);
 			//    parent.parent = b2_nullNode;
 
@@ -484,14 +475,13 @@ namespace Box2D {
 			++m_nodeCount;
 			return nodeId;
 		}
-		private void FreeNode(int node){
-			throw new NotImplementedException();
-			//Utilities.Assert(0 <= nodeId && nodeId < m_nodeCapacity);
-			//Utilities.Assert(0 < m_nodeCount);
-			//m_nodes[nodeId].next = m_freeList;
-			//m_nodes[nodeId].height = -1;
-			//m_freeList = nodeId;
-			//--m_nodeCount;
+		private void FreeNode(int nodeId) {
+			Utilities.Assert(0 <= nodeId && nodeId < m_nodeCapacity);
+			Utilities.Assert(0 < m_nodeCount);
+			m_nodes[nodeId].next = m_freeList;
+			m_nodes[nodeId].height = -1;
+			m_freeList = nodeId;
+			--m_nodeCount;
 		}
 
 		private void InsertLeaf(int leaf) {
@@ -613,63 +603,51 @@ namespace Box2D {
 
 			//Validate();
 		}
-		private void RemoveLeaf(int node){
-			throw new NotImplementedException();
-			//if (leaf == m_root)
-			//{
-			//    m_root = b2_nullNode;
-			//    return;
-			//}
+		private void RemoveLeaf(int leaf) {
+			if (leaf == m_root) {
+				m_root = b2TreeNode.b2_nullNode;
+				return;
+			}
 
-			//int parent = m_nodes[leaf].parent;
-			//int grandParent = m_nodes[parent].parent;
-			//int sibling;
-			//if (m_nodes[parent].child1 == leaf)
-			//{
-			//    sibling = m_nodes[parent].child2;
-			//}
-			//else
-			//{
-			//    sibling = m_nodes[parent].child1;
-			//}
+			int parent = m_nodes[leaf].parent;
+			int grandParent = m_nodes[parent].parent;
+			int sibling;
+			if (m_nodes[parent].child1 == leaf) {
+				sibling = m_nodes[parent].child2;
+			} else {
+				sibling = m_nodes[parent].child1;
+			}
 
-			//if (grandParent != b2_nullNode)
-			//{
-			//    // Destroy parent and connect sibling to grandParent.
-			//    if (m_nodes[grandParent].child1 == parent)
-			//    {
-			//        m_nodes[grandParent].child1 = sibling;
-			//    }
-			//    else
-			//    {
-			//        m_nodes[grandParent].child2 = sibling;
-			//    }
-			//    m_nodes[sibling].parent = grandParent;
-			//    FreeNode(parent);
+			if (grandParent != b2TreeNode.b2_nullNode) {
+				// Destroy parent and connect sibling to grandParent.
+				if (m_nodes[grandParent].child1 == parent) {
+					m_nodes[grandParent].child1 = sibling;
+				} else {
+					m_nodes[grandParent].child2 = sibling;
+				}
+				m_nodes[sibling].parent = grandParent;
+				FreeNode(parent);
 
-			//    // Adjust ancestor bounds.
-			//    int index = grandParent;
-			//    while (index != b2_nullNode)
-			//    {
-			//        index = Balance(index);
+				// Adjust ancestor bounds.
+				int index = grandParent;
+				while (index != b2TreeNode.b2_nullNode) {
+					index = Balance(index);
 
-			//        int child1 = m_nodes[index].child1;
-			//        int child2 = m_nodes[index].child2;
+					int child1 = m_nodes[index].child1;
+					int child2 = m_nodes[index].child2;
 
-			//        m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
-			//        m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
+					m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
+					m_nodes[index].height = 1 + Math.Max(m_nodes[child1].height, m_nodes[child2].height);
 
-			//        index = m_nodes[index].parent;
-			//    }
-			//}
-			//else
-			//{
-			//    m_root = sibling;
-			//    m_nodes[sibling].parent = b2_nullNode;
-			//    FreeNode(parent);
-			//}
+					index = m_nodes[index].parent;
+				}
+			} else {
+				m_root = sibling;
+				m_nodes[sibling].parent = b2TreeNode.b2_nullNode;
+				FreeNode(parent);
+			}
 
-			////Validate();
+			//Validate();
 		}
 
 		private int Balance(int iA) {
@@ -809,7 +787,7 @@ namespace Box2D {
 
 			//int height1 = ComputeHeight(node.child1);
 			//int height2 = ComputeHeight(node.child2);
-			//return 1 + b2Max(height1, height2);
+			//return 1 + Math.Max(height1, height2);
 		}
 
 		private void ValidateStructure(int index){
@@ -872,7 +850,7 @@ namespace Box2D {
 			//int height1 = m_nodes[child1].height;
 			//int height2 = m_nodes[child2].height;
 			//int height;
-			//height = 1 + b2Max(height1, height2);
+			//height = 1 + Math.Max(height1, height2);
 			//Utilities.Assert(node.height == height);
 
 			//b2AABB aabb;

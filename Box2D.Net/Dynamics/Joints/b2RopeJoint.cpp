@@ -82,7 +82,7 @@ void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_state = e_inactiveLimit;
 	}
 
-	if (m_length > b2_linearSlop)
+	if (m_length >b2Settings.b2_linearSlop)
 	{
 		m_u *= 1.0f / m_length;
 	}
@@ -190,7 +190,7 @@ bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return length - m_maxLength < b2_linearSlop;
+	return length - m_maxLength <b2Settings.b2_linearSlop;
 }
 
 b2Vec2 b2RopeJoint::GetAnchorA() const

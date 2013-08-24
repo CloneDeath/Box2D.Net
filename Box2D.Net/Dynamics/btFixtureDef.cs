@@ -40,6 +40,7 @@ namespace Box2D {
 			restitution = 0.0f;
 			density = 0.0f;
 			isSensor = false;
+			filter = new b2Filter();
 		}
 	}
 }

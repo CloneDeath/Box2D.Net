@@ -32,7 +32,7 @@ public:
 		m_hit = false;
 	}
 
-	float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction)
+	float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 	{
 		b2Body* body = fixture.GetBody();
 		void* userData = body.GetUserData();
@@ -72,7 +72,7 @@ public:
 		m_hit = false;
 	}
 
-	float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction)
+	float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 	{
 		b2Body* body = fixture.GetBody();
 		void* userData = body.GetUserData();
@@ -117,7 +117,7 @@ public:
 		m_count = 0;
 	}
 
-	float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction)
+	float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 	{
 		b2Body* body = fixture.GetBody();
 		void* userData = body.GetUserData();

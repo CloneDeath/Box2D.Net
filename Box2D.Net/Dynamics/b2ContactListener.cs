@@ -19,14 +19,10 @@ namespace Box2D {
 
 		/// Called when two fixtures begin to touch.
 		public virtual void BeginContact(b2Contact contact) { 
-			throw new NotImplementedException();
-			//B2_NOT_USED(contact); 
 		}
 
 		/// Called when two fixtures cease to touch.
 		public virtual void EndContact(b2Contact contact) { 
-			throw new NotImplementedException();
-			//B2_NOT_USED(contact); 
 		}
 
 		/// This is called after a contact is updated. This allows you to inspect a
@@ -41,9 +37,6 @@ namespace Box2D {
 		/// the next step.
 		public virtual void PreSolve(b2Contact contact, b2Manifold oldManifold)
 		{
-			throw new NotImplementedException();
-			//B2_NOT_USED(contact);
-			//B2_NOT_USED(oldManifold);
 		}
 
 		/// This lets you inspect a contact after the solver is finished. This is useful
@@ -54,9 +47,6 @@ namespace Box2D {
 		/// Note: this is only called for contacts that are touching, solid, and awake.
 		public virtual void PostSolve(b2Contact contact, b2ContactImpulse impulse)
 		{
-			throw new NotImplementedException();
-			//B2_NOT_USED(contact);
-			//B2_NOT_USED(impulse);
 		}
 	};
 }

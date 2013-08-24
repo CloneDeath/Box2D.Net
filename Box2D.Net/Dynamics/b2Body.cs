@@ -724,8 +724,7 @@ namespace Box2D {
 
 		/// Is this body treated like a bullet for continuous collision detection?
 		public bool IsBullet(){
-			throw new NotImplementedException();
-			//return (m_flags & e_bulletFlag) == e_bulletFlag;
+			return (m_flags & BodyFlags.e_bulletFlag) == BodyFlags.e_bulletFlag;
 		}
 
 		/// You can disable sleeping on this body. If you disable sleeping, the
@@ -1025,22 +1024,19 @@ namespace Box2D {
 		}
 
 		internal void SynchronizeFixtures(){
-			throw new NotImplementedException();
-			//b2Transform xf1;
-			//xf1.q.Set(m_sweep.a0);
-			//xf1.p = m_sweep.c0 - Utilities.b2Mul(xf1.q, m_sweep.localCenter);
+			b2Transform xf1 = new b2Transform();
+			xf1.q.Set(m_sweep.a0);
+			xf1.p = m_sweep.c0 - Utilities.b2Mul(xf1.q, m_sweep.localCenter);
 
-			//b2BroadPhase* broadPhase = &m_world.m_contactManager.m_broadPhase;
-			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
-			//{
-			//    f.Synchronize(broadPhase, xf1, m_xf);
-			//}
+			b2BroadPhase broadPhase = m_world.m_contactManager.m_broadPhase;
+			foreach (b2Fixture f in m_fixtureList){
+				f.Synchronize(broadPhase, xf1, m_xf);
+			}
 		}
 
 		internal void SynchronizeTransform(){
-			throw new NotImplementedException();
-			//m_xf.q.Set(m_sweep.a);
-			//m_xf.p = m_sweep.c - Utilities.b2Mul(m_xf.q, m_sweep.localCenter);
+			m_xf.q.Set(m_sweep.a);
+			m_xf.p = m_sweep.c - Utilities.b2Mul(m_xf.q, m_sweep.localCenter);
 		}
 
 		// This is used to prevent connected bodies from colliding.
@@ -1079,11 +1075,11 @@ namespace Box2D {
 
 		internal int m_islandIndex;
 
-		private b2Transform m_xf;		// the body origin transform
+		internal b2Transform m_xf;		// the body origin transform
 		internal b2Sweep m_sweep;		// the swept motion for CCD
 
-		private b2Vec2 m_linearVelocity;
-		private float m_angularVelocity;
+		internal b2Vec2 m_linearVelocity;
+		internal float m_angularVelocity;
 
 		internal b2Vec2 m_force;
 		internal float m_torque;
@@ -1102,11 +1098,11 @@ namespace Box2D {
 		// Rotational inertia about the center of mass.
 		internal float m_I, m_invI;
 
-		private float m_linearDamping;
-		private float m_angularDamping;
-		private float m_gravityScale;
+		internal float m_linearDamping;
+		internal float m_angularDamping;
+		internal float m_gravityScale;
 
-		private float m_sleepTime;
+		internal float m_sleepTime;
 
 		private object m_userData;
 	}

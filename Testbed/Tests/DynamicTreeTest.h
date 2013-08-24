@@ -75,7 +75,7 @@ public:
 
 		if (m_automated == true)
 		{
-			int actionCount = b2Max(1, e_actorCount >> 2);
+			int actionCount = Math.Max(1, e_actorCount >> 2);
 
 			for (int i = 0; i < actionCount; ++i)
 			{

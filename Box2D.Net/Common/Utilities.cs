@@ -206,5 +206,9 @@ namespace Box2D {
 		{
 			return new b2Vec2(Math.Max(a.x, b.x), Math.Max(a.y, b.y));
 		}
+
+		internal static float b2Clamp(float val, float lo, float hi) {
+			return Math.Max(lo, Math.Min(hi, val));
+		}
 	}
 }

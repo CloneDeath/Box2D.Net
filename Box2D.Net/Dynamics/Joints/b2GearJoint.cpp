@@ -364,7 +364,7 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexD].a = aD;
 
 	// TODO_ERIN not implemented
-	return linearError < b2_linearSlop;
+	return linearError <b2Settings.b2_linearSlop;
 }
 
 b2Vec2 b2GearJoint::GetAnchorA() const

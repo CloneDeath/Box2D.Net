@@ -34,8 +34,57 @@ namespace Testbed {
 		static ListBox testList;
 		public static void Main(string[] args) {
 			testCount = 0;
-			g_testEntries = new TestEntry[]{
-				new TestEntry("ApplyForce", ApplyForce.Create),
+			g_testEntries = new TestEntry[]
+			{
+				//new TestEntry("Continuous Test", ContinuousTest.Create),
+				//new TestEntry("Time of Impact", TimeOfImpact.Create),
+				//new TestEntry("Motor Joint", MotorJoint.Create),
+				//new TestEntry("One-Sided Platform", OneSidedPlatform.Create),
+				//new TestEntry("Dump Shell", DumpShell.Create),
+				//new TestEntry("Mobile", Mobile.Create),
+				//new TestEntry("MobileBalanced", MobileBalanced.Create),
+				//new TestEntry("Ray-Cast", RayCast.Create),
+				//new TestEntry("Conveyor Belt", ConveyorBelt.Create),
+				//new TestEntry("Gears", Gears.Create),
+				//new TestEntry("Convex Hull", ConvexHull.Create),
+				//new TestEntry("Varying Restitution", VaryingRestitution.Create),
+				//new TestEntry("Tumbler", Tumbler.Create),
+				//new TestEntry("Tiles", Tiles.Create),
+				//new TestEntry("Cantilever", Cantilever.Create),
+				//new TestEntry("Character Collision", CharacterCollision.Create),
+				//new TestEntry("Edge Test", EdgeTest.Create),
+				//new TestEntry("Body Types", BodyTypes.Create),
+				//new TestEntry("Shape Editing", ShapeEditing.Create),
+				//new TestEntry("Car", Car.Create),
+				new TestEntry("Apply Force", ApplyForce.Create),
+				//new TestEntry("Prismatic", Prismatic.Create),
+				//new TestEntry("Vertical Stack", VerticalStack.Create),
+				//new TestEntry("SphereStack", SphereStack.Create),
+				//new TestEntry("Revolute", Revolute.Create),
+				//new TestEntry("Pulleys", Pulleys.Create),
+				//new TestEntry("Polygon Shapes", PolyShapes.Create),
+				//new TestEntry("Web", Web.Create),
+				//new TestEntry("RopeJoint", RopeJoint.Create),
+				//new TestEntry("Pinball", Pinball.Create),
+				//new TestEntry("Bullet Test", BulletTest.Create),
+				//new TestEntry("Confined", Confined.Create),
+				//new TestEntry("Pyramid", Pyramid.Create),
+				//new TestEntry("Theo Jansen's Walker", TheoJansen.Create),
+				//new TestEntry("Edge Shapes", EdgeShapes.Create),
+				//new TestEntry("PolyCollision", PolyCollision.Create),
+				//new TestEntry("Bridge", Bridge.Create),
+				//new TestEntry("Breakable", Breakable.Create),
+				//new TestEntry("Chain", Chain.Create),
+				new TestEntry("Collision Filtering", CollisionFiltering.Create),
+				//new TestEntry("Collision Processing", CollisionProcessing.Create),
+				//new TestEntry("Compound Shapes", CompoundShapes.Create),
+				//new TestEntry("Distance Test", DistanceTest.Create),
+				//new TestEntry("Dominos", Dominos.Create),
+				//new TestEntry("Dynamic Tree", DynamicTreeTest.Create),
+				//new TestEntry("Sensor Test", SensorTest.Create),
+				//new TestEntry("Slider Crank", SliderCrank.Create),
+				//new TestEntry("Varying Friction", VaryingFriction.Create),
+				//new TestEntry("Add Pair Stress Test", AddPair.Create),
 			};
 
 			while (testCount < g_testEntries.Count())
@@ -167,12 +216,15 @@ namespace Testbed {
 			//glui.add_button("Quit", 0,(GLUI_Update_CB)Exit);
 			//glui.set_main_gfx_window( mainWindow );
 
-			glui.SetSize(200, 200);
+			glui.SetSize(200, 300);
 			GraphicsManager.Start();
 		}
 
 		static void GraphicsManager_Update() {
 			Keyboard();
+
+			camera.SetLocation(settings.viewCenter.x, settings.viewCenter.y);
+			camera.SetZoom(viewZoom);
 		}
 
 		static b2Vec2 ConvertScreenToWorld(int x, int y)
@@ -205,7 +257,7 @@ namespace Testbed {
 				entry = g_testEntries[testIndex];
 				test = entry.createFcn();
 				viewZoom = 1.0f;
-				//camera.SetZoom(viewZoom);
+				camera.SetZoom(viewZoom);
 				settings.viewCenter.Set(0.0f, 20.0f);
 			}
 		}
@@ -263,7 +315,7 @@ namespace Testbed {
 			}
 
 			    // Press left to pan left.
-			if (KeyboardManager.IsPressed(Key.Left)){
+			if (KeyboardManager.IsDown(Key.Left)){
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
 			        b2Vec2 newOrigin = new b2Vec2(2.0f, 0.0f);
@@ -271,13 +323,12 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.x -= 0.5f;
-					//camera.SetZoom(viewZoom);
+			        settings.viewCenter.x += 0.5f;
 			    }
 			}
 
 			    // Press right to pan right.
-			if (KeyboardManager.IsPressed(Key.Right)){
+			if (KeyboardManager.IsDown(Key.Right)) {
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
 			        b2Vec2 newOrigin = new b2Vec2(-2.0f, 0.0f);
@@ -285,13 +336,12 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.x += 0.5f;
-			    	//camera.SetZoom(viewZoom);
+			        settings.viewCenter.x -= 0.5f;
 			    }
 			}
 
 			    // Press down to pan down.
-			if (KeyboardManager.IsPressed(Key.Down)){
+			if (KeyboardManager.IsDown(Key.Down)) {
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
 			        b2Vec2 newOrigin = new b2Vec2(0.0f, 2.0f);
@@ -299,13 +349,12 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.y -= 0.5f;
-			        //camera.SetZoom(viewZoom);
+			        settings.viewCenter.y += 0.5f;
 			    }
 			}
 
 			    // Press up to pan up.
-			if (KeyboardManager.IsPressed(Key.Up)){
+			if (KeyboardManager.IsDown(Key.Up)) {
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
 			        b2Vec2 newOrigin = new b2Vec2(0.0f, -2.0f);
@@ -313,8 +362,7 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.y += 0.5f;
-			        //camera.SetZoom(viewZoom);
+			        settings.viewCenter.y -= 0.5f;
 			    }
 			}
 

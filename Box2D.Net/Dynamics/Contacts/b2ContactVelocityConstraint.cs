@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	struct b2ContactVelocityConstraint
+	class b2ContactVelocityConstraint // was struct
 	{
-		public List<b2VelocityConstraintPoint> points;
+		public List<b2VelocityConstraintPoint> points = new List<b2VelocityConstraintPoint>();
 		public b2Vec2 normal;
 		public b2Mat22 normalMass;
 		public b2Mat22 K;

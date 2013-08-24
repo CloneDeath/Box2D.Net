@@ -52,10 +52,10 @@ namespace Box2D {
 		internal int m_toiCount;
 		internal float m_toi;
 
-		protected float m_friction;
-		protected float m_restitution;
+		internal float m_friction;
+		internal float m_restitution;
 
-		protected float m_tangentSpeed;
+		internal float m_tangentSpeed;
 
 		/// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
 		/// For example, anything slides on ice.
@@ -94,8 +94,7 @@ namespace Box2D {
 
 		/// Is this contact touching?
 		public bool IsTouching() {
-			throw new NotImplementedException();
-			//return (m_flags & e_touchingFlag) == e_touchingFlag;
+			return (m_flags & ContactFlags.e_touchingFlag) == ContactFlags.e_touchingFlag;
 		}
 
 		/// Enable/disable this contact. This can be used inside the pre-solve
@@ -115,8 +114,7 @@ namespace Box2D {
 
 		/// Has this contact been disabled?
 		public bool IsEnabled(){
-			throw new NotImplementedException();
-			//return (m_flags & e_enabledFlag) == e_enabledFlag;
+			return (m_flags & ContactFlags.e_enabledFlag) == ContactFlags.e_enabledFlag;
 		}
 
 		/// Get the next contact in the world's contact list.
@@ -187,7 +185,7 @@ namespace Box2D {
 		}
 
 		/// Evaluate this contact with your own manifold and transforms.
-		public abstract void Evaluate(b2Manifold manifold, b2Transform xfA, b2Transform xfB); //manifold was pointer
+		public abstract void Evaluate(out b2Manifold manifold, b2Transform xfA, b2Transform xfB); //manifold was pointer
 
 		
 
@@ -196,21 +194,20 @@ namespace Box2D {
 			m_flags |= ContactFlags.e_filterFlag;
 		}
 
-		protected static void AddType(b2ContactCreateFcn createFcn, b2ContactDestroyFcn destroyFcn, ShapeType typeA, ShapeType typeB){
-			throw new NotImplementedException();
-			//Utilities.Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-			//Utilities.Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
-	
-			//s_registers[type1][type2].createFcn = createFcn;
-			//s_registers[type1][type2].destroyFcn = destoryFcn;
-			//s_registers[type1][type2].primary = true;
+		protected static void AddType(b2ContactCreateFcn createFcn, b2ContactDestroyFcn destroyFcn, ShapeType type1, ShapeType type2){
+			Utilities.Assert(0 <= (int)type1 && type1 < ShapeType.Count);
+			Utilities.Assert(0 <= (int)type2 && type2 < ShapeType.Count);
 
-			//if (type1 != type2)
-			//{
-			//    s_registers[type2][type1].createFcn = createFcn;
-			//    s_registers[type2][type1].destroyFcn = destoryFcn;
-			//    s_registers[type2][type1].primary = false;
-			//}
+			s_registers[(int)type1, (int)type2].createFcn = createFcn;
+			s_registers[(int)type1, (int)type2].destroyFcn = destroyFcn;
+			s_registers[(int)type1, (int)type2].primary = true;
+
+			if (type1 != type2)
+			{
+				s_registers[(int)type2, (int)type1].createFcn = createFcn;
+				s_registers[(int)type2, (int)type1].destroyFcn = destroyFcn;
+				s_registers[(int)type2, (int)type1].primary = false;
+			}
 		}
 
 		protected static void InitializeRegisters(){
@@ -285,128 +282,118 @@ namespace Box2D {
 			m_fixtureB = null;
 		}
 
-		protected b2Contact(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
-			throw new NotImplementedException();
-			//m_flags = e_enabledFlag;
+		protected b2Contact(b2Fixture fA, int indexA, b2Fixture fB, int indexB) {
+			m_flags = ContactFlags.e_enabledFlag;
 
-			//m_fixtureA = fA;
-			//m_fixtureB = fB;
+			m_fixtureA = fA;
+			m_fixtureB = fB;
 
-			//m_indexA = indexA;
-			//m_indexB = indexB;
+			m_indexA = indexA;
+			m_indexB = indexB;
 
-			//m_manifold.pointCount = 0;
+			m_manifold = new b2Manifold();
+			m_manifold.points.Clear();
 
-			//m_prev = null;
-			//m_next = null;
+			m_nodeA.contact = null;
+			m_nodeA.other = null;
 
-			//m_nodeA.contact = null;
-			//m_nodeA.prev = null;
-			//m_nodeA.next = null;
-			//m_nodeA.other = null;
+			m_nodeB.contact = null;
+			m_nodeB.other = null;
 
-			//m_nodeB.contact = null;
-			//m_nodeB.prev = null;
-			//m_nodeB.next = null;
-			//m_nodeB.other = null;
+			m_toiCount = 0;
 
-			//m_toiCount = 0;
+			m_friction = b2MixFriction(m_fixtureA.m_friction, m_fixtureB.m_friction);
+			m_restitution = b2MixRestitution(m_fixtureA.m_restitution, m_fixtureB.m_restitution);
 
-			//m_friction = b2MixFriction(m_fixtureA.m_friction, m_fixtureB.m_friction);
-			//m_restitution = b2MixRestitution(m_fixtureA.m_restitution, m_fixtureB.m_restitution);
-
-			//m_tangentSpeed = 0.0f;
+			m_tangentSpeed = 0.0f;
 		}
 		~b2Contact() {}
 
 		// Update the contact manifold and touching status.
 		// Note: do not assume the fixture AABBs are overlapping or are valid.
 		internal void Update(b2ContactListener listener){
-			throw new NotImplementedException();
-			//b2Manifold oldManifold = m_manifold;
+			b2Manifold oldManifold = m_manifold;
 
-			//// Re-enable this contact.
-			//m_flags |= e_enabledFlag;
+			// Re-enable this contact.
+			m_flags |= ContactFlags.e_enabledFlag;
 
-			//bool touching = false;
-			//bool wasTouching = (m_flags & e_touchingFlag) == e_touchingFlag;
+			bool touching = false;
+			bool wasTouching = (m_flags & ContactFlags.e_touchingFlag) == ContactFlags.e_touchingFlag;
 
-			//bool sensorA = m_fixtureA.IsSensor();
-			//bool sensorB = m_fixtureB.IsSensor();
-			//bool sensor = sensorA || sensorB;
+			bool sensorA = m_fixtureA.IsSensor();
+			bool sensorB = m_fixtureB.IsSensor();
+			bool sensor = sensorA || sensorB;
 
-			//b2Body* bodyA = m_fixtureA.GetBody();
-			//b2Body* bodyB = m_fixtureB.GetBody();
-			//const b2Transform& xfA = bodyA.GetTransform();
-			//const b2Transform& xfB = bodyB.GetTransform();
+			b2Body bodyA = m_fixtureA.GetBody();
+			b2Body bodyB = m_fixtureB.GetBody();
+			b2Transform xfA = bodyA.GetTransform();
+			b2Transform xfB = bodyB.GetTransform();
 
-			//// Is this contact a sensor?
-			//if (sensor)
-			//{
-			//    const b2Shape* shapeA = m_fixtureA.GetShape();
-			//    const b2Shape* shapeB = m_fixtureB.GetShape();
-			//    touching = b2TestOverlap(shapeA, m_indexA, shapeB, m_indexB, xfA, xfB);
+			// Is this contact a sensor?
+			if (sensor)
+			{
+			    b2Shape shapeA = m_fixtureA.GetShape();
+			    b2Shape shapeB = m_fixtureB.GetShape();
+			    touching = b2Collision.b2TestOverlap(shapeA, m_indexA, shapeB, m_indexB, xfA, xfB);
 
-			//    // Sensors don't generate manifolds.
-			//    m_manifold.pointCount = 0;
-			//}
-			//else
-			//{
-			//    Evaluate(&m_manifold, xfA, xfB);
-			//    touching = m_manifold.pointCount > 0;
+			    // Sensors don't generate manifolds.
+				m_manifold.points.Clear();
+			}
+			else
+			{
+			    Evaluate(out m_manifold, xfA, xfB);
+			    touching = m_manifold.points.Count() > 0;
 
-			//    // Match old contact ids to new contact ids and copy the
-			//    // stored impulses to warm start the solver.
-			//    for (int i = 0; i < m_manifold.pointCount; ++i)
-			//    {
-			//        b2ManifoldPoint* mp2 = m_manifold.points + i;
-			//        mp2.normalImpulse = 0.0f;
-			//        mp2.tangentImpulse = 0.0f;
-			//        b2ContactID id2 = mp2.id;
+			    // Match old contact ids to new contact ids and copy the
+			    // stored impulses to warm start the solver.
+			    for (int i = 0; i < m_manifold.points.Count(); ++i)
+			    {
+					b2ManifoldPoint mp2 = m_manifold.points[i];
+					mp2.normalImpulse = 0.0f;
+					mp2.tangentImpulse = 0.0f;
+					b2ContactID id2 = mp2.id;
 
-			//        for (int j = 0; j < oldManifold.pointCount; ++j)
-			//        {
-			//            b2ManifoldPoint* mp1 = oldManifold.points + j;
+					for (int j = 0; j < oldManifold.points.Count(); ++j) {
+						b2ManifoldPoint mp1 = oldManifold.points[j];
 
-			//            if (mp1.id.key == id2.key)
-			//            {
-			//                mp2.normalImpulse = mp1.normalImpulse;
-			//                mp2.tangentImpulse = mp1.tangentImpulse;
-			//                break;
-			//            }
-			//        }
-			//    }
+						if (mp1.id.key == id2.key) {
+							mp2.normalImpulse = mp1.normalImpulse;
+							mp2.tangentImpulse = mp1.tangentImpulse;
+							break;
+						}
+					}
+			    }
 
-			//    if (touching != wasTouching)
-			//    {
-			//        bodyA.SetAwake(true);
-			//        bodyB.SetAwake(true);
-			//    }
-			//}
+			    if (touching != wasTouching)
+			    {
+			        bodyA.SetAwake(true);
+			        bodyB.SetAwake(true);
+			    }
+			}
 
-			//if (touching)
-			//{
-			//    m_flags |= e_touchingFlag;
-			//}
-			//else
-			//{
-			//    m_flags &= ~e_touchingFlag;
-			//}
+			if (touching)
+			{
+			    m_flags |= ContactFlags.e_touchingFlag;
+			}
+			else
+			{
+				m_flags &= ~ContactFlags.e_touchingFlag;
+			}
 
-			//if (wasTouching == false && touching == true && listener)
-			//{
-			//    listener.BeginContact(this);
-			//}
+			if (wasTouching == false && touching == true && listener != null)
+			{
+			    listener.BeginContact(this);
+			}
 
-			//if (wasTouching == true && touching == false && listener)
-			//{
-			//    listener.EndContact(this);
-			//}
+			if (wasTouching == true && touching == false && listener != null)
+			{
+			    listener.EndContact(this);
+			}
 
-			//if (sensor == false && touching && listener)
-			//{
-			//    listener.PreSolve(this, &oldManifold);
-			//}
+			if (sensor == false && touching && listener != null)
+			{
+			    listener.PreSolve(this, oldManifold);
+			}
 		}
 
 		protected static b2ContactRegister[,] s_registers = new b2ContactRegister[(int)ShapeType.Count, (int)ShapeType.Count];

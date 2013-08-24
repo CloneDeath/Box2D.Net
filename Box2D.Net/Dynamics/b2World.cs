@@ -797,7 +797,7 @@ namespace Box2D {
 			    // Reset island and stack.
 			    island.Clear();
 			    int stackCount = 0;
-			    stack[stackCount++] = seed;
+				stack.Add(seed); stackCount++;
 			    seed.m_flags |= b2Body.BodyFlags.e_islandFlag;
 
 			    // Perform a depth first search (DFS) on the constraint graph.
@@ -860,54 +860,45 @@ namespace Box2D {
 			            other.m_flags |= b2Body.BodyFlags.e_islandFlag;
 			        }
 
-					throw new NotImplementedException();
-					//// Search all joints connect to this body.
-					//for (b2JointEdge* je = b.m_jointList; je; je = je.next)
-					//{
-					//    if (je.joint.m_islandFlag == true)
-					//    {
-					//        continue;
-					//    }
+					// Search all joints connect to this body.
+					foreach (b2JointEdge je in b.m_jointList){
+						if (je.joint.m_islandFlag == true) {
+							continue;
+						}
 
-					//    b2Body* other = je.other;
+						b2Body other = je.other;
 
-					//    // Don't simulate joints connected to inactive bodies.
-					//    if (other.IsActive() == false)
-					//    {
-					//        continue;
-					//    }
+						// Don't simulate joints connected to inactive bodies.
+						if (other.IsActive() == false) {
+							continue;
+						}
 
-					//    island.Add(je.joint);
-					//    je.joint.m_islandFlag = true;
+						island.Add(je.joint);
+						je.joint.m_islandFlag = true;
 
-					//    if (other.m_flags & b2Body.BodyFlags.e_islandFlag)
-					//    {
-					//        continue;
-					//    }
+						if (other.m_flags.HasFlag(b2Body.BodyFlags.e_islandFlag)) {
+							continue;
+						}
 
-					//    Utilities.Assert(stackCount < stackSize);
-					//    stack[stackCount++] = other;
-					//    other.m_flags |= b2Body.BodyFlags.e_islandFlag;
-					//}
+						stack.Add(other); stackCount++;
+						other.m_flags |= b2Body.BodyFlags.e_islandFlag;
+					}
 			    }
 
 			    b2Profile profile = new b2Profile();
-				throw new NotImplementedException();
-				//island.Solve(&profile, step, m_gravity, m_allowSleep);
-				//m_profile.solveInit += profile.solveInit;
-				//m_profile.solveVelocity += profile.solveVelocity;
-				//m_profile.solvePosition += profile.solvePosition;
+				island.Solve(profile, step, m_gravity, m_allowSleep);
+				m_profile.solveInit += profile.solveInit;
+				m_profile.solveVelocity += profile.solveVelocity;
+				m_profile.solvePosition += profile.solvePosition;
 
-				//// Post solve cleanup.
-				//for (int i = 0; i < island.m_bodyList.Count(); ++i)
-				//{
-				//    // Allow static bodies to participate in other islands.
-				//    b2Body* b = island.m_bodies[i];
-				//    if (b.GetType() == b2_staticBody)
-				//    {
-				//        b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
-				//    }
-				//}
+				// Post solve cleanup.
+				for (int i = 0; i < island.m_bodies.Count(); ++i) {
+					// Allow static bodies to participate in other islands.
+					b2Body b = island.m_bodies[i];
+					if (b.GetBodyType() == b2BodyType.b2_staticBody) {
+						b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+					}
+				}
 			}
 
 			{

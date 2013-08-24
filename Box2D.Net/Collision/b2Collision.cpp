@@ -19,80 +19,15 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Collision/b2Distance.h>
 
-void b2WorldManifold::Initialize(const b2Manifold* manifold,
-						  const b2Transform& xfA, float radiusA,
-						  const b2Transform& xfB, float radiusB)
-{
-	if (manifold.pointCount == 0)
-	{
-		return;
-	}
-
-	switch (manifold.type)
-	{
-	case b2Manifold::e_circles:
-		{
-			normal.Set(1.0f, 0.0f);
-			b2Vec2 pointA = Utilities.b2Mul(xfA, manifold.localPoint);
-			b2Vec2 pointB = Utilities.b2Mul(xfB, manifold.points[0].localPoint);
-			if (b2DistanceSquared(pointA, pointB) > Single.Epsilon * Single.Epsilon)
-			{
-				normal = pointB - pointA;
-				normal.Normalize();
-			}
-
-			b2Vec2 cA = pointA + radiusA * normal;
-			b2Vec2 cB = pointB - radiusB * normal;
-			points[0] = 0.5f * (cA + cB);
-		}
-		break;
-
-	case b2Manifold::e_faceA:
-		{
-			normal = Utilities.b2Mul(xfA.q, manifold.localNormal);
-			b2Vec2 planePoint = Utilities.b2Mul(xfA, manifold.localPoint);
-			
-			for (int i = 0; i < manifold.pointCount; ++i)
-			{
-				b2Vec2 clipPoint = Utilities.b2Mul(xfB, manifold.points[i].localPoint);
-				b2Vec2 cA = clipPoint + (radiusA - Utilities.b2Dot(clipPoint - planePoint, normal)) * normal;
-				b2Vec2 cB = clipPoint - radiusB * normal;
-				points[i] = 0.5f * (cA + cB);
-			}
-		}
-		break;
-
-	case b2Manifold::e_faceB:
-		{
-			normal = Utilities.b2Mul(xfB.q, manifold.localNormal);
-			b2Vec2 planePoint = Utilities.b2Mul(xfB, manifold.localPoint);
-
-			for (int i = 0; i < manifold.pointCount; ++i)
-			{
-				b2Vec2 clipPoint = Utilities.b2Mul(xfA, manifold.points[i].localPoint);
-				b2Vec2 cB = clipPoint + (radiusB - Utilities.b2Dot(clipPoint - planePoint, normal)) * normal;
-				b2Vec2 cA = clipPoint - radiusA * normal;
-				points[i] = 0.5f * (cA + cB);
-			}
-
-			// Ensure normal points from A to B.
-			normal = -normal;
-		}
-		break;
-	}
-}
-
-
-
 // From Real-time Collision Detection, p179.
 bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 {
-	float tmin = -b2_maxFloat;
-	float tmax = b2_maxFloat;
+	float tmin = -Single.MaxValue;
+	float tmax = Single.MaxValue;
 
 	b2Vec2 p = input.p1;
 	b2Vec2 d = input.p2 - input.p1;
-	b2Vec2 absD = b2Abs(d);
+	b2Vec2 absD = Math.Abs(d);
 
 	b2Vec2 normal;
 
@@ -150,58 +85,4 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 	output.fraction = tmin;
 	output.normal = normal;
 	return true;
-}
-
-// Sutherland-Hodgman clipping.
-int b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
-						const b2Vec2& normal, float offset, int vertexIndexA)
-{
-	// Start with no output points
-	int numOut = 0;
-
-	// Calculate the distance of end points to the line
-	float distance0 = Utilities.b2Dot(normal, vIn[0].v) - offset;
-	float distance1 = Utilities.b2Dot(normal, vIn[1].v) - offset;
-
-	// If the points are behind the plane
-	if (distance0 <= 0.0f) vOut[numOut++] = vIn[0];
-	if (distance1 <= 0.0f) vOut[numOut++] = vIn[1];
-
-	// If the points are on different sides of the plane
-	if (distance0 * distance1 < 0.0f)
-	{
-		// Find intersection point of edge and plane
-		float interp = distance0 / (distance0 - distance1);
-		vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
-
-		// VertexA is hitting edgeB.
-		vOut[numOut].id.cf.indexA = vertexIndexA;
-		vOut[numOut].id.cf.indexB = vIn[0].id.cf.indexB;
-		vOut[numOut].id.cf.typeA = b2ContactFeature::e_vertex;
-		vOut[numOut].id.cf.typeB = b2ContactFeature::e_face;
-		++numOut;
-	}
-
-	return numOut;
-}
-
-bool b2TestOverlap(	const b2Shape* shapeA, int indexA,
-					const b2Shape* shapeB, int indexB,
-					const b2Transform& xfA, const b2Transform& xfB)
-{
-	b2DistanceInput input;
-	input.proxyA.Set(shapeA, indexA);
-	input.proxyB.Set(shapeB, indexB);
-	input.transformA = xfA;
-	input.transformB = xfB;
-	input.useRadii = true;
-
-	b2SimplexCache cache;
-	cache.count = 0;
-
-	b2DistanceOutput output;
-
-	b2Distance(&output, &cache, &input);
-
-	return output.distance < 10.0f * Single.Epsilon;
 }

@@ -57,7 +57,7 @@ public:
 		switch (key)
 		{
 		case 'q':
-			m_angle = b2Max(-Math.PI, m_angle - 0.05f * Math.PI);
+			m_angle = Math.Max(-Math.PI, m_angle - 0.05f * Math.PI);
 			m_rope.SetAngle(m_angle);
 			break;
 

@@ -38,7 +38,7 @@ namespace Box2D {
 			//    b2Vec2 v1 = vertices[i-1];
 			//    b2Vec2 v2 = vertices[i];
 			//    // If the code crashes here, it means your vertices are too close together.
-			//    Utilities.Assert(b2DistanceSquared(v1, v2) > b2_linearSlop * b2_linearSlop);
+			//    Utilities.Assert(b2DistanceSquared(v1, v2) >b2Settings.b2_linearSlop *b2Settings.b2_linearSlop);
 			//}
 
 			//m_count = count + 1;
@@ -63,7 +63,7 @@ namespace Box2D {
 			//    b2Vec2 v1 = vertices[i-1];
 			//    b2Vec2 v2 = vertices[i];
 			//    // If the code crashes here, it means your vertices are too close together.
-			//    Utilities.Assert(b2DistanceSquared(v1, v2) > b2_linearSlop * b2_linearSlop);
+			//    Utilities.Assert(b2DistanceSquared(v1, v2) >b2Settings.b2_linearSlop *b2Settings.b2_linearSlop);
 			//}
 
 			//m_count = count;
@@ -186,7 +186,7 @@ namespace Box2D {
 			//b2Vec2 v2 = Utilities.b2Mul(xf, m_vertices[i2]);
 
 			//aabb.lowerBound = Math.Min(v1, v2);
-			//aabb.upperBound = b2Max(v1, v2);
+			//aabb.upperBound = Math.Max(v1, v2);
 		}
 
 		/// Chains have zero mass.

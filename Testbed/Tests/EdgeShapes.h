@@ -27,8 +27,8 @@ public:
 		m_fixture = null;
 	}
 
-	float ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float fraction)
+	float ReportFixture(	b2Fixture* fixture, b2Vec2 point,
+		b2Vec2 normal, float fraction)
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -206,7 +206,7 @@ public:
 
 		float L = 25.0f;
 		b2Vec2 point1(0.0f, 10.0f);
-		b2Vec2 d(L * cosf(m_angle), -L * b2Abs(sinf(m_angle)));
+		b2Vec2 d(L * cosf(m_angle), -L * Math.Abs(sinf(m_angle)));
 		b2Vec2 point2 = point1 + d;
 
 		EdgeShapesCallback callback;

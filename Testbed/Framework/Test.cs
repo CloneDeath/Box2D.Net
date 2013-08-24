@@ -354,7 +354,7 @@ namespace Testbed.Framework {
 		public virtual void PreSolve(b2Contact contact, b2Manifold oldManifold) {
 			b2Manifold manifold = contact.GetManifold();
 
-			if (manifold.pointCount == 0)
+			if (manifold.points.Count() == 0)
 			{
 				return;
 			}
@@ -369,7 +369,7 @@ namespace Testbed.Framework {
 			b2WorldManifold worldManifold;
 			contact.GetWorldManifold(out worldManifold);
 
-			for (int i = 0; i < manifold.pointCount && m_pointCount < Program.k_maxContactPoints; ++i)
+			for (int i = 0; i < manifold.points.Count() && m_pointCount < Program.k_maxContactPoints; ++i)
 			{
 				ContactPoint cp = m_points[m_pointCount];
 				cp.fixtureA = fixtureA;

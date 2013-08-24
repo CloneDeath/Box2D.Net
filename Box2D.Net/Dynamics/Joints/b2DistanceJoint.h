@@ -42,7 +42,7 @@ struct b2DistanceJointDef : public b2JointDef
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.
 	void Initialize(b2Body* bodyA, b2Body* bodyB,
-					const b2Vec2& anchorA, const b2Vec2& anchorB);
+					b2Vec2 anchorA, b2Vec2 anchorB);
 
 	/// The local anchor point relative to bodyA's origin.
 	b2Vec2 localAnchorA;
@@ -80,10 +80,10 @@ public:
 	float GetReactionTorque(float inv_dt) const;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	b2Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	b2Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set/get the natural length.
 	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.

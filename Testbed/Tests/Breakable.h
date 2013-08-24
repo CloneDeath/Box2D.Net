@@ -74,7 +74,7 @@ public:
 		float maxImpulse = 0.0f;
 		for (int i = 0; i < count; ++i)
 		{
-			maxImpulse = b2Max(maxImpulse, impulse.normalImpulses[i]);
+			maxImpulse = Math.Max(maxImpulse, impulse.normalImpulses[i]);
 		}
 
 		if (maxImpulse > 40.0f)

@@ -44,7 +44,7 @@ struct b2WheelJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
-	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor, const b2Vec2& axis);
+	void Initialize(b2Body* bodyA, b2Body* bodyB, b2Vec2 anchor, b2Vec2 axis);
 
 	/// The local anchor point relative to bodyA's origin.
 	b2Vec2 localAnchorA;
@@ -88,13 +88,13 @@ public:
 	float GetReactionTorque(float inv_dt) const;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	b2Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	b2Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// The local joint axis relative to bodyA.
-	const b2Vec2& GetLocalAxisA() const { return m_localXAxisA; }
+	b2Vec2 GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the current joint translation, usually in meters.
 	float GetJointTranslation() const;

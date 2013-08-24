@@ -56,12 +56,10 @@ namespace Box2D {
 		/// Call MoveProxy as many times as you like, then when you are done
 		/// call UpdatePairs to finalized the proxy pairs (for your time step).
 		public void MoveProxy(int proxyId, b2AABB aabb, b2Vec2 displacement){
-			throw new NotImplementedException();
-			//bool buffer = m_tree.MoveProxy(proxyId, aabb, displacement);
-			//if (buffer)
-			//{
-			//    BufferMove(proxyId);
-			//}
+			bool buffer = m_tree.MoveProxy(proxyId, aabb, displacement);
+			if (buffer) {
+				BufferMove(proxyId);
+			}
 		}
 
 		/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
@@ -85,8 +83,7 @@ namespace Box2D {
 		public bool TestOverlap(int proxyIdA, int proxyIdB){
 			b2AABB aabbA = m_tree.GetFatAABB(proxyIdA);
 			b2AABB aabbB = m_tree.GetFatAABB(proxyIdB);
-			throw new NotImplementedException();
-			//return b2TestOverlap(aabbA, aabbB);
+			return b2Collision.b2TestOverlap(aabbA, aabbB);
 		}
 
 		/// Get the number of proxies.

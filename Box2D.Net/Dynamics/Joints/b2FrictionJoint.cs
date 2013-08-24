@@ -77,7 +77,7 @@ namespace Box2D {
 			m_maxTorque = def.maxTorque;
 		}
 
-		protected override void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -157,7 +157,7 @@ namespace Box2D {
 			data.velocities[m_indexB] = VelB;
 		}
 
-		protected override void SolveVelocityConstraints(b2SolverData data) {
+		internal override void SolveVelocityConstraints(b2SolverData data) {
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -213,7 +213,7 @@ namespace Box2D {
 			//data.velocities[m_indexB].w = wB;
 		}
 
-		protected override bool SolvePositionConstraints(b2SolverData data) {
+		internal override bool SolvePositionConstraints(b2SolverData data) {
 			return true;
 		}
 

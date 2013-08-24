@@ -392,28 +392,25 @@ namespace Box2D {
 			//m_proxyCount = 0;
 		}
 
-		protected void Synchronize(b2BroadPhase broadPhase, b2Transform xf1, b2Transform xf2){ //broadphase was pointer
-			throw new NotImplementedException();
-			//if (m_proxyCount == 0)
-			//{	
-			//    return;
-			//}
+		internal void Synchronize(b2BroadPhase broadPhase, b2Transform transform1, b2Transform transform2) { //broadphase was pointer
+			if (m_proxies.Count() == 0) {
+				return;
+			}
 
-			//for (int i = 0; i < m_proxyCount; ++i)
-			//{
-			//    b2FixtureProxy* proxy = m_proxies + i;
+			for (int i = 0; i < m_proxies.Count(); ++i) {
+				b2FixtureProxy proxy = m_proxies[i];
 
-			//    // Compute an AABB that covers the swept shape (may miss some rotation effect).
-			//    b2AABB aabb1, aabb2;
-			//    m_shape.ComputeAABB(&aabb1, transform1, proxy.childIndex);
-			//    m_shape.ComputeAABB(&aabb2, transform2, proxy.childIndex);
-	
-			//    proxy.aabb.Combine(aabb1, aabb2);
+				// Compute an AABB that covers the swept shape (may miss some rotation effect).
+				b2AABB aabb1, aabb2;
+				m_shape.ComputeAABB(out aabb1, transform1, proxy.childIndex);
+				m_shape.ComputeAABB(out aabb2, transform2, proxy.childIndex);
 
-			//    b2Vec2 displacement = transform2.p - transform1.p;
+				proxy.aabb.Combine(aabb1, aabb2);
 
-			//    broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement);
-			//}
+				b2Vec2 displacement = transform2.p - transform1.p;
+
+				broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement);
+			}
 		}	
 	}
 }

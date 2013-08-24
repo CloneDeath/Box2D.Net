@@ -81,6 +81,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ApplyForce.cs" />
+    <Compile Include="Tests\CollisionFiltering.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\AddPair.h" />
@@ -92,7 +93,6 @@
     <Content Include="Tests\Car.h" />
     <Content Include="Tests\Chain.h" />
     <Content Include="Tests\CharacterCollision.h" />
-    <Content Include="Tests\CollisionFiltering.h" />
     <Content Include="Tests\CollisionProcessing.h" />
     <Content Include="Tests\CompoundShapes.h" />
     <Content Include="Tests\Confined.h" />

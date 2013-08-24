@@ -26,7 +26,7 @@ class TheoJansen : public Test
 {
 public:
 
-	void CreateLeg(float s, const b2Vec2& wheelAnchor)
+	void CreateLeg(float s, b2Vec2 wheelAnchor)
 	{
 		b2Vec2 p1(5.4f * s, -6.1f);
 		b2Vec2 p2(7.2f * s, -1.2f);

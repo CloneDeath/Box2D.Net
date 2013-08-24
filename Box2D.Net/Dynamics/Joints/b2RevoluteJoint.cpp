@@ -33,7 +33,7 @@
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2RevoluteJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor)
+void b2RevoluteJointDef::Initialize(b2Body* bA, b2Body* bB, b2Vec2 anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -123,7 +123,7 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 	if (m_enableLimit && fixedRotation == false)
 	{
 		float jointAngle = aB - aA - m_referenceAngle;
-		if (b2Abs(m_upperAngle - m_lowerAngle) < 2.0f * b2_angularSlop)
+		if (Math.Abs(m_upperAngle - m_lowerAngle) < 2.0f * b2Settings.b2_angularSlop)
 		{
 			m_limitState = e_equalLimits;
 		}
@@ -313,7 +313,7 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 			// Prevent large angular corrections
 			float C = b2Clamp(angle - m_lowerAngle, -b2_maxAngularCorrection, b2_maxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
-			angularError = b2Abs(C);
+			angularError = Math.Abs(C);
 		}
 		else if (m_limitState == e_atLowerLimit)
 		{
@@ -321,7 +321,7 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 			angularError = -C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = b2Clamp(C + b2_angularSlop, -b2_maxAngularCorrection, 0.0f);
+			C = b2Clamp(C + b2Settings.b2_angularSlop, -b2_maxAngularCorrection, 0.0f);
 			limitImpulse = -m_motorMass * C;
 		}
 		else if (m_limitState == e_atUpperLimit)
@@ -330,7 +330,7 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 			angularError = C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = b2Clamp(C - b2_angularSlop, 0.0f, b2_maxAngularCorrection);
+			C = b2Clamp(C - b2Settings.b2_angularSlop, 0.0f, b2_maxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
 		}
 
@@ -371,7 +371,7 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 	
-	return positionError <= b2_linearSlop && angularError <= b2_angularSlop;
+	return positionError <=b2Settings.b2_linearSlop && angularError <= b2Settings.b2_angularSlop;
 }
 
 b2Vec2 b2RevoluteJoint::GetAnchorA() const

@@ -12,14 +12,14 @@ namespace Box2D {
 	{
 		/// Get the interpolated transform at a specific time.
 		/// @param beta is a factor in [0,1], where 0 indicates alpha0.
-		public void GetTransform(b2Transform xfb, float beta) {
-			throw new NotImplementedException();
-			//xf.p = (1.0f - beta) * c0 + beta * c;
-			//float angle = (1.0f - beta) * a0 + beta * a;
-			//xf.q.Set(angle);
+		public void GetTransform(out b2Transform xf, float beta) {
+			xf = new b2Transform();
+			xf.p = (1.0f - beta) * c0 + beta * c;
+			float angle = (1.0f - beta) * a0 + beta * a;
+			xf.q.Set(angle);
 
-			//// Shift to origin
-			//xf.p -= Utilities.b2Mul(xf.q, localCenter);
+			// Shift to origin
+			xf.p -= Utilities.b2Mul(xf.q, localCenter);
 		}
 
 		/// Advance the sweep forward, yielding a new initial state.
@@ -36,11 +36,10 @@ namespace Box2D {
 		/// Normalize the angles.
 		/// Normalize an angle in radians to be between -pi and pi
 		public void Normalize() {
-			throw new NotImplementedException();
-			//float twoPi = 2.0f * Math.PI;
-			//float d = twoPi * floorf(a0 / twoPi);
-			//a0 -= d;
-			//a -= d;
+			float twoPi = 2.0f * (float)Math.PI;
+			float d = twoPi * (float)Math.Floor(a0 / twoPi);
+			a0 -= d;
+			a -= d;
 		}
 
 		public b2Vec2 localCenter;	///< local center of mass position

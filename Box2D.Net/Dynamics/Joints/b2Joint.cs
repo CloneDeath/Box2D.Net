@@ -41,11 +41,11 @@ namespace Box2D {
 		}
 		~b2Joint() {}
 
-		protected abstract void InitVelocityConstraints(b2SolverData data);
-		protected abstract void SolveVelocityConstraints(b2SolverData data);
+		internal abstract void InitVelocityConstraints(b2SolverData data);
+		internal abstract void SolveVelocityConstraints(b2SolverData data);
 
 		// This returns true if the position errors are within tolerance.
-		protected abstract bool SolvePositionConstraints(b2SolverData data);
+		internal abstract bool SolvePositionConstraints(b2SolverData data);
 
 		/// Get the type of the concrete joint.
 		public b2JointType GetType(){
@@ -131,8 +131,7 @@ namespace Box2D {
 
 			case b2JointType.e_prismaticJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2PrismaticJoint((b2PrismaticJointDef)def);
+			        joint = new b2PrismaticJoint((b2PrismaticJointDef)def);
 			    }
 			    break;
 

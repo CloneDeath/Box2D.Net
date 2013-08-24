@@ -52,7 +52,7 @@ public:
 		m_world.CreateJoint(&jointDef);
 	}
 
-	b2Body* AddNode(b2Body* parent, const b2Vec2& localAnchor, int depth, float offset, float a)
+	b2Body* AddNode(b2Body* parent, b2Vec2 localAnchor, int depth, float offset, float a)
 	{
 		float density = 20.0f;
 		b2Vec2 h(0.0f, a);

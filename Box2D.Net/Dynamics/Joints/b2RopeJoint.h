@@ -42,7 +42,7 @@ struct b2RopeJointDef : public b2JointDef
 	b2Vec2 localAnchorB;
 
 	/// The maximum length of the rope.
-	/// Warning: this must be larger than b2_linearSlop or
+	/// Warning: this must be larger thanb2Settings.b2_linearSlop or
 	/// the joint will have no effect.
 	float maxLength;
 };
@@ -65,10 +65,10 @@ public:
 	float GetReactionTorque(float inv_dt) const;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	b2Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	b2Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set/Get the maximum length of the rope.
 	void SetMaxLength(float length) { m_maxLength = length; }

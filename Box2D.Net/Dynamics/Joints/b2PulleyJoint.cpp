@@ -33,8 +33,8 @@
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
 void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
-				const b2Vec2& groundA, const b2Vec2& groundB,
-				const b2Vec2& anchorA, const b2Vec2& anchorB,
+				b2Vec2 groundA, b2Vec2 groundB,
+				b2Vec2 anchorA, b2Vec2 anchorB,
 				float r)
 {
 	bodyA = bA;
@@ -103,7 +103,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	float lengthA = m_uA.Length();
 	float lengthB = m_uB.Length();
 
-	if (lengthA > 10.0f * b2_linearSlop)
+	if (lengthA > 10.0f *b2Settings.b2_linearSlop)
 	{
 		m_uA *= 1.0f / lengthA;
 	}
@@ -112,7 +112,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_uA.SetZero();
 	}
 
-	if (lengthB > 10.0f * b2_linearSlop)
+	if (lengthB > 10.0f *b2Settings.b2_linearSlop)
 	{
 		m_uB *= 1.0f / lengthB;
 	}
@@ -206,7 +206,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	float lengthA = uA.Length();
 	float lengthB = uB.Length();
 
-	if (lengthA > 10.0f * b2_linearSlop)
+	if (lengthA > 10.0f *b2Settings.b2_linearSlop)
 	{
 		uA *= 1.0f / lengthA;
 	}
@@ -215,7 +215,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 		uA.SetZero();
 	}
 
-	if (lengthB > 10.0f * b2_linearSlop)
+	if (lengthB > 10.0f *b2Settings.b2_linearSlop)
 	{
 		uB *= 1.0f / lengthB;
 	}
@@ -239,7 +239,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	}
 
 	float C = m_constant - lengthA - m_ratio * lengthB;
-	float linearError = b2Abs(C);
+	float linearError = Math.Abs(C);
 
 	float impulse = -mass * C;
 
@@ -256,7 +256,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return linearError < b2_linearSlop;
+	return linearError <b2Settings.b2_linearSlop;
 }
 
 b2Vec2 b2PulleyJoint::GetAnchorA() const
@@ -341,7 +341,7 @@ void b2PulleyJoint::Dump()
 	b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 }
 
-void b2PulleyJoint::ShiftOrigin(const b2Vec2& newOrigin)
+void b2PulleyJoint::ShiftOrigin(b2Vec2 newOrigin)
 {
 	m_groundAnchorA -= newOrigin;
 	m_groundAnchorB -= newOrigin;

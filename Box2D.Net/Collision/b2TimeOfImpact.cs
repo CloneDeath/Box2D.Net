@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Box2D {
 	static class b2TimeOfImpact {
+		static int b2_toiCalls, b2_toiIters, b2_toiMaxIters;
+		static float b2_toiTime, b2_toiMaxTime;
+		static int b2_toiRootIters, b2_toiMaxRootIters;
+
 		/// Compute the upper bound on time before two shapes penetrate. Time is represented as
 		/// a fraction between [0,tMax]. This uses a swept separating axis and may miss some intermediate,
 		/// non-tunneling collision. If you change the time interval, you should call this function
@@ -13,80 +17,80 @@ namespace Box2D {
 		// CCD via the local separating axis method. This seeks progression
 		// by computing the largest time at which separation is maintained.
 		public static void TimeOfImpact(out b2TOIOutput output, b2TOIInput input){
-			throw new NotImplementedException();
-		//    b2Timer timer;
+		    b2Timer timer = new b2Timer();
 
-		//    ++b2_toiCalls;
+		    ++b2_toiCalls;
 
-		//    output.state = b2TOIOutput::e_unknown;
-		//    output.t = input.tMax;
+		    output.state = b2TOIOutput.State.e_unknown;
+		    output.t = input.tMax;
 
-		//    const b2DistanceProxy* proxyA = &input.proxyA;
-		//    const b2DistanceProxy* proxyB = &input.proxyB;
+		    b2DistanceProxy proxyA = input.proxyA;
+		    b2DistanceProxy proxyB = input.proxyB;
 
-		//    b2Sweep sweepA = input.sweepA;
-		//    b2Sweep sweepB = input.sweepB;
+		    b2Sweep sweepA = input.sweepA;
+		    b2Sweep sweepB = input.sweepB;
 
-		//    // Large rotations can make the root finder fail, so we normalize the
-		//    // sweep angles.
-		//    sweepA.Normalize();
-		//    sweepB.Normalize();
+		    // Large rotations can make the root finder fail, so we normalize the
+		    // sweep angles.
+		    sweepA.Normalize();
+		    sweepB.Normalize();
 
-		//    float tMax = input.tMax;
+		    float tMax = input.tMax;
 
-		//    float totalRadius = proxyA.m_radius + proxyB.m_radius;
-		//    float target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
-		//    float tolerance = 0.25f * b2_linearSlop;
-		//    Utilities.Assert(target > tolerance);
+		    float totalRadius = proxyA.m_radius + proxyB.m_radius;
+			float target = Math.Max(b2Settings.b2_linearSlop, totalRadius - 3.0f * b2Settings.b2_linearSlop);
+			float tolerance = 0.25f * b2Settings.b2_linearSlop;
+		    Utilities.Assert(target > tolerance);
 
-		//    float t1 = 0.0f;
-		//    const int k_maxIterations = 20;	// TODO_ERIN b2Settings
-		//    int iter = 0;
+		    float t1 = 0.0f;
+		    const int k_maxIterations = 20;	// TODO_ERIN b2Settings
+		    int iter = 0;
 
-		//    // Prepare input for distance query.
-		//    b2SimplexCache cache;
-		//    cache.count = 0;
-		//    b2DistanceInput distanceInput;
-		//    distanceInput.proxyA = input.proxyA;
-		//    distanceInput.proxyB = input.proxyB;
-		//    distanceInput.useRadii = false;
+		    // Prepare input for distance query.
+		    b2SimplexCache cache = new b2SimplexCache();
+		    cache.count = 0;
+		    b2DistanceInput distanceInput;
+		    distanceInput.proxyA = input.proxyA;
+		    distanceInput.proxyB = input.proxyB;
+		    distanceInput.useRadii = false;
 
-		//    // The outer loop progressively attempts to compute new separating axes.
-		//    // This loop terminates when an axis is repeated (no progress is made).
-		//    for(;;)
-		//    {
-		//        b2Transform xfA, xfB;
-		//        sweepA.GetTransform(&xfA, t1);
-		//        sweepB.GetTransform(&xfB, t1);
+		    // The outer loop progressively attempts to compute new separating axes.
+		    // This loop terminates when an axis is repeated (no progress is made).
+		    for(;;)
+		    {
+		        b2Transform xfA, xfB;
+		        sweepA.GetTransform(out xfA, t1);
+		        sweepB.GetTransform(out xfB, t1);
 
-		//        // Get the distance between shapes. We can also use the results
-		//        // to get a separating axis.
-		//        distanceInput.transformA = xfA;
-		//        distanceInput.transformB = xfB;
-		//        b2DistanceOutput distanceOutput;
-		//        b2Distance(&distanceOutput, &cache, &distanceInput);
+		        // Get the distance between shapes. We can also use the results
+		        // to get a separating axis.
+		        distanceInput.transformA = xfA;
+		        distanceInput.transformB = xfB;
+		        b2DistanceOutput distanceOutput;
+		        b2Distance.Distance(out distanceOutput, cache, distanceInput);
 
-		//        // If the shapes are overlapped, we give up on continuous collision.
-		//        if (distanceOutput.distance <= 0.0f)
-		//        {
-		//            // Failure!
-		//            output.state = b2TOIOutput::e_overlapped;
-		//            output.t = 0.0f;
-		//            break;
-		//        }
+		        // If the shapes are overlapped, we give up on continuous collision.
+		        if (distanceOutput.distance <= 0.0f)
+		        {
+		            // Failure!
+		            output.state = b2TOIOutput.State.e_overlapped;
+		            output.t = 0.0f;
+		            break;
+		        }
 
-		//        if (distanceOutput.distance < target + tolerance)
-		//        {
-		//            // Victory!
-		//            output.state = b2TOIOutput::e_touching;
-		//            output.t = t1;
-		//            break;
-		//        }
+		        if (distanceOutput.distance < target + tolerance)
+		        {
+		            // Victory!
+		            output.state = b2TOIOutput.State.e_touching;
+		            output.t = t1;
+		            break;
+		        }
 
-		//        // Initialize the separating axis.
+		        // Initialize the separating axis.
+				throw new NotImplementedException();
 		//        b2SeparationFunction fcn;
 		//        fcn.Initialize(&cache, proxyA, sweepA, proxyB, sweepB, t1);
-		//#if 0
+		//#if ZERO
 		//        // Dump the curve seen by the root finder
 		//        {
 		//            const int N = 100;
@@ -127,7 +131,7 @@ namespace Box2D {
 		//            if (s2 > target + tolerance)
 		//            {
 		//                // Victory!
-		//                output.state = b2TOIOutput::e_separated;
+		//                output.state = b2TOIOutput.State.e_separated;
 		//                output.t = tMax;
 		//                done = true;
 		//                break;
@@ -148,7 +152,7 @@ namespace Box2D {
 		//            // runs out of iterations.
 		//            if (s1 < target - tolerance)
 		//            {
-		//                output.state = b2TOIOutput::e_failed;
+		//                output.state = b2TOIOutput.State.e_failed;
 		//                output.t = t1;
 		//                done = true;
 		//                break;
@@ -158,7 +162,7 @@ namespace Box2D {
 		//            if (s1 <= target + tolerance)
 		//            {
 		//                // Victory! t1 should hold the TOI (could be 0.0).
-		//                output.state = b2TOIOutput::e_touching;
+		//                output.state = b2TOIOutput.State.e_touching;
 		//                output.t = t1;
 		//                done = true;
 		//                break;
@@ -187,7 +191,7 @@ namespace Box2D {
 
 		//                float s = fcn.Evaluate(indexA, indexB, t);
 
-		//                if (b2Abs(s - target) < tolerance)
+		//                if (Math.Abs(s - target) < tolerance)
 		//                {
 		//                    // t2 holds a tentative value for t1
 		//                    t2 = t;
@@ -212,7 +216,7 @@ namespace Box2D {
 		//                }
 		//            }
 
-		//            b2_toiMaxRootIters = b2Max(b2_toiMaxRootIters, rootIterCount);
+		//            b2_toiMaxRootIters = Math.Max(b2_toiMaxRootIters, rootIterCount);
 
 		//            ++pushBackIter;
 
@@ -233,17 +237,17 @@ namespace Box2D {
 		//        if (iter == k_maxIterations)
 		//        {
 		//            // Root finder got stuck. Semi-victory.
-		//            output.state = b2TOIOutput::e_failed;
+		//            output.state = b2TOIOutput.State.e_failed;
 		//            output.t = t1;
 		//            break;
 		//        }
-		//    }
+		    }
 
-		//    b2_toiMaxIters = b2Max(b2_toiMaxIters, iter);
+		    b2_toiMaxIters = Math.Max(b2_toiMaxIters, iter);
 
-		//    float time = timer.GetMilliseconds();
-		//    b2_toiMaxTime = b2Max(b2_toiMaxTime, time);
-		//    b2_toiTime += time;
+		    float time = timer.GetMilliseconds();
+		    b2_toiMaxTime = Math.Max(b2_toiMaxTime, time);
+		    b2_toiTime += time;
 		}
 	}
 }
