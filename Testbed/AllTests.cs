@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using Testbed.Framework;
 using Testbed.Tests;
+using Testbed.Tests.BasicTests;
 
 namespace Testbed {
 	class AllTests {
 		public static TestEntry[] GetTests() {
 			return new TestEntry[]
 			{
+				new TestEntry("Gravity Test", GravityTest.Create),
 				new TestEntry("Apply Force", ApplyForce.Create),
 				new TestEntry("Add Pair Stress Test", AddPair.Create),
 				new TestEntry("Body Types", BodyTypes.Create),
