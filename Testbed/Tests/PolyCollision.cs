@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	class PolyCollision : Test
@@ -42,7 +43,7 @@ namespace Testbed.Tests {
 			
 
 			{
-				b2Color color(0.9f, 0.9f, 0.9f);
+				Color color = Color.FromArgb(225, 225, 225);
 				b2Vec2 v[b2Settings.b2_maxPolygonVertices];
 				for (int i = 0; i < m_polygonA.m_count; ++i)
 				{
@@ -59,7 +60,7 @@ namespace Testbed.Tests {
 
 			for (int i = 0; i < manifold.pointCount; ++i)
 			{
-				m_debugDraw.DrawPoint(worldManifold.points[i], 4.0f, b2Color(0.9f, 0.3f, 0.3f));
+				m_debugDraw.DrawPoint(worldManifold.points[i], 4.0f, Color.FromArgb(225, 0.3f, 0.3f));
 			}
 		}
 

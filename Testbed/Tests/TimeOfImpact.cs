@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	class TimeOfImpact : Test
@@ -56,7 +57,7 @@ namespace Testbed.Tests {
 
 			m_debugDraw.DrawString("toi = {0}", output.t);
 
-			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", b2TimeOfImpact.b2_toiMaxIters, b2TimeOfImpact.b2_toiMaxRootIters);
+			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", b2TimeOfImpact.b2TimeOfImpact.b2_toiMaxIters, b2TimeOfImpact.b2_toiMaxRootIters);
 
 			b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 
@@ -66,7 +67,7 @@ namespace Testbed.Tests {
 			{
 				vertices[i] = Utilities.b2Mul(transformA, m_shapeA.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeA.m_count, b2Color(0.9f, 0.9f, 0.9f));
+			m_debugDraw.DrawPolygon(vertices, m_shapeA.m_count, Color.FromArgb(225, 225, 225));
 
 			b2Transform transformB;
 			sweepB.GetTransform(&transformB, 0.0f);
@@ -77,21 +78,21 @@ namespace Testbed.Tests {
 			{
 				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, b2Color(0.5f, 0.9f, 0.5f));
+			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(0.5f, 225, 0.5f));
 
 			sweepB.GetTransform(&transformB, output.t);
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
 				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, b2Color(0.5f, 0.7f, 0.9f));
+			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(0.5f, 0.7f, 225));
 
 			sweepB.GetTransform(&transformB, 1.0f);
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
 				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, b2Color(0.9f, 0.5f, 0.5f));
+			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(225, 0.5f, 0.5f));
 
 	#if ZERO
 			for (float t = 0.0f; t < 1.0f; t += 0.1f)
@@ -101,7 +102,7 @@ namespace Testbed.Tests {
 				{
 					vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 				}
-				m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, b2Color(0.9f, 0.5f, 0.5f));
+				m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(225, 0.5f, 0.5f));
 			}
 	#endif
 		}

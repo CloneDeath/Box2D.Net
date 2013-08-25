@@ -7,7 +7,7 @@ namespace Box2D {
 	/// Weld joint definition. You need to specify local anchor points
 	/// where they are attached and the relative body angle. The position
 	/// of the anchor points is important for computing the reaction torque.
-	class b2WeldJointDef : b2JointDef
+	public class b2WeldJointDef : b2JointDef
 	{
 		public b2WeldJointDef()
 		{

@@ -8,11 +8,8 @@ using Box2D;
 namespace Testbed.Tests {
 	class Confined : Test
 	{
-		public enum
-		{
-			e_columnCount = 0,
-			e_rowCount = 0
-		};
+		const int e_columnCount = 0;
+		const int e_rowCount = 0;
 
 		public Confined()
 		{
@@ -20,23 +17,23 @@ namespace Testbed.Tests {
 				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
+				b2EdgeShape shape2 = new b2EdgeShape();
 
 				// Floor
-				shape.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(10.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape2.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(10.0f, 0.0f));
+				ground.CreateFixture(shape2, 0.0f);
 
 				// Left wall
-				shape.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(-10.0f, 20.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape2.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(-10.0f, 20.0f));
+				ground.CreateFixture(shape2, 0.0f);
 
 				// Right wall
-				shape.Set(new b2Vec2(10.0f, 0.0f), new b2Vec2(10.0f, 20.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape2.Set(new b2Vec2(10.0f, 0.0f), new b2Vec2(10.0f, 20.0f));
+				ground.CreateFixture(shape2, 0.0f);
 
 				// Roof
-				shape.Set(new b2Vec2(-10.0f, 20.0f), new b2Vec2(10.0f, 20.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape2.Set(new b2Vec2(-10.0f, 20.0f), new b2Vec2(10.0f, 20.0f));
+				ground.CreateFixture(shape2, 0.0f);
 			}
 
 			float radius = 0.5f;
@@ -44,7 +41,7 @@ namespace Testbed.Tests {
 			shape.m_p.SetZero();
 			shape.m_radius = radius;
 
-			b2FixtureDef fd;
+			b2FixtureDef fd = new b2FixtureDef();
 			fd.shape = shape;
 			fd.density = 1.0f;
 			fd.friction = 0.1f;
@@ -62,7 +59,7 @@ namespace Testbed.Tests {
 				}
 			}
 
-			m_world.SetGravity(b2Vec2(0.0f, 0.0f));
+			m_world.SetGravity(new b2Vec2(0.0f, 0.0f));
 		}
 
 		void CreateCircle()
@@ -72,7 +69,7 @@ namespace Testbed.Tests {
 			shape.m_p.SetZero();
 			shape.m_radius = radius;
 
-			b2FixtureDef fd;
+			b2FixtureDef fd = new b2FixtureDef();
 			fd.shape = shape;
 			fd.density = 1.0f;
 			fd.friction = 0.0f;

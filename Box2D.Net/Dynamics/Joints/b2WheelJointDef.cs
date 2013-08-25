@@ -10,7 +10,7 @@ namespace Box2D {
 	/// can violate the constraint slightly. The joint translation is zero
 	/// when the local anchor points coincide in world space. Using local
 	/// anchors and a local axis helps when saving and loading a game.
-	class b2WheelJointDef : b2JointDef
+	public class b2WheelJointDef : b2JointDef
 	{
 		public b2WheelJointDef()
 		{

@@ -10,7 +10,7 @@ namespace Box2D {
 	/// Since there may be many vertices, they are allocated using b2Alloc.
 	/// Connectivity information is used to create smooth collisions.
 	/// WARNING: The chain will not collide properly if there are self-intersections.
-	class b2ChainShape : b2Shape {
+	public class b2ChainShape : b2Shape {
 		public b2ChainShape(){
 			m_type = ShapeType.Chain;
 			m_radius = b2Settings.b2_polygonRadius;
@@ -29,7 +29,7 @@ namespace Box2D {
 		/// Create a loop. This automatically adjusts connectivity.
 		/// @param vertices an array of vertices, these are copied
 		/// @param count the vertex count
-		public void CreateLoop(b2Vec2 vertices, int count){
+		public void CreateLoop(b2Vec2[] vertices, int count){
 			throw new NotImplementedException();
 			//Utilities.Assert(m_vertices == null && m_count == 0);
 			//Utilities.Assert(count >= 3);
@@ -54,7 +54,7 @@ namespace Box2D {
 		/// Create a chain with isolated end vertices.
 		/// @param vertices an array of vertices, these are copied
 		/// @param count the vertex count
-		public void CreateChain(b2Vec2 vertices, int count){
+		public void CreateChain(b2Vec2[] vertices, int count){
 			throw new NotImplementedException();
 			//Utilities.Assert(m_vertices == null && m_count == 0);
 			//Utilities.Assert(count >= 2);

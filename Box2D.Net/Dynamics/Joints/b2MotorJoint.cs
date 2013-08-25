@@ -7,7 +7,7 @@ namespace Box2D {
 	/// A motor joint is used to control the relative motion
 	/// between two bodies. A typical usage is to control the movement
 	/// of a dynamic body with respect to the ground.
-	class b2MotorJoint : b2Joint
+	public class b2MotorJoint : b2Joint
 	{
 	
 		public override b2Vec2 GetAnchorA(){
@@ -80,13 +80,13 @@ namespace Box2D {
 			b2Settings.b2Log("  b2MotorJointDef jd;\n");
 			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
 			b2Settings.b2Log("  jd.linearOffset.Set(%.15lef, %.15lef);\n", m_linearOffset.x, m_linearOffset.y);
 			b2Settings.b2Log("  jd.angularOffset = %.15lef;\n", m_angularOffset);
 			b2Settings.b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 			b2Settings.b2Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
 			b2Settings.b2Log("  jd.correctionFactor = %.15lef;\n", m_correctionFactor);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
+			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 
 

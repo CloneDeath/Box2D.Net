@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	class DistanceTest : Test
@@ -35,15 +36,15 @@ namespace Testbed.Tests {
 			base.Step(settings);
 
 			b2DistanceInput input;
-			input.proxyA.Set(&m_polygonA, 0);
-			input.proxyB.Set(&m_polygonB, 0);
+			input.proxyA.Set(m_polygonA, 0);
+			input.proxyB.Set(m_polygonB, 0);
 			input.transformA = m_transformA;
 			input.transformB = m_transformB;
 			input.useRadii = true;
 			b2SimplexCache cache;
 			cache.count = 0;
 			b2DistanceOutput output;
-			b2Distance(&output, &cache, &input);
+			b2Distance.Distance(out output, cache, input);
 
 			m_debugDraw.DrawString("distance = %g", output.distance);
 			
@@ -52,8 +53,8 @@ namespace Testbed.Tests {
 			
 
 			{
-				b2Color color(0.9f, 0.9f, 0.9f);
-				b2Vec2 v[b2Settings.b2_maxPolygonVertices];
+				Color color = Color.FromArgb(225, 225, 225);
+				b2Vec2[] v = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 				for (int i = 0; i < m_polygonA.m_count; ++i)
 				{
 					v[i] = Utilities.b2Mul(m_transformA, m_polygonA.m_vertices[i]);
@@ -70,10 +71,10 @@ namespace Testbed.Tests {
 			b2Vec2 x1 = output.pointA;
 			b2Vec2 x2 = output.pointB;
 
-			b2Color c1(1.0f, 0.0f, 0.0f);
+			Color c1 = Color.FromArgb(255, 0, 0);
 			m_debugDraw.DrawPoint(x1, 4.0f, c1);
 
-			b2Color c2(1.0f, 1.0f, 0.0f);
+			Color c2 = Color.FromArgb(255, 255, 0);
 			m_debugDraw.DrawPoint(x2, 4.0f, c2);
 		}
 

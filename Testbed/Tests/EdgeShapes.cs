@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	class EdgeShapesCallback : b2RayCastCallback
@@ -43,11 +44,11 @@ namespace Testbed.Tests {
 				b2Body ground = m_world.CreateBody(bd);
 
 				float x1 = -20.0f;
-				float y1 = 2.0f * cosf(x1 / 10.0f * (float)Math.PI);
+				float y1 = 2.0f * (float)Math.Cos(x1 / 10.0f * (float)Math.PI);
 				for (int i = 0; i < 80; ++i)
 				{
 					float x2 = x1 + 0.5f;
-					float y2 = 2.0f * cosf(x2 / 10.0f * (float)Math.PI);
+					float y2 = 2.0f * (float)Math.Cos(x2 / 10.0f * (float)Math.PI);
 
 					b2EdgeShape shape = new b2EdgeShape();
 					shape.Set(new b2Vec2(x1, y1), new b2Vec2(x2, y2));
@@ -59,7 +60,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -67,7 +68,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -79,7 +80,7 @@ namespace Testbed.Tests {
 				float b = w / (2.0f + b2Sqrt(2.0f));
 				float s = b2Sqrt(2.0f) * b;
 
-				b2Vec2 vertices[8];
+				b2Vec2[] vertices = new b2Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -131,7 +132,7 @@ namespace Testbed.Tests {
 
 			if (index < 4)
 			{
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = m_polygons + index;
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
@@ -139,8 +140,8 @@ namespace Testbed.Tests {
 			}
 			else
 			{
-				b2FixtureDef fd;
-				fd.shape = &m_circle;
+				b2FixtureDef fd = new b2FixtureDef();
+				fd.shape = m_circle;
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
@@ -190,7 +191,7 @@ namespace Testbed.Tests {
 
 			float L = 25.0f;
 			b2Vec2 point1(0.0f, 10.0f);
-			b2Vec2 d(L * cosf(m_angle), -L * Math.Abs(sinf(m_angle)));
+			b2Vec2 d(L * (float)Math.Cos(m_angle), -L * Math.Abs((float)Math.Sin(m_angle)));
 			b2Vec2 point2 = point1 + d;
 
 			EdgeShapesCallback callback;
@@ -199,16 +200,16 @@ namespace Testbed.Tests {
 
 			if (callback.m_fixture)
 			{
-				m_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
+				m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
 
-				m_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+				m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(0.8f, 0.8f, 0.8f));
 
 				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				m_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+				m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 0.4f));
 			}
 			else
 			{
-				m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
 			}
 
 			if (advanceRay)

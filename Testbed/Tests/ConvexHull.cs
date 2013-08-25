@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	class ConvexHull : Test
 	{
-		public enum
-		{
-			e_count = b2Settings.b2_maxPolygonVertices
-		};
+		const int e_count = b2Settings.b2_maxPolygonVertices;
 
 		public ConvexHull()
 		{
@@ -66,12 +64,12 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawString("Press g to generate a new random convex hull");
 			
 
-			m_debugDraw.DrawPolygon(shape.m_vertices, shape.m_count, b2Color(0.9f, 0.9f, 0.9f));
+			m_debugDraw.DrawPolygon(shape.m_vertices, shape.m_count, Color.FromArgb(225, 225, 225));
 
 			for (int i = 0; i < e_count; ++i)
 			{
-				m_debugDraw.DrawPoint(m_points[i], 2.0f, b2Color(0.9f, 0.5f, 0.5f));
-				m_debugDraw.DrawString(m_points[i] + b2Vec2(0.05f, 0.05f), "%d", i);
+				m_debugDraw.DrawPoint(m_points[i], 2.0f, Color.FromArgb(225, 0.5f, 0.5f));
+				//m_debugDraw.DrawString(m_points[i] + new b2Vec2(0.05f, 0.05f), "%d", i);
 			}
 
 			if (shape.Validate() == false)
@@ -85,7 +83,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		b2Vec2 m_points[b2Settings.b2_maxPolygonVertices];
+		b2Vec2[] m_points = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 		bool m_auto;
 	};
 }

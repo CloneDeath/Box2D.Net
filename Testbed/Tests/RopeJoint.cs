@@ -32,14 +32,14 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.125f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				fd.friction = 0.2f;
 				fd.filter.categoryBits = 0x0001;
 				fd.filter.maskBits = 0xFFFF & ~0x0002;
 
-				b2RevoluteJointDef jd;
+				b2RevoluteJointDef jd = new b2RevoluteJointDef();
 				jd.collideConnected = false;
 
 				const int N = 10;
@@ -65,9 +65,9 @@ namespace Testbed.Tests {
 
 					body.CreateFixture(fd);
 
-					b2Vec2 anchor(float(i), y);
+					b2Vec2 anchor = new b2Vec2((float)(i), y);
 					jd.Initialize(prevBody, body, anchor);
-					m_world.CreateJoint(&jd);
+					m_world.CreateJoint(jd);
 
 					prevBody = body;
 				}
@@ -81,7 +81,7 @@ namespace Testbed.Tests {
 
 			{
 				m_ropeDef.bodyA = ground;
-				m_rope = m_world.CreateJoint(&m_ropeDef);
+				m_rope = m_world.CreateJoint(m_ropeDef);
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace Testbed.Tests {
 				}
 				else
 				{
-					m_rope = m_world.CreateJoint(&m_ropeDef);
+					m_rope = m_world.CreateJoint(m_ropeDef);
 				}
 				break;
 			}

@@ -35,7 +35,7 @@ namespace Testbed.Tests {
 				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, -10.0f), 0.0);
 				body.CreateFixture(shape, 5.0f);
 
-				b2RevoluteJointDef jd;
+				b2RevoluteJointDef jd = new b2RevoluteJointDef();
 				jd.bodyA = ground;
 				jd.bodyB = body;
 				jd.localAnchorA.Set(0.0f, 10.0f);
@@ -44,7 +44,7 @@ namespace Testbed.Tests {
 				jd.motorSpeed = 0.05f * (float)Math.PI;
 				jd.maxMotorTorque = 1e8f;
 				jd.enableMotor = true;
-				m_joint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
+				m_joint = (b2RevoluteJoint)m_world.CreateJoint(jd);
 			}
 
 			m_count = 0;
@@ -74,7 +74,7 @@ namespace Testbed.Tests {
 			return new Tumbler();
 		}
 
-		b2RevoluteJoint* m_joint;
+		b2RevoluteJoint m_joint;
 		int m_count;
 	};
 }

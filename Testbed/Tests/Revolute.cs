@@ -18,7 +18,7 @@ namespace Testbed.Tests {
 				b2EdgeShape shape = new b2EdgeShape();
 				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				//fd.filter.categoryBits = 2;
 
@@ -32,7 +32,7 @@ namespace Testbed.Tests {
 				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 
-				b2RevoluteJointDef rjd;
+				b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 
 				bd.position.Set(-10.0f, 20.0f);
 				b2Body body = m_world.CreateBody(bd);
@@ -51,7 +51,7 @@ namespace Testbed.Tests {
 				rjd.enableLimit = true;
 				rjd.collideConnected = true;
 
-				m_joint = (b2RevoluteJoint*)m_world.CreateJoint(&rjd);
+				m_joint = (b2RevoluteJoint)m_world.CreateJoint(rjd);
 			}
 
 			{
@@ -62,12 +62,12 @@ namespace Testbed.Tests {
 				circle_bd.type = b2BodyType.b2_dynamicBody;
 				circle_bd.position.Set(5.0f, 30.0f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.density = 5.0f;
 				fd.filter.maskBits = 1;
-				fd.shape = &circle_shape;
+				fd.shape = circle_shape;
 
-				m_ball = m_world.CreateBody(&circle_bd);
+				m_ball = m_world.CreateBody(circle_bd);
 				m_ball.CreateFixture(fd);
 
 				b2PolygonShape polygon_shape;
@@ -77,15 +77,15 @@ namespace Testbed.Tests {
 				polygon_bd.position.Set(20.0f, 10.0f);
 				polygon_bd.type = b2BodyType.b2_dynamicBody;
 				polygon_bd.bullet = true;
-				b2Body polygon_body = m_world.CreateBody(&polygon_bd);
-				polygon_body.CreateFixture(&polygon_shape, 2.0f);
+				b2Body polygon_body = m_world.CreateBody(polygon_bd);
+				polygon_body.CreateFixture(polygon_shape, 2.0f);
 
-				b2RevoluteJointDef rjd;
+				b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 				rjd.Initialize(ground, polygon_body, new b2Vec2(20.0f, 10.0f));
 				rjd.lowerAngle = -0.25f * (float)Math.PI;
 				rjd.upperAngle = 0.0f * (float)Math.PI;
 				rjd.enableLimit = true;
-				m_world.CreateJoint(&rjd);
+				m_world.CreateJoint(rjd);
 			}
 
 			// Tests mass computation of a small object far from the origin
@@ -102,10 +102,10 @@ namespace Testbed.Tests {
 				polyShape.Set(verts, 3);
 		
 				b2FixtureDef polyFixtureDef;
-				polyFixtureDef.shape = &polyShape;
+				polyFixtureDef.shape = polyShape;
 				polyFixtureDef.density = 1;
 
-				body.CreateFixture(&polyFixtureDef);	//assertion hits inside here
+				body.CreateFixture(polyFixtureDef);	//assertion hits inside here
 			}
 
 		}
@@ -132,7 +132,7 @@ namespace Testbed.Tests {
 
 			//if (m_stepCount == 360)
 			//{
-			//	m_ball.SetTransform(b2Vec2(0.0f, 0.5f), 0.0f);
+			//	m_ball.SetTransform(new b2Vec2(0.0f, 0.5f), 0.0f);
 			//}
 
 			//float torque1 = m_joint1.GetMotorTorque();
@@ -146,6 +146,6 @@ namespace Testbed.Tests {
 		}
 
 		b2Body m_ball;
-		b2RevoluteJoint* m_joint;
+		b2RevoluteJoint m_joint;
 	};
 }

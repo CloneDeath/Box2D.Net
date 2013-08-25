@@ -28,7 +28,7 @@ namespace Testbed.Tests {
 					b2FixtureDef sd;
 					sd.SetAsBox(10.0f, 2.0f, new b2Vec2(0.0f, 20.0f), 0.0f);
 					sd.isSensor = true;
-					m_sensor = ground.CreateFixture(&sd);
+					m_sensor = ground.CreateFixture(sd);
 				}
 	#else
 				{
@@ -36,7 +36,7 @@ namespace Testbed.Tests {
 					shape.m_radius = 5.0f;
 					shape.m_p.Set(0.0f, 10.0f);
 
-					b2FixtureDef fd;
+					b2FixtureDef fd = new b2FixtureDef();
 					fd.shape = shape;
 					fd.isSensor = true;
 					m_sensor = ground.CreateFixture(fd);

@@ -58,7 +58,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[0] = m_world.CreateJoint(&jd);
+				m_joints[0] = m_world.CreateJoint(jd);
 
 				jd.bodyA = ground;
 				jd.bodyB = m_bodies[1];
@@ -68,7 +68,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[1] = m_world.CreateJoint(&jd);
+				m_joints[1] = m_world.CreateJoint(jd);
 
 				jd.bodyA = ground;
 				jd.bodyB = m_bodies[2];
@@ -78,7 +78,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[2] = m_world.CreateJoint(&jd);
+				m_joints[2] = m_world.CreateJoint(jd);
 
 				jd.bodyA = ground;
 				jd.bodyB = m_bodies[3];
@@ -88,7 +88,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[3] = m_world.CreateJoint(&jd);
+				m_joints[3] = m_world.CreateJoint(jd);
 
 				jd.bodyA = m_bodies[0];
 				jd.bodyB = m_bodies[1];
@@ -98,7 +98,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[4] = m_world.CreateJoint(&jd);
+				m_joints[4] = m_world.CreateJoint(jd);
 
 				jd.bodyA = m_bodies[1];
 				jd.bodyB = m_bodies[2];
@@ -108,7 +108,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[5] = m_world.CreateJoint(&jd);
+				m_joints[5] = m_world.CreateJoint(jd);
 
 				jd.bodyA = m_bodies[2];
 				jd.bodyB = m_bodies[3];
@@ -118,7 +118,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[6] = m_world.CreateJoint(&jd);
+				m_joints[6] = m_world.CreateJoint(jd);
 
 				jd.bodyA = m_bodies[3];
 				jd.bodyB = m_bodies[0];
@@ -128,7 +128,7 @@ namespace Testbed.Tests {
 				p2 = jd.bodyB.GetWorldPoint(jd.localAnchorB);
 				d = p2 - p1;
 				jd.length = d.Length();
-				m_joints[7] = m_world.CreateJoint(&jd);
+				m_joints[7] = m_world.CreateJoint(jd);
 			}
 		}
 

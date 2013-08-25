@@ -15,10 +15,10 @@ namespace Testbed.Tests {
 				bd.position.Set(0.0f, 0.0f);
 				b2Body body = m_world.CreateBody(bd);
 
-				b2EdgeShape edge;
+				b2EdgeShape edge = new b2EdgeShape();
 
 				edge.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(10.0f, 0.0f));
-				body.CreateFixture(&edge, 0.0f);
+				body.CreateFixture(edge, 0.0f);
 
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.2f, 1.0f, new b2Vec2(0.5f, 1.0f), 0.0f);
@@ -63,30 +63,21 @@ namespace Testbed.Tests {
 			}
 	#endif
 
-			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
-			extern int b2_toiCalls, b2_toiIters;
-			extern int b2_toiRootIters, b2_toiMaxRootIters;
-			extern float b2_toiTime, b2_toiMaxTime;
-
-			b2_gjkCalls = 0; b2_gjkIters = 0; b2_gjkMaxIters = 0;
-			b2_toiCalls = 0; b2_toiIters = 0;
-			b2_toiRootIters = 0; b2_toiMaxRootIters = 0;
-			b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
+			b2Distance.b2_gjkCalls = 0; b2Distance.b2_gjkIters = 0; b2Distance.b2_gjkMaxIters = 0;
+			b2TimeOfImpact.b2_toiCalls = 0; b2TimeOfImpact.b2_toiIters = 0;
+			b2TimeOfImpact.b2_toiRootIters = 0; b2TimeOfImpact.b2_toiMaxRootIters = 0;
+			b2TimeOfImpact.b2_toiTime = 0.0f; b2TimeOfImpact.b2_toiMaxTime = 0.0f;
 		}
 
 		public void Launch()
 		{
-			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
-			extern int b2_toiCalls, b2_toiIters;
-			extern int b2_toiRootIters, b2_toiMaxRootIters;
-			extern float b2_toiTime, b2_toiMaxTime;
 
-			b2_gjkCalls = 0; b2_gjkIters = 0; b2_gjkMaxIters = 0;
-			b2_toiCalls = 0; b2_toiIters = 0;
-			b2_toiRootIters = 0; b2_toiMaxRootIters = 0;
-			b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
+			b2Distance.b2_gjkCalls = 0; b2Distance.b2_gjkIters = 0; b2Distance.b2_gjkMaxIters = 0;
+			b2TimeOfImpact.b2_toiCalls = 0; b2TimeOfImpact.b2_toiIters = 0;
+			b2TimeOfImpact.b2_toiRootIters = 0; b2TimeOfImpact.b2_toiMaxRootIters = 0;
+			b2TimeOfImpact.b2_toiTime = 0.0f; b2TimeOfImpact.b2_toiMaxTime = 0.0f;
 
-			m_body.SetTransform(b2Vec2(0.0f, 20.0f), 0.0f);
+			m_body.SetTransform(new b2Vec2(0.0f, 20.0f), 0.0f);
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 			m_body.SetLinearVelocity(new b2Vec2(0.0f, -100.0f));
 			m_body.SetAngularVelocity(m_angularVelocity);
@@ -96,31 +87,25 @@ namespace Testbed.Tests {
 		{
 			base.Step(settings);
 
-			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
-
-			if (b2_gjkCalls > 0)
+			if (b2Distance.b2_gjkCalls > 0)
 			{
 				m_debugDraw.DrawString("gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-					b2_gjkCalls, b2_gjkIters / float(b2_gjkCalls), b2_gjkMaxIters);
+					b2Distance.b2_gjkCalls, b2Distance.b2_gjkIters / (float)(b2Distance.b2_gjkCalls), b2Distance.b2_gjkMaxIters);
 				
 			}
 
-			extern int b2_toiCalls, b2_toiIters;
-			extern int b2_toiRootIters, b2_toiMaxRootIters;
-			extern float b2_toiTime, b2_toiMaxTime;
-
-			if (b2_toiCalls > 0)
+			if (b2TimeOfImpact.b2_toiCalls > 0)
 			{
 				m_debugDraw.DrawString("toi calls = %d, ave [max] toi iters = %3.1f [%d]",
-									b2_toiCalls, b2_toiIters / float(b2_toiCalls), b2_toiMaxRootIters);
+									b2TimeOfImpact.b2_toiCalls, b2TimeOfImpact.b2_toiIters / (float)(b2TimeOfImpact.b2_toiCalls), b2TimeOfImpact.b2_toiMaxRootIters);
 				
 			
 				m_debugDraw.DrawString("ave [max] toi root iters = %3.1f [%d]",
-					b2_toiRootIters / float(b2_toiCalls), b2_toiMaxRootIters);
+					b2TimeOfImpact.b2_toiRootIters / (float)(b2TimeOfImpact.b2_toiCalls), b2TimeOfImpact.b2_toiMaxRootIters);
 				
 
 				m_debugDraw.DrawString("ave [max] toi time = %.1f [%.1f] (microseconds)",
-					1000.0f * b2_toiTime / float(b2_toiCalls), 1000.0f * b2_toiMaxTime);
+					1000.0f * b2TimeOfImpact.b2_toiTime / (float)(b2TimeOfImpact.b2_toiCalls), 1000.0f * b2TimeOfImpact.b2_toiMaxTime);
 				
 			}
 

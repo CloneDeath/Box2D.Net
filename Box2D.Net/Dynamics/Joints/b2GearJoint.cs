@@ -32,7 +32,7 @@ namespace Box2D {
 	// Cdot = dot(v + cross(w, r), ug)
 	// J = [ug cross(r, ug)]
 	// K = J * invM * JT = invMass + invI * cross(r, ug)^2
-	class b2GearJoint : b2Joint
+	public class b2GearJoint : b2Joint
 	{
 	
 		public override b2Vec2 GetAnchorA(){
@@ -78,11 +78,11 @@ namespace Box2D {
 			b2Settings.b2Log("  b2GearJointDef jd;\n");
 			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
 			b2Settings.b2Log("  jd.joint1 = joints[%d];\n", index1);
 			b2Settings.b2Log("  jd.joint2 = joints[%d];\n", index2);
 			b2Settings.b2Log("  jd.ratio = %.15lef;\n", m_ratio);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
+			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 
 		

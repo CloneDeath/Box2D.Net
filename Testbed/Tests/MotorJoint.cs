@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	/// This test shows how to use a motor joint. A motor joint
@@ -21,7 +22,7 @@ namespace Testbed.Tests {
 				b2EdgeShape shape = new b2EdgeShape();
 				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 
 				ground.CreateFixture(fd);
@@ -37,7 +38,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(2.0f, 0.5f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;
@@ -47,7 +48,7 @@ namespace Testbed.Tests {
 				mjd.Initialize(ground, body);
 				mjd.maxForce = 1000.0f;
 				mjd.maxTorque = 1000.0f;
-				m_joint = (b2MotorJoint*)m_world.CreateJoint(&mjd);
+				m_joint = (b2MotorJoint*)m_world.CreateJoint(mjd);
 			}
 
 			m_go = false;
@@ -72,15 +73,15 @@ namespace Testbed.Tests {
 			}
 
 			b2Vec2 linearOffset;
-			linearOffset.x = 6.0f * sinf(2.0f * m_time);
-			linearOffset.y = 8.0f + 4.0f * sinf(1.0f * m_time);
+			linearOffset.x = 6.0f * (float)Math.Sin(2.0f * m_time);
+			linearOffset.y = 8.0f + 4.0f * (float)Math.Sin(1.0f * m_time);
 		
 			float angularOffset = 4.0f * m_time;
 
 			m_joint.SetLinearOffset(linearOffset);
 			m_joint.SetAngularOffset(angularOffset);
 
-			m_debugDraw.DrawPoint(linearOffset, 4.0f, b2Color(0.9f, 0.9f, 0.9f));
+			m_debugDraw.DrawPoint(linearOffset, 4.0f, Color.FromArgb(225, 225, 225));
 
 			base.Step(settings);
 			m_debugDraw.DrawString("Keys: (s) pause");

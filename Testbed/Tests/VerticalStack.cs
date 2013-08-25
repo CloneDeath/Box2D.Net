@@ -34,7 +34,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
@@ -79,7 +79,7 @@ namespace Testbed.Tests {
 					b2CircleShape shape = new b2CircleShape();
 					shape.m_radius = 0.25f;
 
-					b2FixtureDef fd;
+					b2FixtureDef fd = new b2FixtureDef();
 					fd.shape = shape;
 					fd.density = 20.0f;
 					fd.restitution = 0.05f;
@@ -116,7 +116,7 @@ namespace Testbed.Tests {
 			//		b2CircleShape shape = new b2CircleShape();
 			//		shape.m_radius = 0.25f;
 
-			//		b2FixtureDef fd;
+			//		b2FixtureDef fd = new b2FixtureDef();
 			//		fd.shape = shape;
 			//		fd.density = 20.0f;
 			//		fd.restitution = 0.05f;

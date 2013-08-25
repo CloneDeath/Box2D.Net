@@ -12,10 +12,7 @@ namespace Testbed.Tests {
 	// joint with a rotational spring.
 	class Cantilever : Test
 	{
-	public enum
-		{
-			e_count = 8
-		};
+		const int e_count = 8;
 
 		Cantilever()
 		{
@@ -33,7 +30,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.125f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 
@@ -48,9 +45,9 @@ namespace Testbed.Tests {
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
-					b2Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
+					b2Vec2 anchor = new b2Vec2(-15.0f + 1.0f * i, 5.0f);
 					jd.Initialize(prevBody, body, anchor);
-					m_world.CreateJoint(&jd);
+					m_world.CreateJoint(jd);
 
 					prevBody = body;
 				}
@@ -60,7 +57,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(1.0f, 0.125f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 
@@ -77,9 +74,9 @@ namespace Testbed.Tests {
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
-					b2Vec2 anchor(-15.0f + 2.0f * i, 15.0f);
+					b2Vec2 anchor = new b2Vec2(-15.0f + 2.0f * i, 15.0f);
 					jd.Initialize(prevBody, body, anchor);
-					m_world.CreateJoint(&jd);
+					m_world.CreateJoint(jd);
 
 					prevBody = body;
 				}
@@ -89,7 +86,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.125f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 
@@ -106,9 +103,9 @@ namespace Testbed.Tests {
 
 					if (i > 0)
 					{
-						b2Vec2 anchor(-5.0f + 1.0f * i, 5.0f);
+						b2Vec2 anchor = new b2Vec2(-5.0f + 1.0f * i, 5.0f);
 						jd.Initialize(prevBody, body, anchor);
-						m_world.CreateJoint(&jd);
+						m_world.CreateJoint(jd);
 					}
 
 					prevBody = body;
@@ -119,7 +116,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.125f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 
@@ -138,9 +135,9 @@ namespace Testbed.Tests {
 
 					if (i > 0)
 					{
-						b2Vec2 anchor(5.0f + 1.0f * i, 10.0f);
+						b2Vec2 anchor = new b2Vec2(5.0f + 1.0f * i, 10.0f);
 						jd.Initialize(prevBody, body, anchor);
-						m_world.CreateJoint(&jd);
+						m_world.CreateJoint(jd);
 					}
 
 					prevBody = body;
@@ -149,7 +146,7 @@ namespace Testbed.Tests {
 
 			for (int i = 0; i < 2; ++i)
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -157,7 +154,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.Set(vertices, 3);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 
@@ -173,7 +170,7 @@ namespace Testbed.Tests {
 				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.5f;
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 

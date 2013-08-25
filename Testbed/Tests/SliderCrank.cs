@@ -36,12 +36,12 @@ namespace Testbed.Tests {
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(shape, 2.0f);
 
-					b2RevoluteJointDef rjd;
+					b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 					rjd.Initialize(prevBody, body, new b2Vec2(0.0f, 5.0f));
 					rjd.motorSpeed = 1.0f * (float)Math.PI;
 					rjd.maxMotorTorque = 10000.0f;
 					rjd.enableMotor = true;
-					m_joint1 = (b2RevoluteJoint*)m_world.CreateJoint(&rjd);
+					m_joint1 = (b2RevoluteJoint)m_world.CreateJoint(rjd);
 
 					prevBody = body;
 				}
@@ -57,10 +57,10 @@ namespace Testbed.Tests {
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(shape, 2.0f);
 
-					b2RevoluteJointDef rjd;
+					b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 					rjd.Initialize(prevBody, body, new b2Vec2(0.0f, 9.0f));
 					rjd.enableMotor = false;
-					m_world.CreateJoint(&rjd);
+					m_world.CreateJoint(rjd);
 
 					prevBody = body;
 				}
@@ -77,17 +77,17 @@ namespace Testbed.Tests {
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(shape, 2.0f);
 
-					b2RevoluteJointDef rjd;
+					b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 					rjd.Initialize(prevBody, body, new b2Vec2(0.0f, 17.0f));
-					m_world.CreateJoint(&rjd);
+					m_world.CreateJoint(rjd);
 
-					b2PrismaticJointDef pjd;
+					b2PrismaticJointDef pjd = new b2PrismaticJointDef();
 					pjd.Initialize(ground, body, new b2Vec2(0.0f, 17.0f), new b2Vec2(0.0f, 1.0f));
 
 					pjd.maxMotorForce = 1000.0f;
 					pjd.enableMotor = true;
 
-					m_joint2 = (b2PrismaticJoint*)m_world.CreateJoint(&pjd);
+					m_joint2 = (b2PrismaticJoint*)m_world.CreateJoint(pjd);
 				}
 
 				// Create a payload
@@ -135,7 +135,7 @@ namespace Testbed.Tests {
 			return new SliderCrank();
 		}
 
-		b2RevoluteJoint* m_joint1;
+		b2RevoluteJoint m_joint1;
 		b2PrismaticJoint* m_joint2;
 	};
 }

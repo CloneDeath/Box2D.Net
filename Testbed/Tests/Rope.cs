@@ -12,8 +12,8 @@ namespace Testbed.Tests {
 		public Rope()
 		{
 			const int N = 40;
-			b2Vec2 vertices[N];
-			float masses[N];
+			b2Vec2[] vertices = new b2Vec2[N];
+			float [] masses = new float [N];
 
 			for (int i = 0; i < N; ++i)
 			{

@@ -24,12 +24,12 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.6f, 0.125f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				fd.friction = 0.2f;
 
-				b2RevoluteJointDef jd;
+				b2RevoluteJointDef jd = new b2RevoluteJointDef();
 				jd.collideConnected = false;
 
 				const float y = 25.0f;
@@ -42,9 +42,9 @@ namespace Testbed.Tests {
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
-					b2Vec2 anchor(float(i), y);
+					b2Vec2 anchor = new b2Vec2((float)(i), y);
 					jd.Initialize(prevBody, body, anchor);
-					m_world.CreateJoint(&jd);
+					m_world.CreateJoint(jd);
 
 					prevBody = body;
 				}

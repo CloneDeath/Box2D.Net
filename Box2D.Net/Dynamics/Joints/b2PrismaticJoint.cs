@@ -8,7 +8,7 @@ namespace Box2D {
 	/// along an axis fixed in bodyA. Relative rotation is prevented. You can
 	/// use a joint limit to restrict the range of motion and a joint motor to
 	/// drive the motion or to model joint friction.
-	class b2PrismaticJoint : b2Joint
+	public class b2PrismaticJoint : b2Joint
 	{
 		public b2PrismaticJoint(b2PrismaticJointDef def) : base(def)
 		{
@@ -177,18 +177,18 @@ namespace Box2D {
 			b2Settings.b2Log("  b2PrismaticJointDef jd;\n");
 			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
 			b2Settings.b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
 			b2Settings.b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 			b2Settings.b2Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
 			b2Settings.b2Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
-			b2Settings.b2Log("  jd.enableLimit = bool(%d);\n", m_enableLimit);
+			b2Settings.b2Log("  jd.enableLimit = (bool)(%d);\n", m_enableLimit);
 			b2Settings.b2Log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);
 			b2Settings.b2Log("  jd.upperTranslation = %.15lef;\n", m_upperTranslation);
-			b2Settings.b2Log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
+			b2Settings.b2Log("  jd.enableMotor = (bool)(%d);\n", m_enableMotor);
 			b2Settings.b2Log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 			b2Settings.b2Log("  jd.maxMotorForce = %.15lef;\n", m_maxMotorForce);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
+			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 
 

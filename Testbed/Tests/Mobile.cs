@@ -31,7 +31,7 @@ namespace Testbed.Tests {
 			jointDef.bodyB = root;
 			jointDef.localAnchorA.SetZero();
 			jointDef.localAnchorB = h;
-			m_world.CreateJoint(&jointDef);
+			m_world.CreateJoint(jointDef);
 		}
 
 		public b2Body AddNode(b2Body parent, b2Vec2 localAnchor, int depth, float offset, float a)
@@ -66,11 +66,11 @@ namespace Testbed.Tests {
 
 			jointDef.localAnchorA = a1;
 			jointDef.bodyB = body1;
-			m_world.CreateJoint(&jointDef);
+			m_world.CreateJoint(jointDef);
 
 			jointDef.localAnchorA = a2;
 			jointDef.bodyB = body2;
-			m_world.CreateJoint(&jointDef);
+			m_world.CreateJoint(jointDef);
 
 			return body;
 		}

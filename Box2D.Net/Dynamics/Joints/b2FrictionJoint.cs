@@ -58,12 +58,12 @@ namespace Box2D {
 			b2Settings.b2Log("  b2FrictionJointDef jd;\n");
 			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
 			b2Settings.b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
 			b2Settings.b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 			b2Settings.b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 			b2Settings.b2Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
+			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 
 		internal b2FrictionJoint(b2FrictionJointDef def) : base(def) {

@@ -25,7 +25,7 @@ namespace Testbed.Tests {
 				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 1.0f;
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 

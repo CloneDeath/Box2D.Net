@@ -33,10 +33,10 @@ namespace Testbed.Tests {
 				b2Body body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 5.0f);
 
-				b2PrismaticJointDef pjd;
+				b2PrismaticJointDef pjd = new b2PrismaticJointDef();
 
 				// Bouncy limit
-				b2Vec2 axis(2.0f, 1.0f);
+				b2Vec2 axis = new b2Vec2(2.0f, 1.0f);
 				axis.Normalize();
 				pjd.Initialize(ground, body, new b2Vec2(0.0f, 0.0f), axis);
 
@@ -50,7 +50,7 @@ namespace Testbed.Tests {
 				pjd.upperTranslation = 20.0f;
 				pjd.enableLimit = true;
 
-				m_joint = (b2PrismaticJoint*)m_world.CreateJoint(&pjd);
+				m_joint = (b2PrismaticJoint*)m_world.CreateJoint(pjd);
 			}
 		}
 

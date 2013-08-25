@@ -10,7 +10,7 @@ namespace Box2D {
 	/// so that the initial configuration can violate the constraint
 	/// slightly. This helps when saving and loading a game.
 	/// @warning Do not use a zero or short length.
-	class b2DistanceJointDef : b2JointDef
+	public class b2DistanceJointDef : b2JointDef
 	{
 		public b2DistanceJointDef()
 		{

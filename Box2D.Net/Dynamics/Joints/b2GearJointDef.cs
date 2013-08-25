@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// Gear joint definition. This definition requires two existing
 	/// revolute or prismatic joints (any combination will work).
-	class b2GearJointDef : b2JointDef
+	public class b2GearJointDef : b2JointDef
 	{
 		public b2GearJointDef()
 		{

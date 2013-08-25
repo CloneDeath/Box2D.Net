@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// Motor joint definition.
-	class b2MotorJointDef : b2JointDef
+	public class b2MotorJointDef : b2JointDef
 	{
 		public b2MotorJointDef()
 		{

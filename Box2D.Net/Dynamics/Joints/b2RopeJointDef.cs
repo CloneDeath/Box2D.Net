@@ -8,7 +8,7 @@ namespace Box2D {
 	/// a maximum lengths.
 	/// Note: by default the connected objects will not collide.
 	/// see collideConnected in b2JointDef.
-	class b2RopeJointDef : b2JointDef
+	public class b2RopeJointDef : b2JointDef
 	{
 		public b2RopeJointDef()
 		{

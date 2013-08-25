@@ -402,7 +402,7 @@ namespace Box2D {
 		//        b2DistanceOutput output;
 		//        b2SimplexCache cache;
 		//        cache.count = 0;
-		//        b2Distance(&output, &cache, &input);
+		//        b2Distance.Distance(out output, cache, input);
 
 		//        if (output.distance == 0 || cache.count == 3)
 		//        {

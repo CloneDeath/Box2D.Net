@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// Used to warm start b2Distance.
 	/// Set count to zero on first call.
-	class b2SimplexCache
+	public class b2SimplexCache
 	{
 		public b2SimplexCache(){
 			indexA = new byte[3];

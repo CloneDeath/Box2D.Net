@@ -20,18 +20,18 @@ namespace Testbed.Tests {
 				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape edge;
+				b2EdgeShape edge = new b2EdgeShape();
 				edge.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
 				//ground.CreateFixture(shape, 0.0f);
 
-				b2CircleShape circle;
+				b2CircleShape circle = new b2CircleShape();
 				circle.m_radius = 2.0f;
 
 				circle.m_p.Set(-10.0f, y + b + L);
-				ground.CreateFixture(&circle, 0.0f);
+				ground.CreateFixture(circle, 0.0f);
 
 				circle.m_p.Set(10.0f, y + b + L);
-				ground.CreateFixture(&circle, 0.0f);
+				ground.CreateFixture(circle, 0.0f);
 			}
 
 			{
@@ -58,7 +58,7 @@ namespace Testbed.Tests {
 				b2Vec2 groundAnchor2(10.0f, y + b + L);
 				pulleyDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f);
 
-				m_joint1 = (b2PulleyJoint*)m_world.CreateJoint(&pulleyDef);
+				m_joint1 = (b2PulleyJoint*)m_world.CreateJoint(pulleyDef);
 			}
 		}
 

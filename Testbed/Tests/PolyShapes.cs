@@ -25,7 +25,7 @@ namespace Testbed.Tests {
 
 		public void DrawFixture(b2Fixture fixture)
 		{
-			b2Color color(0.95f, 0.95f, 0.6f);
+			Color color(0.95f, 0.95f, 0.6f);
 			const b2Transform& xf = fixture.GetBody().GetTransform();
 
 			switch (fixture.GetShapeType())
@@ -46,7 +46,7 @@ namespace Testbed.Tests {
 					b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
 					int vertexCount = poly.m_count;
 					Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
-					b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
+					b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 
 					for (int i = 0; i < vertexCount; ++i)
 					{
@@ -106,7 +106,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -114,7 +114,7 @@ namespace Testbed.Tests {
 			}
 		
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -126,7 +126,7 @@ namespace Testbed.Tests {
 				float b = w / (2.0f + b2Sqrt(2.0f));
 				float s = b2Sqrt(2.0f) * b;
 
-				b2Vec2 vertices[8];
+				b2Vec2[] vertices = new b2Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -175,7 +175,7 @@ namespace Testbed.Tests {
 
 			if (index < 4)
 			{
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = m_polygons + index;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
@@ -183,8 +183,8 @@ namespace Testbed.Tests {
 			}
 			else
 			{
-				b2FixtureDef fd;
-				fd.shape = &m_circle;
+				b2FixtureDef fd = new b2FixtureDef();
+				fd.shape = m_circle;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
 
@@ -251,7 +251,7 @@ namespace Testbed.Tests {
 
 			m_world.QueryAABB(&callback, aabb);
 
-			b2Color color(0.4f, 0.7f, 0.8f);
+			Color color(0.4f, 0.7f, 0.8f);
 			m_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
 
 			m_debugDraw.DrawString("Press 1-5 to drop stuff");

@@ -28,8 +28,8 @@ namespace Testbed.Tests {
 
 				b2ChainShape loop;
 				loop.CreateLoop(vs, 5);
-				b2FixtureDef fd;
-				fd.shape = &loop;
+				b2FixtureDef fd = new b2FixtureDef();
+				fd.shape = loop;
 				fd.density = 0.0f;
 				ground.CreateFixture(fd);
 			}
@@ -48,17 +48,17 @@ namespace Testbed.Tests {
 				bd.position = p2;
 				b2Body rightFlipper = m_world.CreateBody(bd);
 
-				b2PolygonShape box;
+				b2PolygonShape box = new b2PolygonShape();
 				box.SetAsBox(1.75f, 0.1f);
 
-				b2FixtureDef fd;
-				fd.shape = &box;
+				b2FixtureDef fd = new b2FixtureDef();
+				fd.shape = box;
 				fd.density = 1.0f;
 
 				leftFlipper.CreateFixture(fd);
 				rightFlipper.CreateFixture(fd);
 
-				b2RevoluteJointDef jd;
+				b2RevoluteJointDef jd = new b2RevoluteJointDef();
 				jd.bodyA = ground;
 				jd.localAnchorB.SetZero();
 				jd.enableMotor = true;
@@ -70,14 +70,14 @@ namespace Testbed.Tests {
 				jd.bodyB = leftFlipper;
 				jd.lowerAngle = -30.0f * (float)Math.PI / 180.0f;
 				jd.upperAngle = 5.0f * (float)Math.PI / 180.0f;
-				m_leftJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
+				m_leftJoint = (b2RevoluteJoint)m_world.CreateJoint(jd);
 
 				jd.motorSpeed = 0.0f;
 				jd.localAnchorA = p2;
 				jd.bodyB = rightFlipper;
 				jd.lowerAngle = -5.0f * (float)Math.PI / 180.0f;
 				jd.upperAngle = 30.0f * (float)Math.PI / 180.0f;
-				m_rightJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
+				m_rightJoint = (b2RevoluteJoint)m_world.CreateJoint(jd);
 			}
 
 			// Circle character
@@ -92,7 +92,7 @@ namespace Testbed.Tests {
 				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.2f;
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 				m_ball.CreateFixture(fd);
@@ -148,8 +148,8 @@ namespace Testbed.Tests {
 			return new Pinball();
 		}
 
-		b2RevoluteJoint* m_leftJoint;
-		b2RevoluteJoint* m_rightJoint;
+		b2RevoluteJoint m_leftJoint;
+		b2RevoluteJoint m_rightJoint;
 		b2Body m_ball;
 		bool m_button;
 	};

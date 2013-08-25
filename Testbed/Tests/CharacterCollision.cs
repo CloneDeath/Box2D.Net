@@ -45,12 +45,12 @@ namespace Testbed.Tests {
 				bd.angle = 0.25f * (float)Math.PI;
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2Vec2 vs[4];
+				b2Vec2[] vs = new b2Vec2[4];
 				vs[0].Set(5.0f, 7.0f);
 				vs[1].Set(6.0f, 8.0f);
 				vs[2].Set(7.0f, 8.0f);
 				vs[3].Set(8.0f, 7.0f);
-				b2ChainShape shape;
+				b2ChainShape shape = new b2ChainShape();
 				shape.CreateChain(vs, 4);
 				ground.CreateFixture(shape, 0.0f);
 			}
@@ -76,12 +76,12 @@ namespace Testbed.Tests {
 				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2Vec2 vs[4];
+				b2Vec2[] vs = new b2Vec2[4];
 				vs[0].Set(-1.0f, 3.0f);
 				vs[1].Set(1.0f, 3.0f);
 				vs[2].Set(1.0f, 5.0f);
 				vs[3].Set(-1.0f, 5.0f);
-				b2ChainShape shape;
+				b2ChainShape shape = new b2ChainShape();
 				shape.CreateLoop(vs, 4);
 				ground.CreateFixture(shape, 0.0f);
 			}
@@ -92,7 +92,7 @@ namespace Testbed.Tests {
 				bd.position.Set(-10.0f, 4.0f);
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2Vec2 vs[10];
+				b2Vec2[] vs = new b2Vec2[10];
 				vs[0].Set(0.0f, 0.0f);
 				vs[1].Set(6.0f, 0.0f);
 				vs[2].Set(6.0f, 2.0f);
@@ -103,7 +103,7 @@ namespace Testbed.Tests {
 				vs[7].Set(-4.0f, 3.0f);
 				vs[8].Set(-6.0f, 2.0f);
 				vs[9].Set(-6.0f, 0.0f);
-				b2ChainShape shape;
+				b2ChainShape shape = new b2ChainShape();
 				shape.CreateLoop(vs, 10);
 				ground.CreateFixture(shape, 0.0f);
 			}
@@ -121,7 +121,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				body.CreateFixture(fd);
@@ -140,7 +140,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.25f, 0.25f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				body.CreateFixture(fd);
@@ -158,17 +158,17 @@ namespace Testbed.Tests {
 
 				float angle = 0.0f;
 				float delta = (float)Math.PI / 3.0f;
-				b2Vec2 vertices[6];
+				b2Vec2[] vertices = new b2Vec2[6];
 				for (int i = 0; i < 6; ++i)
 				{
-					vertices[i].Set(0.5f * cosf(angle), 0.5f * sinf(angle));
+					vertices[i].Set(0.5f * (float)Math.Cos(angle), 0.5f * (float)Math.Sin(angle));
 					angle += delta;
 				}
 
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.Set(vertices, 6);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				body.CreateFixture(fd);
@@ -187,7 +187,7 @@ namespace Testbed.Tests {
 				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.5f;
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				body.CreateFixture(fd);
@@ -205,7 +205,7 @@ namespace Testbed.Tests {
 				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.25f;
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				fd.friction = 1.0f;

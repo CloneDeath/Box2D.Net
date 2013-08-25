@@ -18,11 +18,11 @@ namespace Testbed.Tests {
 				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(50.0f, 0.0f));
 
 				b2FixtureDef sd;
-				sd.shape = &shape;;
+				sd.shape = shape;;
 
 				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
-				ground.CreateFixture(&sd);
+				ground.CreateFixture(sd);
 			}
 
 			float xLo = -5.0f, xHi = 5.0f;
@@ -38,15 +38,15 @@ namespace Testbed.Tests {
 			polygon.Set(vertices, 3);
 
 			b2FixtureDef triangleShapeDef;
-			triangleShapeDef.shape = &polygon;
+			triangleShapeDef.shape = polygon;
 			triangleShapeDef.density = 1.0f;
 
 			b2BodyDef triangleBodyDef;
 			triangleBodyDef.type = b2BodyType.b2_dynamicBody;
 			triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body body1 = m_world.CreateBody(&triangleBodyDef);
-			body1.CreateFixture(&triangleShapeDef);
+			b2Body body1 = m_world.CreateBody(triangleBodyDef);
+			body1.CreateFixture(triangleShapeDef);
 
 			// Large triangle (recycle definitions)
 			vertices[0] *= 2.0f;
@@ -56,51 +56,51 @@ namespace Testbed.Tests {
 
 			triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body body2 = m_world.CreateBody(&triangleBodyDef);
-			body2.CreateFixture(&triangleShapeDef);
+			b2Body body2 = m_world.CreateBody(triangleBodyDef);
+			body2.CreateFixture(triangleShapeDef);
 		
 			// Small box
 			polygon.SetAsBox(1.0f, 0.5f);
 
-			b2FixtureDef boxShapeDef;
-			boxShapeDef.shape = &polygon;
+			b2FixtureDef boxShapeDef = new b2FixtureDef();
+			boxShapeDef.shape = polygon;
 			boxShapeDef.density = 1.0f;
 
-			b2BodyDef boxBodyDef;
+			b2BodyDef boxBodyDef = new b2BodyDef();
 			boxBodyDef.type = b2BodyType.b2_dynamicBody;
 			boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 			b2Body body3 = m_world.CreateBody(boxBodyDef);
-			body3.CreateFixture(&boxShapeDef);
+			body3.CreateFixture(boxShapeDef);
 
 			// Large box (recycle definitions)
 			polygon.SetAsBox(2.0f, 1.0f);
 			boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
 			b2Body body4 = m_world.CreateBody(boxBodyDef);
-			body4.CreateFixture(&boxShapeDef);
+			body4.CreateFixture(boxShapeDef);
 
 			// Small circle
-			b2CircleShape circle;
+			b2CircleShape circle = new b2CircleShape();
 			circle.m_radius = 1.0f;
 
-			b2FixtureDef circleShapeDef;
-			circleShapeDef.shape = &circle;
+			b2FixtureDef circleShapeDef = new b2FixtureDef();
+			circleShapeDef.shape = circle;
 			circleShapeDef.density = 1.0f;
 
-			b2BodyDef circleBodyDef;
+			b2BodyDef circleBodyDef = new b2BodyDef();
 			circleBodyDef.type = b2BodyType.b2_dynamicBody;
 			circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body body5 = m_world.CreateBody(&circleBodyDef);
-			body5.CreateFixture(&circleShapeDef);
+			b2Body body5 = m_world.CreateBody(circleBodyDef);
+			body5.CreateFixture(circleShapeDef);
 
 			// Large circle
 			circle.m_radius *= 2.0f;
 			circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body body6 = m_world.CreateBody(&circleBodyDef);
-			body6.CreateFixture(&circleShapeDef);
+			b2Body body6 = m_world.CreateBody(circleBodyDef);
+			body6.CreateFixture(circleShapeDef);
 		}
 
 		public override void Step(Settings settings)

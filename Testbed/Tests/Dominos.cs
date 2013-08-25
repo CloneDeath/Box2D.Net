@@ -34,7 +34,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.1f, 1.0f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				fd.friction = 0.1f;
@@ -84,13 +84,13 @@ namespace Testbed.Tests {
 				b3.CreateFixture(shape, 10.0f);
 			}
 
-			b2RevoluteJointDef jd;
-			b2Vec2 anchor;
+			b2RevoluteJointDef jd = new b2RevoluteJointDef();
+			b2Vec2 anchor = new b2Vec2();
 
 			anchor.Set(-2.0f, 1.0f);
 			jd.Initialize(b1, b3, anchor);
 			jd.collideConnected = true;
-			m_world.CreateJoint(&jd);
+			m_world.CreateJoint(jd);
 
 			b2Body b4;
 			{
@@ -106,7 +106,7 @@ namespace Testbed.Tests {
 
 			anchor.Set(-7.0f, 15.0f);
 			jd.Initialize(b2, b4, anchor);
-			m_world.CreateJoint(&jd);
+			m_world.CreateJoint(jd);
 
 			b2Body b5;
 			{
@@ -116,7 +116,7 @@ namespace Testbed.Tests {
 				b5 = m_world.CreateBody(bd);
 
 				b2PolygonShape shape = new b2PolygonShape();
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 
 				fd.shape = shape;
 				fd.density = 10.0f;
@@ -134,7 +134,7 @@ namespace Testbed.Tests {
 
 			anchor.Set(6.0f, 2.0f);
 			jd.Initialize(b1, b5, anchor);
-			m_world.CreateJoint(&jd);
+			m_world.CreateJoint(jd);
 
 			b2Body b6;
 			{
@@ -150,7 +150,7 @@ namespace Testbed.Tests {
 
 			anchor.Set(7.5f, 4.0f);
 			jd.Initialize(b5, b6, anchor);
-			m_world.CreateJoint(&jd);
+			m_world.CreateJoint(jd);
 
 			b2Body b7;
 			{
@@ -165,14 +165,14 @@ namespace Testbed.Tests {
 				b7.CreateFixture(shape, 10.0f);
 			}
 
-			b2DistanceJointDef djd;
+			b2DistanceJointDef djd = new b2DistanceJointDef();
 			djd.bodyA = b3;
 			djd.bodyB = b7;
 			djd.localAnchorA.Set(6.0f, 0.0f);
 			djd.localAnchorB.Set(0.0f, -1.0f);
 			b2Vec2 d = djd.bodyB.GetWorldPoint(djd.localAnchorB) - djd.bodyA.GetWorldPoint(djd.localAnchorA);
 			djd.length = d.Length();
-			m_world.CreateJoint(&djd);
+			m_world.CreateJoint(djd);
 
 			{
 				float radius = 0.2f;

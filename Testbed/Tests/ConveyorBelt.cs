@@ -29,7 +29,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(10.0f, 0.5f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.8f;
 				m_platform = body.CreateFixture(fd);
@@ -49,7 +49,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override PreSolve(b2Contact contact, b2Manifold oldManifold)
+		public override void PreSolve(b2Contact contact, b2Manifold oldManifold)
 		{
 			base.PreSolve(contact, oldManifold);
 

@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// Pulley joint definition. This requires two ground anchors,
 	/// two dynamic body anchor points, and a pulley ratio.
-	class b2PulleyJointDef : b2JointDef
+	public class b2PulleyJointDef : b2JointDef
 	{
 		public b2PulleyJointDef()
 		{

@@ -10,7 +10,7 @@ using OpenTK.Input;
 namespace Testbed.Tests {
 	class BodyTypes : Test
 	{
-	public BodyTypes()
+		public BodyTypes()
 		{
 			b2Body ground = null;
 			{
@@ -20,7 +20,7 @@ namespace Testbed.Tests {
 				b2EdgeShape shape = new b2EdgeShape();
 				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 
 				ground.CreateFixture(fd);
@@ -48,19 +48,19 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 4.0f, new b2Vec2(4.0f, 0.0f), 0.5f * (float)Math.PI);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;
 				m_platform.CreateFixture(fd);
 
-				b2RevoluteJointDef rjd;
+				b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 				rjd.Initialize(m_attachment, m_platform, new b2Vec2(0.0f, 5.0f));
 				rjd.maxMotorTorque = 50.0f;
 				rjd.enableMotor = true;
-				m_world.CreateJoint(&rjd);
+				m_world.CreateJoint(rjd);
 
-				b2PrismaticJointDef pjd;
+				b2PrismaticJointDef pjd = new b2PrismaticJointDef();
 				pjd.Initialize(ground, m_platform, new b2Vec2(0.0f, 5.0f), new b2Vec2(1.0f, 0.0f));
 
 				pjd.maxMotorForce = 1000.0f;
@@ -69,7 +69,7 @@ namespace Testbed.Tests {
 				pjd.upperTranslation = 10.0f;
 				pjd.enableLimit = true;
 
-				m_world.CreateJoint(&pjd);
+				m_world.CreateJoint(pjd);
 
 				m_speed = 3.0f;
 			}
@@ -84,7 +84,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.75f, 0.75f);
 
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;

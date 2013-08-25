@@ -56,8 +56,8 @@ namespace Testbed.Tests {
 				poly2.Set(vertices, 3);
 			}
 
-			fd1.shape = &poly1;
-			fd2.shape = &poly2;
+			fd1.shape = poly1;
+			fd2.shape = poly2;
 
 			b2BodyDef bd1, bd2;
 			bd1.type = b2BodyType.b2_dynamicBody;
@@ -83,21 +83,21 @@ namespace Testbed.Tests {
 			djd.frequencyHz = 10.0f;
 
 			djd.Initialize(body1, body2, p2 + m_offset, p5 + m_offset);
-			m_world.CreateJoint(&djd);
+			m_world.CreateJoint(djd);
 
 			djd.Initialize(body1, body2, p3 + m_offset, p4 + m_offset);
-			m_world.CreateJoint(&djd);
+			m_world.CreateJoint(djd);
 
 			djd.Initialize(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset);
-			m_world.CreateJoint(&djd);
+			m_world.CreateJoint(djd);
 
 			djd.Initialize(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset);
-			m_world.CreateJoint(&djd);
+			m_world.CreateJoint(djd);
 
-			b2RevoluteJointDef rjd;
+			b2RevoluteJointDef rjd = new b2RevoluteJointDef();
 
 			rjd.Initialize(body2, m_chassis, p4 + m_offset);
-			m_world.CreateJoint(&rjd);
+			m_world.CreateJoint(rjd);
 		}
 
 		public TheoJansen()
@@ -144,13 +144,13 @@ namespace Testbed.Tests {
 
 				b2FixtureDef sd;
 				sd.density = 1.0f;
-				sd.shape = &shape;
+				sd.shape = shape;
 				sd.filter.groupIndex = -1;
 				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position = pivot + m_offset;
 				m_chassis = m_world.CreateBody(bd);
-				m_chassis.CreateFixture(&sd);
+				m_chassis.CreateFixture(sd);
 			}
 
 			{
@@ -159,28 +159,28 @@ namespace Testbed.Tests {
 
 				b2FixtureDef sd;
 				sd.density = 1.0f;
-				sd.shape = &shape;
+				sd.shape = shape;
 				sd.filter.groupIndex = -1;
 				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position = pivot + m_offset;
 				m_wheel = m_world.CreateBody(bd);
-				m_wheel.CreateFixture(&sd);
+				m_wheel.CreateFixture(sd);
 			}
 
 			{
-				b2RevoluteJointDef jd;
+				b2RevoluteJointDef jd = new b2RevoluteJointDef();
 				jd.Initialize(m_wheel, m_chassis, pivot + m_offset);
 				jd.collideConnected = false;
 				jd.motorSpeed = m_motorSpeed;
 				jd.maxMotorTorque = 400.0f;
 				jd.enableMotor = m_motorOn;
-				m_motorJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
+				m_motorJoint = (b2RevoluteJoint)m_world.CreateJoint(jd);
 			}
 
 			b2Vec2 wheelAnchor;
 		
-			wheelAnchor = pivot + b2Vec2(0.0f, -0.8f);
+			wheelAnchor = pivot + new b2Vec2(0.0f, -0.8f);
 
 			CreateLeg(-1.0f, wheelAnchor);
 			CreateLeg(1.0f, wheelAnchor);
@@ -232,7 +232,7 @@ namespace Testbed.Tests {
 		b2Vec2 m_offset;
 		b2Body m_chassis;
 		b2Body m_wheel;
-		b2RevoluteJoint* m_motorJoint;
+		b2RevoluteJoint m_motorJoint;
 		bool m_motorOn;
 		float m_motorSpeed;
 	};

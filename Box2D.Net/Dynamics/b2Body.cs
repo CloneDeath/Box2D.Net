@@ -917,13 +917,13 @@ namespace Box2D {
 			//b2Settings.b2Log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
 			//b2Settings.b2Log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
 			//b2Settings.b2Log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
-			//b2Settings.b2Log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
-			//b2Settings.b2Log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
-			//b2Settings.b2Log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
-			//b2Settings.b2Log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
-			//b2Settings.b2Log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
+			//b2Settings.b2Log("  bd.allowSleep = (bool)(%d);\n", m_flags & e_autoSleepFlag);
+			//b2Settings.b2Log("  bd.awake = (bool)(%d);\n", m_flags & e_awakeFlag);
+			//b2Settings.b2Log("  bd.fixedRotation = (bool)(%d);\n", m_flags & e_fixedRotationFlag);
+			//b2Settings.b2Log("  bd.bullet = (bool)(%d);\n", m_flags & e_bulletFlag);
+			//b2Settings.b2Log("  bd.active = (bool)(%d);\n", m_flags & e_activeFlag);
 			//b2Settings.b2Log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
-			//b2Settings.b2Log("  bodies[%d] = m_world.CreateBody(&bd);\n", m_islandIndex);
+			//b2Settings.b2Log("  bodies[%d] = m_world.CreateBody(bd);\n", m_islandIndex);
 			//b2Settings.b2Log("\n");
 			//for (b2Fixture* f = m_fixtureList; f; f = f.m_next)
 			//{

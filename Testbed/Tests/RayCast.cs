@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	// This test demonstrates how to use the world ray-cast feature.
@@ -236,15 +237,15 @@ namespace Testbed.Tests {
 
 			if (index < 4)
 			{
-				b2FixtureDef fd;
+				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = m_polygons + index;
 				fd.friction = 0.3f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 			else
 			{
-				b2FixtureDef fd;
-				fd.shape = &m_circle;
+				b2FixtureDef fd = new b2FixtureDef();
+				fd.shape = m_circle;
 				fd.friction = 0.3f;
 
 				m_bodies[m_bodyIndex].CreateFixture(fd);
@@ -322,7 +323,7 @@ namespace Testbed.Tests {
 
 			float L = 11.0f;
 			b2Vec2 point1 = new b2Vec2(0.0f, 10.0f);
-			b2Vec2 d = new b2Vec2(L * cosf(m_angle), L * sinf(m_angle));
+			b2Vec2 d = new b2Vec2(L * (float)Math.Cos(m_angle), L * (float)Math.Sin(m_angle));
 			b2Vec2 point2 = point1 + d;
 
 			if (m_mode == e_closest)
@@ -332,14 +333,14 @@ namespace Testbed.Tests {
 
 				if (callback.m_hit)
 				{
-					m_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-					m_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
+					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(0.8f, 0.8f, 0.8f));
 					b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-					m_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 0.4f));
 				}
 				else
 				{
-					m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
 				}
 			}
 			else if (m_mode == e_any)
@@ -349,30 +350,30 @@ namespace Testbed.Tests {
 
 				if (callback.m_hit)
 				{
-					m_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-					m_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
+					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(0.8f, 0.8f, 0.8f));
 					b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-					m_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 0.4f));
 				}
 				else
 				{
-					m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
 				}
 			}
 			else if (m_mode == e_multiple)
 			{
 				RayCastMultipleCallback callback;
 				m_world.RayCast(&callback, point1, point2);
-				m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
 
 				for (int i = 0; i < callback.m_count; ++i)
 				{
 					b2Vec2 p = callback.m_points[i];
 					b2Vec2 n = callback.m_normals[i];
-					m_debugDraw.DrawPoint(p, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-					m_debugDraw.DrawSegment(point1, p, b2Color(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawPoint(p, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
+					m_debugDraw.DrawSegment(point1, p, Color.FromArgb(0.8f, 0.8f, 0.8f));
 					b2Vec2 head = p + 0.5f * n;
-					m_debugDraw.DrawSegment(p, head, b2Color(0.9f, 0.9f, 0.4f));
+					m_debugDraw.DrawSegment(p, head, Color.FromArgb(225, 225, 0.4f));
 				}
 			}
 
@@ -384,7 +385,7 @@ namespace Testbed.Tests {
 	#if ZERO
 			// This case was failing.
 			{
-				b2Vec2 vertices[4];
+				b2Vec2[] vertices = new b2Vec2[4];
 				//vertices[0].Set(-22.875f, -3.0f);
 				//vertices[1].Set(22.875f, -3.0f);
 				//vertices[2].Set(22.875f, 3.0f);
@@ -409,8 +410,8 @@ namespace Testbed.Tests {
 				hit = shape.RayCast(&output, input, xf);
 				hit = false;
 
-				b2Color color(1.0f, 1.0f, 1.0f);
-				b2Vec2 vs[4];
+				Color color(1.0f, 1.0f, 1.0f);
+				b2Vec2[] vs = new b2Vec2[4];
 				for (int i = 0; i < 4; ++i)
 				{
 					vs[i] = Utilities.b2Mul(xf, shape.m_vertices[i]);

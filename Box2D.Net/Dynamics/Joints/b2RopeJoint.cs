@@ -12,7 +12,7 @@ namespace Box2D.Dynamics.Joints {
 	/// would have some sponginess, so I chose not to implement it
 	/// that way. See b2DistanceJoint if you want to dynamically
 	/// control length.
-	class b2RopeJoint : b2Joint
+	public class b2RopeJoint : b2Joint
 	{
 	
 		public override b2Vec2 GetAnchorA(){
@@ -54,11 +54,11 @@ namespace Box2D.Dynamics.Joints {
 			b2Settings.b2Log("  b2RopeJointDef jd;\n");
 			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
 			b2Settings.b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
 			b2Settings.b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 			b2Settings.b2Log("  jd.maxLength = %.15lef;\n", m_maxLength);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
+			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 		
 		// Limit:

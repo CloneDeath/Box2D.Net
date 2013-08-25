@@ -202,11 +202,11 @@ namespace Box2D {
 		/// Dump this fixture to the log file.
 		public void Dump(int bodyIndex){
 			throw new NotImplementedException();
-			//b2Settings.b2Log("    b2FixtureDef fd;\n");
+			//b2Settings.b2Log("    b2FixtureDef fd = new b2FixtureDef();\n");
 			//b2Settings.b2Log("    fd.friction = %.15lef;\n", m_friction);
 			//b2Settings.b2Log("    fd.restitution = %.15lef;\n", m_restitution);
 			//b2Settings.b2Log("    fd.density = %.15lef;\n", m_density);
-			//b2Settings.b2Log("    fd.isSensor = bool(%d);\n", m_isSensor);
+			//b2Settings.b2Log("    fd.isSensor = (bool)(%d);\n", m_isSensor);
 			//b2Settings.b2Log("    fd.filter.categoryBits = ushort(%d);\n", m_filter.categoryBits);
 			//b2Settings.b2Log("    fd.filter.maskBits = ushort(%d);\n", m_filter.maskBits);
 			//b2Settings.b2Log("    fd.filter.groupIndex = short(%d);\n", m_filter.groupIndex);
@@ -231,8 +231,8 @@ namespace Box2D {
 			//        b2Settings.b2Log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s.m_vertex1.x, s.m_vertex1.y);
 			//        b2Settings.b2Log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n", s.m_vertex2.x, s.m_vertex2.y);
 			//        b2Settings.b2Log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n", s.m_vertex3.x, s.m_vertex3.y);
-			//        b2Settings.b2Log("    shape.m_hasVertex0 = bool(%d);\n", s.m_hasVertex0);
-			//        b2Settings.b2Log("    shape.m_hasVertex3 = bool(%d);\n", s.m_hasVertex3);
+			//        b2Settings.b2Log("    shape.m_hasVertex0 = (bool)(%d);\n", s.m_hasVertex0);
+			//        b2Settings.b2Log("    shape.m_hasVertex3 = (bool)(%d);\n", s.m_hasVertex3);
 			//    }
 			//    break;
 
@@ -240,7 +240,7 @@ namespace Box2D {
 			//    {
 			//        b2PolygonShape* s = (b2PolygonShape*)m_shape;
 			//        b2Settings.b2Log("    b2PolygonShape shape;\n");
-			//        b2Settings.b2Log("    b2Vec2 vs[%d];\n", b2Settings.b2_maxPolygonVertices);
+			//        b2Settings.b2Log("    b2Vec2[] vs = new b2Vec2[%d];\n", b2Settings.b2_maxPolygonVertices);
 			//        for (int i = 0; i < s.m_count; ++i)
 			//        {
 			//            b2Settings.b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s.m_vertices[i].x, s.m_vertices[i].y);
@@ -252,8 +252,8 @@ namespace Box2D {
 			//case ShapeType.chain:
 			//    {
 			//        b2ChainShape* s = (b2ChainShape*)m_shape;
-			//        b2Settings.b2Log("    b2ChainShape shape;\n");
-			//        b2Settings.b2Log("    b2Vec2 vs[%d];\n", s.m_count);
+			//        b2Settings.b2Log("    b2ChainShape shape = new b2ChainShape();\n");
+			//        b2Settings.b2Log("    b2Vec2[] vs = new b2Vec2[%d];\n", s.m_count);
 			//        for (int i = 0; i < s.m_count; ++i)
 			//        {
 			//            b2Settings.b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s.m_vertices[i].x, s.m_vertices[i].y);
@@ -261,8 +261,8 @@ namespace Box2D {
 			//        b2Settings.b2Log("    shape.CreateChain(vs, %d);\n", s.m_count);
 			//        b2Settings.b2Log("    shape.m_prevVertex.Set(%.15lef, %.15lef);\n", s.m_prevVertex.x, s.m_prevVertex.y);
 			//        b2Settings.b2Log("    shape.m_nextVertex.Set(%.15lef, %.15lef);\n", s.m_nextVertex.x, s.m_nextVertex.y);
-			//        b2Settings.b2Log("    shape.m_hasPrevVertex = bool(%d);\n", s.m_hasPrevVertex);
-			//        b2Settings.b2Log("    shape.m_hasNextVertex = bool(%d);\n", s.m_hasNextVertex);
+			//        b2Settings.b2Log("    shape.m_hasPrevVertex = (bool)(%d);\n", s.m_hasPrevVertex);
+			//        b2Settings.b2Log("    shape.m_hasNextVertex = (bool)(%d);\n", s.m_hasNextVertex);
 			//    }
 			//    break;
 
@@ -271,7 +271,7 @@ namespace Box2D {
 			//}
 
 			//b2Settings.b2Log("\n");
-			//b2Settings.b2Log("    fd.shape = &shape;\n");
+			//b2Settings.b2Log("    fd.shape = shape;\n");
 			//b2Settings.b2Log("\n");
 			//b2Settings.b2Log("    bodies[%d].CreateFixture(fd);\n", bodyIndex);
 		}

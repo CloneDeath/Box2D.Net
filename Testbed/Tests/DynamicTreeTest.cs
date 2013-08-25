@@ -4,26 +4,24 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	class DynamicTreeTest : Test
 	{
-		public enum
-		{
-			e_actorCount = 128
-		};
+		const int e_actorCount = 128;
 
 		public DynamicTreeTest()
 		{
 			m_worldExtent = 15.0f;
 			m_proxyExtent = 0.5f;
 
-			srand(888);
+			//srand(888);
 
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				Actor* actor = m_actors + i;
-				GetRandomAABB(&actor.aabb);
+				Actor actor = m_actors[i];
+				GetRandomAABB(actor.aabb);
 				actor.proxyId = m_tree.CreateProxy(actor.aabb, actor);
 			}
 
@@ -49,8 +47,6 @@ namespace Testbed.Tests {
 
 		public void Step(Settings settings)
 		{
-			B2_NOT_USED(settings);
-
 			m_rayActor = null;
 			for (int i = 0; i < e_actorCount; ++i)
 			{
@@ -77,36 +73,36 @@ namespace Testbed.Tests {
 				if (actor.proxyId == b2_nullNode)
 					continue;
 
-				b2Color c(0.9f, 0.9f, 0.9f);
+				Color c = Color.FromArgb(225, 225, 225);
 				if (actor == m_rayActor && actor.overlap)
 				{
-					c.Set(0.9f, 0.6f, 0.6f);
+					c = Color.FromArgb(225, 0.6f, 0.6f);
 				}
 				else if (actor == m_rayActor)
 				{
-					c.Set(0.6f, 0.9f, 0.6f);
+					c = Color.FromArgb(0.6f, 225, 0.6f);
 				}
 				else if (actor.overlap)
 				{
-					c.Set(0.6f, 0.6f, 0.9f);
+					c = Color.FromArgb(0.6f, 0.6f, 225);
 				}
 
 				m_debugDraw.DrawAABB(&actor.aabb, c);
 			}
 
-			b2Color c(0.7f, 0.7f, 0.7f);
+			Color c(0.7f, 0.7f, 0.7f);
 			m_debugDraw.DrawAABB(&m_queryAABB, c);
 
 			m_debugDraw.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
 
-			b2Color c1(0.2f, 0.9f, 0.2f);
-			b2Color c2(0.9f, 0.2f, 0.2f);
+			Color c1 = Color.FromArgb(0.2f, 225, 0.2f);
+			Color c2 = Color.FromArgb(225, 0.2f, 0.2f);
 			m_debugDraw.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
 			m_debugDraw.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
 
 			if (m_rayActor)
 			{
-				b2Color cr(0.2f, 0.2f, 0.9f);
+				Color cr(0.2f, 0.2f, 225);
 				b2Vec2 p = m_rayCastInput.p1 + m_rayActor.fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
 				m_debugDraw.DrawPoint(p, 6.0f, cr);
 			}
@@ -167,9 +163,7 @@ namespace Testbed.Tests {
 			return input.maxFraction;
 		}
 
-	private:
-
-		struct Actor
+		private struct Actor
 		{
 			b2AABB aabb;
 			float fraction;
@@ -177,7 +171,7 @@ namespace Testbed.Tests {
 			int proxyId;
 		};
 
-		void GetRandomAABB(b2AABB* aabb)
+		private void GetRandomAABB(b2AABB* aabb)
 		{
 			b2Vec2 w; w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
 			//aabb.lowerBound.x = -m_proxyExtent;
@@ -187,7 +181,7 @@ namespace Testbed.Tests {
 			aabb.upperBound = aabb.lowerBound + w;
 		}
 
-		void MoveAABB(b2AABB* aabb)
+		private void MoveAABB(b2AABB* aabb)
 		{
 			b2Vec2 d;
 			d.x = RandomFloat(-0.5f, 0.5f);
@@ -206,7 +200,7 @@ namespace Testbed.Tests {
 			aabb.upperBound += c - c0;
 		}
 
-		void CreateProxy()
+		private void CreateProxy()
 		{
 			for (int i = 0; i < e_actorCount; ++i)
 			{
@@ -221,7 +215,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void DestroyProxy()
+		private void DestroyProxy()
 		{
 			for (int i = 0; i < e_actorCount; ++i)
 			{
@@ -236,7 +230,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void MoveProxy()
+		private void MoveProxy()
 		{
 			for (int i = 0; i < e_actorCount; ++i)
 			{
@@ -255,7 +249,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Action()
+		private void Action()
 		{
 			int choice = rand() % 20;
 
@@ -274,7 +268,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Query()
+		private void Query()
 		{
 			m_tree.Query(this, m_queryAABB);
 
@@ -291,7 +285,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void RayCast()
+		private void RayCast()
 		{
 			m_rayActor = null;
 
@@ -326,16 +320,16 @@ namespace Testbed.Tests {
 			}
 		}
 
-		float m_worldExtent;
-		float m_proxyExtent;
+		private float m_worldExtent;
+		private float m_proxyExtent;
 
-		b2DynamicTree m_tree;
-		b2AABB m_queryAABB;
-		b2RayCastInput m_rayCastInput;
-		b2RayCastOutput m_rayCastOutput;
-		Actor* m_rayActor;
-		Actor m_actors[e_actorCount];
-		int m_stepCount;
-		bool m_automated;
+		private b2DynamicTree m_tree;
+		private b2AABB m_queryAABB;
+		private b2RayCastInput m_rayCastInput;
+		private b2RayCastOutput m_rayCastOutput;
+		private Actor m_rayActor;
+		private Actor[] m_actors = new Actor[e_actorCount];
+		private int m_stepCount;
+		private bool m_automated;
 	};
 }
