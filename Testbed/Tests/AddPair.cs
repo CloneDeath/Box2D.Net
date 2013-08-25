@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class AddPair : Test
 	{
 		public AddPair()
 		{
-			m_world.SetGravity(b2Vec2(0.0f,0.0f));
+			m_world.SetGravity(new b2Vec2(0.0f,0.0f));
 			{
 				b2CircleShape shape;
 				shape.m_p.SetZero();
@@ -43,9 +44,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new AddPair;
+			return new AddPair();
 		}
 	};
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// This tests distance joints, body destruction, and joint destruction.
@@ -182,12 +183,12 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
 			return new Web();
 		}
 
-		b2Body* m_bodies[4];
+		b2Body[] m_bodied = new b2Body[4];
 		b2Joint* m_joints[8];
 	};
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// It is difficult to make a cantilever made of links completely rigid with weld joints.
@@ -11,9 +12,7 @@ namespace Testbed.Tests {
 	// joint with a rotational spring.
 	class Cantilever : Test
 	{
-	public:
-
-		enum
+	public enum
 		{
 			e_count = 8
 		};
@@ -186,9 +185,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new Cantilever;
+			return new Cantilever();
 		}
 
 		b2Body* m_middle;

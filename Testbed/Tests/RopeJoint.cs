@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	/// This test shows how a rope joint can be used to stabilize a chain of
@@ -84,7 +85,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// This is used to test sensor shapes.
 	class Breakable : Test
 	{
-	public:
-
-		enum
+	public enum
 		{
 			e_count = 7
 		};
@@ -121,9 +120,9 @@ namespace Testbed.Tests {
 			Test::Step(settings);
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new Breakable;
+			return new Breakable();
 		}
 
 		b2Body* m_body1;

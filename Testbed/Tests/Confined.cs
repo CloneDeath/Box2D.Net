@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class Confined : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_columnCount = 0,
 			e_rowCount = 0
 		};
 
-		Confined()
+		public Confined()
 		{
 			{
 				b2BodyDef bd;
@@ -88,7 +87,7 @@ namespace Testbed.Tests {
 			body.CreateFixture(&fd);
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{
@@ -144,9 +143,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new Confined;
+			return new Confined();
 		}
 	};
 }

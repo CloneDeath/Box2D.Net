@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// TODO_ERIN test joints on compounds.
 	class CompoundShapes : Test
 	{
-	public:
-		CompoundShapes()
+		public CompoundShapes()
 		{
 			{
 				b2BodyDef bd;
@@ -120,9 +120,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new CompoundShapes;
+			return new CompoundShapes();
 		}
 	};
 }

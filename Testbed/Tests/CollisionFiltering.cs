@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using Box2D;
 
 namespace Testbed.Tests {
 	class CollisionFiltering : Test {

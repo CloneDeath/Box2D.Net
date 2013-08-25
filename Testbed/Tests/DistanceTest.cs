@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class DistanceTest : Test
@@ -24,7 +25,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
 			return new DistanceTest();
 		}
@@ -76,7 +77,7 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawPoint(x2, 4.0f, c2);
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{

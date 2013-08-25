@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class BulletTest : Test
 	{
-	public:
-
-		BulletTest()
+	public BulletTest()
 		{
 			{
 				b2BodyDef bd;
@@ -109,9 +108,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new BulletTest;
+			return new BulletTest();
 		}
 
 		b2Body* m_body;

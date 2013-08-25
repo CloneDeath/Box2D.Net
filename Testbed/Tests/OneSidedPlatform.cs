@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class OneSidedPlatform : Test
@@ -75,7 +76,7 @@ namespace Testbed.Tests {
 				return;
 			}
 
-	#if 1
+	#if true
 			b2Vec2 position = m_character.GetBody().GetPosition();
 
 			if (position.y < m_top + m_radius - 3.0f *b2Settings.b2_linearSlop)

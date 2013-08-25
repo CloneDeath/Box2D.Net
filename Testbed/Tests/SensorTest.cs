@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// This is used to test sensor shapes.
@@ -25,7 +26,7 @@ namespace Testbed.Tests {
 					ground.CreateFixture(&shape, 0.0f);
 				}
 
-	#if 0
+	#if ZERO
 				{
 					b2FixtureDef sd;
 					sd.SetAsBox(10.0f, 2.0f, new b2Vec2(0.0f, 20.0f), 0.0f);
@@ -158,7 +159,7 @@ namespace Testbed.Tests {
 		}
 
 		b2Fixture* m_sensor;
-		b2Body* m_bodies[e_count];
+		b2Body[] m_bodied = new b2Body[e_count];
 		bool m_touching[e_count];
 	};
 }

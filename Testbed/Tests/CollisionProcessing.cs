@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// This test shows collision processing and tests
 	// deferred body destruction.
 	class CollisionProcessing : Test
 	{
-	public:
-		CollisionProcessing()
+		public CollisionProcessing()
 		{
 			// Ground body
 			{
@@ -163,9 +163,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new CollisionProcessing;
+			return new CollisionProcessing();
 		}
 	};
 }

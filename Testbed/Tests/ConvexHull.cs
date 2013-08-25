@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class ConvexHull : Test
@@ -36,12 +37,12 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new ConvexHull;
+			return new ConvexHull();
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{

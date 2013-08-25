@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class ShapeEditing : Test
@@ -32,7 +33,7 @@ namespace Testbed.Tests {
 			m_sensor = false;
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{

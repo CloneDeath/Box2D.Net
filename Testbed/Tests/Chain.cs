@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class Chain : Test
 	{
-	public:
-		Chain()
+		public Chain()
 		{
 			b2Body* ground = null;
 			{
@@ -51,9 +51,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new Chain;
+			return new Chain();
 		}
 	};
 }

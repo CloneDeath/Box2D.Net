@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class VerticalStack : Test
@@ -66,7 +67,7 @@ namespace Testbed.Tests {
 			m_bullet = null;
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{
@@ -142,7 +143,7 @@ namespace Testbed.Tests {
 		}
 
 		b2Body* m_bullet;
-		b2Body* m_bodies[e_rowCount * e_columnCount];
+		b2Body[] m_bodied = new b2Body[e_rowCount * e_columnCount];
 		int m_indices[e_rowCount * e_columnCount];
 	};
 }

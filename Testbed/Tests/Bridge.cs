@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class Bridge : Test
 	{
-	public:
-
-		enum
+	public enum
 		{
 			e_count = 30
 		};
@@ -100,9 +99,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new Bridge;
+			return new Bridge();
 		}
 
 		b2Body* m_middle;

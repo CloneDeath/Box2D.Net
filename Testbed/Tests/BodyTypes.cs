@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class BodyTypes : Test
 	{
-	public:
-		BodyTypes()
+	public BodyTypes()
 		{
 			b2Body* ground = null;
 			{
@@ -91,7 +91,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{
@@ -132,9 +132,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new BodyTypes;
+			return new BodyTypes();
 		}
 
 		b2Body* m_attachment;

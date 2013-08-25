@@ -378,7 +378,7 @@ namespace Box2D {
 		//        }
 		//    }
 
-		//#if 0
+		//#if ZERO
 		//    // Is the new position really safe?
 		//    for (int i = 0; i < m_contactCount; ++i)
 		//    {

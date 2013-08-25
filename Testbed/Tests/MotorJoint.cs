@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	/// This test shows how to use a motor joint. A motor joint
@@ -53,7 +54,7 @@ namespace Testbed.Tests {
 			m_time = 0.0f;
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{

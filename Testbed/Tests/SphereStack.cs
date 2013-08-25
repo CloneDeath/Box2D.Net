@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class SphereStack : Test
@@ -64,6 +65,6 @@ namespace Testbed.Tests {
 			return new SphereStack();
 		}
 
-		b2Body* m_bodies[e_count];
+		b2Body[] m_bodied = new b2Body[e_count];
 	};
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	/// This is a test of typical character collision scenarios. This does not
@@ -10,8 +11,7 @@ namespace Testbed.Tests {
 	/// Instead this is used to test smooth collision on edge chains.
 	class CharacterCollision : Test
 	{
-	public:
-		CharacterCollision()
+		public CharacterCollision()
 		{
 			// Ground body
 			{
@@ -228,9 +228,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new CharacterCollision;
+			return new CharacterCollision();
 		}
 
 		b2Body* m_character;

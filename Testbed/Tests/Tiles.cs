@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	/// This stress tests the dynamic tree broad-phase. This also shows that tile
@@ -25,7 +26,7 @@ namespace Testbed.Tests {
 				bd.position.y = -a;
 				b2Body* ground = m_world.CreateBody(&bd);
 
-	#if 1
+	#if true
 				int N = 200;
 				int M = 10;
 				b2Vec2 position;

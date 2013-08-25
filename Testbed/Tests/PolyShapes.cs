@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	/// This tests stacking. It also shows how to use b2World::Query
@@ -209,7 +210,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{
@@ -270,7 +271,7 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body* m_bodies[k_maxBodies];
+		b2Body[] m_bodied = new b2Body[k_maxBodies];
 		b2PolygonShape m_polygons[4];
 		b2CircleShape m_circle;
 	};

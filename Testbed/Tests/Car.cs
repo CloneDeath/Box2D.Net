@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// This is a fun demo that shows off the wheel joint
 	class Car : Test
 	{
-	public:
-		Car()
+	public Car()
 		{		
 			m_hz = 4.0f;
 			m_zeta = 0.7f;
@@ -212,7 +212,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{
@@ -253,9 +253,9 @@ namespace Testbed.Tests {
 			Test::Step(settings);
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new Car;
+			return new Car();
 		}
 
 		b2Body* m_car;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	// This test demonstrates how to use the world ray-cast feature.
@@ -271,7 +272,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard(unsigned char key)
+		public void Keyboard()
 		{
 			switch (key)
 			{
@@ -388,7 +389,7 @@ namespace Testbed.Tests {
 				m_angle += 0.25f * Math.PI / 180.0f;
 			}
 
-	#if 0
+	#if ZERO
 			// This case was failing.
 			{
 				b2Vec2 vertices[4];
@@ -429,13 +430,13 @@ namespace Testbed.Tests {
 	#endif
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new RayCast;
+			return new RayCast();
 		}
 
 		int m_bodyIndex;
-		b2Body* m_bodies[e_maxBodies];
+		b2Body[] m_bodied = new b2Body[e_maxBodies];
 		int m_userData[e_maxBodies];
 		b2PolygonShape m_polygons[4];
 		b2CircleShape m_circle;

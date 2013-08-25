@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class ContinuousTest : Test
@@ -24,7 +25,7 @@ namespace Testbed.Tests {
 				body.CreateFixture(&shape, 0.0f);
 			}
 
-	#if 1
+	#if true
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
@@ -129,9 +130,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new ContinuousTest;
+			return new ContinuousTest();
 		}
 
 		b2Body* m_body;

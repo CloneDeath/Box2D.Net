@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class ConveyorBelt : Test
@@ -71,9 +72,9 @@ namespace Testbed.Tests {
 			Test::Step(settings);
 		}
 
-		public static Test Create()()
+		public static Test Create()
 		{
-			return new ConveyorBelt;
+			return new ConveyorBelt();
 		}
 
 		b2Fixture* m_platform;

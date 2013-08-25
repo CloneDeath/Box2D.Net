@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text; 
 using Testbed.Framework;
+using Box2D;
 
 namespace Testbed.Tests {
 	class TimeOfImpact : Test
@@ -92,7 +93,7 @@ namespace Testbed.Tests {
 			}
 			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, b2Color(0.9f, 0.5f, 0.5f));
 
-	#if 0
+	#if ZERO
 			for (float t = 0.0f; t < 1.0f; t += 0.1f)
 			{
 				sweepB.GetTransform(&transformB, t);
