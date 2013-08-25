@@ -65,7 +65,7 @@ namespace Testbed {
 				new TestEntry("Pulleys", Pulleys.Create),
 				new TestEntry("Polygon Shapes", PolyShapes.Create),
 				new TestEntry("Web", Web.Create),
-				new TestEntry("RopeJoint", RopeJoint.Create),
+				new TestEntry("RopeJoint", RopeJointTest.Create),
 				new TestEntry("Pinball", Pinball.Create),
 				new TestEntry("Bullet Test", BulletTest.Create),
 				new TestEntry("Confined", Confined.Create),

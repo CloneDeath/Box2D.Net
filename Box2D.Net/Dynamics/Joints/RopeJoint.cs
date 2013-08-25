@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Box2D.Dynamics.Joints {
+namespace Box2D {
 	/// A rope joint enforces a maximum distance between two points
 	/// on two bodies. It has no other effect.
 	/// Warning: if you attempt to change the maximum length during

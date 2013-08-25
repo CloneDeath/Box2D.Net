@@ -106,7 +106,7 @@
     <Compile Include="Tests\Gears.cs" />
     <Compile Include="Tests\Mobile.cs" />
     <Compile Include="Tests\MobileBalanced.cs" />
-    <Compile Include="Tests\MotorJoint.cs" />
+    <Compile Include="Tests\MotorJointTest.cs" />
     <Compile Include="Tests\OneSidedPlatform.cs" />
     <Compile Include="Tests\Pinball.cs" />
     <Compile Include="Tests\PolyCollision.cs" />
@@ -117,7 +117,7 @@
     <Compile Include="Tests\RayCast.cs" />
     <Compile Include="Tests\Revolute.cs" />
     <Compile Include="Tests\Rope.cs" />
-    <Compile Include="Tests\RopeJoint.cs" />
+    <Compile Include="Tests\RopeJointTest.cs" />
     <Compile Include="Tests\SensorTest.cs" />
     <Compile Include="Tests\ShapeEditing.cs" />
     <Compile Include="Tests\SliderCrank.cs" />

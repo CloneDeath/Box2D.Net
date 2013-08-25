@@ -444,9 +444,132 @@ namespace Box2D {
 
 		/// Compute the collision manifold between an edge and a circle.
 		public static void CollideEdgeAndCircle(out Manifold manifold,
-									   EdgeShape polygonA, Transform xfA,
-									   CircleShape circleB, Transform xfB) {
-			throw new NotImplementedException();
+									   EdgeShape edgeA, Transform xfA,
+									   CircleShape circleB, Transform xfB){
+			manifold = new Manifold();
+	
+			// Compute circle in frame of edge
+			Vec2 Q = Utilities.MulT(xfA, Utilities.Mul(xfB, circleB.m_p));
+	
+			Vec2 A = edgeA.m_vertex1, B = edgeA.m_vertex2;
+			Vec2 e = B - A;
+	
+			// Barycentric coordinates
+			float u = Utilities.Dot(e, B - Q);
+			float v = Utilities.Dot(e, Q - A);
+	
+			float radius = edgeA.m_radius + circleB.m_radius;
+	
+			ContactFeature cf;
+			cf.indexB = 0;
+			cf.typeB = ContactFeature.FeatureType.e_vertex;
+	
+			// Region A
+			if (v <= 0.0f)
+			{
+				Vec2 P = A;
+				Vec2 d = Q - P;
+				float dd = Utilities.Dot(d, d);
+				if (dd > radius * radius)
+				{
+					return;
+				}
+		
+				// Is there an edge connected to A?
+				if (edgeA.m_hasVertex0)
+				{
+					Vec2 A1 = edgeA.m_vertex0;
+					Vec2 B1 = A;
+					Vec2 e1 = B1 - A1;
+					float u1 = Utilities.Dot(e1, B1 - Q);
+			
+					// Is the circle in Region AB of the previous edge?
+					if (u1 > 0.0f)
+					{
+						return;
+					}
+				}
+		
+				cf.indexA = 0;
+				cf.typeA = ContactFeature.FeatureType.e_vertex;
+				manifold.points.Clear();
+				manifold.points.Add(new ManifoldPoint());
+				manifold.type = Manifold.ManifoldType.e_circles;
+				manifold.localNormal.SetZero();
+				manifold.localPoint = P;
+				manifold.points[0].id.key = 0;
+				manifold.points[0].id.cf = cf;
+				manifold.points[0].localPoint = circleB.m_p;
+				return;
+			}
+	
+			// Region B
+			if (u <= 0.0f)
+			{
+				Vec2 P = B;
+				Vec2 d = Q - P;
+				float dd = Utilities.Dot(d, d);
+				if (dd > radius * radius)
+				{
+					return;
+				}
+		
+				// Is there an edge connected to B?
+				if (edgeA.m_hasVertex3)
+				{
+					Vec2 B2 = edgeA.m_vertex3;
+					Vec2 A2 = B;
+					Vec2 e2 = B2 - A2;
+					float v2 = Utilities.Dot(e2, Q - A2);
+			
+					// Is the circle in Region AB of the next edge?
+					if (v2 > 0.0f)
+					{
+						return;
+					}
+				}
+		
+				cf.indexA = 1;
+				cf.typeA = ContactFeature.FeatureType.e_vertex;
+				manifold.points.Clear();
+				manifold.points.Add(new ManifoldPoint());
+				manifold.type = Manifold.ManifoldType.e_circles;
+				manifold.localNormal.SetZero();
+				manifold.localPoint = P;
+				manifold.points[0].id.key = 0;
+				manifold.points[0].id.cf = cf;
+				manifold.points[0].localPoint = circleB.m_p;
+				return;
+			}
+	
+			// Region AB
+			float den = Utilities.Dot(e, e);
+			Utilities.Assert(den > 0.0f);
+			Vec2 Pb = (1.0f / den) * (u * A + v * B);
+			Vec2 db = Q - Pb;
+			float ddb = Utilities.Dot(db, db);
+			if (ddb > radius * radius)
+			{
+				return;
+			}
+	
+			Vec2 n = new Vec2(-e.y, e.x);
+			if (Utilities.Dot(n, Q - A) < 0.0f)
+			{
+				n.Set(-n.x, -n.y);
+			}
+			n.Normalize();
+	
+			cf.indexA = 0;
+			cf.typeA = ContactFeature.FeatureType.e_face;
+			manifold.points.Clear();
+			manifold.points.Add(new ManifoldPoint());
+			manifold.type = Manifold.ManifoldType.e_faceA;
+			manifold.localNormal = n;
+			manifold.localPoint = A;
+			manifold.points[0].id.key = 0;
+			manifold.points[0].id.cf = cf;
+			manifold.points[0].localPoint = circleB.m_p;
 		}
 
 		/// Compute the collision manifold between an edge and a circle.
@@ -846,7 +969,63 @@ namespace Box2D {
 		}
 
 		public bool RayCast(out RayCastOutput output, RayCastInput input) {
-			throw new NotImplementedException();
+			float tmin = -Single.MaxValue;
+			float tmax = Single.MaxValue;
+
+			Vec2 p = input.p1;
+			Vec2 d = input.p2 - input.p1;
+			Vec2 absD = Utilities.Abs(d);
+			output = new RayCastOutput();
+
+			Vec2 normal = new Vec2();
+
+			for (int i = 0; i < 2; ++i) {
+				if (Math.Abs(i) < Single.Epsilon) {
+					// Parallel.
+					if (p[i] < lowerBound[i] || upperBound[i] < p[i]) {
+						return false;
+					}
+				} else {
+					float inv_d = 1.0f / d[i];
+					float t1 = (lowerBound[i] - p[i]) * inv_d;
+					float t2 = (upperBound[i] - p[i]) * inv_d;
+
+					// Sign of the normal vector.
+					float s = -1.0f;
+
+					if (t1 > t2) {
+						float temp = t1;
+						t1 = t2;
+						t2 = temp;
+						s = 1.0f;
+					}
+
+					// Push the min up
+					if (t1 > tmin) {
+						normal.SetZero();
+						normal[i] = s;
+						tmin = t1;
+					}
+
+					// Pull the max down
+					tmax = Math.Min(tmax, t2);
+
+					if (tmin > tmax) {
+						return false;
+					}
+				}
+			}
+
+			// Does the ray start inside the box?
+			// Does the ray intersect beyond the max fraction?
+			if (tmin < 0.0f || input.maxFraction < tmin) {
+				return false;
+			}
+
+			// Intersection.
+			output.fraction = tmin;
+			output.normal = normal;
+			return true;
 		}
 
 		public Vec2 lowerBound;	///< the lower vertex

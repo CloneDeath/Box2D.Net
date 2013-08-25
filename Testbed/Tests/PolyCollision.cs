@@ -14,11 +14,13 @@ namespace Testbed.Tests {
 		public PolyCollision()
 		{
 			{
+				m_polygonA = new PolygonShape();
 				m_polygonA.SetAsBox(0.2f, 0.4f);
 				m_transformA.Set(new Vec2(0.0f, 0.0f), 0.0f);
 			}
 
 			{
+				m_polygonB = new PolygonShape();
 				m_polygonB.SetAsBox(0.5f, 0.5f);
 				m_positionB.Set(19.345284f, 1.5632932f);
 				m_angleB = 1.9160721f;

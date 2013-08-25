@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Box2D.Dynamics {
+namespace Box2D {
 	struct WorldRayCastWrapper
 	{
 		public WorldRayCastWrapper(object ignore) {

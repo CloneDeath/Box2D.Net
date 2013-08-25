@@ -16,9 +16,9 @@ namespace Testbed.Tests {
 	/// densities, time step, and iterations to see how they affect stability.
 	/// This test also shows how to use contact filtering. Filtering is configured
 	/// so that the payload does not collide with the chain.
-	class RopeJoint : Test
+	class RopeJointTest : Test
 	{
-		public RopeJoint()
+		public RopeJointTest()
 		{
 			Body ground = null;
 			{
@@ -120,7 +120,7 @@ namespace Testbed.Tests {
 
 		public static Test Create()
 		{
-			return new RopeJoint();
+			return new RopeJointTest();
 		}
 
 		RopeJointDef m_ropeDef;
