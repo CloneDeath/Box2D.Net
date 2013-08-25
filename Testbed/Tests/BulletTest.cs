@@ -11,22 +11,22 @@ namespace Testbed.Tests {
 	public BulletTest()
 		{
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.Set(0.0f, 0.0f);
 				b2Body body = m_world.CreateBody(bd);
 
 				b2EdgeShape edge;
 
-				edge.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
+				edge.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(10.0f, 0.0f));
 				body.CreateFixture(&edge, 0.0f);
 
-				b2PolygonShape shape;
-				shape.SetAsBox(0.2f, 1.0f, b2Vec2(0.5f, 1.0f), 0.0f);
+				b2PolygonShape shape = new b2PolygonShape();
+				shape.SetAsBox(0.2f, 1.0f, new b2Vec2(0.5f, 1.0f), 0.0f);
 				body.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 4.0f);
 
@@ -46,7 +46,7 @@ namespace Testbed.Tests {
 				m_bullet = m_world.CreateBody(bd);
 				m_bullet.CreateFixture(&box, 100.0f);
 
-				m_bullet.SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+				m_bullet.SetLinearVelocity(new b2Vec2(0.0f, -50.0f));
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace Testbed.Tests {
 
 			m_x = RandomFloat(-1.0f, 1.0f);
 			m_bullet.SetTransform(b2Vec2(m_x, 10.0f), 0.0f);
-			m_bullet.SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+			m_bullet.SetLinearVelocity(new b2Vec2(0.0f, -50.0f));
 			m_bullet.SetAngularVelocity(0.0f);
 
 			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
@@ -76,7 +76,7 @@ namespace Testbed.Tests {
 			b2_toiMaxRootIters = 0;
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			base.Step(settings);
 

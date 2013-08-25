@@ -17,12 +17,12 @@ namespace Testbed.Tests {
 
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape edge;
-				edge.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				//ground.CreateFixture(&shape, 0.0f);
+				edge.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				//ground.CreateFixture(shape, 0.0f);
 
 				b2CircleShape circle;
 				circle.m_radius = 2.0f;
@@ -36,20 +36,20 @@ namespace Testbed.Tests {
 
 			{
 
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(a, b);
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 
 				//bd.fixedRotation = true;
 				bd.position.Set(-10.0f, y);
 				b2Body body1 = m_world.CreateBody(bd);
-				body1.CreateFixture(&shape, 5.0f);
+				body1.CreateFixture(shape, 5.0f);
 
 				bd.position.Set(10.0f, y);
 				b2Body body2 = m_world.CreateBody(bd);
-				body2.CreateFixture(&shape, 5.0f);
+				body2.CreateFixture(shape, 5.0f);
 
 				b2PulleyJointDef pulleyDef;
 				b2Vec2 anchor1(-10.0f, y + b);

@@ -17,17 +17,17 @@ namespace Testbed.Tests {
 
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
+				b2EdgeShape shape = new b2EdgeShape();
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				fd.density = 0.0f;
 				fd.friction = 0.6f;
 
-				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
 				ground.CreateFixture(&fd);
 
 				float hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
@@ -37,7 +37,7 @@ namespace Testbed.Tests {
 				for (int i = 0; i < 10; ++i)
 				{
 					float y2 = hs[i];
-					shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
+					shape.Set(new b2Vec2(x, y1), new b2Vec2(x + dx, y2));
 					ground.CreateFixture(&fd);
 					y1 = y2;
 					x += dx;
@@ -46,35 +46,35 @@ namespace Testbed.Tests {
 				for (int i = 0; i < 10; ++i)
 				{
 					float y2 = hs[i];
-					shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
+					shape.Set(new b2Vec2(x, y1), new b2Vec2(x + dx, y2));
 					ground.CreateFixture(&fd);
 					y1 = y2;
 					x += dx;
 				}
 
-				shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
+				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 40.0f, 0.0f));
 				ground.CreateFixture(&fd);
 
 				x += 80.0f;
-				shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
+				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 40.0f, 0.0f));
 				ground.CreateFixture(&fd);
 
 				x += 40.0f;
-				shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 10.0f, 5.0f));
+				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 10.0f, 5.0f));
 				ground.CreateFixture(&fd);
 
 				x += 20.0f;
-				shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
+				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 40.0f, 0.0f));
 				ground.CreateFixture(&fd);
 
 				x += 40.0f;
-				shape.Set(b2Vec2(x, 0.0f), b2Vec2(x, 20.0f));
+				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x, 20.0f));
 				ground.CreateFixture(&fd);
 			}
 
 			// Teeter
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.Set(140.0f, 1.0f);
 				bd.type = b2BodyType.b2_dynamicBody;
 				b2Body body = m_world.CreateBody(bd);
@@ -85,8 +85,8 @@ namespace Testbed.Tests {
 
 				b2RevoluteJointDef jd;
 				jd.Initialize(ground, body, body.GetPosition());
-				jd.lowerAngle = -8.0f * Math.PI / 180.0f;
-				jd.upperAngle = 8.0f * Math.PI / 180.0f;
+				jd.lowerAngle = -8.0f * (float)Math.PI / 180.0f;
+				jd.upperAngle = 8.0f * (float)Math.PI / 180.0f;
 				jd.enableLimit = true;
 				m_world.CreateJoint(&jd);
 
@@ -96,11 +96,11 @@ namespace Testbed.Tests {
 			// Bridge
 			{
 				int N = 20;
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(1.0f, 0.125f);
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				fd.density = 1.0f;
 				fd.friction = 0.6f;
 
@@ -109,11 +109,11 @@ namespace Testbed.Tests {
 				b2Body prevBody = ground;
 				for (int i = 0; i < N; ++i)
 				{
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(161.0f + 2.0f * i, -0.125f);
 					b2Body body = m_world.CreateBody(bd);
-					body.CreateFixture(&fd);
+					body.CreateFixture(fd);
 
 					b2Vec2 anchor(160.0f + 2.0f * i, -0.125f);
 					jd.Initialize(prevBody, body, anchor);
@@ -133,7 +133,7 @@ namespace Testbed.Tests {
 				box.SetAsBox(0.5f, 0.5f);
 
 				b2Body body = null;
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 
 				bd.position.Set(230.0f, 0.5f);
@@ -172,7 +172,7 @@ namespace Testbed.Tests {
 				b2CircleShape circle;
 				circle.m_radius = 0.4f;
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 1.0f);
 				m_car = m_world.CreateBody(bd);
@@ -242,7 +242,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			m_debugDraw.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
 			m_textLine += DRAW_STRING_NEW_LINE;

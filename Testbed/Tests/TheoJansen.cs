@@ -109,27 +109,27 @@ namespace Testbed.Tests {
 
 			// Ground
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(50.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(50.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 
-				shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(-50.0f, 10.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(-50.0f, 10.0f));
+				ground.CreateFixture(shape, 0.0f);
 
-				shape.Set(b2Vec2(50.0f, 0.0f), b2Vec2(50.0f, 10.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(50.0f, 0.0f), new b2Vec2(50.0f, 10.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			// Balls
 			for (int i = 0; i < 40; ++i)
 			{
-				b2CircleShape shape;
+				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.25f;
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-40.0f + 2.0f * i, 0.5f);
 
@@ -139,14 +139,14 @@ namespace Testbed.Tests {
 
 			// Chassis
 			{
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(2.5f, 1.0f);
 
 				b2FixtureDef sd;
 				sd.density = 1.0f;
 				sd.shape = &shape;
 				sd.filter.groupIndex = -1;
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position = pivot + m_offset;
 				m_chassis = m_world.CreateBody(bd);
@@ -154,14 +154,14 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2CircleShape shape;
+				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 1.6f;
 
 				b2FixtureDef sd;
 				sd.density = 1.0f;
 				sd.shape = &shape;
 				sd.filter.groupIndex = -1;
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position = pivot + m_offset;
 				m_wheel = m_world.CreateBody(bd);
@@ -185,11 +185,11 @@ namespace Testbed.Tests {
 			CreateLeg(-1.0f, wheelAnchor);
 			CreateLeg(1.0f, wheelAnchor);
 
-			m_wheel.SetTransform(m_wheel.GetPosition(), 120.0f * Math.PI / 180.0f);
+			m_wheel.SetTransform(m_wheel.GetPosition(), 120.0f * (float)Math.PI / 180.0f);
 			CreateLeg(-1.0f, wheelAnchor);
 			CreateLeg(1.0f, wheelAnchor);
 
-			m_wheel.SetTransform(m_wheel.GetPosition(), -120.0f * Math.PI / 180.0f);
+			m_wheel.SetTransform(m_wheel.GetPosition(), -120.0f * (float)Math.PI / 180.0f);
 			CreateLeg(-1.0f, wheelAnchor);
 			CreateLeg(1.0f, wheelAnchor);
 		}

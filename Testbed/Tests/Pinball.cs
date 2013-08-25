@@ -16,7 +16,7 @@ namespace Testbed.Tests {
 			// Ground body
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
 				b2Vec2 vs[5];
@@ -38,7 +38,7 @@ namespace Testbed.Tests {
 			{
 				b2Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 
 				bd.position = p1;
@@ -67,32 +67,32 @@ namespace Testbed.Tests {
 				jd.motorSpeed = 0.0f;
 				jd.localAnchorA = p1;
 				jd.bodyB = leftFlipper;
-				jd.lowerAngle = -30.0f * Math.PI / 180.0f;
-				jd.upperAngle = 5.0f * Math.PI / 180.0f;
+				jd.lowerAngle = -30.0f * (float)Math.PI / 180.0f;
+				jd.upperAngle = 5.0f * (float)Math.PI / 180.0f;
 				m_leftJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
 
 				jd.motorSpeed = 0.0f;
 				jd.localAnchorA = p2;
 				jd.bodyB = rightFlipper;
-				jd.lowerAngle = -5.0f * Math.PI / 180.0f;
-				jd.upperAngle = 30.0f * Math.PI / 180.0f;
+				jd.lowerAngle = -5.0f * (float)Math.PI / 180.0f;
+				jd.upperAngle = 30.0f * (float)Math.PI / 180.0f;
 				m_rightJoint = (b2RevoluteJoint*)m_world.CreateJoint(&jd);
 			}
 
 			// Circle character
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.Set(1.0f, 15.0f);
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.bullet = true;
 
 				m_ball = m_world.CreateBody(bd);
 
-				b2CircleShape shape;
+				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.2f;
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				fd.density = 1.0f;
 				m_ball.CreateFixture(&fd);
 			}

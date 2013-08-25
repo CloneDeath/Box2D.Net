@@ -17,7 +17,7 @@ namespace Testbed.Tests {
 		b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*));
 
 		{
-			b2BodyDef bd;
+			b2BodyDef bd = new b2BodyDef();
 			bd.type = b2BodyType(2);
 			bd.position.Set(3.000000000000000e+001f, 6.909857940673828e+001f);
 			bd.angle = 0.000000000000000e+000f;
@@ -41,7 +41,7 @@ namespace Testbed.Tests {
 				fd.filter.categoryBits = ushort(1);
 				fd.filter.maskBits = ushort(2);
 				fd.filter.groupIndex = short(0);
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				b2Vec2 vs[8];
 				vs[0].Set(-1.950000047683716e+000f, -4.750000000000000e+000f);
 				vs[1].Set(1.950000047683716e+000f, -4.750000000000000e+000f);
@@ -49,14 +49,14 @@ namespace Testbed.Tests {
 				vs[3].Set(-1.950000047683716e+000f, 4.750000000000000e+000f);
 				shape.Set(vs, 4);
 		
-				fd.shape = &shape;
+				fd.shape = shape;
 		
 				bodies[0].CreateFixture(&fd);
 			}
 		}
 		
 			{
-			  b2BodyDef bd;
+			  b2BodyDef bd = new b2BodyDef();
 			  bd.type = b2BodyType(0);
 			  bd.position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
 			  bd.angle = 0.000000000000000e+000f;
@@ -80,7 +80,7 @@ namespace Testbed.Tests {
 				fd.filter.categoryBits = ushort(2);
 				fd.filter.maskBits = ushort(65535);
 				fd.filter.groupIndex = short(0);
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				b2Vec2 vs[8];
 				vs[0].Set(-5.120000076293945e+001f, -5.000000000000000e-001f);
 				vs[1].Set(5.120000076293945e+001f, -5.000000000000000e-001f);
@@ -88,7 +88,7 @@ namespace Testbed.Tests {
 				vs[3].Set(-5.120000076293945e+001f, 5.000000000000000e-001f);
 				shape.Set(vs, 4);
 
-				fd.shape = &shape;
+				fd.shape = shape;
 
 				bodies[1].CreateFixture(&fd);
 			  }

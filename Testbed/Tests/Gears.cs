@@ -12,12 +12,12 @@ namespace Testbed.Tests {
 		{
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(50.0f, 0.0f), b2Vec2(-50.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(50.0f, 0.0f), new b2Vec2(-50.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
@@ -106,7 +106,7 @@ namespace Testbed.Tests {
 				body3.CreateFixture(&box, 5.0f);
 
 				b2PrismaticJointDef jd3;
-				jd3.Initialize(ground, body3, bd3.position, b2Vec2(0.0f, 1.0f));
+				jd3.Initialize(ground, body3, bd3.position, new b2Vec2(0.0f, 1.0f));
 				jd3.lowerTranslation = -5.0f;
 				jd3.upperTranslation = 5.0f;
 				jd3.enableLimit = true;

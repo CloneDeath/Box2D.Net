@@ -9,43 +9,40 @@ namespace Testbed.Tests {
 	// This is used to test sensor shapes.
 	class Breakable : Test
 	{
-	public enum
-		{
-			e_count = 7
-		};
+		const int e_count = 7;
 
 		Breakable()
 		{
 			// Ground body
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			// Breakable dynamic body
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 40.0f);
-				bd.angle = 0.25f * Math.PI;
+				bd.angle = 0.25f * (float)Math.PI;
 				m_body1 = m_world.CreateBody(bd);
 
-				m_shape1.SetAsBox(0.5f, 0.5f, b2Vec2(-0.5f, 0.0f), 0.0f);
-				m_piece1 = m_body1.CreateFixture(&m_shape1, 1.0f);
+				m_shape1.SetAsBox(0.5f, 0.5f, new b2Vec2(-0.5f, 0.0f), 0.0f);
+				m_piece1 = m_body1.CreateFixture(m_shape1, 1.0f);
 
-				m_shape2.SetAsBox(0.5f, 0.5f, b2Vec2(0.5f, 0.0f), 0.0f);
-				m_piece2 = m_body1.CreateFixture(&m_shape2, 1.0f);
+				m_shape2.SetAsBox(0.5f, 0.5f, new b2Vec2(0.5f, 0.0f), 0.0f);
+				m_piece2 = m_body1.CreateFixture(m_shape2, 1.0f);
 			}
 
 			m_break = false;
 			m_broke = false;
 		}
 
-		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+		void PostSolve(b2Contact contact, b2ContactImpulse impulse)
 		{
 			if (m_broke)
 			{
@@ -54,7 +51,7 @@ namespace Testbed.Tests {
 			}
 
 			// Should the body break?
-			int count = contact.GetManifold().pointCount;
+			int count = contact.GetManifold().points.Count();
 
 			float maxImpulse = 0.0f;
 			for (int i = 0; i < count; ++i)
@@ -78,13 +75,13 @@ namespace Testbed.Tests {
 			body1.DestroyFixture(m_piece2);
 			m_piece2 = null;
 
-			b2BodyDef bd;
+			b2BodyDef bd = new b2BodyDef();
 			bd.type = b2BodyType.b2_dynamicBody;
 			bd.position = body1.GetPosition();
 			bd.angle = body1.GetAngle();
 
 			b2Body body2 = m_world.CreateBody(bd);
-			m_piece2 = body2.CreateFixture(&m_shape2, 1.0f);
+			m_piece2 = body2.CreateFixture(m_shape2, 1.0f);
 
 			// Compute consistent velocities for new bodies based on
 			// cached velocity.
@@ -101,7 +98,7 @@ namespace Testbed.Tests {
 			body2.SetLinearVelocity(velocity2);
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			if (m_break)
 			{

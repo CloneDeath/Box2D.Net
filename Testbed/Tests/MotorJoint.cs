@@ -15,33 +15,33 @@ namespace Testbed.Tests {
 		{
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 
 				ground.CreateFixture(&fd);
 			}
 
 			// Define motorized body
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 8.0f);
 				b2Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(2.0f, 0.5f);
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;
-				body.CreateFixture(&fd);
+				body.CreateFixture(fd);
 
 				b2MotorJointDef mjd;
 				mjd.Initialize(ground, body);

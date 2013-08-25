@@ -12,24 +12,24 @@ namespace Testbed.Tests {
 		{
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				//fd.filter.categoryBits = 2;
 
 				ground.CreateFixture(&fd);
 			}
 
 			{
-				b2CircleShape shape;
+				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 0.5f;
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 
 				b2RevoluteJointDef rjd;
@@ -40,14 +40,14 @@ namespace Testbed.Tests {
 
 				float w = 100.0f;
 				body.SetAngularVelocity(w);
-				body.SetLinearVelocity(b2Vec2(-8.0f * w, 0.0f));
+				body.SetLinearVelocity(new b2Vec2(-8.0f * w, 0.0f));
 
-				rjd.Initialize(ground, body, b2Vec2(-10.0f, 12.0f));
-				rjd.motorSpeed = 1.0f * Math.PI;
+				rjd.Initialize(ground, body, new b2Vec2(-10.0f, 12.0f));
+				rjd.motorSpeed = 1.0f * (float)Math.PI;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = false;
-				rjd.lowerAngle = -0.25f * Math.PI;
-				rjd.upperAngle = 0.5f * Math.PI;
+				rjd.lowerAngle = -0.25f * (float)Math.PI;
+				rjd.upperAngle = 0.5f * (float)Math.PI;
 				rjd.enableLimit = true;
 				rjd.collideConnected = true;
 
@@ -81,9 +81,9 @@ namespace Testbed.Tests {
 				polygon_body.CreateFixture(&polygon_shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
-				rjd.Initialize(ground, polygon_body, b2Vec2(20.0f, 10.0f));
-				rjd.lowerAngle = -0.25f * Math.PI;
-				rjd.upperAngle = 0.0f * Math.PI;
+				rjd.Initialize(ground, polygon_body, new b2Vec2(20.0f, 10.0f));
+				rjd.lowerAngle = -0.25f * (float)Math.PI;
+				rjd.upperAngle = 0.0f * (float)Math.PI;
 				rjd.enableLimit = true;
 				m_world.CreateJoint(&rjd);
 			}

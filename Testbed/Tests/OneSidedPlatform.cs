@@ -19,21 +19,21 @@ namespace Testbed.Tests {
 		{
 			// Ground
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			// Platform
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.Set(0.0f, 10.0f);
 				b2Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(3.0f, 0.5f);
 				m_platform = body.CreateFixture(shape, 0.0f);
 
@@ -43,17 +43,17 @@ namespace Testbed.Tests {
 
 			// Actor
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 12.0f);
 				b2Body body = m_world.CreateBody(bd);
 
 				m_radius = 0.5f;
-				b2CircleShape shape;
+				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = m_radius;
 				m_character = body.CreateFixture(shape, 20.0f);
 
-				body.SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+				body.SetLinearVelocity(new b2Vec2(0.0f, -50.0f));
 
 				m_state = e_unknown;
 			}

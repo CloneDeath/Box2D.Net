@@ -98,11 +98,11 @@ namespace Testbed.Tests {
 				break;
 
 			case 'q':
-				m_angleB += 0.1f * Math.PI;
+				m_angleB += 0.1f * (float)Math.PI;
 				break;
 
 			case 'e':
-				m_angleB -= 0.1f * Math.PI;
+				m_angleB -= 0.1f * (float)Math.PI;
 				break;
 			}
 

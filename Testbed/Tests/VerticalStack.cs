@@ -16,32 +16,32 @@ namespace Testbed.Tests {
 		public VerticalStack()
 		{
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 
-				shape.Set(b2Vec2(20.0f, 0.0f), b2Vec2(20.0f, 20.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(20.0f, 0.0f), new b2Vec2(20.0f, 20.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			float xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
 			for (int j = 0; j < e_columnCount; ++j)
 			{
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
 
 				for (int i = 0; i < e_rowCount; ++i)
 				{
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 
 					int n = j * e_rowCount + i;
@@ -57,7 +57,7 @@ namespace Testbed.Tests {
 
 					m_bodies[n] = body;
 
-					body.CreateFixture(&fd);
+					body.CreateFixture(fd);
 				}
 			}
 
@@ -76,15 +76,15 @@ namespace Testbed.Tests {
 				}
 
 				{
-					b2CircleShape shape;
+					b2CircleShape shape = new b2CircleShape();
 					shape.m_radius = 0.25f;
 
 					b2FixtureDef fd;
-					fd.shape = &shape;
+					fd.shape = shape;
 					fd.density = 20.0f;
 					fd.restitution = 0.05f;
 
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.bullet = true;
 					bd.position.Set(-31.0f, 5.0f);
@@ -92,7 +92,7 @@ namespace Testbed.Tests {
 					m_bullet = m_world.CreateBody(bd);
 					m_bullet.CreateFixture(&fd);
 
-					m_bullet.SetLinearVelocity(b2Vec2(400.0f, 0.0f));
+					m_bullet.SetLinearVelocity(new b2Vec2(400.0f, 0.0f));
 				}
 				break;
 			}
@@ -113,15 +113,15 @@ namespace Testbed.Tests {
 			//	}
 
 			//	{
-			//		b2CircleShape shape;
+			//		b2CircleShape shape = new b2CircleShape();
 			//		shape.m_radius = 0.25f;
 
 			//		b2FixtureDef fd;
-			//		fd.shape = &shape;
+			//		fd.shape = shape;
 			//		fd.density = 20.0f;
 			//		fd.restitution = 0.05f;
 
-			//		b2BodyDef bd;
+			//		b2BodyDef bd = new b2BodyDef();
 			//		bd.type = b2BodyType.b2_dynamicBody;
 			//		bd.bullet = true;
 			//		bd.position.Set(-31.0f, 5.0f);
@@ -129,7 +129,7 @@ namespace Testbed.Tests {
 			//		m_bullet = m_world.CreateBody(bd);
 			//		m_bullet.CreateFixture(&fd);
 
-			//		m_bullet.SetLinearVelocity(b2Vec2(400.0f, 0.0f));
+			//		m_bullet.SetLinearVelocity(new b2Vec2(400.0f, 0.0f));
 			//	}
 			//}
 		}

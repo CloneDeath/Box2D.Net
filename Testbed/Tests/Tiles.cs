@@ -19,7 +19,7 @@ namespace Testbed.Tests {
 
 			{
 				float a = 0.5f;
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.y = -a;
 				b2Body ground = m_world.CreateBody(bd);
 
@@ -33,9 +33,9 @@ namespace Testbed.Tests {
 					position.x = -N * a;
 					for (int i = 0; i < N; ++i)
 					{
-						b2PolygonShape shape;
+						b2PolygonShape shape = new b2PolygonShape();
 						shape.SetAsBox(a, a, position, 0.0f);
-						ground.CreateFixture(&shape, 0.0f);
+						ground.CreateFixture(shape, 0.0f);
 						++m_fixtureCount;
 						position.x += 2.0f * a;
 					}
@@ -51,9 +51,9 @@ namespace Testbed.Tests {
 					position.y = 0.0f;
 					for (int j = 0; j < M; ++j)
 					{
-						b2PolygonShape shape;
+						b2PolygonShape shape = new b2PolygonShape();
 						shape.SetAsBox(a, a, position, 0.0f);
-						ground.CreateFixture(&shape, 0.0f);
+						ground.CreateFixture(shape, 0.0f);
 						position.y -= 2.0f * a;
 					}
 					position.x += 2.0f * a;
@@ -63,7 +63,7 @@ namespace Testbed.Tests {
 
 			{
 				float a = 0.5f;
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(a, a);
 
 				b2Vec2 x = new b2Vec2(-7.0f, 0.75f);
@@ -77,7 +77,7 @@ namespace Testbed.Tests {
 
 					for (int j = i; j < e_count; ++j)
 					{
-						b2BodyDef bd;
+						b2BodyDef bd = new b2BodyDef();
 						bd.type = b2BodyType.b2_dynamicBody;
 						bd.position = y;
 

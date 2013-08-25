@@ -13,17 +13,17 @@ namespace Testbed.Tests {
 		public Pyramid()
 		{
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
+				b2EdgeShape shape = new b2EdgeShape();
 				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
 				float a = 0.5f;
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(a, a);
 
 				b2Vec2 x(-7.0f, 0.75f);
@@ -37,7 +37,7 @@ namespace Testbed.Tests {
 
 					for (int j = i; j < e_count; ++j)
 					{
-						b2BodyDef bd;
+						b2BodyDef bd = new b2BodyDef();
 						bd.type = b2BodyType.b2_dynamicBody;
 						bd.position = y;
 						b2Body body = m_world.CreateBody(bd);

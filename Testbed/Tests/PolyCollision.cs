@@ -12,7 +12,7 @@ namespace Testbed.Tests {
 		{
 			{
 				m_polygonA.SetAsBox(0.2f, 0.4f);
-				m_transformA.Set(b2Vec2(0.0f, 0.0f), 0.0f);
+				m_transformA.Set(new b2Vec2(0.0f, 0.0f), 0.0f);
 			}
 
 			{
@@ -84,11 +84,11 @@ namespace Testbed.Tests {
 				break;
 
 			case 'q':
-				m_angleB += 0.1f * Math.PI;
+				m_angleB += 0.1f * (float)Math.PI;
 				break;
 
 			case 'e':
-				m_angleB -= 0.1f * Math.PI;
+				m_angleB -= 0.1f * (float)Math.PI;
 				break;
 			}
 

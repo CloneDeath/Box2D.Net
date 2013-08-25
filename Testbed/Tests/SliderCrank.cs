@@ -14,12 +14,12 @@ namespace Testbed.Tests {
 		{
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
@@ -27,18 +27,18 @@ namespace Testbed.Tests {
 
 				// Define crank.
 				{
-					b2PolygonShape shape;
+					b2PolygonShape shape = new b2PolygonShape();
 					shape.SetAsBox(0.5f, 2.0f);
 
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.0f, 7.0f);
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(shape, 2.0f);
 
 					b2RevoluteJointDef rjd;
-					rjd.Initialize(prevBody, body, b2Vec2(0.0f, 5.0f));
-					rjd.motorSpeed = 1.0f * Math.PI;
+					rjd.Initialize(prevBody, body, new b2Vec2(0.0f, 5.0f));
+					rjd.motorSpeed = 1.0f * (float)Math.PI;
 					rjd.maxMotorTorque = 10000.0f;
 					rjd.enableMotor = true;
 					m_joint1 = (b2RevoluteJoint*)m_world.CreateJoint(&rjd);
@@ -48,17 +48,17 @@ namespace Testbed.Tests {
 
 				// Define follower.
 				{
-					b2PolygonShape shape;
+					b2PolygonShape shape = new b2PolygonShape();
 					shape.SetAsBox(0.5f, 4.0f);
 
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.0f, 13.0f);
 					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(shape, 2.0f);
 
 					b2RevoluteJointDef rjd;
-					rjd.Initialize(prevBody, body, b2Vec2(0.0f, 9.0f));
+					rjd.Initialize(prevBody, body, new b2Vec2(0.0f, 9.0f));
 					rjd.enableMotor = false;
 					m_world.CreateJoint(&rjd);
 
@@ -67,10 +67,10 @@ namespace Testbed.Tests {
 
 				// Define piston
 				{
-					b2PolygonShape shape;
+					b2PolygonShape shape = new b2PolygonShape();
 					shape.SetAsBox(1.5f, 1.5f);
 
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.fixedRotation = true;
 					bd.position.Set(0.0f, 17.0f);
@@ -78,11 +78,11 @@ namespace Testbed.Tests {
 					body.CreateFixture(shape, 2.0f);
 
 					b2RevoluteJointDef rjd;
-					rjd.Initialize(prevBody, body, b2Vec2(0.0f, 17.0f));
+					rjd.Initialize(prevBody, body, new b2Vec2(0.0f, 17.0f));
 					m_world.CreateJoint(&rjd);
 
 					b2PrismaticJointDef pjd;
-					pjd.Initialize(ground, body, b2Vec2(0.0f, 17.0f), b2Vec2(0.0f, 1.0f));
+					pjd.Initialize(ground, body, new b2Vec2(0.0f, 17.0f), new b2Vec2(0.0f, 1.0f));
 
 					pjd.maxMotorForce = 1000.0f;
 					pjd.enableMotor = true;
@@ -92,10 +92,10 @@ namespace Testbed.Tests {
 
 				// Create a payload
 				{
-					b2PolygonShape shape;
+					b2PolygonShape shape = new b2PolygonShape();
 					shape.SetAsBox(1.5f, 1.5f);
 
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.0f, 23.0f);
 					b2Body body = m_world.CreateBody(bd);

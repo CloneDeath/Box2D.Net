@@ -12,38 +12,38 @@ namespace Testbed.Tests {
 		{
 			// Ground
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			// Platform
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.position.Set(-5.0f, 5.0f);
 				b2Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(10.0f, 0.5f);
 
 				b2FixtureDef fd;
-				fd.shape = &shape;
+				fd.shape = shape;
 				fd.friction = 0.8f;
-				m_platform = body.CreateFixture(&fd);
+				m_platform = body.CreateFixture(fd);
 			}
 
 			// Boxes
 			for (int i = 0; i < 5; ++i)
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-10.0f + 2.0f * i, 7.0f);
 				b2Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 				body.CreateFixture(shape, 20.0f);
 			}

@@ -97,12 +97,12 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
@@ -159,12 +159,12 @@ namespace Testbed.Tests {
 				m_bodies[m_bodyIndex] = null;
 			}
 
-			b2BodyDef bd;
+			b2BodyDef bd = new b2BodyDef();
 			bd.type = b2BodyType.b2_dynamicBody;
 
 			float x = RandomFloat(-2.0f, 2.0f);
 			bd.position.Set(x, 10.0f);
-			bd.angle = RandomFloat(-Math.PI, Math.PI);
+			bd.angle = RandomFloat(-Math.PI, (float)Math.PI);
 
 			if (index == 4)
 			{

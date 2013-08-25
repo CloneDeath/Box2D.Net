@@ -49,7 +49,7 @@ namespace Testbed.Tests {
 			bodyDef.position = p;
 			b2Body body = m_world.CreateBody(&bodyDef);
 
-			b2PolygonShape shape;
+			b2PolygonShape shape = new b2PolygonShape();
 			shape.SetAsBox(0.25f * a, a);
 			body.CreateFixture(shape, density);
 
@@ -58,7 +58,7 @@ namespace Testbed.Tests {
 				return body;
 			}
 
-			shape.SetAsBox(offset, 0.25f * a, b2Vec2(0, -a), 0.0f);
+			shape.SetAsBox(offset, 0.25f * a, new b2Vec2(0, -a), 0.0f);
 			body.CreateFixture(shape, density);
 
 			b2Vec2 a1 = new b2Vec2(offset, -a);

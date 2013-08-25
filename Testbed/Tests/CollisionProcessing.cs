@@ -14,13 +14,13 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(50.0f, 0.0f));
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(50.0f, 0.0f));
 
 				b2FixtureDef sd;
 				sd.shape = &shape;;
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 				ground.CreateFixture(&sd);
 			}
@@ -103,7 +103,7 @@ namespace Testbed.Tests {
 			body6.CreateFixture(&circleShapeDef);
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			base.Step(settings);
 

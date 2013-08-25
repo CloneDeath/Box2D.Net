@@ -43,12 +43,12 @@ namespace Testbed.Tests {
 			switch (key)
 			{
 			case 'q':
-				m_angle = Math.Max(-Math.PI, m_angle - 0.05f * Math.PI);
+				m_angle = Math.Max(-Math.PI, m_angle - 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
 				break;
 
 			case 'e':
-				m_angle = Math.Min(Math.PI, m_angle + 0.05f * Math.PI);
+				m_angle = Math.Min(Math.PI, m_angle + 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
 				break;
 			}
@@ -71,7 +71,7 @@ namespace Testbed.Tests {
 
 			m_debugDraw.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
 			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / Math.PI);
+			m_debugDraw.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / (float)Math.PI);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 

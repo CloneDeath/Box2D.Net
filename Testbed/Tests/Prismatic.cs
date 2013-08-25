@@ -13,22 +13,22 @@ namespace Testbed.Tests {
 		{
 			b2Body ground = null;
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(2.0f, 0.5f);
 
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-10.0f, 10.0f);
-				bd.angle = 0.5f * Math.PI;
+				bd.angle = 0.5f * (float)Math.PI;
 				bd.allowSleep = false;
 				b2Body body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 5.0f);
@@ -38,10 +38,10 @@ namespace Testbed.Tests {
 				// Bouncy limit
 				b2Vec2 axis(2.0f, 1.0f);
 				axis.Normalize();
-				pjd.Initialize(ground, body, b2Vec2(0.0f, 0.0f), axis);
+				pjd.Initialize(ground, body, new b2Vec2(0.0f, 0.0f), axis);
 
 				// Non-bouncy limit
-				//pjd.Initialize(ground, body, b2Vec2(-10.0f, 10.0f), b2Vec2(1.0f, 0.0f));
+				//pjd.Initialize(ground, body, new b2Vec2(-10.0f, 10.0f), new b2Vec2(1.0f, 0.0f));
 
 				pjd.motorSpeed = 10.0f;
 				pjd.maxMotorForce = 10000.0f;

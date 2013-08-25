@@ -151,12 +151,12 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				b2EdgeShape shape = new b2EdgeShape();
+				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
@@ -217,12 +217,12 @@ namespace Testbed.Tests {
 				m_bodies[m_bodyIndex] = null;
 			}
 
-			b2BodyDef bd;
+			b2BodyDef bd = new b2BodyDef();
 
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(0.0f, 20.0f);
 			bd.position.Set(x, y);
-			bd.angle = RandomFloat(-Math.PI, Math.PI);
+			bd.angle = RandomFloat(-Math.PI, (float)Math.PI);
 
 			m_userData[m_bodyIndex] = index;
 			bd.userData = m_userData + m_bodyIndex;
@@ -380,7 +380,7 @@ namespace Testbed.Tests {
 
 			if (advanceRay)
 			{
-				m_angle += 0.25f * Math.PI / 180.0f;
+				m_angle += 0.25f * (float)Math.PI / 180.0f;
 			}
 
 	#if ZERO
@@ -392,7 +392,7 @@ namespace Testbed.Tests {
 				//vertices[2].Set(22.875f, 3.0f);
 				//vertices[3].Set(-22.875f, 3.0f);
 
-				b2PolygonShape shape;
+				b2PolygonShape shape = new b2PolygonShape();
 				//shape.Set(vertices, 4);
 				shape.SetAsBox(22.875f, 3.0f);
 

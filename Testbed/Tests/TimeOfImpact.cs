@@ -35,13 +35,13 @@ namespace Testbed.Tests {
 
 			b2Sweep sweepB;
 			sweepB.c0.Set(53.474274f, -50.252514f);
-			sweepB.a0 = 513.36676f; // - 162.0f * Math.PI;
+			sweepB.a0 = 513.36676f; // - 162.0f * (float)Math.PI;
 			sweepB.c.Set(54.595478f, -51.083473f);
-			sweepB.a = 513.62781f; //  - 162.0f * Math.PI;
+			sweepB.a = 513.62781f; //  - 162.0f * (float)Math.PI;
 			sweepB.localCenter.SetZero();
 
-			//sweepB.a0 -= 300.0f * Math.PI;
-			//sweepB.a -= 300.0f * Math.PI;
+			//sweepB.a0 -= 300.0f * (float)Math.PI;
+			//sweepB.a -= 300.0f * (float)Math.PI;
 
 			b2TOIInput input;
 			input.proxyA.Set(m_shapeA, 0);

@@ -17,35 +17,35 @@ namespace Testbed.Tests {
 		public Confined()
 		{
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape;
+				b2EdgeShape shape = new b2EdgeShape();
 
 				// Floor
-				shape.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(10.0f, 0.0f));
+				ground.CreateFixture(shape, 0.0f);
 
 				// Left wall
-				shape.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(-10.0f, 20.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(-10.0f, 20.0f));
+				ground.CreateFixture(shape, 0.0f);
 
 				// Right wall
-				shape.Set(b2Vec2(10.0f, 0.0f), b2Vec2(10.0f, 20.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(10.0f, 0.0f), new b2Vec2(10.0f, 20.0f));
+				ground.CreateFixture(shape, 0.0f);
 
 				// Roof
-				shape.Set(b2Vec2(-10.0f, 20.0f), b2Vec2(10.0f, 20.0f));
-				ground.CreateFixture(&shape, 0.0f);
+				shape.Set(new b2Vec2(-10.0f, 20.0f), new b2Vec2(10.0f, 20.0f));
+				ground.CreateFixture(shape, 0.0f);
 			}
 
 			float radius = 0.5f;
-			b2CircleShape shape;
+			b2CircleShape shape = new b2CircleShape();
 			shape.m_p.SetZero();
 			shape.m_radius = radius;
 
 			b2FixtureDef fd;
-			fd.shape = &shape;
+			fd.shape = shape;
 			fd.density = 1.0f;
 			fd.friction = 0.1f;
 
@@ -53,12 +53,12 @@ namespace Testbed.Tests {
 			{
 				for (int i = 0; i < e_rowCount; ++i)
 				{
-					b2BodyDef bd;
+					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 					b2Body body = m_world.CreateBody(bd);
 
-					body.CreateFixture(&fd);
+					body.CreateFixture(fd);
 				}
 			}
 
@@ -68,23 +68,23 @@ namespace Testbed.Tests {
 		void CreateCircle()
 		{
 			float radius = 2.0f;
-			b2CircleShape shape;
+			b2CircleShape shape = new b2CircleShape();
 			shape.m_p.SetZero();
 			shape.m_radius = radius;
 
 			b2FixtureDef fd;
-			fd.shape = &shape;
+			fd.shape = shape;
 			fd.density = 1.0f;
 			fd.friction = 0.0f;
 
 			b2Vec2 p(RandomFloat(), 3.0f + RandomFloat());
-			b2BodyDef bd;
+			b2BodyDef bd = new b2BodyDef();
 			bd.type = b2BodyType.b2_dynamicBody;
 			bd.position = p;
 			//bd.allowSleep = false;
 			b2Body body = m_world.CreateBody(bd);
 
-			body.CreateFixture(&fd);
+			body.CreateFixture(fd);
 		}
 
 		public void Keyboard()
@@ -97,7 +97,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			bool sleeping = true;
 			foreach (b2Body b in m_world.GetBodyList())

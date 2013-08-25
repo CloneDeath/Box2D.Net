@@ -60,7 +60,7 @@ namespace Testbed.Tests {
 		{
 			base.Step(settings);
 
-			b2PolygonShape shape;
+			b2PolygonShape shape = new b2PolygonShape();
 			shape.Set(m_points, e_count);
 
 			m_debugDraw.DrawString(5, m_textLine, "Press g to generate a new random convex hull");

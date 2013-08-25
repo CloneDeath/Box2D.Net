@@ -39,19 +39,19 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd;
+				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
 				float x1 = -20.0f;
-				float y1 = 2.0f * cosf(x1 / 10.0f * Math.PI);
+				float y1 = 2.0f * cosf(x1 / 10.0f * (float)Math.PI);
 				for (int i = 0; i < 80; ++i)
 				{
 					float x2 = x1 + 0.5f;
-					float y2 = 2.0f * cosf(x2 / 10.0f * Math.PI);
+					float y2 = 2.0f * cosf(x2 / 10.0f * (float)Math.PI);
 
-					b2EdgeShape shape;
-					shape.Set(b2Vec2(x1, y1), b2Vec2(x2, y2));
-					ground.CreateFixture(&shape, 0.0f);
+					b2EdgeShape shape = new b2EdgeShape();
+					shape.Set(new b2Vec2(x1, y1), new b2Vec2(x2, y2));
+					ground.CreateFixture(shape, 0.0f);
 
 					x1 = x2;
 					y1 = y2;
@@ -114,12 +114,12 @@ namespace Testbed.Tests {
 				m_bodies[m_bodyIndex] = null;
 			}
 
-			b2BodyDef bd;
+			b2BodyDef bd = new b2BodyDef();
 
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(10.0f, 20.0f);
 			bd.position.Set(x, y);
-			bd.angle = RandomFloat(-Math.PI, Math.PI);
+			bd.angle = RandomFloat(-Math.PI, (float)Math.PI);
 			bd.type = b2BodyType.b2_dynamicBody;
 
 			if (index == 4)
@@ -180,7 +180,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			bool advanceRay = settings.pause == 0 || settings.singleStep;
 
@@ -213,7 +213,7 @@ namespace Testbed.Tests {
 
 			if (advanceRay)
 			{
-				m_angle += 0.25f * Math.PI / 180.0f;
+				m_angle += 0.25f * (float)Math.PI / 180.0f;
 			}
 		}
 
