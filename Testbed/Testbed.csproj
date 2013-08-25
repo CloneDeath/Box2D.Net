@@ -70,6 +70,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllTests.cs" />
     <Compile Include="Framework\ContactPoint.cs" />
     <Compile Include="Framework\DestructionListener.cs" />
     <Compile Include="Framework\DebugDraw.cs" />

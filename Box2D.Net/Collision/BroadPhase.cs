@@ -69,8 +69,7 @@ namespace Box2D {
 
 		/// Get the fat AABB for a proxy.
 		public AABB GetFatAABB(int proxyId){
-			throw new NotImplementedException();
-			//return m_tree.GetFatAABB(proxyId);
+			return m_tree.GetFatAABB(proxyId);
 		}
 
 

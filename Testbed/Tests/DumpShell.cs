@@ -29,7 +29,7 @@ namespace Testbed.Tests {
 				bd.bullet = false;
 				bd.active = true;
 				bd.gravityScale = 1.000000000000000e+000f;
-				bodies[0] = m_world.CreateBody(bd);
+				bodies.Add(m_world.CreateBody(bd));
 				{
 					FixtureDef fd = new FixtureDef();
 					fd.friction = 6.000000238418579e-001f;
@@ -54,50 +54,49 @@ namespace Testbed.Tests {
 			}
 		
 			{
-			  BodyDef bd = new BodyDef();
-			  bd.type = (BodyType)(0);
-			  bd.Position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
-			  bd.angle = 0.000000000000000e+000f;
-			  bd.linearVelocity.Set(0.000000000000000e+000f, 0.000000000000000e+000f);
-			  bd.angularVelocity = 0.000000000000000e+000f;
-			  bd.linearDamping = 0.000000000000000e+000f;
-			  bd.angularDamping = 0.000000000000000e+000f;
-			  bd.allowSleep = true;
-			  bd.awake = true;
-			  bd.fixedRotation = false;
-			  bd.bullet = false;
-			  bd.active = true;
-			  bd.gravityScale = 1.000000000000000e+000f;
-			  bodies[1] = m_world.CreateBody(bd);
-			  {
-				FixtureDef fd = new FixtureDef();
-				fd.friction = 0.000000000000000e+000f;
-				fd.restitution = 0.000000000000000e+000f;
-				fd.Density = 1.000000000000000e+000f;
-				fd.IsSensor = false;
-				fd.Filter.CategoryBits = (ushort)(2);
-				fd.Filter.MaskBits = (ushort)(65535);
-				fd.Filter.GroupIndex = (short)(0);
-				PolygonShape shape = new PolygonShape();
-				Vec2[] vs = new Vec2[8];
-				vs[0].Set(-5.120000076293945e+001f, -5.000000000000000e-001f);
-				vs[1].Set(5.120000076293945e+001f, -5.000000000000000e-001f);
-				vs[2].Set(5.120000076293945e+001f, 5.000000000000000e-001f);
-				vs[3].Set(-5.120000076293945e+001f, 5.000000000000000e-001f);
-				shape.Set(vs, 4);
+				BodyDef bd = new BodyDef();
+				bd.type = (BodyType)(0);
+				bd.Position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
+				bd.angle = 0.000000000000000e+000f;
+				bd.linearVelocity.Set(0.000000000000000e+000f, 0.000000000000000e+000f);
+				bd.angularVelocity = 0.000000000000000e+000f;
+				bd.linearDamping = 0.000000000000000e+000f;
+				bd.angularDamping = 0.000000000000000e+000f;
+				bd.allowSleep = true;
+				bd.awake = true;
+				bd.fixedRotation = false;
+				bd.bullet = false;
+				bd.active = true;
+				bd.gravityScale = 1.000000000000000e+000f;
+				bodies.Add(m_world.CreateBody(bd));
+				{
+					FixtureDef fd = new FixtureDef();
+					fd.friction = 0.000000000000000e+000f;
+					fd.restitution = 0.000000000000000e+000f;
+					fd.Density = 1.000000000000000e+000f;
+					fd.IsSensor = false;
+					fd.Filter.CategoryBits = (ushort)(2);
+					fd.Filter.MaskBits = (ushort)(65535);
+					fd.Filter.GroupIndex = (short)(0);
+					PolygonShape shape = new PolygonShape();
+					Vec2[] vs = new Vec2[8];
+					vs[0].Set(-5.120000076293945e+001f, -5.000000000000000e-001f);
+					vs[1].Set(5.120000076293945e+001f, -5.000000000000000e-001f);
+					vs[2].Set(5.120000076293945e+001f, 5.000000000000000e-001f);
+					vs[3].Set(-5.120000076293945e+001f, 5.000000000000000e-001f);
+					shape.Set(vs, 4);
 
-				fd.shape = shape;
+					fd.shape = shape;
 
-				bodies[1].CreateFixture(fd);
-			  }
+					bodies[1].CreateFixture(fd);
+				}
 			}
 
 			joints = null;
 			bodies = null;
 		}
 
-		public static Test Create()
-		{
+		public static Test Create() {
 			return new DumpShell();
 		}
 	};

@@ -34,64 +34,8 @@ namespace Testbed {
 		static Camera2D camera;
 		static ListBox testList;
 		public static void Main(string[] args) {
-			testCount = 0;
-			g_testEntries = new TestEntry[]
-			{
-				new TestEntry("Continuous Test", ContinuousTest.Create),
-				new TestEntry("Time of Impact", TimeOfImpact.Create),
-				new TestEntry("Motor Joint", MotorJointTest.Create),
-				new TestEntry("One-Sided Platform", OneSidedPlatform.Create),
-				new TestEntry("Dump Shell", DumpShell.Create),
-				new TestEntry("Mobile", Mobile.Create),
-				new TestEntry("MobileBalanced", MobileBalanced.Create),
-				new TestEntry("Ray-Cast", RayCast.Create),
-				new TestEntry("Conveyor Belt", ConveyorBelt.Create),
-				new TestEntry("Gears", Gears.Create),
-				new TestEntry("Convex Hull", ConvexHull.Create),
-				new TestEntry("Varying Restitution", VaryingRestitution.Create),
-				new TestEntry("Tumbler", Tumbler.Create),
-				new TestEntry("Tiles", Tiles.Create),
-				new TestEntry("Cantilever", Cantilever.Create),
-				new TestEntry("Character Collision", CharacterCollision.Create),
-				new TestEntry("Edge Test", EdgeTest.Create),
-				new TestEntry("Body Types", BodyTypes.Create),
-				new TestEntry("Shape Editing", ShapeEditing.Create),
-				new TestEntry("Car", Car.Create),
-				new TestEntry("Apply Force", ApplyForce.Create),
-				new TestEntry("Prismatic", Prismatic.Create),
-				new TestEntry("Vertical Stack", VerticalStack.Create),
-				new TestEntry("SphereStack", SphereStack.Create),
-				new TestEntry("Revolute", Revolute.Create),
-				new TestEntry("Pulleys", Pulleys.Create),
-				new TestEntry("Polygon Shapes", PolyShapes.Create),
-				new TestEntry("Web", Web.Create),
-				new TestEntry("RopeJoint", RopeJointTest.Create),
-				new TestEntry("Pinball", Pinball.Create),
-				new TestEntry("Bullet Test", BulletTest.Create),
-				new TestEntry("Confined", Confined.Create),
-				new TestEntry("Pyramid", Pyramid.Create),
-				new TestEntry("Theo Jansen's Walker", TheoJansen.Create),
-				new TestEntry("Edge Shapes", EdgeShapes.Create),
-				new TestEntry("PolyCollision", PolyCollision.Create),
-				new TestEntry("Bridge", Bridge.Create),
-				new TestEntry("Breakable", Breakable.Create),
-				new TestEntry("Chain", Chain.Create),
-				new TestEntry("Collision Filtering", CollisionFiltering.Create),
-				new TestEntry("Collision Processing", CollisionProcessing.Create),
-				new TestEntry("Compound Shapes", CompoundShapes.Create),
-				new TestEntry("Distance Test", DistanceTest.Create),
-				new TestEntry("Dominos", Dominos.Create),
-				new TestEntry("Dynamic Tree", DynamicTreeTest.Create),
-				new TestEntry("Sensor Test", SensorTest.Create),
-				new TestEntry("Slider Crank", SliderCrank.Create),
-				new TestEntry("Varying Friction", VaryingFriction.Create),
-				new TestEntry("Add Pair Stress Test", AddPair.Create),
-			};
-
-			while (testCount < g_testEntries.Count())
-			{
-				++testCount;
-			}
+			g_testEntries = AllTests.GetTests();
+			testCount = g_testEntries.Count();
 
 			testIndex = Math.Max(0, Math.Min(testIndex, testCount - 1));
 			testSelection = testIndex;
@@ -99,7 +43,7 @@ namespace Testbed {
 			entry = g_testEntries[testIndex];
 			test = entry.createFcn();
 
-			GraphicsManager.SetResolution(width, height);
+			GraphicsManager.SetWindowState(OpenTK.WindowState.Maximized);
 			string title = String.Format("Box2D Version {0}.{1}.{2}", Settings._version.major, Settings._version.minor, Settings._version.revision);
 			GraphicsManager.SetTitle(title);
 
@@ -113,7 +57,7 @@ namespace Testbed {
 			GraphicsManager.Update += new GraphicsManager.Updater(GraphicsManager_Update);
 
 			WindowControl glui = new WindowControl(MainCanvas.GetCanvas());
-			glui.SetPosition(10, 10);
+			glui.Dock = Gwen.Pos.Left;
 
 			Label text = new Label(glui);
 			text.Text = "Tests";
@@ -123,105 +67,230 @@ namespace Testbed {
 			testList.RowSelected += delegate(Base sender, ItemSelectedEventArgs tlargs) {
 				testSelection = testList.SelectedRowIndex;
 			};
+			foreach (TestEntry e in g_testEntries) {
+				testList.AddRow(e.name, "", e);
+			}
 			testList.SelectedRowIndex = testSelection;
 			testList.SetPosition(10, 30);
-			testList.SetSize(170, 60);
+			testList.SetSize(170, 180);
 
 			//glui.add_separator();
-
-			NumericUpDown spinner = new NumericUpDown(glui);
-			spinner.Text = "Vel Iters";
-			spinner.Min = 1;
-			spinner.Max = 500;
-			spinner.ValueChanged += delegate(Base sender, EventArgs vcargs) {
-				settings.velocityIterations = (int)spinner.Value;
-			};
-			spinner.Value = settings.velocityIterations;
-			spinner.SetPosition(10, 100);
-
-			NumericUpDown posSpinner = new NumericUpDown(glui);
-			posSpinner.Min = 0;
-			posSpinner.Max = 100;
-			posSpinner.Text = "Pos Iters";
-			posSpinner.ValueChanged += delegate(Base sender, EventArgs psargs) {
-				settings.positionIterations = (int)posSpinner.Value;
-			};
-			posSpinner.Value = settings.positionIterations;
-			posSpinner.SetPosition(10, 120);
-
-			NumericUpDown hertzSpinner = new NumericUpDown(glui);
-			hertzSpinner.Text = "Hertz";
-			hertzSpinner.Min = 5;
-			hertzSpinner.Max = 200;
-			hertzSpinner.ValueChanged += delegate(Base sender, EventArgs hargs) {
-				settingsHz = hertzSpinner.Value;
-			};
-			hertzSpinner.Value = settingsHz;
-			hertzSpinner.SetPosition(10, 140);
-
-			LabeledCheckBox scb = new LabeledCheckBox(glui);
-			scb.Text = "Sleep";
-			scb.CheckChanged += delegate(Base sender, EventArgs argsscb) {
-				settings.enableSleep = scb.IsChecked;
-			};
-			scb.IsChecked = settings.enableSleep;
-			scb.SetPosition(10, 160);
-
-			LabeledCheckBox wsu = new LabeledCheckBox(glui);
-			wsu.Text = "Warm Starting";
-			wsu.CheckChanged += delegate(Base sender, EventArgs argsscb) {
-				settings.enableWarmStarting = wsu.IsChecked;
-			};
-			wsu.IsChecked = settings.enableWarmStarting;
-			wsu.SetPosition(10, 180);
-
-			LabeledCheckBox toi = new LabeledCheckBox(glui);
-			toi.Text = "Time of Impact";
-			toi.CheckChanged += delegate(Base sender, EventArgs argsscb) {
-				settings.enableContinuous = toi.IsChecked;
-			};
-			toi.IsChecked = settings.enableContinuous;
-			toi.SetPosition(10, 200);
-
-			LabeledCheckBox ssb = new LabeledCheckBox(glui);
-			ssb.Text = "Sub-Stepping";
-			ssb.CheckChanged += delegate(Base sender, EventArgs argsscb) {
-				settings.enableSubStepping = ssb.IsChecked;
-			};
-			ssb.IsChecked = settings.enableSubStepping;
-			ssb.SetPosition(10, 220);
-
-			//glui.add_separator();
-
-			//GLUI_Panel* drawPanel =	glui.add_panel("Draw");
-			//glui.add_checkbox_to_panel(drawPanel, "Shapes", &settings.drawShapes);
-			//glui.add_checkbox_to_panel(drawPanel, "Joints", &settings.drawJoints);
-			//glui.add_checkbox_to_panel(drawPanel, "AABBs", &settings.drawAABBs);
-			//glui.add_checkbox_to_panel(drawPanel, "Contact Points", &settings.drawContactPoints);
-			//glui.add_checkbox_to_panel(drawPanel, "Contact Normals", &settings.drawContactNormals);
-			//glui.add_checkbox_to_panel(drawPanel, "Contact Impulses", &settings.drawContactImpulse);
-			//glui.add_checkbox_to_panel(drawPanel, "Friction Impulses", &settings.drawFrictionImpulse);
-			//glui.add_checkbox_to_panel(drawPanel, "Center of Masses", &settings.drawCOMs);
-			//glui.add_checkbox_to_panel(drawPanel, "Statistics", &settings.drawStats);
-			//glui.add_checkbox_to_panel(drawPanel, "Profile", &settings.drawProfile);
-
-			foreach (TestEntry e in g_testEntries)
+			Base SettingsBox = new Base(glui);
+			SettingsBox.SetSize(200, 185);
+			SettingsBox.SetPosition(0, 250);
 			{
-			    testList.AddRow(e.name, "", e);
+				NumericUpDown spinner = new NumericUpDown(SettingsBox);
+				spinner.Text = "Vel Iters";
+				spinner.Min = 1;
+				spinner.Max = 500;
+				spinner.ValueChanged += delegate(Base sender, EventArgs vcargs) {
+					settings.velocityIterations = (int)spinner.Value;
+				};
+				spinner.Value = settings.velocityIterations;
+				spinner.SetPosition(10, 10);
+
+				NumericUpDown posSpinner = new NumericUpDown(SettingsBox);
+				posSpinner.Min = 0;
+				posSpinner.Max = 100;
+				posSpinner.Text = "Pos Iters";
+				posSpinner.ValueChanged += delegate(Base sender, EventArgs psargs) {
+					settings.positionIterations = (int)posSpinner.Value;
+				};
+				posSpinner.Value = settings.positionIterations;
+				posSpinner.SetPosition(10, 35);
+
+				NumericUpDown hertzSpinner = new NumericUpDown(SettingsBox);
+				hertzSpinner.Text = "Hertz";
+				hertzSpinner.Min = 5;
+				hertzSpinner.Max = 200;
+				hertzSpinner.ValueChanged += delegate(Base sender, EventArgs hargs) {
+					settingsHz = hertzSpinner.Value;
+				};
+				hertzSpinner.Value = settingsHz;
+				hertzSpinner.SetPosition(10, 60);
+
+				LabeledCheckBox scb = new LabeledCheckBox(SettingsBox);
+				scb.Text = "Sleep";
+				scb.CheckChanged += delegate(Base sender, EventArgs argsscb) {
+					settings.enableSleep = scb.IsChecked;
+				};
+				scb.IsChecked = settings.enableSleep;
+				scb.SetPosition(10, 85);
+
+				LabeledCheckBox wsu = new LabeledCheckBox(SettingsBox);
+				wsu.Text = "Warm Starting";
+				wsu.CheckChanged += delegate(Base sender, EventArgs argsscb) {
+					settings.enableWarmStarting = wsu.IsChecked;
+				};
+				wsu.IsChecked = settings.enableWarmStarting;
+				wsu.SetPosition(10, 110);
+
+				LabeledCheckBox toi = new LabeledCheckBox(SettingsBox);
+				toi.Text = "Time of Impact";
+				toi.CheckChanged += delegate(Base sender, EventArgs argsscb) {
+					settings.enableContinuous = toi.IsChecked;
+				};
+				toi.IsChecked = settings.enableContinuous;
+				toi.SetPosition(10, 135);
+
+				LabeledCheckBox ssb = new LabeledCheckBox(SettingsBox);
+				ssb.Text = "Sub-Stepping";
+				ssb.CheckChanged += delegate(Base sender, EventArgs argsscb) {
+					settings.enableSubStepping = ssb.IsChecked;
+				};
+				ssb.IsChecked = settings.enableSubStepping;
+				ssb.SetPosition(10, 160);
 			}
 
-			//glui.add_button("Pause", 0, Pause);
-			//glui.add_button("Single Step", 0, SingleStep);
-			//glui.add_button("Restart", 0, Restart);
+			Base drawPanel = new Base(glui);
+			drawPanel.Dock = Gwen.Pos.Bottom;
+			drawPanel.SetSize(200, 225);
+			{
+				LabeledCheckBox cbShapes = new LabeledCheckBox(drawPanel);
+				cbShapes.Text = "Shapes";
+				cbShapes.IsChecked = settings.drawShapes;
+				cbShapes.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawShapes = cbShapes.IsChecked;
+				};
+				cbShapes.SetPosition(10, 10);
 
-			//glui.add_button("Quit", 0,(GLUI_Update_CB)Exit);
 
-			glui.SetSize(200, 300);
+
+				//glui.add_checkbox_to_panel(drawPanel, "Joints", &settings.drawJoints);
+				LabeledCheckBox cbJoints = new LabeledCheckBox(drawPanel);
+				cbJoints.Text = "Joints";
+				cbJoints.IsChecked = settings.drawJoints;
+				cbJoints.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawJoints = cbJoints.IsChecked;
+				};
+				cbJoints.SetPosition(10, 30);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "AABBs", &settings.drawAABBs);
+				LabeledCheckBox cbAABBs = new LabeledCheckBox(drawPanel);
+				cbAABBs.Text = "AABBs";
+				cbAABBs.IsChecked = settings.drawAABBs;
+				cbAABBs.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawAABBs = cbAABBs.IsChecked;
+				};
+				cbAABBs.SetPosition(10, 50);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Contact Points", &settings.drawContactPoints);
+				LabeledCheckBox cbPoints = new LabeledCheckBox(drawPanel);
+				cbPoints.Text = "Contact Points";
+				cbPoints.IsChecked = settings.drawContactPoints;
+				cbPoints.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawContactPoints = cbPoints.IsChecked;
+				};
+				cbPoints.SetPosition(10, 70);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Contact Normals", &settings.drawContactNormals);
+				LabeledCheckBox cbNormals = new LabeledCheckBox(drawPanel);
+				cbNormals.Text = "Contact Normals";
+				cbNormals.IsChecked = settings.drawContactNormals;
+				cbNormals.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawContactNormals = cbNormals.IsChecked;
+				};
+				cbNormals.SetPosition(10, 90);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Contact Impulses", &settings.drawContactImpulse);
+				LabeledCheckBox cbImpulses = new LabeledCheckBox(drawPanel);
+				cbImpulses.Text = "Contact Impulses";
+				cbImpulses.IsChecked = settings.drawContactImpulse;
+				cbImpulses.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawContactImpulse = cbImpulses.IsChecked;
+				};
+				cbImpulses.SetPosition(10, 110);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Friction Impulses", &settings.drawFrictionImpulse);
+				LabeledCheckBox cbFriction = new LabeledCheckBox(drawPanel);
+				cbFriction.Text = "Friction Impulses";
+				cbFriction.IsChecked = settings.drawFrictionImpulse;
+				cbFriction.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawFrictionImpulse = cbFriction.IsChecked;
+				};
+				cbFriction.SetPosition(10, 130);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Center of Masses", &settings.drawCOMs);
+				LabeledCheckBox cbMasses = new LabeledCheckBox(drawPanel);
+				cbMasses.Text = "Center of Masses";
+				cbMasses.IsChecked = settings.drawCOMs;
+				cbMasses.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawCOMs = cbMasses.IsChecked;
+				};
+				cbMasses.SetPosition(10, 150);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Statistics", &settings.drawStats);
+				LabeledCheckBox cbStatistics = new LabeledCheckBox(drawPanel);
+				cbStatistics.Text = "Statistics";
+				cbStatistics.IsChecked = settings.drawStats;
+				cbStatistics.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawStats = cbStatistics.IsChecked;
+				};
+				cbStatistics.SetPosition(10, 170);
+
+
+
+				//glui.add_checkbox_to_panel(drawPanel, "Profile", &settings.drawProfile);
+				LabeledCheckBox cbProfile = new LabeledCheckBox(drawPanel);
+				cbProfile.Text = "Profile";
+				cbProfile.IsChecked = settings.drawProfile;
+				cbProfile.CheckChanged += delegate(Base cbshapes, EventArgs eacbshapes) {
+					settings.drawProfile = cbProfile.IsChecked;
+				};
+				cbProfile.SetPosition(10, 190);
+			}
+
+
+			Base Buttons = new Base(glui);
+			Buttons.Dock = Gwen.Pos.Bottom;
+			Buttons.Height = 100;
+			{
+				Button btnPause = new Button(Buttons);
+				btnPause.Text = "Pause";
+				btnPause.IsToggle = true;
+				btnPause.SetPosition(10, 10);
+				btnPause.ToggleState = settings.pause;
+				btnPause.Clicked += delegate(Base sender, ClickedEventArgs evargs) {
+					settings.pause = btnPause.ToggleState;
+				};
+
+				Button btnSS = new Button(Buttons);
+				btnSS.Text = "Single Step";
+				btnSS.SetPosition(10, 40);
+				btnSS.Clicked += delegate(Base sender, ClickedEventArgs evargs) {
+					SingleStep();
+				};
+
+				Button btnRestart = new Button(Buttons);
+				btnRestart.Text = "Restart";
+				btnRestart.SetPosition(10, 70);
+				btnRestart.Clicked += delegate(Base sender, ClickedEventArgs evargs) {
+					Restart();
+				};
+			}
+
+			glui.SetSize(200, 300);			
 			GraphicsManager.Start();
 		}
 
 		static void GraphicsManager_Update() {
 			Keyboard();
+			MouseWheel(MouseManager.GetMouseWheel());
+			//MouseMotion((int)MouseManager.GetMousePosition().X, (int)MouseManager.GetMousePosition().Y);
 
 			camera.SetLocation(settings.viewCenter.X, settings.viewCenter.Y);
 			camera.SetZoom(viewZoom);
@@ -419,46 +488,30 @@ namespace Testbed {
 
 		static void MouseMotion(int x, int y)
 		{
-			throw new NotImplementedException();
-			//Vec2 p = ConvertScreenToWorld(x, y);
-			//test.MouseMove(p);
-	
-			//if (rMouseDown)
-			//{
-			//    Vec2 diff = p - lastp;
-			//    settings.viewCenter.X -= diff.X;
-			//    settings.viewCenter.Y -= diff.Y;
-			//    Resize(width, height);
-			//    lastp = ConvertScreenToWorld(x, y);
-			//}
+			Vec2 p = ConvertScreenToWorld(x, y);
+			test.MouseMove(p);
+
+			if (rMouseDown) {
+				Vec2 diff = p - lastp;
+				settings.viewCenter.X -= diff.X;
+				settings.viewCenter.Y -= diff.Y;
+				lastp = ConvertScreenToWorld(x, y);
+			}
 		}
 
-		static void MouseWheel(int wheel, int direction, int x, int y)
+		static void MouseWheel(int direction)
 		{
-			throw new NotImplementedException();
-			//if (direction > 0)
-			//{
-			//    viewZoom /= 1.1f;
-			//}
-			//else
-			//{
-			//    viewZoom *= 1.1f;
-			//}
-			//Resize(width, height);
+			if (direction > 0) {
+				viewZoom /= 1.1f;
+			} else if (direction < 0) {
+			    viewZoom *= 1.1f;
+			}
 		}
 
 		static void Restart()
 		{
-			throw new NotImplementedException();
-			//delete test;
-			//entry = g_testEntries + testIndex;
-			//test = entry.createFcn();
-			//Resize(width, height);
-		}
-
-		static void Pause()
-		{
-			settings.pause = !settings.pause;
+			entry = g_testEntries[testIndex];
+			test = entry.createFcn();
 		}
 
 		static void Exit(int code)

@@ -201,20 +201,20 @@ namespace Testbed.Framework {
 						m_debugDraw.DrawPoint(point.position, 5.0f, Color.FromArgb(75, 75, 242));
 					}
 
-					if (settings.drawContactNormals == 1)
+					if (settings.drawContactNormals)
 					{
 						Vec2 p1 = point.position;
 						Vec2 p2 = p1 + k_axisScale * point.normal;
 						m_debugDraw.DrawSegment(p1, p2, Color.FromArgb(242, 242, 242));
 					}
-					else if (settings.drawContactImpulse == 1)
+					else if (settings.drawContactImpulse)
 					{
 						Vec2 p1 = point.position;
 						Vec2 p2 = p1 + k_impulseScale * point.normalImpulse * point.normal;
 						m_debugDraw.DrawSegment(p1, p2, Color.FromArgb(242, 242, 75));
 					}
 
-					if (settings.drawFrictionImpulse == 1)
+					if (settings.drawFrictionImpulse)
 					{
 						Vec2 tangent = Utilities.Cross(point.normal, 1.0f);
 						Vec2 p1 = point.position;

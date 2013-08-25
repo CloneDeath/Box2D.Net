@@ -348,23 +348,19 @@ namespace Box2D {
 		/// Apply an angular impulse.
 		/// @param impulse the angular impulse in units of kg*m*m/s
 		/// @param wake also wake up the body
-		public void ApplyAngularImpulse(float impulse, bool wake){
-			throw new NotImplementedException();
-			//if (m_type != _dynamicBody)
-			//{
-			//    return;
-			//}
+		public void ApplyAngularImpulse(float impulse, bool wake = true){
+			if (m_type != BodyType._dynamicBody) {
+				return;
+			}
 
-			//if (wake && (m_flags & e_awakeFlag) == 0)
-			//{
-			//    SetAwake(true);
-			//}
+			if (wake && (m_flags & BodyFlags.e_awakeFlag) == 0) {
+				SetAwake(true);
+			}
 
-			//// Don't accumulate velocity if the body is sleeping
-			//if (m_flags & e_awakeFlag)
-			//{
-			//    m_angularVelocity += m_invI * impulse;
-			//}
+			// Don't accumulate velocity if the body is sleeping
+			if (m_flags.HasFlag(BodyFlags.e_awakeFlag)) {
+				m_angularVelocity += m_invI * impulse;
+			}
 		}
 
 		/// Get the total mass of the body.

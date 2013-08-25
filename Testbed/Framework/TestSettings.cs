@@ -16,9 +16,9 @@ namespace Testbed.Framework {
 			drawJoints = true;
 			drawAABBs = false;
 			drawContactPoints = false;
-			drawContactNormals = 0;
-			drawContactImpulse = 0;
-			drawFrictionImpulse = 0;
+			drawContactNormals = false;
+			drawContactImpulse = false;
+			drawFrictionImpulse = false;
 			drawCOMs = true;
 			drawStats = false;
 			drawProfile = false;
@@ -38,9 +38,9 @@ namespace Testbed.Framework {
 		public bool drawJoints;
 		public bool drawAABBs;
 		public bool drawContactPoints;
-		public int drawContactNormals;
-		public int drawContactImpulse;
-		public int drawFrictionImpulse;
+		public bool drawContactNormals;
+		public bool drawContactImpulse;
+		public bool drawFrictionImpulse;
 		public bool drawCOMs;
 		public bool drawStats;
 		public bool drawProfile;
