@@ -24,10 +24,9 @@ namespace Testbed.Tests {
 		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body body = fixture.GetBody();
-			object userData = body.GetUserData();
-			if (userData != null)
+			if (body.UserData != null)
 			{
-				int index = (int)userData;
+				int index = (int)body.UserData;
 				if (index == 0)
 				{
 					// By returning -1, we instruct the calling code to ignore this fixture and
@@ -63,10 +62,9 @@ namespace Testbed.Tests {
 		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body body = fixture.GetBody();
-			object userData = body.GetUserData();
-			if (userData != null)
+			if (body.UserData != null)
 			{
-				int index = (int)userData;
+				int index = (int)body.UserData;
 				if (index == 0)
 				{
 					// By returning -1, we instruct the calling code to ignore this fixture
@@ -104,10 +102,9 @@ namespace Testbed.Tests {
 		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body body = fixture.GetBody();
-			object userData = body.GetUserData();
-			if (userData != null)
+			if (body.UserData != null)
 			{
-				int index = (int)userData;
+				int index = (int)body.UserData;
 				if (index == 0)
 				{
 					// By returning -1, we instruct the calling code to ignore this fixture

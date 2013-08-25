@@ -48,7 +48,7 @@ namespace Box2D {
 		internal abstract bool SolvePositionConstraints(b2SolverData data);
 
 		/// Get the type of the concrete joint.
-		public b2JointType GetType(){
+		public b2JointType GetJointType(){
 			return m_type;
 		}
 
@@ -79,15 +79,14 @@ namespace Box2D {
 			return m_next;
 		}
 
-		/// Get the user data pointer.
-		public object GetUserData(){
-			return m_userData;
-		}
-
-
-		/// Set the user data pointer.
-		public void SetUserData(object data){
-			m_userData = data;
+		/// Gets/sets the user data.
+		public object UserData {
+			get {
+				return m_userData;
+			}
+			set {
+				m_userData = value;
+			}
 		}
 
 		/// Short-cut function to determine if either body is inactive.

@@ -1268,7 +1268,7 @@ namespace Box2D {
 
 			Color color = Color.FromArgb(128, 200, 200);
 
-			switch (joint.GetType())
+			switch (joint.GetJointType())
 			{
 			case b2JointType.e_distanceJoint:
 			    m_debugDraw.DrawSegment(p1, p2, color);

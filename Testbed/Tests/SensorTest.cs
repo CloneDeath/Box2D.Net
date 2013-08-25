@@ -71,7 +71,7 @@ namespace Testbed.Tests {
 
 			if (fixtureA == m_sensor)
 			{
-				object userData = fixtureB.GetBody().GetUserData();
+				object userData = fixtureB.GetBody().UserData;
 				if (userData != null)
 				{
 					userData = true;
@@ -80,7 +80,7 @@ namespace Testbed.Tests {
 
 			if (fixtureB == m_sensor)
 			{
-				object userData = fixtureA.GetBody().GetUserData();
+				object userData = fixtureA.GetBody().UserData;
 				if (userData != null)
 				{
 					userData = true;
@@ -96,19 +96,17 @@ namespace Testbed.Tests {
 
 			if (fixtureA == m_sensor)
 			{
-				object userData = fixtureB.GetBody().GetUserData();
-				if (userData != null)
+				if (fixtureB.GetBody().UserData != null)
 				{
-					userData = false;
+					fixtureB.GetBody().UserData = false;
 				}
 			}
 
 			if (fixtureB == m_sensor)
 			{
-				object userData = fixtureA.GetBody().GetUserData();
-				if (userData != null)
+				if (fixtureA.GetBody().UserData != null)
 				{
-					userData = false;
+					fixtureA.GetBody().UserData = false;
 				}
 			}
 		}

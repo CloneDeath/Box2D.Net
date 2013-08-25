@@ -269,6 +269,10 @@ namespace Box2D {
 			return m_xf.p;
 		}
 
+		public void SetPosition(b2Vec2 pos) {
+			m_xf.p = pos;
+		}
+
 		/// Get the angle in radians.
 		/// @return the current world rotation angle in radians.
 		public float GetAngle(){
@@ -881,14 +885,14 @@ namespace Box2D {
 			return m_next;
 		}
 
-		/// Get the user data pointer that was provided in the body definition.
-		public object GetUserData(){
-			return m_userData;
-		}
-
-		/// Set the user data. Use this to store your application specific data.
-		public void SetUserData(object data){
-			m_userData = data;
+		/// Get/Set the user data. Use this to store your application specific data.
+		public object UserData{
+			get {
+				return m_userData;
+			}
+			set {
+				m_userData = value;
+			}
 		}
 
 		/// Get the parent world of this body.

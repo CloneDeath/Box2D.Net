@@ -57,19 +57,17 @@ namespace Box2D {
 			return m_isSensor;
 		}
 
-
 		/// Set the contact filtering data. This will not update contacts until the next time
 		/// step when either parent body is active and awake.
 		/// This automatically calls Refilter.
-		public void SetFilterData(b2Filter filter){
-			m_filter = filter;
-
-			Refilter();
-		}
-
-		/// Get the contact filtering data.
-		public b2Filter GetFilterData(){
-			return m_filter;
+		public b2Filter Filter {
+			get {
+				return m_filter;
+			}
+			set {
+				m_filter = value;
+				Refilter();
+			}
 		}
 
 		/// Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide.
@@ -122,15 +120,15 @@ namespace Box2D {
 			return m_next;
 		}
 
-		/// Get the user data that was assigned in the fixture definition. Use this to
+		/// Get/Set the user data that was assigned in the fixture definition. Use this to
 		/// store your application specific data.
-		public object GetUserData(){
-			return m_userData;
-		}
-
-		/// Set the user data. Use this to store your application specific data.
-		public void SetUserData(object data){
-			m_userData = data;
+		public object UserData {
+			get {
+				return m_userData;
+			}
+			set {
+				m_userData = value;
+			}
 		}
 
 		/// Test a point for containment in this fixture.

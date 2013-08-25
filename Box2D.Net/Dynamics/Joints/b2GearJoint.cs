@@ -91,8 +91,8 @@ namespace Box2D {
 			m_joint1 = def.joint1;
 			m_joint2 = def.joint2;
 
-			m_typeA = m_joint1.GetType();
-			m_typeB = m_joint2.GetType();
+			m_typeA = m_joint1.GetJointType();
+			m_typeB = m_joint2.GetJointType();
 
 			Utilities.Assert(m_typeA == b2JointType.e_revoluteJoint || m_typeA == b2JointType.e_prismaticJoint);
 			Utilities.Assert(m_typeB == b2JointType.e_revoluteJoint || m_typeB == b2JointType.e_prismaticJoint);
