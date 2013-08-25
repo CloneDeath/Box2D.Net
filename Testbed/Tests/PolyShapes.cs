@@ -16,10 +16,7 @@ namespace Testbed.Tests {
 	{
 		const int k_maxBodies = 256;
 	
-		public enum
-		{
-			e_maxCount = 4
-		};
+		const int e_maxCount = 4;
 
 		public PolyShapesCallback()
 		{
@@ -239,9 +236,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			PolyShapesCallback callback;
 			callback.m_circle.m_radius = 2.0f;

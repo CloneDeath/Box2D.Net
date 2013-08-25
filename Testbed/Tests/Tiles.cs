@@ -106,7 +106,7 @@ namespace Testbed.Tests {
 			m_createTime = timer.GetMilliseconds();
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			const b2ContactManager& cm = m_world.GetContactManager();
 			int height = cm.m_broadPhase.GetTreeHeight();
@@ -116,7 +116,7 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int(minimumHeight));
 			m_textLine += DRAW_STRING_NEW_LINE;
 
-			Test::Step(settings);
+			base.Step(settings);
 
 			m_debugDraw.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
 				m_createTime, m_fixtureCount);

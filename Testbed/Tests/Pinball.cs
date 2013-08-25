@@ -100,7 +100,7 @@ namespace Testbed.Tests {
 			m_button = false;
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			if (m_button)
 			{
@@ -113,7 +113,7 @@ namespace Testbed.Tests {
 				m_rightJoint.SetMotorSpeed(10.0f);
 			}
 
-			Test::Step(settings);
+			base.Step(settings);
 
 			m_debugDraw.DrawString(5, m_textLine, "Press 'a' to control the flippers");
 			m_textLine += DRAW_STRING_NEW_LINE;

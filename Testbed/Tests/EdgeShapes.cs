@@ -30,7 +30,7 @@ namespace Testbed.Tests {
 
 	class EdgeShapes : Test
 	{
-		public enum
+		public enum BodiesEnum
 		{
 			e_maxBodies = 256
 		};
@@ -184,7 +184,7 @@ namespace Testbed.Tests {
 		{
 			bool advanceRay = settings.pause == 0 || settings.singleStep;
 
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 			m_textLine += DRAW_STRING_NEW_LINE;
 

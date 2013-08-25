@@ -21,7 +21,7 @@ namespace Testbed.Tests {
 				sd.shape = &shape;;
 
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(&bd);
 				ground.CreateFixture(&sd);
 			}
 
@@ -45,7 +45,7 @@ namespace Testbed.Tests {
 			triangleBodyDef.type = b2_dynamicBody;
 			triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body* body1 = m_world.CreateBody(&triangleBodyDef);
+			b2Body body1 = m_world.CreateBody(&triangleBodyDef);
 			body1.CreateFixture(&triangleShapeDef);
 
 			// Large triangle (recycle definitions)
@@ -56,7 +56,7 @@ namespace Testbed.Tests {
 
 			triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body* body2 = m_world.CreateBody(&triangleBodyDef);
+			b2Body body2 = m_world.CreateBody(&triangleBodyDef);
 			body2.CreateFixture(&triangleShapeDef);
 		
 			// Small box
@@ -70,14 +70,14 @@ namespace Testbed.Tests {
 			boxBodyDef.type = b2_dynamicBody;
 			boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body* body3 = m_world.CreateBody(&boxBodyDef);
+			b2Body body3 = m_world.CreateBody(&boxBodyDef);
 			body3.CreateFixture(&boxShapeDef);
 
 			// Large box (recycle definitions)
 			polygon.SetAsBox(2.0f, 1.0f);
 			boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
-			b2Body* body4 = m_world.CreateBody(&boxBodyDef);
+			b2Body body4 = m_world.CreateBody(&boxBodyDef);
 			body4.CreateFixture(&boxShapeDef);
 
 			// Small circle
@@ -92,26 +92,26 @@ namespace Testbed.Tests {
 			circleBodyDef.type = b2_dynamicBody;
 			circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body* body5 = m_world.CreateBody(&circleBodyDef);
+			b2Body body5 = m_world.CreateBody(&circleBodyDef);
 			body5.CreateFixture(&circleShapeDef);
 
 			// Large circle
 			circle.m_radius *= 2.0f;
 			circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body* body6 = m_world.CreateBody(&circleBodyDef);
+			b2Body body6 = m_world.CreateBody(&circleBodyDef);
 			body6.CreateFixture(&circleShapeDef);
 		}
 
 		void Step(Settings* settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			// We are going to destroy some bodies according to contact
 			// points. We must buffer the bodies that should be destroyed
 			// because they may belong to multiple contact points.
 			const int k_maxNuke = 6;
-			b2Body* nuke[k_maxNuke];
+			b2Body nuke[k_maxNuke];
 			int nukeCount = 0;
 
 			// Traverse the contact results. Destroy bodies that
@@ -120,8 +120,8 @@ namespace Testbed.Tests {
 			{
 				ContactPoint* point = m_points + i;
 
-				b2Body* body1 = point.fixtureA.GetBody();
-				b2Body* body2 = point.fixtureB.GetBody();
+				b2Body body1 = point.fixtureA.GetBody();
+				b2Body body2 = point.fixtureB.GetBody();
 				float mass1 = body1.GetMass();
 				float mass2 = body2.GetMass();
 
@@ -150,7 +150,7 @@ namespace Testbed.Tests {
 			int i = 0;
 			while (i < nukeCount)
 			{
-				b2Body* b = nuke[i++];
+				b2Body b = nuke[i++];
 				while (i < nukeCount && nuke[i] == b)
 				{
 					++i;

@@ -56,9 +56,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			b2PolygonShape shape;
 			shape.Set(m_points, e_count);

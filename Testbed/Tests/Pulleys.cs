@@ -71,9 +71,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			float ratio = m_joint1.GetRatio();
 			float L = m_joint1.GetCurrentLengthA() + ratio * m_joint1.GetCurrentLengthB();

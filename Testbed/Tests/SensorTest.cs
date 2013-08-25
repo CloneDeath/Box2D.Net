@@ -9,10 +9,7 @@ namespace Testbed.Tests {
 	// This is used to test sensor shapes.
 	class SensorTest : Test
 	{
-		public enum
-		{
-			e_count = 7
-		};
+		const int e_count = 7;
 
 		public SensorTest()
 		{
@@ -120,9 +117,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			// Traverse the contact results. Apply a force on shapes
 			// that overlap the sensor.

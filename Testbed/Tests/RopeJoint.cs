@@ -103,9 +103,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
 			m_textLine += DRAW_STRING_NEW_LINE;
 			if (m_rope)

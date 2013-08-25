@@ -19,9 +19,9 @@ namespace Testbed.Tests {
 			return new TimeOfImpact();
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			b2Sweep sweepA;
 			sweepA.c0.Set(24.0f, -60.0f);

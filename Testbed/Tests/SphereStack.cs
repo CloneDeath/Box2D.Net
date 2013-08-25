@@ -8,10 +8,7 @@ using Box2D;
 namespace Testbed.Tests {
 	class SphereStack : Test
 	{
-		public enum
-		{
-			e_count = 10
-		};
+		const int e_count = 10;
 
 		public SphereStack()
 		{
@@ -43,9 +40,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			//for (int i = 0; i < e_count; ++i)
 			//{

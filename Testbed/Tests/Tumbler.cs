@@ -53,9 +53,9 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			if (m_count < e_count)
 			{

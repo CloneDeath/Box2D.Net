@@ -194,12 +194,12 @@ namespace Testbed.Tests {
 			CreateLeg(1.0f, wheelAnchor);
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			m_debugDraw.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, toggle motor = m");
 			m_textLine += DRAW_STRING_NEW_LINE;
 
-			Test::Step(settings);
+			base.Step(settings);
 		}
 
 		public void Keyboard()

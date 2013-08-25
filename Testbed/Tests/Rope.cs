@@ -54,7 +54,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			float dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
 
@@ -65,7 +65,7 @@ namespace Testbed.Tests {
 
 			m_rope.Step(dt, 1);
 
-			Test::Step(settings);
+			base.Step(settings);
 
 			m_rope.Draw(&m_debugDraw);
 

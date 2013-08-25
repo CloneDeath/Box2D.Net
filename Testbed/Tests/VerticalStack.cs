@@ -8,19 +8,16 @@ using Box2D;
 namespace Testbed.Tests {
 	class VerticalStack : Test
 	{
-		public enum
-		{
-			e_columnCount = 5,
-			e_rowCount = 16
+		const int e_columnCount = 5;
+		const int e_rowCount = 16;
 			//e_columnCount = 1,
 			//e_rowCount = 1
-		};
 
 		public VerticalStack()
 		{
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(&bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -56,7 +53,7 @@ namespace Testbed.Tests {
 					//float x = RandomFloat(-0.02f, 0.02f);
 					//float x = i % 2 == 0 ? -0.025f : 0.025f;
 					bd.position.Set(xs[j] + x, 0.752f + 1.54f * i);
-					b2Body* body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(&bd);
 
 					m_bodies[n] = body;
 
@@ -101,9 +98,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
 			m_textLine += DRAW_STRING_NEW_LINE;
 
@@ -142,8 +139,8 @@ namespace Testbed.Tests {
 			return new VerticalStack();
 		}
 
-		b2Body* m_bullet;
+		b2Body m_bullet;
 		b2Body[] m_bodied = new b2Body[e_rowCount * e_columnCount];
-		int m_indices[e_rowCount * e_columnCount];
+		int m_indices = new int[e_rowCount * e_columnCount];
 	};
 }

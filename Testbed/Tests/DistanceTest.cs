@@ -32,7 +32,7 @@ namespace Testbed.Tests {
 
 		public void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			b2DistanceInput input;
 			input.proxyA.Set(&m_polygonA, 0);

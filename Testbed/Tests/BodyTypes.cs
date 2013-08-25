@@ -10,7 +10,7 @@ namespace Testbed.Tests {
 	{
 	public BodyTypes()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
 				ground = m_world.CreateBody(&bd);
@@ -77,7 +77,7 @@ namespace Testbed.Tests {
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position.Set(0.0f, 8.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(&bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.75f, 0.75f);
@@ -127,7 +127,7 @@ namespace Testbed.Tests {
 				}
 			}
 
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
@@ -137,8 +137,8 @@ namespace Testbed.Tests {
 			return new BodyTypes();
 		}
 
-		b2Body* m_attachment;
-		b2Body* m_platform;
+		b2Body m_attachment;
+		b2Body m_platform;
 		float m_speed;
 	};
 }

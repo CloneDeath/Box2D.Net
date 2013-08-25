@@ -164,7 +164,7 @@ namespace Testbed.Tests {
 
 		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
 			m_textLine += DRAW_STRING_NEW_LINE;
 			m_debugDraw.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
@@ -189,6 +189,6 @@ namespace Testbed.Tests {
 		}
 
 		b2Body[] m_bodied = new b2Body[4];
-		b2Joint* m_joints[8];
+		b2Joint[] m_joints = new b2Joint[8];
 	};
 }

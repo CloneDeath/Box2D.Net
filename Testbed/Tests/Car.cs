@@ -15,7 +15,7 @@ namespace Testbed.Tests {
 			m_zeta = 0.7f;
 			m_speed = 50.0f;
 
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
 				ground = m_world.CreateBody(&bd);
@@ -77,7 +77,7 @@ namespace Testbed.Tests {
 				b2BodyDef bd;
 				bd.position.Set(140.0f, 1.0f);
 				bd.type = b2_dynamicBody;
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(&bd);
 
 				b2PolygonShape box;
 				box.SetAsBox(10.0f, 0.25f);
@@ -106,13 +106,13 @@ namespace Testbed.Tests {
 
 				b2RevoluteJointDef jd;
 
-				b2Body* prevBody = ground;
+				b2Body prevBody = ground;
 				for (int i = 0; i < N; ++i)
 				{
 					b2BodyDef bd;
 					bd.type = b2_dynamicBody;
 					bd.position.Set(161.0f + 2.0f * i, -0.125f);
-					b2Body* body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(&bd);
 					body.CreateFixture(&fd);
 
 					b2Vec2 anchor(160.0f + 2.0f * i, -0.125f);
@@ -132,7 +132,7 @@ namespace Testbed.Tests {
 				b2PolygonShape box;
 				box.SetAsBox(0.5f, 0.5f);
 
-				b2Body* body = null;
+				b2Body body = null;
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 
@@ -250,7 +250,7 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			settings.viewCenter.x = m_car.GetPosition().x;
-			Test::Step(settings);
+			base.Step(settings);
 		}
 
 		public static Test Create()
@@ -258,9 +258,9 @@ namespace Testbed.Tests {
 			return new Car();
 		}
 
-		b2Body* m_car;
-		b2Body* m_wheel1;
-		b2Body* m_wheel2;
+		b2Body m_car;
+		b2Body m_wheel1;
+		b2Body m_wheel2;
 
 		float m_hz;
 		float m_zeta;

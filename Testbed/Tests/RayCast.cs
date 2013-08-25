@@ -91,10 +91,7 @@ namespace Testbed.Tests {
 	// the closest fixture.
 	class RayCastMultipleCallback : b2RayCastCallback
 	{
-		public enum
-		{
-			e_maxCount = 3
-		};
+		const int e_maxCount = 3;
 
 		public RayCastMultipleCallback()
 		{
@@ -304,11 +301,11 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			bool advanceRay = settings.pause == 0 || settings.singleStep;
 
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff, m to change the mode");
 			m_textLine += DRAW_STRING_NEW_LINE;
 			switch (m_mode)

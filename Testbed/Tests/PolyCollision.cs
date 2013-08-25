@@ -28,7 +28,7 @@ namespace Testbed.Tests {
 			return new PolyCollision();
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			B2_NOT_USED(settings);
 

@@ -64,7 +64,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			if (m_go && settings.hz > 0.0f)
 			{
@@ -82,7 +82,7 @@ namespace Testbed.Tests {
 
 			m_debugDraw.DrawPoint(linearOffset, 4.0f, b2Color(0.9f, 0.9f, 0.9f));
 
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Keys: (s) pause");
 			m_textLine += 15;
 		}

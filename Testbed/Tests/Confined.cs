@@ -18,7 +18,7 @@ namespace Testbed.Tests {
 		{
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(&bd);
 
 				b2EdgeShape shape;
 
@@ -56,7 +56,7 @@ namespace Testbed.Tests {
 					b2BodyDef bd;
 					bd.type = b2_dynamicBody;
 					bd.position.Set(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
-					b2Body* body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(&bd);
 
 					body.CreateFixture(&fd);
 				}
@@ -82,7 +82,7 @@ namespace Testbed.Tests {
 			bd.type = b2_dynamicBody;
 			bd.position = p;
 			//bd.allowSleep = false;
-			b2Body* body = m_world.CreateBody(&bd);
+			b2Body body = m_world.CreateBody(&bd);
 
 			body.CreateFixture(&fd);
 		}
@@ -100,7 +100,7 @@ namespace Testbed.Tests {
 		void Step(Settings* settings)
 		{
 			bool sleeping = true;
-			for (b2Body* b = m_world.GetBodyList(); b; b = b.GetNext())
+			foreach (b2Body b in m_world.GetBodyList())
 			{
 				if (b.GetType() != b2_dynamicBody)
 				{
@@ -123,9 +123,9 @@ namespace Testbed.Tests {
 			//	CreateCircle();
 			//}
 
-			Test::Step(settings);
+			base.Step(settings);
 
-			for (b2Body* b = m_world.GetBodyList(); b; b = b.GetNext())
+			foreach (b2Body b in m_world.GetBodyList())
 			{
 				if (b.GetType() != b2_dynamicBody)
 				{

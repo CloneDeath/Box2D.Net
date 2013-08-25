@@ -92,9 +92,9 @@ namespace Testbed.Tests {
 	#endif
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
 			m_textLine += DRAW_STRING_NEW_LINE;
 

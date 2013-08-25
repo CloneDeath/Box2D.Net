@@ -13,7 +13,7 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(0.0f, 0.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(&bd);
 
 				b2EdgeShape edge;
 
@@ -78,7 +78,7 @@ namespace Testbed.Tests {
 
 		void Step(Settings* settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 			extern int b2_toiCalls, b2_toiIters;
@@ -113,8 +113,8 @@ namespace Testbed.Tests {
 			return new BulletTest();
 		}
 
-		b2Body* m_body;
-		b2Body* m_bullet;
+		b2Body m_body;
+		b2Body m_bullet;
 		float m_x;
 	};
 }

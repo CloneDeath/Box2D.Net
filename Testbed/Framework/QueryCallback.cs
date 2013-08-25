@@ -16,7 +16,7 @@ namespace Testbed.Framework {
 		public override bool ReportFixture(b2Fixture fixture)
 		{
 			throw new NotImplementedException();
-			//b2Body* body = fixture.GetBody();
+			//b2Body body = fixture.GetBody();
 			//if (body.GetType() == b2_dynamicBody)
 			//{
 			//    bool inside = fixture.TestPoint(m_point);

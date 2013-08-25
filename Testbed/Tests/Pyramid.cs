@@ -54,9 +54,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			//b2DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
 

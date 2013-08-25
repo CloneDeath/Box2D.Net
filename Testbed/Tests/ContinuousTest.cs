@@ -92,9 +92,9 @@ namespace Testbed.Tests {
 			m_body.SetAngularVelocity(m_angularVelocity);
 		}
 
-		public void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
-			Test::Step(settings);
+			base.Step(settings);
 
 			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 

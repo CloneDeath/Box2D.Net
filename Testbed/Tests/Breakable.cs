@@ -19,7 +19,7 @@ namespace Testbed.Tests {
 			// Ground body
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(&bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -72,7 +72,7 @@ namespace Testbed.Tests {
 		void Break()
 		{
 			// Create two bodies from one.
-			b2Body* body1 = m_piece1.GetBody();
+			b2Body body1 = m_piece1.GetBody();
 			b2Vec2 center = body1.GetWorldCenter();
 
 			body1.DestroyFixture(m_piece2);
@@ -83,7 +83,7 @@ namespace Testbed.Tests {
 			bd.position = body1.GetPosition();
 			bd.angle = body1.GetAngle();
 
-			b2Body* body2 = m_world.CreateBody(&bd);
+			b2Body body2 = m_world.CreateBody(&bd);
 			m_piece2 = body2.CreateFixture(&m_shape2, 1.0f);
 
 			// Compute consistent velocities for new bodies based on
@@ -117,7 +117,7 @@ namespace Testbed.Tests {
 				m_angularVelocity = m_body1.GetAngularVelocity();
 			}
 
-			Test::Step(settings);
+			base.Step(settings);
 		}
 
 		public static Test Create()
@@ -125,7 +125,7 @@ namespace Testbed.Tests {
 			return new Breakable();
 		}
 
-		b2Body* m_body1;
+		b2Body m_body1;
 		b2Vec2 m_velocity;
 		float m_angularVelocity;
 		b2PolygonShape m_shape1;

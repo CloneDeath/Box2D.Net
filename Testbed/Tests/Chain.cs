@@ -10,7 +10,7 @@ namespace Testbed.Tests {
 	{
 		public Chain()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
 				ground = m_world.CreateBody(&bd);
@@ -33,13 +33,13 @@ namespace Testbed.Tests {
 				jd.collideConnected = false;
 
 				const float y = 25.0f;
-				b2Body* prevBody = ground;
+				b2Body prevBody = ground;
 				for (int i = 0; i < 30; ++i)
 				{
 					b2BodyDef bd;
 					bd.type = b2_dynamicBody;
 					bd.position.Set(0.5f + i, y);
-					b2Body* body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(&bd);
 					body.CreateFixture(&fd);
 
 					b2Vec2 anchor(float(i), y);
