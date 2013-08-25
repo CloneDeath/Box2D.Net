@@ -54,8 +54,8 @@ struct b2SeparationFunction
 		m_sweepB = sweepB;
 
 		b2Transform xfA, xfB;
-		m_sweepA.GetTransform(&xfA, t1);
-		m_sweepB.GetTransform(&xfB, t1);
+		m_sweepA.GetTransform(out xfA, t1);
+		m_sweepB.GetTransform(out xfB, t1);
 
 		if (count == 1)
 		{
@@ -124,8 +124,8 @@ struct b2SeparationFunction
 	float FindMinSeparation(int* indexA, int* indexB, float t)
 	{
 		b2Transform xfA, xfB;
-		m_sweepA.GetTransform(&xfA, t);
-		m_sweepB.GetTransform(&xfB, t);
+		m_sweepA.GetTransform(out xfA, t);
+		m_sweepB.GetTransform(out xfB, t);
 
 		switch (m_type)
 		{
@@ -193,8 +193,8 @@ struct b2SeparationFunction
 	float Evaluate(int indexA, int indexB, float t)
 	{
 		b2Transform xfA, xfB;
-		m_sweepA.GetTransform(&xfA, t);
-		m_sweepB.GetTransform(&xfB, t);
+		m_sweepA.GetTransform(out xfA, t);
+		m_sweepB.GetTransform(out xfB, t);
 
 		switch (m_type)
 		{

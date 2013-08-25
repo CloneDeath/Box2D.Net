@@ -10,13 +10,14 @@ namespace Testbed.Tests {
 	class DynamicTreeTest : Test
 	{
 		const int e_actorCount = 128;
+		Random rand;
 
 		public DynamicTreeTest()
 		{
 			m_worldExtent = 15.0f;
 			m_proxyExtent = 0.5f;
 
-			//srand(888);
+			rand = new Random(888);
 
 			for (int i = 0; i < e_actorCount; ++i)
 			{
@@ -31,7 +32,7 @@ namespace Testbed.Tests {
 			m_queryAABB.lowerBound.Set(-3.0f, -4.0f + h);
 			m_queryAABB.upperBound.Set(5.0f, 6.0f + h);
 
-			m_rayCastInput.p1.Set(-5.0, 5.0f + h);
+			m_rayCastInput.p1.Set(-5.0f, 5.0f + h);
 			m_rayCastInput.p2.Set(7.0f, -4.0f + h);
 			//m_rayCastInput.p1.Set(0.0f, 2.0f + h);
 			//m_rayCastInput.p2.Set(0.0f, -2.0f + h);
@@ -69,40 +70,40 @@ namespace Testbed.Tests {
 
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				Actor* actor = m_actors + i;
-				if (actor.proxyId == b2_nullNode)
+				Actor actor = m_actors[i];
+				if (actor.proxyId == b2TreeNode.b2_nullNode)
 					continue;
 
-				Color c = Color.FromArgb(225, 225, 225);
+				Color cv = Color.FromArgb(225, 225, 225);
 				if (actor == m_rayActor && actor.overlap)
 				{
-					c = Color.FromArgb(225, 0.6f, 0.6f);
+					cv = Color.FromArgb(225, 150, 150);
 				}
 				else if (actor == m_rayActor)
 				{
-					c = Color.FromArgb(0.6f, 225, 0.6f);
+					cv = Color.FromArgb(150, 225, 150);
 				}
 				else if (actor.overlap)
 				{
-					c = Color.FromArgb(0.6f, 0.6f, 225);
+					cv = Color.FromArgb(150, 150, 225);
 				}
 
-				m_debugDraw.DrawAABB(&actor.aabb, c);
+				m_debugDraw.DrawAABB(actor.aabb, cv);
 			}
 
-			Color c(0.7f, 0.7f, 0.7f);
-			m_debugDraw.DrawAABB(&m_queryAABB, c);
+			Color c = Color.FromArgb(175, 175, 175);
+			m_debugDraw.DrawAABB(m_queryAABB, c);
 
 			m_debugDraw.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
 
-			Color c1 = Color.FromArgb(0.2f, 225, 0.2f);
-			Color c2 = Color.FromArgb(225, 0.2f, 0.2f);
+			Color c1 = Color.FromArgb(50, 225, 50);
+			Color c2 = Color.FromArgb(225, 50, 50);
 			m_debugDraw.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
 			m_debugDraw.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
 
-			if (m_rayActor)
+			if (m_rayActor != null)
 			{
-				Color cr(0.2f, 0.2f, 225);
+				Color cr = Color.FromArgb(50, 50, 225);
 				b2Vec2 p = m_rayCastInput.p1 + m_rayActor.fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
 				m_debugDraw.DrawPoint(p, 6.0f, cr);
 			}
@@ -140,17 +141,17 @@ namespace Testbed.Tests {
 
 		public bool QueryCallback(int proxyId)
 		{
-			Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
+			Actor actor = (Actor)m_tree.GetUserData(proxyId);
 			actor.overlap = b2TestOverlap(m_queryAABB, actor.aabb);
 			return true;
 		}
 
 		public float RayCastCallback(b2RayCastInput input, int proxyId)
 		{
-			Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
+			Actor actor = (Actor)m_tree.GetUserData(proxyId);
 
 			b2RayCastOutput output;
-			bool hit = actor.aabb.RayCast(&output, input);
+			bool hit = actor.aabb.RayCast(out output, input);
 
 			if (hit)
 			{
@@ -163,17 +164,18 @@ namespace Testbed.Tests {
 			return input.maxFraction;
 		}
 
-		private struct Actor
+		private class Actor
 		{
-			b2AABB aabb;
-			float fraction;
-			bool overlap;
-			int proxyId;
+			public b2AABB aabb;
+			public float fraction;
+			public bool overlap;
+			public int proxyId;
 		};
 
-		private void GetRandomAABB(b2AABB* aabb)
+		private void GetRandomAABB(b2AABB aabb)
 		{
-			b2Vec2 w; w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
+			b2Vec2 w = new b2Vec2(); 
+			w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
 			//aabb.lowerBound.x = -m_proxyExtent;
 			//aabb.lowerBound.y = -m_proxyExtent + m_worldExtent;
 			aabb.lowerBound.x = RandomFloat(-m_worldExtent, m_worldExtent);
@@ -181,7 +183,7 @@ namespace Testbed.Tests {
 			aabb.upperBound = aabb.lowerBound + w;
 		}
 
-		private void MoveAABB(b2AABB* aabb)
+		private void MoveAABB(b2AABB aabb)
 		{
 			b2Vec2 d;
 			d.x = RandomFloat(-0.5f, 0.5f);
@@ -205,10 +207,10 @@ namespace Testbed.Tests {
 			for (int i = 0; i < e_actorCount; ++i)
 			{
 				int j = rand() % e_actorCount;
-				Actor* actor = m_actors + j;
+				Actor actor = m_actors + j;
 				if (actor.proxyId == b2_nullNode)
 				{
-					GetRandomAABB(&actor.aabb);
+					GetRandomAABB(actor.aabb);
 					actor.proxyId = m_tree.CreateProxy(actor.aabb, actor);
 					return;
 				}
@@ -220,7 +222,7 @@ namespace Testbed.Tests {
 			for (int i = 0; i < e_actorCount; ++i)
 			{
 				int j = rand() % e_actorCount;
-				Actor* actor = m_actors + j;
+				Actor actor = m_actors + j;
 				if (actor.proxyId != b2_nullNode)
 				{
 					m_tree.DestroyProxy(actor.proxyId);
@@ -235,14 +237,14 @@ namespace Testbed.Tests {
 			for (int i = 0; i < e_actorCount; ++i)
 			{
 				int j = rand() % e_actorCount;
-				Actor* actor = m_actors + j;
+				Actor actor = m_actors + j;
 				if (actor.proxyId == b2_nullNode)
 				{
 					continue;
 				}
 
 				b2AABB aabb0 = actor.aabb;
-				MoveAABB(&actor.aabb);
+				MoveAABB(actor.aabb);
 				b2Vec2 displacement = actor.aabb.GetCenter() - aabb0.GetCenter();
 				m_tree.MoveProxy(actor.proxyId, actor.aabb, displacement);
 				return;
@@ -295,7 +297,7 @@ namespace Testbed.Tests {
 			m_tree.RayCast(this, input);
 
 			// Brute force ray cast.
-			Actor* bruteActor = null;
+			Actor bruteActor = null;
 			b2RayCastOutput bruteOutput;
 			for (int i = 0; i < e_actorCount; ++i)
 			{
@@ -305,10 +307,10 @@ namespace Testbed.Tests {
 				}
 
 				b2RayCastOutput output;
-				bool hit = m_actors[i].aabb.RayCast(&output, input);
+				bool hit = m_actors[i].aabb.RayCast(out output, input);
 				if (hit)
 				{
-					bruteActor = m_actors + i;
+					bruteActor = m_actors[i];
 					bruteOutput = output;
 					input.maxFraction = output.fraction;
 				}

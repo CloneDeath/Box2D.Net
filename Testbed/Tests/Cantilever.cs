@@ -34,7 +34,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				fd.density = 20.0f;
 
-				b2WeldJointDef jd;
+				b2WeldJointDef jd = new b2WeldJointDef();
 
 				b2Body prevBody = ground;
 				for (int i = 0; i < e_count; ++i)
@@ -61,7 +61,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				fd.density = 20.0f;
 
-				b2WeldJointDef jd;
+				b2WeldJointDef jd = new b2WeldJointDef();
 				jd.frequencyHz = 5.0f;
 				jd.dampingRatio = 0.7f;
 
@@ -90,7 +90,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				fd.density = 20.0f;
 
-				b2WeldJointDef jd;
+				b2WeldJointDef jd = new b2WeldJointDef();
 
 				b2Body prevBody = ground;
 				for (int i = 0; i < e_count; ++i)
@@ -120,7 +120,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				fd.density = 20.0f;
 
-				b2WeldJointDef jd;
+				b2WeldJointDef jd = new b2WeldJointDef();
 				jd.frequencyHz = 8.0f;
 				jd.dampingRatio = 0.7f;
 

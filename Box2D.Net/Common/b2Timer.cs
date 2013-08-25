@@ -5,7 +5,7 @@ using System.Text;
 using System.Diagnostics;
 
 namespace Box2D {
-	class b2Timer {
+	public class b2Timer {
 		Stopwatch timer;
 
 		/// Constructor

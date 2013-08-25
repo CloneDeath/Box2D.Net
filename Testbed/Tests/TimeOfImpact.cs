@@ -57,12 +57,12 @@ namespace Testbed.Tests {
 
 			m_debugDraw.DrawString("toi = {0}", output.t);
 
-			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", b2TimeOfImpact.b2TimeOfImpact.b2_toiMaxIters, b2TimeOfImpact.b2_toiMaxRootIters);
+			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", b2TimeOfImpact.b2_toiMaxIters, b2TimeOfImpact.b2_toiMaxRootIters);
 
 			b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 
 			b2Transform transformA;
-			sweepA.GetTransform(&transformA, 0.0f);
+			sweepA.GetTransform(out transformA, 0.0f);
 			for (int i = 0; i < m_shapeA.m_count; ++i)
 			{
 				vertices[i] = Utilities.b2Mul(transformA, m_shapeA.m_vertices[i]);
@@ -70,7 +70,7 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawPolygon(vertices, m_shapeA.m_count, Color.FromArgb(225, 225, 225));
 
 			b2Transform transformB;
-			sweepB.GetTransform(&transformB, 0.0f);
+			sweepB.GetTransform(out transformB, 0.0f);
 		
 			//b2Vec2 localPoint(2.0f, -0.1f);
 
@@ -78,26 +78,26 @@ namespace Testbed.Tests {
 			{
 				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(0.5f, 225, 0.5f));
+			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(128, 225, 128));
 
-			sweepB.GetTransform(&transformB, output.t);
+			sweepB.GetTransform(out transformB, output.t);
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
 				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(0.5f, 0.7f, 225));
+			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(128, 175, 225));
 
-			sweepB.GetTransform(&transformB, 1.0f);
+			sweepB.GetTransform(out transformB, 1.0f);
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
 				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(225, 0.5f, 0.5f));
+			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(225, 128, 128));
 
 	#if ZERO
 			for (float t = 0.0f; t < 1.0f; t += 0.1f)
 			{
-				sweepB.GetTransform(&transformB, t);
+				sweepB.GetTransform(out transformB, t);
 				for (int i = 0; i < m_shapeB.m_count; ++i)
 				{
 					vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);

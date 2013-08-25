@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	struct b2RopeDef {
-		b2RopeDef(object ignore) {
+	public class b2RopeDef { //was struct
+		public b2RopeDef() {
 			vertices = new List<b2Vec2>();
 			count = 0;
 			masses = new List<float>();
@@ -16,24 +16,24 @@ namespace Box2D {
 		}
 
 		///
-		List<b2Vec2> vertices; //was pointer
+		public List<b2Vec2> vertices; //was pointer
 
 		///
-		int count;
+		public int count;
 
 		///
-		List<float> masses;//was pointer
+		public List<float> masses;//was pointer
 
 		///
-		b2Vec2 gravity;
+		public b2Vec2 gravity;
 
 		///
-		float damping;
+		public float damping;
 
 		/// Stretching stiffness
-		float k2;
+		public float k2;
 
 		/// Bending stiffness. Values above 0.5 can make the simulation blow up.
-		float k3;
+		public float k3;
 	}
 }

@@ -86,6 +86,6 @@ namespace Testbed.Tests {
 			return new Pulleys();
 		}
 
-		b2PulleyJoint* m_joint1;
+		b2PulleyJoint m_joint1;
 	};
 }

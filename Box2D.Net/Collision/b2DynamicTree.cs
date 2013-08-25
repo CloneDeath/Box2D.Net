@@ -12,7 +12,7 @@ namespace Box2D {
 	/// object to move by small amounts without triggering a tree update.
 	///
 	/// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-	class b2DynamicTree
+	public class b2DynamicTree
 	{
 		private int m_root;
 

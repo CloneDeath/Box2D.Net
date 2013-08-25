@@ -93,7 +93,7 @@ namespace Testbed.Tests {
 			return new MotorJoint();
 		}
 
-		b2MotorJoint* m_joint;
+		b2MotorJoint m_joint;
 		float m_time;
 		bool m_go;
 	};

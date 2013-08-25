@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Testbed.Framework;
 using Box2D;
+using System.Drawing;
 
 namespace Testbed.Tests {
 	/// This tests stacking. It also shows how to use b2World::Query
@@ -25,14 +26,14 @@ namespace Testbed.Tests {
 
 		public void DrawFixture(b2Fixture fixture)
 		{
-			Color color(0.95f, 0.95f, 0.6f);
-			const b2Transform& xf = fixture.GetBody().GetTransform();
+			Color color = Color.FromArgb(245, 245, 150);
+			b2Transform xf = fixture.GetBody().GetTransform();
 
 			switch (fixture.GetShapeType())
 			{
 			case ShapeType.Circle:
 				{
-					b2CircleShape* circle = (b2CircleShape*)fixture.GetShape();
+					b2CircleShape circle = (b2CircleShape)fixture.GetShape();
 
 					b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
 					float radius = circle.m_radius;
@@ -41,9 +42,9 @@ namespace Testbed.Tests {
 				}
 				break;
 
-			case ShapeType.polygon:
+			case ShapeType.Polygon:
 				{
-					b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
+					b2PolygonShape poly = (b2PolygonShape)fixture.GetShape();
 					int vertexCount = poly.m_count;
 					Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
 					b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
@@ -64,7 +65,7 @@ namespace Testbed.Tests {
 
 		/// Called for each fixture found in the query AABB.
 		/// @return false to terminate the query.
-		public bool ReportFixture(b2Fixture fixture)
+		public override bool ReportFixture(b2Fixture fixture)
 		{
 			if (m_count == e_maxCount)
 			{
@@ -72,9 +73,9 @@ namespace Testbed.Tests {
 			}
 
 			b2Body body = fixture.GetBody();
-			b2Shape* shape = fixture.GetShape();
+			b2Shape shape = fixture.GetShape();
 
-			bool overlap = b2TestOverlap(shape, 0, &m_circle, 0, body.GetTransform(), m_transform);
+			bool overlap = b2Collision.b2TestOverlap(shape, 0, m_circle, 0, body.GetTransform(), m_transform);
 
 			if (overlap)
 			{
@@ -85,10 +86,10 @@ namespace Testbed.Tests {
 			return true;
 		}
 
-		b2CircleShape m_circle;
-		b2Transform m_transform;
-		b2Draw* m_debugDraw;
-		int m_count;
+		public b2CircleShape m_circle;
+		public b2Transform m_transform;
+		public b2Draw m_debugDraw;
+		public int m_count;
 	};
 
 	class PolyShapes : Test
@@ -123,8 +124,8 @@ namespace Testbed.Tests {
 
 			{
 				float w = 1.0f;
-				float b = w / (2.0f + b2Sqrt(2.0f));
-				float s = b2Sqrt(2.0f) * b;
+				float b = w / (2.0f + (float)Math.Sqrt(2.0f));
+				float s = (float)Math.Sqrt(2.0f) * b;
 
 				b2Vec2[] vertices = new b2Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
@@ -164,7 +165,7 @@ namespace Testbed.Tests {
 
 			float x = RandomFloat(-2.0f, 2.0f);
 			bd.position.Set(x, 10.0f);
-			bd.angle = RandomFloat(-Math.PI, (float)Math.PI);
+			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 
 			if (index == 4)
 			{
@@ -240,18 +241,18 @@ namespace Testbed.Tests {
 		{
 			base.Step(settings);
 
-			PolyShapesCallback callback;
+			PolyShapesCallback callback = new PolyShapesCallback();
 			callback.m_circle.m_radius = 2.0f;
 			callback.m_circle.m_p.Set(0.0f, 1.1f);
 			callback.m_transform.SetIdentity();
-			callback.m_debugDraw = &m_debugDraw;
+			callback.m_debugDraw = m_debugDraw;
 
 			b2AABB aabb;
-			callback.m_circle.ComputeAABB(&aabb, callback.m_transform, 0);
+			callback.m_circle.ComputeAABB(out aabb, callback.m_transform, 0);
 
-			m_world.QueryAABB(&callback, aabb);
+			m_world.QueryAABB(callback, aabb);
 
-			Color color(0.4f, 0.7f, 0.8f);
+			Color color = Color.FromArgb(100, 175, 200);
 			m_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
 
 			m_debugDraw.DrawString("Press 1-5 to drop stuff");

@@ -14,7 +14,7 @@ namespace Testbed.Tests {
 			m_fixture = null;
 		}
 
-		public float ReportFixture(	b2Fixture fixture, b2Vec2 point,
+		public override float ReportFixture(b2Fixture fixture, b2Vec2 point,
 			b2Vec2 normal, float fraction)
 		{
 			m_fixture = fixture;
@@ -24,9 +24,9 @@ namespace Testbed.Tests {
 			return fraction;
 		}
 
-		b2Fixture m_fixture;
-		b2Vec2 m_point;
-		b2Vec2 m_normal;
+		public b2Fixture m_fixture;
+		public b2Vec2 m_point;
+		public b2Vec2 m_normal;
 	};
 
 	class EdgeShapes : Test
@@ -77,8 +77,8 @@ namespace Testbed.Tests {
 
 			{
 				float w = 1.0f;
-				float b = w / (2.0f + b2Sqrt(2.0f));
-				float s = b2Sqrt(2.0f) * b;
+				float b = w / (2.0f + (float)Math.Sqrt(2.0f));
+				float s = (float)Math.Sqrt(2.0f) * b;
 
 				b2Vec2[] vertices = new b2Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
@@ -102,7 +102,8 @@ namespace Testbed.Tests {
 			}
 
 			m_bodyIndex = 0;
-			memset(m_bodies, 0, sizeof(m_bodies));
+			m_bodies = new List<b2Body>();
+			//memset(m_bodies, 0, sizeof(m_bodies));
 
 			m_angle = 0.0f;
 		}
@@ -120,7 +121,7 @@ namespace Testbed.Tests {
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(10.0f, 20.0f);
 			bd.position.Set(x, y);
-			bd.angle = RandomFloat(-Math.PI, (float)Math.PI);
+			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 			bd.type = b2BodyType.b2_dynamicBody;
 
 			if (index == 4)
@@ -190,13 +191,13 @@ namespace Testbed.Tests {
 			
 
 			float L = 25.0f;
-			b2Vec2 point1(0.0f, 10.0f);
-			b2Vec2 d(L * (float)Math.Cos(m_angle), -L * Math.Abs((float)Math.Sin(m_angle)));
+			b2Vec2 point1 = new b2Vec2(0.0f, 10.0f);
+			b2Vec2 d = new b2Vec2(L * (float)Math.Cos(m_angle), -L * Math.Abs((float)Math.Sin(m_angle)));
 			b2Vec2 point2 = point1 + d;
 
 			EdgeShapesCallback callback;
 
-			m_world.RayCast(&callback, point1, point2);
+			m_world.RayCast(callback, point1, point2);
 
 			if (callback.m_fixture)
 			{

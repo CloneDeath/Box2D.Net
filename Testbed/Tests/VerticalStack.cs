@@ -27,7 +27,7 @@ namespace Testbed.Tests {
 				ground.CreateFixture(shape, 0.0f);
 			}
 
-			float xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
+			float[] xs = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
 			for (int j = 0; j < e_columnCount; ++j)
 			{

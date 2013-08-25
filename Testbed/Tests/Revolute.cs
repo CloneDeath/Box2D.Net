@@ -71,7 +71,7 @@ namespace Testbed.Tests {
 				m_ball.CreateFixture(fd);
 
 				b2PolygonShape polygon_shape;
-				polygon_shape.SetAsBox(10.0f, 0.2f, b2Vec2 (-10.0f, 0.0f), 0.0f);
+				polygon_shape.SetAsBox(10.0f, 0.2f, new b2Vec2(-10.0f, 0.0f), 0.0f);
 
 				b2BodyDef polygon_bd;
 				polygon_bd.position.Set(20.0f, 10.0f);
@@ -90,7 +90,7 @@ namespace Testbed.Tests {
 
 			// Tests mass computation of a small object far from the origin
 			{
-				b2BodyDef bodyDef;
+				b2BodyDef bodyDef = new b2BodyDef();
 				bodyDef.type = b2BodyType.b2_dynamicBody;
 				b2Body body = m_world.CreateBody(bodyDef);
 		

@@ -87,6 +87,6 @@ namespace Testbed.Tests {
 			return new Prismatic();
 		}
 
-		b2PrismaticJoint* m_joint;
+		b2PrismaticJoint m_joint;
 	};
 }

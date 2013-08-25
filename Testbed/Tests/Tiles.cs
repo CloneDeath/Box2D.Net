@@ -119,7 +119,7 @@ namespace Testbed.Tests {
 				m_createTime, m_fixtureCount);
 			
 
-			//b2DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
+			//b2DynamicTree tree = m_world.m_contactManager.m_broadPhase.m_tree;
 
 			//if (m_stepCount == 400)
 			//{

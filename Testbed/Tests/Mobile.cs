@@ -16,7 +16,7 @@ namespace Testbed.Tests {
 
 			// Create ground body.
 			{
-				b2BodyDef bodyDef;
+				b2BodyDef bodyDef = new b2BodyDef();
 				bodyDef.position.Set(0.0f, 20.0f);
 				ground = m_world.CreateBody(bodyDef);
 			}
@@ -26,7 +26,7 @@ namespace Testbed.Tests {
 
 			b2Body root = AddNode(ground, new b2Vec2(0, 0), 0, 3.0f, a);
 
-			b2RevoluteJointDef jointDef;
+			b2RevoluteJointDef jointDef = new b2RevoluteJointDef();
 			jointDef.bodyA = ground;
 			jointDef.bodyB = root;
 			jointDef.localAnchorA.SetZero();
@@ -41,7 +41,7 @@ namespace Testbed.Tests {
 
 			b2Vec2 p = parent.GetPosition() + localAnchor - h;
 
-			b2BodyDef bodyDef;
+			b2BodyDef bodyDef = new b2BodyDef();
 			bodyDef.type = b2BodyType.b2_dynamicBody;
 			bodyDef.position = p;
 			b2Body body = m_world.CreateBody(bodyDef);
@@ -60,7 +60,7 @@ namespace Testbed.Tests {
 			b2Body body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
 			b2Body body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 
-			b2RevoluteJointDef jointDef;
+			b2RevoluteJointDef jointDef = new b2RevoluteJointDef();
 			jointDef.bodyA = body;
 			jointDef.localAnchorB = h;
 

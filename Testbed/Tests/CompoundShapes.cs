@@ -23,11 +23,11 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2CircleShape circle1;
+				b2CircleShape circle1 = new b2CircleShape();
 				circle1.m_radius = 0.5f;
 				circle1.m_p.Set(-0.5f, 0.5f);
 
-				b2CircleShape circle2;
+				b2CircleShape circle2 = new b2CircleShape();
 				circle2.m_radius = 0.5f;
 				circle2.m_p.Set(0.5f, 0.5f);
 

@@ -45,9 +45,6 @@ inline float b2InvSqrt(float x)
 	return x;
 }
 
-#define	b2Sqrt(x)	std::sqrt(x)
-#define	b2Atan2(y, x)	std::atan2(y, x)
-
 
 
 

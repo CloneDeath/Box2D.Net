@@ -102,8 +102,8 @@ namespace Box2D {
 
 		//            for (int i = 0; i <= N; ++i)
 		//            {
-		//                sweepA.GetTransform(&xfA, x);
-		//                sweepB.GetTransform(&xfB, x);
+		//                sweepA.GetTransform(out xfA, x);
+		//                sweepB.GetTransform(out xfB, x);
 		//                float f = fcn.Evaluate(xfA, xfB) - target;
 
 		//                printf("%g %g\n", x, f);

@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 
 namespace Box2D {
-	class b2Rope {
+	public class b2Rope {
 		private int m_count;
 		private List<b2Vec2> m_ps;
 		private b2Vec2 m_p0s; //was pointer
@@ -257,7 +257,7 @@ namespace Box2D {
 			//        C = angle - m_as[i];
 			//    }
 
-			//    while (C < -Math.PI) {
+			//    while (C < -(float)Math.PI) {
 			//        angle += 2.0f * (float)Math.PI;
 			//        C = angle - m_as[i];
 			//    }

@@ -74,8 +74,7 @@ namespace Testbed.Tests {
 				object userData = fixtureB.GetBody().GetUserData();
 				if (userData != null)
 				{
-					bool* touching = (bool*)userData;
-					*touching = true;
+					userData = true;
 				}
 			}
 
@@ -84,8 +83,7 @@ namespace Testbed.Tests {
 				object userData = fixtureA.GetBody().GetUserData();
 				if (userData != null)
 				{
-					bool* touching = (bool*)userData;
-					*touching = true;
+					userData = true;
 				}
 			}
 		}
@@ -131,7 +129,7 @@ namespace Testbed.Tests {
 				b2Body body = m_bodies[i];
 				b2Body ground = m_sensor.GetBody();
 
-				b2CircleShape* circle = (b2CircleShape*)m_sensor.GetShape();
+				b2CircleShape circle = (b2CircleShape*)m_sensor.GetShape();
 				b2Vec2 center = ground.GetWorldPoint(circle.m_p);
 
 				b2Vec2 position = body.GetPosition();

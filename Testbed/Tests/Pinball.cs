@@ -26,7 +26,7 @@ namespace Testbed.Tests {
 				vs[3].Set(-8.0f, 20.0f);
 				vs[4].Set(-8.0f, 6.0f);
 
-				b2ChainShape loop;
+				b2ChainShape loop = new b2ChainShape();
 				loop.CreateLoop(vs, 5);
 				b2FixtureDef fd = new b2FixtureDef();
 				fd.shape = loop;

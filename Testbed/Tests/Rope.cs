@@ -23,16 +23,16 @@ namespace Testbed.Tests {
 			masses[0] = 0.0f;
 			masses[1] = 0.0f;
 
-			b2RopeDef def;
-			def.vertices = vertices;
+			b2RopeDef def = new b2RopeDef();
+			def.vertices = new List<b2Vec2>(vertices);
 			def.count = N;
 			def.gravity.Set(0.0f, -10.0f);
-			def.masses = masses;
+			def.masses = new List<float>(masses);
 			def.damping = 0.1f;
 			def.k2 = 1.0f;
 			def.k3 = 0.5f;
 
-			m_rope.Initialize(&def);
+			m_rope.Initialize(def);
 
 			m_angle = 0.0f;
 			m_rope.SetAngle(m_angle);
@@ -43,7 +43,7 @@ namespace Testbed.Tests {
 			switch (key)
 			{
 			case 'q':
-				m_angle = Math.Max(-Math.PI, m_angle - 0.05f * (float)Math.PI);
+				m_angle = Math.Max(-(float)Math.PI, m_angle - 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
 				break;
 
@@ -67,7 +67,7 @@ namespace Testbed.Tests {
 
 			base.Step(settings);
 
-			m_rope.Draw(&m_debugDraw);
+			m_rope.Draw(m_debugDraw);
 
 			m_debugDraw.DrawString("Press (q,e) to adjust target angle");
 			

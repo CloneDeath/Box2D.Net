@@ -19,7 +19,7 @@ namespace Testbed.Tests {
 			m_hit = false;
 		}
 
-		public float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body body = fixture.GetBody();
 			object userData = body.GetUserData();
@@ -43,10 +43,10 @@ namespace Testbed.Tests {
 			// are reported in order. However, by clipping, we can always get the closest fixture.
 			return fraction;
 		}
-	
-		bool m_hit;
-		b2Vec2 m_point;
-		b2Vec2 m_normal;
+
+		public bool m_hit;
+		public b2Vec2 m_point;
+		public b2Vec2 m_normal;
 	}
 
 	// This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
@@ -58,7 +58,7 @@ namespace Testbed.Tests {
 			m_hit = false;
 		}
 
-		public float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body body = fixture.GetBody();
 			object userData = body.GetUserData();
@@ -82,9 +82,9 @@ namespace Testbed.Tests {
 			return 0.0f;
 		}
 
-		bool m_hit;
-		b2Vec2 m_point;
-		b2Vec2 m_normal;
+		public bool m_hit;
+		public b2Vec2 m_point;
+		public b2Vec2 m_normal;
 	};
 
 	// This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
@@ -99,7 +99,7 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		public float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body body = fixture.GetBody();
 			object userData = body.GetUserData();
@@ -131,9 +131,9 @@ namespace Testbed.Tests {
 			return 1.0f;
 		}
 
-		b2Vec2 m_points = new b2Vec2[e_maxCount];
-		b2Vec2 m_normals= new b2Vec2[e_maxCount];
-		int m_count;
+		public b2Vec2[] m_points = new b2Vec2[e_maxCount];
+		public b2Vec2[] m_normals = new b2Vec2[e_maxCount];
+		public int m_count;
 	};
 
 
@@ -161,7 +161,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices = new b2Vec2[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -169,7 +169,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices = new b2Vec2[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -178,10 +178,10 @@ namespace Testbed.Tests {
 
 			{
 				float w = 1.0f;
-				float b = w / (2.0f + b2Sqrt(2.0f));
-				float s = b2Sqrt(2.0f) * b;
+				float b = w / (2.0f + (float)Math.Sqrt(2.0f));
+				float s = (float)Math.Sqrt(2.0f) * b;
 
-				b2Vec2 vertices = new b2Vec2[8];
+				b2Vec2[] vertices = new b2Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -223,7 +223,7 @@ namespace Testbed.Tests {
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(0.0f, 20.0f);
 			bd.position.Set(x, y);
-			bd.angle = RandomFloat(-Math.PI, (float)Math.PI);
+			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 
 			m_userData[m_bodyIndex] = index;
 			bd.userData = m_userData + m_bodyIndex;
@@ -329,7 +329,7 @@ namespace Testbed.Tests {
 			if (m_mode == e_closest)
 			{
 				RayCastClosestCallback callback;
-				m_world.RayCast(&callback, point1, point2);
+				m_world.RayCast(callback, point1, point2);
 
 				if (callback.m_hit)
 				{
@@ -346,7 +346,7 @@ namespace Testbed.Tests {
 			else if (m_mode == e_any)
 			{
 				RayCastAnyCallback callback;
-				m_world.RayCast(&callback, point1, point2);
+				m_world.RayCast(callback, point1, point2);
 
 				if (callback.m_hit)
 				{
@@ -363,7 +363,7 @@ namespace Testbed.Tests {
 			else if (m_mode == e_multiple)
 			{
 				RayCastMultipleCallback callback;
-				m_world.RayCast(&callback, point1, point2);
+				m_world.RayCast(callback, point1, point2);
 				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
 
 				for (int i = 0; i < callback.m_count; ++i)
@@ -407,7 +407,7 @@ namespace Testbed.Tests {
 
 				b2RayCastOutput output;
 				bool hit;
-				hit = shape.RayCast(&output, input, xf);
+				hit = shape.RayCast(out output, input, xf);
 				hit = false;
 
 				Color color(1.0f, 1.0f, 1.0f);

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// A node in the dynamic tree. The client does not interact with this directly.
-	class b2TreeNode
+	public class b2TreeNode
 	{
 		public const int b2_nullNode = -1;
 

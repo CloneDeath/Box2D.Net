@@ -17,7 +17,7 @@ namespace Testbed.Tests {
 				b2EdgeShape shape = new b2EdgeShape();
 				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(50.0f, 0.0f));
 
-				b2FixtureDef sd;
+				b2FixtureDef sd = new b2FixtureDef();
 				sd.shape = shape;;
 
 				b2BodyDef bd = new b2BodyDef();
@@ -34,14 +34,14 @@ namespace Testbed.Tests {
 			vertices[1].Set(1.0f, 0.0f);
 			vertices[2].Set(0.0f, 2.0f);
 
-			b2PolygonShape polygon;
+			b2PolygonShape polygon = new b2PolygonShape();
 			polygon.Set(vertices, 3);
 
-			b2FixtureDef triangleShapeDef;
+			b2FixtureDef triangleShapeDef = new b2FixtureDef();
 			triangleShapeDef.shape = polygon;
 			triangleShapeDef.density = 1.0f;
 
-			b2BodyDef triangleBodyDef;
+			b2BodyDef triangleBodyDef = new b2BodyDef();
 			triangleBodyDef.type = b2BodyType.b2_dynamicBody;
 			triangleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
@@ -118,7 +118,7 @@ namespace Testbed.Tests {
 			// are touching heavier bodies.
 			for (int i = 0; i < m_pointCount; ++i)
 			{
-				ContactPoint* point = m_points + i;
+				ContactPoint point = m_points + i;
 
 				b2Body body1 = point.fixtureA.GetBody();
 				b2Body body2 = point.fixtureB.GetBody();
@@ -144,16 +144,17 @@ namespace Testbed.Tests {
 			}
 
 			// Sort the nuke array to group duplicates.
-			std::sort(nuke, nuke + nukeCount);
+			throw new NotImplementedException();
+			//std::sort(nuke, nuke + nukeCount);
 
 			// Destroy the bodies, skipping duplicates.
-			int i = 0;
-			while (i < nukeCount)
+			int i2 = 0;
+			while (i2 < nukeCount)
 			{
-				b2Body b = nuke[i++];
-				while (i < nukeCount && nuke[i] == b)
+				b2Body b = nuke[i2++];
+				while (i2 < nukeCount && nuke[i2] == b)
 				{
-					++i;
+					++i2;
 				}
 
 				if (b != m_bomb)

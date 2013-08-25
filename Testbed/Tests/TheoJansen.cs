@@ -19,13 +19,15 @@ namespace Testbed.Tests {
 			b2Vec2 p5 = new b2Vec2(6.0f * s, 1.5f);
 			b2Vec2 p6 = new b2Vec2(2.5f * s, 3.7f);
 
-			b2FixtureDef fd1, fd2;
+			b2FixtureDef fd1 = new b2FixtureDef();
+			b2FixtureDef fd2 = new b2FixtureDef();
 			fd1.filter.groupIndex = -1;
 			fd2.filter.groupIndex = -1;
 			fd1.density = 1.0f;
 			fd2.density = 1.0f;
 
-			b2PolygonShape poly1, poly2;
+			b2PolygonShape poly1 = new b2PolygonShape();
+			b2PolygonShape poly2 = new b2PolygonShape();
 
 			if (s > 0.0f)
 			{
@@ -59,7 +61,8 @@ namespace Testbed.Tests {
 			fd1.shape = poly1;
 			fd2.shape = poly2;
 
-			b2BodyDef bd1, bd2;
+			b2BodyDef bd1 = new b2BodyDef();
+			b2BodyDef bd2 = new b2BodyDef();
 			bd1.type = b2BodyType.b2_dynamicBody;
 			bd2.type = b2BodyType.b2_dynamicBody;
 			bd1.position = m_offset;
@@ -74,7 +77,7 @@ namespace Testbed.Tests {
 			body1.CreateFixture(fd1);
 			body2.CreateFixture(fd2);
 
-			b2DistanceJointDef djd;
+			b2DistanceJointDef djd = new b2DistanceJointDef();
 
 			// Using a soft distance constraint can reduce some jitter.
 			// It also makes the structure seem a bit more fluid by
@@ -142,7 +145,7 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(2.5f, 1.0f);
 
-				b2FixtureDef sd;
+				b2FixtureDef sd = new b2FixtureDef();
 				sd.density = 1.0f;
 				sd.shape = shape;
 				sd.filter.groupIndex = -1;
@@ -157,7 +160,7 @@ namespace Testbed.Tests {
 				b2CircleShape shape = new b2CircleShape();
 				shape.m_radius = 1.6f;
 
-				b2FixtureDef sd;
+				b2FixtureDef sd = new b2FixtureDef();
 				sd.density = 1.0f;
 				sd.shape = shape;
 				sd.filter.groupIndex = -1;

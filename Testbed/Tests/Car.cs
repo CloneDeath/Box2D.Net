@@ -159,7 +159,7 @@ namespace Testbed.Tests {
 
 			// Car
 			{
-				b2PolygonShape chassis;
+				b2PolygonShape chassis = new b2PolygonShape();
 				b2Vec2[] vertices = new b2Vec2[8];
 				vertices[0].Set(-1.5f, -0.5f);
 				vertices[1].Set(1.5f, -0.5f);
@@ -191,7 +191,7 @@ namespace Testbed.Tests {
 				m_wheel2 = m_world.CreateBody(bd);
 				m_wheel2.CreateFixture(fd);
 
-				b2WheelJointDef jd;
+				b2WheelJointDef jd = new b2WheelJointDef();
 				b2Vec2 axis = new b2Vec2(0.0f, 1.0f);
 
 				jd.Initialize(m_car, m_wheel1, m_wheel1.GetPosition(), axis);

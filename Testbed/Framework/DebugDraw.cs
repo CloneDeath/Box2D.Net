@@ -141,5 +141,14 @@ namespace Testbed.Framework {
 			}
 			GL.End();
 		}
+
+		internal void DrawAABB(b2AABB b2AABB, Color c) {
+			this.DrawPolygon(new b2Vec2[] { 
+				b2AABB.lowerBound,
+				new b2Vec2(b2AABB.lowerBound.x, b2AABB.upperBound.y),
+				b2AABB.upperBound,
+				new b2Vec2(b2AABB.upperBound.x, b2AABB.lowerBound.y)}, 
+				4, c);
+		}
 	}
 }

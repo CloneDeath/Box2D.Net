@@ -164,8 +164,8 @@ namespace Testbed.Tests {
 
 		b2RevoluteJoint m_joint1;
 		b2RevoluteJoint m_joint2;
-		b2PrismaticJoint* m_joint3;
-		b2GearJoint* m_joint4;
-		b2GearJoint* m_joint5;
+		b2PrismaticJoint m_joint3;
+		b2GearJoint m_joint4;
+		b2GearJoint m_joint5;
 	};
 }

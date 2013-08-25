@@ -11,8 +11,8 @@ namespace Testbed.Tests {
 		public ShapeEditing()
 		{
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				b2BodyDef bd1 = new b2BodyDef();
+				b2Body ground = m_world.CreateBody(bd1);
 
 				b2EdgeShape shape = new b2EdgeShape();
 				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
@@ -24,9 +24,9 @@ namespace Testbed.Tests {
 			bd.position.Set(0.0f, 10.0f);
 			m_body = m_world.CreateBody(bd);
 
-			b2PolygonShape shape = new b2PolygonShape();
-			shape.SetAsBox(4.0f, 4.0f, new b2Vec2(0.0f, 0.0f), 0.0f);
-			m_fixture1 = m_body.CreateFixture(shape, 10.0f);
+			b2PolygonShape shape2 = new b2PolygonShape();
+			shape2.SetAsBox(4.0f, 4.0f, new b2Vec2(0.0f, 0.0f), 0.0f);
+			m_fixture1 = m_body.CreateFixture(shape2, 10.0f);
 
 			m_fixture2 = null;
 

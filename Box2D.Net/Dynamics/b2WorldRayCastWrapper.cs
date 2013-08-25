@@ -20,7 +20,7 @@ namespace Box2D.Dynamics {
 			//b2Fixture* fixture = proxy.fixture;
 			//int index = proxy.childIndex;
 			//b2RayCastOutput output;
-			//bool hit = fixture.RayCast(&output, input, index);
+			//bool hit = fixture.RayCast(out output, input, index);
 
 			//if (hit)
 			//{

@@ -35,13 +35,13 @@ namespace Testbed.Tests {
 		{
 			base.Step(settings);
 
-			b2DistanceInput input;
+			b2DistanceInput input = new b2DistanceInput();
 			input.proxyA.Set(m_polygonA, 0);
 			input.proxyB.Set(m_polygonB, 0);
 			input.transformA = m_transformA;
 			input.transformB = m_transformB;
 			input.useRadii = true;
-			b2SimplexCache cache;
+			b2SimplexCache cache = new b2SimplexCache();
 			cache.count = 0;
 			b2DistanceOutput output;
 			b2Distance.Distance(out output, cache, input);

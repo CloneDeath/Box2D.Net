@@ -136,6 +136,6 @@ namespace Testbed.Tests {
 		}
 
 		b2RevoluteJoint m_joint1;
-		b2PrismaticJoint* m_joint2;
+		b2PrismaticJoint m_joint2;
 	};
 }
