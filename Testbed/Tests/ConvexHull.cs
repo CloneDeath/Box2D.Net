@@ -63,8 +63,8 @@ namespace Testbed.Tests {
 			b2PolygonShape shape = new b2PolygonShape();
 			shape.Set(m_points, e_count);
 
-			m_debugDraw.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press g to generate a new random convex hull");
+			
 
 			m_debugDraw.DrawPolygon(shape.m_vertices, shape.m_count, b2Color(0.9f, 0.9f, 0.9f));
 

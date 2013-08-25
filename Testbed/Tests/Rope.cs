@@ -69,10 +69,10 @@ namespace Testbed.Tests {
 
 			m_rope.Draw(&m_debugDraw);
 
-			m_debugDraw.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / (float)Math.PI);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press (q,e) to adjust target angle");
+			
+			m_debugDraw.DrawString("Target angle = %g degrees", m_angle * 180.0f / (float)Math.PI);
+			
 		}
 
 		public static Test Create()

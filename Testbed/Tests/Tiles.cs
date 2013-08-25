@@ -110,14 +110,14 @@ namespace Testbed.Tests {
 			int leafCount = cm.m_broadPhase.GetProxyCount();
 			int minimumNodeCount = 2 * leafCount - 1;
 			float minimumHeight = (float)Math.Ceiling(Math.Log(minimumNodeCount) / Math.Log(2.0f));
-			m_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, (int)minimumHeight);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("dynamic tree height = %d, min = %d", height, (int)minimumHeight);
+			
 
 			base.Step(settings);
 
-			m_debugDraw.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
+			m_debugDraw.DrawString("create time = %6.2f ms, fixture count = %d",
 				m_createTime, m_fixtureCount);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			
 
 			//b2DynamicTree* tree = &m_world.m_contactManager.m_broadPhase.m_tree;
 

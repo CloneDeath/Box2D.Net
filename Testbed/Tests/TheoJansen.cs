@@ -12,12 +12,12 @@ namespace Testbed.Tests {
 	{
 		public void CreateLeg(float s, b2Vec2 wheelAnchor)
 		{
-			b2Vec2 p1(5.4f * s, -6.1f);
-			b2Vec2 p2(7.2f * s, -1.2f);
-			b2Vec2 p3(4.3f * s, -1.9f);
-			b2Vec2 p4(3.1f * s, 0.8f);
-			b2Vec2 p5(6.0f * s, 1.5f);
-			b2Vec2 p6(2.5f * s, 3.7f);
+			b2Vec2 p1 = new b2Vec2(5.4f * s, -6.1f);
+			b2Vec2 p2 = new b2Vec2(7.2f * s, -1.2f);
+			b2Vec2 p3 = new b2Vec2(4.3f * s, -1.9f);
+			b2Vec2 p4 = new b2Vec2(3.1f * s, 0.8f);
+			b2Vec2 p5 = new b2Vec2(6.0f * s, 1.5f);
+			b2Vec2 p6 = new b2Vec2(2.5f * s, 3.7f);
 
 			b2FixtureDef fd1, fd2;
 			fd1.filter.groupIndex = -1;
@@ -29,7 +29,7 @@ namespace Testbed.Tests {
 
 			if (s > 0.0f)
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 
 				vertices[0] = p1;
 				vertices[1] = p2;
@@ -43,7 +43,7 @@ namespace Testbed.Tests {
 			}
 			else
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 
 				vertices[0] = p1;
 				vertices[1] = p3;
@@ -68,8 +68,8 @@ namespace Testbed.Tests {
 			bd1.angularDamping = 10.0f;
 			bd2.angularDamping = 10.0f;
 
-			b2Body body1 = m_world.CreateBody(&bd1);
-			b2Body body2 = m_world.CreateBody(&bd2);
+			b2Body body1 = m_world.CreateBody(bd1);
+			b2Body body2 = m_world.CreateBody(bd2);
 
 			body1.CreateFixture(fd1);
 			body2.CreateFixture(fd2);
@@ -196,8 +196,8 @@ namespace Testbed.Tests {
 
 		public override void Step(Settings settings)
 		{
-			m_debugDraw.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, toggle motor = m");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Keys: left = a, brake = s, right = d, toggle motor = m");
+			
 
 			base.Step(settings);
 		}

@@ -20,7 +20,7 @@
 #include <Box2D/Collision/b2Distance.h>
 
 // From Real-time Collision Detection, p179.
-bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input)
+bool b2AABB::RayCast(out b2RayCastOutput output, b2RayCastInput input)
 {
 	float tmin = -Single.MaxValue;
 	float tmax = Single.MaxValue;

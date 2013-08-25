@@ -45,11 +45,11 @@ namespace Testbed.Tests {
 			b2DistanceOutput output;
 			b2Distance(&output, &cache, &input);
 
-			m_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("distance = %g", output.distance);
+			
 
-			m_debugDraw.DrawString(5, m_textLine, "iterations = %d", output.iterations);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("iterations = %d", output.iterations);
+			
 
 			{
 				b2Color color(0.9f, 0.9f, 0.9f);

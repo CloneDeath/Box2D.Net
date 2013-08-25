@@ -106,17 +106,17 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press (j) to toggle the rope joint.");
+			
 			if (m_rope)
 			{
-				m_debugDraw.DrawString(5, m_textLine, "Rope ON");
+				m_debugDraw.DrawString("Rope ON");
 			}
 			else
 			{
-				m_debugDraw.DrawString(5, m_textLine, "Rope OFF");
+				m_debugDraw.DrawString("Rope OFF");
 			}
-			m_textLine += DRAW_STRING_NEW_LINE;
+			
 		}
 
 		public static Test Create()

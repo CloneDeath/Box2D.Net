@@ -59,9 +59,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+		public override void PreSolve(b2Contact contact, b2Manifold oldManifold)
 		{
-			Test::PreSolve(contact, oldManifold);
+			base.PreSolve(contact, oldManifold);
 
 			b2Fixture fixtureA = contact.GetFixtureA();
 			b2Fixture fixtureB = contact.GetFixtureB();
@@ -95,12 +95,12 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press: (c) create a shape, (d) destroy a shape.");
+			
 
 			b2Vec2 v = m_character.GetBody().GetLinearVelocity();
-			m_debugDraw.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Character Linear Velocity: %f", v.y);
+			
 		}
 
 		public static Test Create()

@@ -185,8 +185,8 @@ namespace Testbed.Tests {
 			bool advanceRay = settings.pause == 0 || settings.singleStep;
 
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press 1-5 to drop stuff");
+			
 
 			float L = 25.0f;
 			b2Vec2 point1(0.0f, 10.0f);
@@ -224,7 +224,7 @@ namespace Testbed.Tests {
 
 		int m_bodyIndex;
 		b2Body[] m_bodied = new b2Body[e_maxBodies];
-		b2PolygonShape m_polygons[4];
+		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
 		b2CircleShape m_circle;
 
 		float m_angle;

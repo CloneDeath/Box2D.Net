@@ -75,11 +75,11 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Keys: (l) limits, (m) motors, (s) speed");
+			
 			float force = m_joint.GetMotorForce(settings.hz);
-			m_debugDraw.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Motor Force = %4.0f", (float) force);
+			
 		}
 
 		public static Test Create()

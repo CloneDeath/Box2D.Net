@@ -165,10 +165,10 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("This demonstrates a soft distance joint.");
+			
+			m_debugDraw.DrawString("Press: (b) to delete a body, (j) to delete a joint");
+			
 		}
 
 		public override void JointDestroyed(b2Joint joint)

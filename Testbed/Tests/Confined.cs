@@ -139,8 +139,8 @@ namespace Testbed.Tests {
 				}
 			}
 
-			m_debugDraw.DrawString(5, m_textLine, "Press 'c' to create a circle.");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press 'c' to create a circle.");
+			
 		}
 
 		public static Test Create()

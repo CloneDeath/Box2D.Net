@@ -123,11 +123,11 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Keys: (f) toggle friction, (m) toggle motor");
+			
 			float torque = m_joint1.GetMotorTorque(settings.hz);
-			m_debugDraw.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Motor Torque = %5.0f", (float) torque);
+			
 		}
 
 		public static Test Create()

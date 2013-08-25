@@ -303,20 +303,20 @@ namespace Testbed.Tests {
 			bool advanceRay = settings.pause == 0 || settings.singleStep;
 
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff, m to change the mode");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press 1-5 to drop stuff, m to change the mode");
+			
 			switch (m_mode)
 			{
 			case e_closest:
-				m_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: closest - find closest fixture along the ray");
+				m_debugDraw.DrawString("Ray-cast mode: closest - find closest fixture along the ray");
 				break;
 		
 			case e_any:
-				m_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: any - check for obstruction");
+				m_debugDraw.DrawString("Ray-cast mode: any - check for obstruction");
 				break;
 
 			case e_multiple:
-				m_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: multiple - gather multiple fixtures");
+				m_debugDraw.DrawString("Ray-cast mode: multiple - gather multiple fixtures");
 				break;
 			}
 

@@ -70,10 +70,10 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "sensor = %d", m_sensor);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press: (c) create a shape, (d) destroy a shape.");
+			
+			m_debugDraw.DrawString("sensor = %d", m_sensor);
+			
 		}
 
 		public static Test Create()

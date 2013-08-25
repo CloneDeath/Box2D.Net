@@ -69,9 +69,7 @@ namespace Testbed.Framework {
 					timeStep = 0.0f;
 				}
 
-				GraphicsManager.SetTitle("****PAUSED****");
-				//m_debugDraw.DrawString(5, m_textLine, "****PAUSED****");
-				//m_textLine += DRAW_STRING_NEW_LINE;
+				m_debugDraw.DrawString("****PAUSED****");
 			}
 
 			b2Draw.DrawFlags flags = 0;

@@ -83,7 +83,7 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawPoint(linearOffset, 4.0f, b2Color(0.9f, 0.9f, 0.9f));
 
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Keys: (s) pause");
+			m_debugDraw.DrawString("Keys: (s) pause");
 			m_textLine += 15;
 		}
 

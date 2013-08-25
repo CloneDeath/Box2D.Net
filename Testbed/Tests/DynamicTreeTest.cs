@@ -113,8 +113,8 @@ namespace Testbed.Tests {
 
 			{
 				int height = m_tree.GetHeight();
-				m_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d", height);
-				m_textLine += DRAW_STRING_NEW_LINE;
+				m_debugDraw.DrawString("dynamic tree height = %d", height);
+				
 			}
 
 			++m_stepCount;
@@ -149,7 +149,7 @@ namespace Testbed.Tests {
 			return true;
 		}
 
-		public float RayCastCallback(const b2RayCastInput& input, int proxyId)
+		public float RayCastCallback(b2RayCastInput input, int proxyId)
 		{
 			Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
 

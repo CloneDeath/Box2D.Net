@@ -251,7 +251,7 @@ namespace Box2D {
 			}
 		}
 
-		//protected static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
+		//protected static void Destroy(b2Contact contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
 		protected static void Destroy(b2Contact contact){
 			throw new NotImplementedException();
 			//Utilities.Assert(s_initialized == true);

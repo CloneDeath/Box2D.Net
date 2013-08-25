@@ -29,7 +29,7 @@ namespace Testbed.Tests {
 			float yLo = 2.0f, yHi = 35.0f;
 
 			// Small triangle
-			b2Vec2 vertices[3];
+			b2Vec2[] vertices = new b2Vec2[3];
 			vertices[0].Set(-1.0f, 0.0f);
 			vertices[1].Set(1.0f, 0.0f);
 			vertices[2].Set(0.0f, 2.0f);
@@ -70,14 +70,14 @@ namespace Testbed.Tests {
 			boxBodyDef.type = b2BodyType.b2_dynamicBody;
 			boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-			b2Body body3 = m_world.CreateBody(&boxBodyDef);
+			b2Body body3 = m_world.CreateBody(boxBodyDef);
 			body3.CreateFixture(&boxShapeDef);
 
 			// Large box (recycle definitions)
 			polygon.SetAsBox(2.0f, 1.0f);
 			boxBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
-			b2Body body4 = m_world.CreateBody(&boxBodyDef);
+			b2Body body4 = m_world.CreateBody(boxBodyDef);
 			body4.CreateFixture(&boxShapeDef);
 
 			// Small circle
@@ -111,7 +111,7 @@ namespace Testbed.Tests {
 			// points. We must buffer the bodies that should be destroyed
 			// because they may belong to multiple contact points.
 			const int k_maxNuke = 6;
-			b2Body nuke[k_maxNuke];
+			b2Body[] nuke = new b2Body[k_maxNuke];
 			int nukeCount = 0;
 
 			// Traverse the contact results. Destroy bodies that

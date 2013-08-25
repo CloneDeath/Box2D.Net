@@ -254,12 +254,12 @@ namespace Testbed.Tests {
 			b2Color color(0.4f, 0.7f, 0.8f);
 			m_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
 
-			m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Press 'd' to destroy a body");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press 1-5 to drop stuff");
+			
+			m_debugDraw.DrawString("Press 'a' to (de)activate some bodies");
+			
+			m_debugDraw.DrawString("Press 'd' to destroy a body");
+			
 		}
 
 		public static Test Create()

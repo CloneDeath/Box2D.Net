@@ -101,8 +101,8 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Press: (,) to launch a bullet.");
+			
 
 			//if (m_stepCount == 300)
 			//{

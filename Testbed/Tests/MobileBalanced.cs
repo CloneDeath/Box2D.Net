@@ -8,10 +8,7 @@ using Box2D;
 namespace Testbed.Tests {
 	class MobileBalanced : Test
 	{
-		public enum
-		{
-			e_depth = 4
-		};
+		const int e_depth = 4;
 
 		public MobileBalanced()
 		{
@@ -21,11 +18,11 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bodyDef;
 				bodyDef.position.Set(0.0f, 20.0f);
-				ground = m_world.CreateBody(&bodyDef);
+				ground = m_world.CreateBody(bodyDef);
 			}
 
 			float a = 0.5f;
-			b2Vec2 h(0.0f, a);
+			b2Vec2 h = new b2Vec2(0.0f, a);
 
 			b2Body root = AddNode(ground, new b2Vec2(0, 0), 0, 3.0f, a);
 
@@ -40,14 +37,14 @@ namespace Testbed.Tests {
 		public b2Body AddNode(b2Body parent, b2Vec2 localAnchor, int depth, float offset, float a)
 		{
 			float density = 20.0f;
-			b2Vec2 h(0.0f, a);
+			b2Vec2 h = new b2Vec2(0.0f, a);
 
 			b2Vec2 p = parent.GetPosition() + localAnchor - h;
 
 			b2BodyDef bodyDef;
 			bodyDef.type = b2BodyType.b2_dynamicBody;
 			bodyDef.position = p;
-			b2Body body = m_world.CreateBody(&bodyDef);
+			b2Body body = m_world.CreateBody(bodyDef);
 
 			b2PolygonShape shape = new b2PolygonShape();
 			shape.SetAsBox(0.25f * a, a);

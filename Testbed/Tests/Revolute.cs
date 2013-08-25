@@ -92,10 +92,10 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bodyDef;
 				bodyDef.type = b2BodyType.b2_dynamicBody;
-				b2Body body = m_world.CreateBody(&bodyDef);
+				b2Body body = m_world.CreateBody(bodyDef);
 		
-				b2PolygonShape polyShape;		
-				b2Vec2 verts[3];
+				b2PolygonShape polyShape;
+				b2Vec2[] verts = new b2Vec2[3];
 				verts[0].Set( 17.63f, 36.31f );
 				verts[1].Set( 17.52f, 36.69f );
 				verts[2].Set( 17.19f, 36.36f );
@@ -127,8 +127,8 @@ namespace Testbed.Tests {
 		public override void Step(Settings settings)
 		{
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("Keys: (l) limits, (m) motor");
+			
 
 			//if (m_stepCount == 360)
 			//{
@@ -136,8 +136,8 @@ namespace Testbed.Tests {
 			//}
 
 			//float torque1 = m_joint1.GetMotorTorque();
-			//m_debugDraw.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
-			//m_textLine += DRAW_STRING_NEW_LINE;
+			//m_debugDraw.DrawString("Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
+			//
 		}
 
 		public static Test Create()

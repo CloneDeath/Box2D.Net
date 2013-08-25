@@ -49,9 +49,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+		public override PreSolve(b2Contact contact, b2Manifold oldManifold)
 		{
-			Test::PreSolve(contact, oldManifold);
+			base.PreSolve(contact, oldManifold);
 
 			b2Fixture fixtureA = contact.GetFixtureA();
 			b2Fixture fixtureB = contact.GetFixtureB();

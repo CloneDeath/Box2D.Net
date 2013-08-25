@@ -77,8 +77,8 @@ namespace Testbed.Tests {
 
 			float ratio = m_joint1.GetRatio();
 			float L = m_joint1.GetCurrentLengthA() + ratio * m_joint1.GetCurrentLengthB();
-			m_debugDraw.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio, (float) L);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("L1 + %4.2f * L2 = %4.2f", (float) ratio, (float) L);
+			
 		}
 
 		public static Test Create()

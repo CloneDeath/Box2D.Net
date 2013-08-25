@@ -64,7 +64,7 @@ namespace Testbed.Tests {
 		}
 
 		// Implement contact listener.
-		public void BeginContact(b2Contact* contact)
+		public void BeginContact(b2Contact contact)
 		{
 			b2Fixture fixtureA = contact.GetFixtureA();
 			b2Fixture fixtureB = contact.GetFixtureB();
@@ -91,7 +91,7 @@ namespace Testbed.Tests {
 		}
 
 		// Implement contact listener.
-		public void EndContact(b2Contact* contact)
+		public void EndContact(b2Contact contact)
 		{
 			b2Fixture fixtureA = contact.GetFixtureA();
 			b2Fixture fixtureB = contact.GetFixtureB();

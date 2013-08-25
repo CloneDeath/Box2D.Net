@@ -220,12 +220,12 @@ namespace Testbed.Tests {
 			m_character.SetLinearVelocity(v);
 
 			base.Step(settings);
-			m_debugDraw.DrawString(5, m_textLine, "This tests various character collision shapes.");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Limitation: square and hexagon can snag on aligned boxes.");
-			m_textLine += DRAW_STRING_NEW_LINE;
-			m_debugDraw.DrawString(5, m_textLine, "Feature: edge chains have smooth collision inside and out.");
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("This tests various character collision shapes.");
+			
+			m_debugDraw.DrawString("Limitation: square and hexagon can snag on aligned boxes.");
+			
+			m_debugDraw.DrawString("Feature: edge chains have smooth collision inside and out.");
+			
 		}
 
 		public static Test Create()
