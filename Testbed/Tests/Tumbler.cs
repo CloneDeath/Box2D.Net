@@ -8,35 +8,32 @@ using Box2D;
 namespace Testbed.Tests {
 	class Tumbler : Test
 	{
-		public enum
-		{
-			e_count = 800
-		};
+		const int e_count = 800;
 
 		public Tumbler()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 			}
 
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.allowSleep = false;
 				bd.position.Set(0.0f, 10.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.5f, 10.0f, b2Vec2( 10.0f, 0.0f), 0.0);
-				body.CreateFixture(&shape, 5.0f);
+				body.CreateFixture(shape, 5.0f);
 				shape.SetAsBox(0.5f, 10.0f, b2Vec2(-10.0f, 0.0f), 0.0);
-				body.CreateFixture(&shape, 5.0f);
+				body.CreateFixture(shape, 5.0f);
 				shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, 10.0f), 0.0);
-				body.CreateFixture(&shape, 5.0f);
+				body.CreateFixture(shape, 5.0f);
 				shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, -10.0f), 0.0);
-				body.CreateFixture(&shape, 5.0f);
+				body.CreateFixture(shape, 5.0f);
 
 				b2RevoluteJointDef jd;
 				jd.bodyA = ground;
@@ -60,13 +57,13 @@ namespace Testbed.Tests {
 			if (m_count < e_count)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 10.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.125f, 0.125f);
-				body.CreateFixture(&shape, 1.0f);
+				body.CreateFixture(shape, 1.0f);
 
 				++m_count;
 			}

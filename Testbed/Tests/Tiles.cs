@@ -10,10 +10,7 @@ namespace Testbed.Tests {
 	/// based collision is _not_ smooth due to Box2D not knowing about adjacency.
 	class Tiles : Test
 	{
-		public enum
-		{
-			e_count = 20
-		};
+		const int e_count = 20;
 
 		public Tiles()
 		{
@@ -24,7 +21,7 @@ namespace Testbed.Tests {
 				float a = 0.5f;
 				b2BodyDef bd;
 				bd.position.y = -a;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 	#if true
 				int N = 200;
@@ -69,10 +66,10 @@ namespace Testbed.Tests {
 				b2PolygonShape shape;
 				shape.SetAsBox(a, a);
 
-				b2Vec2 x(-7.0f, 0.75f);
+				b2Vec2 x = new b2Vec2(-7.0f, 0.75f);
 				b2Vec2 y;
-				b2Vec2 deltaX(0.5625f, 1.25f);
-				b2Vec2 deltaY(1.125f, 0.0f);
+				b2Vec2 deltaX = new b2Vec2(0.5625f, 1.25f);
+				b2Vec2 deltaY = new b2Vec2(1.125f, 0.0f);
 
 				for (int i = 0; i < e_count; ++i)
 				{
@@ -81,7 +78,7 @@ namespace Testbed.Tests {
 					for (int j = i; j < e_count; ++j)
 					{
 						b2BodyDef bd;
-						bd.type = b2_dynamicBody;
+						bd.type = b2BodyType.b2_dynamicBody;
 						bd.position = y;
 
 						//if (i == 0 && j == 0)
@@ -93,8 +90,8 @@ namespace Testbed.Tests {
 						//	bd.allowSleep = true;
 						//}
 
-						b2Body* body = m_world.CreateBody(&bd);
-						body.CreateFixture(&shape, 5.0f);
+						b2Body body = m_world.CreateBody(bd);
+						body.CreateFixture(shape, 5.0f);
 						++m_fixtureCount;
 						y += deltaY;
 					}
@@ -108,12 +105,12 @@ namespace Testbed.Tests {
 
 		public override void Step(Settings settings)
 		{
-			const b2ContactManager& cm = m_world.GetContactManager();
+			b2ContactManager cm = m_world.GetContactManager();
 			int height = cm.m_broadPhase.GetTreeHeight();
 			int leafCount = cm.m_broadPhase.GetProxyCount();
 			int minimumNodeCount = 2 * leafCount - 1;
-			float minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
-			m_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int(minimumHeight));
+			float minimumHeight = (float)Math.Ceiling(Math.Log(minimumNodeCount) / Math.Log(2.0f));
+			m_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, (int)minimumHeight);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			base.Step(settings);

@@ -14,10 +14,10 @@ namespace Testbed.Tests {
 		public Pinball()
 		{
 			// Ground body
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2Vec2 vs[5];
 				vs[0].Set(0.0f, -2.0f);
@@ -39,13 +39,13 @@ namespace Testbed.Tests {
 				b2Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 
 				bd.position = p1;
-				b2Body* leftFlipper = m_world.CreateBody(&bd);
+				b2Body leftFlipper = m_world.CreateBody(bd);
 
 				bd.position = p2;
-				b2Body* rightFlipper = m_world.CreateBody(&bd);
+				b2Body rightFlipper = m_world.CreateBody(bd);
 
 				b2PolygonShape box;
 				box.SetAsBox(1.75f, 0.1f);
@@ -83,10 +83,10 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(1.0f, 15.0f);
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.bullet = true;
 
-				m_ball = m_world.CreateBody(&bd);
+				m_ball = m_world.CreateBody(bd);
 
 				b2CircleShape shape;
 				shape.m_radius = 0.2f;
@@ -149,7 +149,7 @@ namespace Testbed.Tests {
 
 		b2RevoluteJoint* m_leftJoint;
 		b2RevoluteJoint* m_rightJoint;
-		b2Body* m_ball;
+		b2Body m_ball;
 		bool m_button;
 	};
 }

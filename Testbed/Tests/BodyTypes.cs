@@ -13,7 +13,7 @@ namespace Testbed.Tests {
 			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
@@ -27,9 +27,9 @@ namespace Testbed.Tests {
 			// Define attachment
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 3.0f);
-				m_attachment = m_world.CreateBody(&bd);
+				m_attachment = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.5f, 2.0f);
@@ -39,9 +39,9 @@ namespace Testbed.Tests {
 			// Define platform
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-4.0f, 5.0f);
-				m_platform = m_world.CreateBody(&bd);
+				m_platform = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.5f, 4.0f, b2Vec2(4.0f, 0.0f), 0.5f * Math.PI);
@@ -75,9 +75,9 @@ namespace Testbed.Tests {
 			// Create a payload
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 8.0f);
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.75f, 0.75f);

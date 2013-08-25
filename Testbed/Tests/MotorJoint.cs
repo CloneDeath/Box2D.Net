@@ -13,10 +13,10 @@ namespace Testbed.Tests {
 	{
 		public MotorJoint()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
@@ -30,9 +30,9 @@ namespace Testbed.Tests {
 			// Define motorized body
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 8.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(2.0f, 0.5f);

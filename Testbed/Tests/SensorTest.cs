@@ -15,7 +15,7 @@ namespace Testbed.Tests {
 		{
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				{
 					b2EdgeShape shape;
@@ -51,12 +51,12 @@ namespace Testbed.Tests {
 				for (int i = 0; i < e_count; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-10.0f + 3.0f * i, 20.0f);
 					bd.userData = m_touching + i;
 
 					m_touching[i] = false;
-					m_bodies[i] = m_world.CreateBody(&bd);
+					m_bodies[i] = m_world.CreateBody(bd);
 
 					m_bodies[i].CreateFixture(&shape, 1.0f);
 				}
@@ -66,13 +66,13 @@ namespace Testbed.Tests {
 		// Implement contact listener.
 		public void BeginContact(b2Contact* contact)
 		{
-			b2Fixture* fixtureA = contact.GetFixtureA();
-			b2Fixture* fixtureB = contact.GetFixtureB();
+			b2Fixture fixtureA = contact.GetFixtureA();
+			b2Fixture fixtureB = contact.GetFixtureB();
 
 			if (fixtureA == m_sensor)
 			{
-				void* userData = fixtureB.GetBody().GetUserData();
-				if (userData)
+				object userData = fixtureB.GetBody().GetUserData();
+				if (userData != null)
 				{
 					bool* touching = (bool*)userData;
 					*touching = true;
@@ -81,8 +81,8 @@ namespace Testbed.Tests {
 
 			if (fixtureB == m_sensor)
 			{
-				void* userData = fixtureA.GetBody().GetUserData();
-				if (userData)
+				object userData = fixtureA.GetBody().GetUserData();
+				if (userData != null)
 				{
 					bool* touching = (bool*)userData;
 					*touching = true;
@@ -93,26 +93,24 @@ namespace Testbed.Tests {
 		// Implement contact listener.
 		public void EndContact(b2Contact* contact)
 		{
-			b2Fixture* fixtureA = contact.GetFixtureA();
-			b2Fixture* fixtureB = contact.GetFixtureB();
+			b2Fixture fixtureA = contact.GetFixtureA();
+			b2Fixture fixtureB = contact.GetFixtureB();
 
 			if (fixtureA == m_sensor)
 			{
-				void* userData = fixtureB.GetBody().GetUserData();
-				if (userData)
+				object userData = fixtureB.GetBody().GetUserData();
+				if (userData != null)
 				{
-					bool* touching = (bool*)userData;
-					*touching = false;
+					userData = false;
 				}
 			}
 
 			if (fixtureB == m_sensor)
 			{
-				void* userData = fixtureA.GetBody().GetUserData();
-				if (userData)
+				object userData = fixtureA.GetBody().GetUserData();
+				if (userData != null)
 				{
-					bool* touching = (bool*)userData;
-					*touching = false;
+					userData = false;
 				}
 			}
 		}
@@ -130,8 +128,8 @@ namespace Testbed.Tests {
 					continue;
 				}
 
-				b2Body* body = m_bodies[i];
-				b2Body* ground = m_sensor.GetBody();
+				b2Body body = m_bodies[i];
+				b2Body ground = m_sensor.GetBody();
 
 				b2CircleShape* circle = (b2CircleShape*)m_sensor.GetShape();
 				b2Vec2 center = ground.GetWorldPoint(circle.m_p);
@@ -155,8 +153,8 @@ namespace Testbed.Tests {
 			return new SensorTest();
 		}
 
-		b2Fixture* m_sensor;
+		b2Fixture m_sensor;
 		b2Body[] m_bodied = new b2Body[e_count];
-		bool m_touching[e_count];
+		bool m_touching = new bool[e_count];
 	};
 }

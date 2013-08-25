@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	// Output parameters for b2TimeOfImpact.
-	struct b2TOIOutput {
+	public struct b2TOIOutput {
 		public enum State {
 			e_unknown,
 			e_failed,

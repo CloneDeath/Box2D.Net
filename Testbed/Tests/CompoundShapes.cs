@@ -14,12 +14,12 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(0.0f, 0.0f);
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(50.0f, 0.0f), b2Vec2(-50.0f, 0.0f));
 
-				body.CreateFixture(&shape, 0.0f);
+				body.CreateFixture(shape, 0.0f);
 			}
 
 			{
@@ -35,10 +35,10 @@ namespace Testbed.Tests {
 				{
 					float x = RandomFloat(-0.1f, 0.1f);
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(x + 5.0f, 1.05f + 2.5f * i);
 					bd.angle = RandomFloat(-Math.PI, Math.PI);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&circle1, 2.0f);
 					body.CreateFixture(&circle2, 0.0f);
 				}
@@ -55,10 +55,10 @@ namespace Testbed.Tests {
 				{
 					float x = RandomFloat(-0.1f, 0.1f);
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(x - 5.0f, 1.05f + 2.5f * i);
 					bd.angle = RandomFloat(-Math.PI, Math.PI);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&polygon1, 2.0f);
 					body.CreateFixture(&polygon2, 2.0f);
 				}
@@ -91,10 +91,10 @@ namespace Testbed.Tests {
 				{
 					float x = RandomFloat(-0.1f, 0.1f);
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(x, 2.05f + 2.5f * i);
 					bd.angle = 0.0f;
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&triangle1, 2.0f);
 					body.CreateFixture(&triangle2, 2.0f);
 				}
@@ -111,9 +111,9 @@ namespace Testbed.Tests {
 				right.SetAsBox(0.15f, 2.7f, b2Vec2(1.45f, 2.35f), -0.2f);
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set( 0.0f, 2.0f );
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 				body.CreateFixture(&bottom, 4.0f);
 				body.CreateFixture(&left, 4.0f);
 				body.CreateFixture(&right, 4.0f);

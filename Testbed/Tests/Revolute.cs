@@ -10,10 +10,10 @@ namespace Testbed.Tests {
 	{
 		public Revolute()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -30,13 +30,13 @@ namespace Testbed.Tests {
 				shape.m_radius = 0.5f;
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 
 				b2RevoluteJointDef rjd;
 
 				bd.position.Set(-10.0f, 20.0f);
-				b2Body* body = m_world.CreateBody(&bd);
-				body.CreateFixture(&shape, 5.0f);
+				b2Body body = m_world.CreateBody(bd);
+				body.CreateFixture(shape, 5.0f);
 
 				float w = 100.0f;
 				body.SetAngularVelocity(w);
@@ -59,7 +59,7 @@ namespace Testbed.Tests {
 				circle_shape.m_radius = 3.0f;
 
 				b2BodyDef circle_bd;
-				circle_bd.type = b2_dynamicBody;
+				circle_bd.type = b2BodyType.b2_dynamicBody;
 				circle_bd.position.Set(5.0f, 30.0f);
 
 				b2FixtureDef fd;
@@ -75,9 +75,9 @@ namespace Testbed.Tests {
 
 				b2BodyDef polygon_bd;
 				polygon_bd.position.Set(20.0f, 10.0f);
-				polygon_bd.type = b2_dynamicBody;
+				polygon_bd.type = b2BodyType.b2_dynamicBody;
 				polygon_bd.bullet = true;
-				b2Body* polygon_body = m_world.CreateBody(&polygon_bd);
+				b2Body polygon_body = m_world.CreateBody(&polygon_bd);
 				polygon_body.CreateFixture(&polygon_shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
@@ -91,8 +91,8 @@ namespace Testbed.Tests {
 			// Tests mass computation of a small object far from the origin
 			{
 				b2BodyDef bodyDef;
-				bodyDef.type = b2_dynamicBody;
-				b2Body* body = m_world.CreateBody(&bodyDef);
+				bodyDef.type = b2BodyType.b2_dynamicBody;
+				b2Body body = m_world.CreateBody(&bodyDef);
 		
 				b2PolygonShape polyShape;		
 				b2Vec2 verts[3];
@@ -145,7 +145,7 @@ namespace Testbed.Tests {
 			return new Revolute();
 		}
 
-		b2Body* m_ball;
+		b2Body m_ball;
 		b2RevoluteJoint* m_joint;
 	};
 }

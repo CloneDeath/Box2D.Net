@@ -6,7 +6,7 @@ using System.Text;
 namespace Box2D {
 	/// A distance proxy is used by the GJK algorithm.
 	/// It encapsulates any shape.
-	class b2DistanceProxy
+	public class b2DistanceProxy
 	{
 		public b2DistanceProxy(){
 			m_vertices = new List<b2Vec2>();

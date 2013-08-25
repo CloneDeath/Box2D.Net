@@ -16,7 +16,7 @@ namespace Testbed.Tests {
 			// Ground body
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
@@ -28,7 +28,7 @@ namespace Testbed.Tests {
 			// an internal vertex.
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-8.0f, 1.0f), b2Vec2(-6.0f, 1.0f));
@@ -43,7 +43,7 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.angle = 0.25f * Math.PI;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2Vec2 vs[4];
 				vs[0].Set(5.0f, 7.0f);
@@ -60,7 +60,7 @@ namespace Testbed.Tests {
 			// to this problem.
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(1.0f, 1.0f, b2Vec2(4.0f, 3.0f), 0.0f);
@@ -74,7 +74,7 @@ namespace Testbed.Tests {
 			// Square made from an edge loop. Collision should be smooth.
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2Vec2 vs[4];
 				vs[0].Set(-1.0f, 3.0f);
@@ -90,7 +90,7 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(-10.0f, 4.0f);
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2Vec2 vs[10];
 				vs[0].Set(0.0f, 0.0f);
@@ -112,11 +112,11 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(-3.0f, 8.0f);
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
 
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.5f, 0.5f);
@@ -131,11 +131,11 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(-5.0f, 5.0f);
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
 
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.25f, 0.25f);
@@ -150,11 +150,11 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(-5.0f, 8.0f);
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
 
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				float angle = 0.0f;
 				float delta = Math.PI / 3.0f;
@@ -178,11 +178,11 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(3.0f, 5.0f);
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
 
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2CircleShape shape;
 				shape.m_radius = 0.5f;
@@ -197,10 +197,10 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(-7.0f, 6.0f);
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.allowSleep = false;
 
-				m_character = m_world.CreateBody(&bd);
+				m_character = m_world.CreateBody(bd);
 
 				b2CircleShape shape;
 				shape.m_radius = 0.25f;

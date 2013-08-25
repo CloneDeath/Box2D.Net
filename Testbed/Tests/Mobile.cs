@@ -15,7 +15,7 @@ namespace Testbed.Tests {
 
 		public Mobile()
 		{
-			b2Body* ground;
+			b2Body ground;
 
 			// Create ground body.
 			{
@@ -27,7 +27,7 @@ namespace Testbed.Tests {
 			float a = 0.5f;
 			b2Vec2 h(0.0f, a);
 
-			b2Body* root = AddNode(ground, new b2Vec2(0, 0), 0, 3.0f, a);
+			b2Body root = AddNode(ground, new b2Vec2(0, 0), 0, 3.0f, a);
 
 			b2RevoluteJointDef jointDef;
 			jointDef.bodyA = ground;
@@ -37,7 +37,7 @@ namespace Testbed.Tests {
 			m_world.CreateJoint(&jointDef);
 		}
 
-		public b2Body* AddNode(b2Body* parent, b2Vec2 localAnchor, int depth, float offset, float a)
+		public b2Body AddNode(b2Body parent, b2Vec2 localAnchor, int depth, float offset, float a)
 		{
 			float density = 20.0f;
 			b2Vec2 h(0.0f, a);
@@ -45,23 +45,23 @@ namespace Testbed.Tests {
 			b2Vec2 p = parent.GetPosition() + localAnchor - h;
 
 			b2BodyDef bodyDef;
-			bodyDef.type = b2_dynamicBody;
+			bodyDef.type = b2BodyType.b2_dynamicBody;
 			bodyDef.position = p;
-			b2Body* body = m_world.CreateBody(&bodyDef);
+			b2Body body = m_world.CreateBody(&bodyDef);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.25f * a, a);
-			body.CreateFixture(&shape, density);
+			body.CreateFixture(shape, density);
 
 			if (depth == e_depth)
 			{
 				return body;
 			}
 
-			b2Vec2 a1 = b2Vec2(offset, -a);
-			b2Vec2 a2 = b2Vec2(-offset, -a);
-			b2Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
-			b2Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+			b2Vec2 a1 = new b2Vec2(offset, -a);
+			b2Vec2 a2 = new b2Vec2(-offset, -a);
+			b2Body body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
+			b2Body body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 
 			b2RevoluteJointDef jointDef;
 			jointDef.bodyA = body;

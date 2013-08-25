@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	static class b2TimeOfImpact {
-		static int b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-		static float b2_toiTime, b2_toiMaxTime;
-		static int b2_toiRootIters, b2_toiMaxRootIters;
+	public static class b2TimeOfImpact {
+		public static int b2_toiCalls, b2_toiIters, b2_toiMaxIters;
+		public static float b2_toiTime, b2_toiMaxTime;
+		public static int b2_toiRootIters, b2_toiMaxRootIters;
 
 		/// Compute the upper bound on time before two shapes penetrate. Time is represented as
 		/// a fraction between [0,tMax]. This uses a swept separating axis and may miss some intermediate,

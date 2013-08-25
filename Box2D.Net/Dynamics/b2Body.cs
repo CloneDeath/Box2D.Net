@@ -195,8 +195,8 @@ namespace Box2D {
 			//    b2Contact* c = edge.contact;
 			//    edge = edge.next;
 
-			//    b2Fixture* fixtureA = c.GetFixtureA();
-			//    b2Fixture* fixtureB = c.GetFixtureB();
+			//    b2Fixture fixtureA = c.GetFixtureA();
+			//    b2Fixture fixtureB = c.GetFixtureB();
 
 			//    if (fixture == fixtureA || fixture == fixtureB)
 			//    {

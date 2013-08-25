@@ -15,10 +15,10 @@ namespace Testbed.Tests {
 			float a = 1.0f;
 			float b = 2.0f;
 
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape edge;
 				edge.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -40,15 +40,15 @@ namespace Testbed.Tests {
 				shape.SetAsBox(a, b);
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 
 				//bd.fixedRotation = true;
 				bd.position.Set(-10.0f, y);
-				b2Body* body1 = m_world.CreateBody(&bd);
+				b2Body body1 = m_world.CreateBody(bd);
 				body1.CreateFixture(&shape, 5.0f);
 
 				bd.position.Set(10.0f, y);
-				b2Body* body2 = m_world.CreateBody(&bd);
+				b2Body body2 = m_world.CreateBody(bd);
 				body2.CreateFixture(&shape, 5.0f);
 
 				b2PulleyJointDef pulleyDef;

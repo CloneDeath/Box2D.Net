@@ -8,6 +8,9 @@ using Box2D;
 namespace Testbed.Tests {
 	class TimeOfImpact : Test
 	{
+		b2PolygonShape m_shapeA;
+		b2PolygonShape m_shapeB;
+
 		public TimeOfImpact()
 		{
 			m_shapeA.SetAsBox(25.0f, 5.0f);
@@ -41,24 +44,21 @@ namespace Testbed.Tests {
 			//sweepB.a -= 300.0f * Math.PI;
 
 			b2TOIInput input;
-			input.proxyA.Set(&m_shapeA, 0);
-			input.proxyB.Set(&m_shapeB, 0);
+			input.proxyA.Set(m_shapeA, 0);
+			input.proxyB.Set(m_shapeB, 0);
 			input.sweepA = sweepA;
 			input.sweepB = sweepB;
 			input.tMax = 1.0f;
 
 			b2TOIOutput output;
 
-			b2TimeOfImpact(&output, &input);
+			b2TimeOfImpact.TimeOfImpact(out output, input);
 
-			m_debugDraw.DrawString(5, m_textLine, "toi = %g", output.t);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("toi = {0}", output.t);
 
-			extern int b2_toiMaxIters, b2_toiMaxRootIters;
-			m_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", b2_toiMaxIters, b2_toiMaxRootIters);
-			m_textLine += DRAW_STRING_NEW_LINE;
+			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", b2TimeOfImpact.b2_toiMaxIters, b2TimeOfImpact.b2_toiMaxRootIters);
 
-			b2Vec2 vertices[b2Settings.b2_maxPolygonVertices];
+			b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 
 			b2Transform transformA;
 			sweepA.GetTransform(&transformA, 0.0f);
@@ -105,8 +105,5 @@ namespace Testbed.Tests {
 			}
 	#endif
 		}
-
-		b2PolygonShape m_shapeA;
-		b2PolygonShape m_shapeB;
-	};
+	}
 }

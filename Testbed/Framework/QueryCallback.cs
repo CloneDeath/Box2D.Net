@@ -17,7 +17,7 @@ namespace Testbed.Framework {
 		{
 			throw new NotImplementedException();
 			//b2Body body = fixture.GetBody();
-			//if (body.GetType() == b2_dynamicBody)
+			//if (body.GetType() == b2BodyType.b2_dynamicBody)
 			//{
 			//    bool inside = fixture.TestPoint(m_point);
 			//    if (inside)

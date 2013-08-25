@@ -19,7 +19,7 @@ namespace Testbed.Tests {
 			// Ground body
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -29,10 +29,10 @@ namespace Testbed.Tests {
 			// Breakable dynamic body
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 40.0f);
 				bd.angle = 0.25f * Math.PI;
-				m_body1 = m_world.CreateBody(&bd);
+				m_body1 = m_world.CreateBody(bd);
 
 				m_shape1.SetAsBox(0.5f, 0.5f, b2Vec2(-0.5f, 0.0f), 0.0f);
 				m_piece1 = m_body1.CreateFixture(&m_shape1, 1.0f);
@@ -79,11 +79,11 @@ namespace Testbed.Tests {
 			m_piece2 = null;
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = b2BodyType.b2_dynamicBody;
 			bd.position = body1.GetPosition();
 			bd.angle = body1.GetAngle();
 
-			b2Body body2 = m_world.CreateBody(&bd);
+			b2Body body2 = m_world.CreateBody(bd);
 			m_piece2 = body2.CreateFixture(&m_shape2, 1.0f);
 
 			// Compute consistent velocities for new bodies based on
@@ -130,8 +130,8 @@ namespace Testbed.Tests {
 		float m_angularVelocity;
 		b2PolygonShape m_shape1;
 		b2PolygonShape m_shape2;
-		b2Fixture* m_piece1;
-		b2Fixture* m_piece2;
+		b2Fixture m_piece1;
+		b2Fixture m_piece2;
 
 		bool m_broke;
 		bool m_break;

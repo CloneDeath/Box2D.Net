@@ -85,8 +85,8 @@ namespace Box2D {
 			//while (edge)
 			//{
 			//    b2Contact* contact = edge.contact;
-			//    b2Fixture* fixtureA = contact.GetFixtureA();
-			//    b2Fixture* fixtureB = contact.GetFixtureB();
+			//    b2Fixture fixtureA = contact.GetFixtureA();
+			//    b2Fixture fixtureB = contact.GetFixtureB();
 			//    if (fixtureA == this || fixtureB == this)
 			//    {
 			//        contact.FlagForFiltering();

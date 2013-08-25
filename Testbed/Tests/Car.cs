@@ -18,7 +18,7 @@ namespace Testbed.Tests {
 			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 
@@ -76,8 +76,8 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(140.0f, 1.0f);
-				bd.type = b2_dynamicBody;
-				b2Body body = m_world.CreateBody(&bd);
+				bd.type = b2BodyType.b2_dynamicBody;
+				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape box;
 				box.SetAsBox(10.0f, 0.25f);
@@ -110,9 +110,9 @@ namespace Testbed.Tests {
 				for (int i = 0; i < N; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(161.0f + 2.0f * i, -0.125f);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&fd);
 
 					b2Vec2 anchor(160.0f + 2.0f * i, -0.125f);
@@ -134,26 +134,26 @@ namespace Testbed.Tests {
 
 				b2Body body = null;
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 
 				bd.position.Set(230.0f, 0.5f);
-				body = m_world.CreateBody(&bd);
+				body = m_world.CreateBody(bd);
 				body.CreateFixture(&box, 0.5f);
 
 				bd.position.Set(230.0f, 1.5f);
-				body = m_world.CreateBody(&bd);
+				body = m_world.CreateBody(bd);
 				body.CreateFixture(&box, 0.5f);
 
 				bd.position.Set(230.0f, 2.5f);
-				body = m_world.CreateBody(&bd);
+				body = m_world.CreateBody(bd);
 				body.CreateFixture(&box, 0.5f);
 
 				bd.position.Set(230.0f, 3.5f);
-				body = m_world.CreateBody(&bd);
+				body = m_world.CreateBody(bd);
 				body.CreateFixture(&box, 0.5f);
 
 				bd.position.Set(230.0f, 4.5f);
-				body = m_world.CreateBody(&bd);
+				body = m_world.CreateBody(bd);
 				body.CreateFixture(&box, 0.5f);
 			}
 
@@ -173,9 +173,9 @@ namespace Testbed.Tests {
 				circle.m_radius = 0.4f;
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 1.0f);
-				m_car = m_world.CreateBody(&bd);
+				m_car = m_world.CreateBody(bd);
 				m_car.CreateFixture(&chassis, 1.0f);
 
 				b2FixtureDef fd;
@@ -184,11 +184,11 @@ namespace Testbed.Tests {
 				fd.friction = 0.9f;
 
 				bd.position.Set(-1.0f, 0.35f);
-				m_wheel1 = m_world.CreateBody(&bd);
+				m_wheel1 = m_world.CreateBody(bd);
 				m_wheel1.CreateFixture(&fd);
 
 				bd.position.Set(1.0f, 0.4f);
-				m_wheel2 = m_world.CreateBody(&bd);
+				m_wheel2 = m_world.CreateBody(bd);
 				m_wheel2.CreateFixture(&fd);
 
 				b2WheelJointDef jd;

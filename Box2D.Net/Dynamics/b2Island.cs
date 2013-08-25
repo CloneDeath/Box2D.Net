@@ -383,8 +383,8 @@ namespace Box2D {
 		//    for (int i = 0; i < m_contactCount; ++i)
 		//    {
 		//        b2Contact* c = m_contacts[i];
-		//        b2Fixture* fA = c.GetFixtureA();
-		//        b2Fixture* fB = c.GetFixtureB();
+		//        b2Fixture fA = c.GetFixtureA();
+		//        b2Fixture fB = c.GetFixtureB();
 
 		//        b2Body* bA = fA.GetBody();
 		//        b2Body* bB = fB.GetBody();

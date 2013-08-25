@@ -12,7 +12,7 @@ namespace Testbed.Tests {
 		{
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -20,13 +20,13 @@ namespace Testbed.Tests {
 			}
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = b2BodyType.b2_dynamicBody;
 			bd.position.Set(0.0f, 10.0f);
-			m_body = m_world.CreateBody(&bd);
+			m_body = m_world.CreateBody(bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(4.0f, 4.0f, b2Vec2(0.0f, 0.0f), 0.0f);
-			m_fixture1 = m_body.CreateFixture(&shape, 10.0f);
+			m_fixture1 = m_body.CreateFixture(shape, 10.0f);
 
 			m_fixture2 = null;
 
@@ -43,7 +43,7 @@ namespace Testbed.Tests {
 					b2CircleShape shape;
 					shape.m_radius = 3.0f;
 					shape.m_p.Set(0.5f, -4.0f);
-					m_fixture2 = m_body.CreateFixture(&shape, 10.0f);
+					m_fixture2 = m_body.CreateFixture(shape, 10.0f);
 					m_body.SetAwake(true);
 				}
 				break;
@@ -81,9 +81,9 @@ namespace Testbed.Tests {
 			return new ShapeEditing();
 		}
 
-		b2Body* m_body;
-		b2Fixture* m_fixture1;
-		b2Fixture* m_fixture2;
+		b2Body m_body;
+		b2Fixture m_fixture1;
+		b2Fixture m_fixture2;
 		bool m_sensor;
 	};
 }

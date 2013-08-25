@@ -13,7 +13,7 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(0.0f, 0.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2EdgeShape edge;
 
@@ -22,21 +22,21 @@ namespace Testbed.Tests {
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.2f, 1.0f, b2Vec2(0.5f, 1.0f), 0.0f);
-				body.CreateFixture(&shape, 0.0f);
+				body.CreateFixture(shape, 0.0f);
 			}
 
 	#if true
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 20.0f);
 				//bd.angle = 0.1f;
 
 				b2PolygonShape shape;
 				shape.SetAsBox(2.0f, 0.1f);
 
-				m_body = m_world.CreateBody(&bd);
-				m_body.CreateFixture(&shape, 1.0f);
+				m_body = m_world.CreateBody(bd);
+				m_body.CreateFixture(shape, 1.0f);
 
 				m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 				//m_angularVelocity = 46.661274f;
@@ -46,19 +46,19 @@ namespace Testbed.Tests {
 	#else
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 2.0f);
-				b2Body* body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2CircleShape shape;
 				shape.m_p.SetZero();
 				shape.m_radius = 0.5f;
-				body.CreateFixture(&shape, 1.0f);
+				body.CreateFixture(shape, 1.0f);
 
 				bd.bullet = true;
 				bd.position.Set(0.0f, 10.0f);
-				body = m_world.CreateBody(&bd);
-				body.CreateFixture(&shape, 1.0f);
+				body = m_world.CreateBody(bd);
+				body.CreateFixture(shape, 1.0f);
 				body.SetLinearVelocity(b2Vec2(0.0f, -100.0f));
 			}
 	#endif
@@ -135,7 +135,7 @@ namespace Testbed.Tests {
 			return new ContinuousTest();
 		}
 
-		b2Body* m_body;
+		b2Body m_body;
 		float m_angularVelocity;
 	};
 }

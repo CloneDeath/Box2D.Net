@@ -256,8 +256,8 @@ namespace Box2D {
 			throw new NotImplementedException();
 			//Utilities.Assert(s_initialized == true);
 
-			//b2Fixture* fixtureA = contact.m_fixtureA;
-			//b2Fixture* fixtureB = contact.m_fixtureB;
+			//b2Fixture fixtureA = contact.m_fixtureA;
+			//b2Fixture fixtureB = contact.m_fixtureB;
 
 			//if (contact.m_manifold.pointCount > 0 &&
 			//    fixtureA.IsSensor() == false &&

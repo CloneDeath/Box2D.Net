@@ -18,7 +18,7 @@ namespace Testbed.Tests {
 		{
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 
@@ -54,9 +54,9 @@ namespace Testbed.Tests {
 				for (int i = 0; i < e_rowCount; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 
 					body.CreateFixture(&fd);
 				}
@@ -79,10 +79,10 @@ namespace Testbed.Tests {
 
 			b2Vec2 p(RandomFloat(), 3.0f + RandomFloat());
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = b2BodyType.b2_dynamicBody;
 			bd.position = p;
 			//bd.allowSleep = false;
-			b2Body body = m_world.CreateBody(&bd);
+			b2Body body = m_world.CreateBody(bd);
 
 			body.CreateFixture(&fd);
 		}
@@ -102,7 +102,7 @@ namespace Testbed.Tests {
 			bool sleeping = true;
 			foreach (b2Body b in m_world.GetBodyList())
 			{
-				if (b.GetType() != b2_dynamicBody)
+				if (b.GetType() != b2BodyType.b2_dynamicBody)
 				{
 					continue;
 				}
@@ -127,7 +127,7 @@ namespace Testbed.Tests {
 
 			foreach (b2Body b in m_world.GetBodyList())
 			{
-				if (b.GetType() != b2_dynamicBody)
+				if (b.GetType() != b2BodyType.b2_dynamicBody)
 				{
 					continue;
 				}

@@ -11,10 +11,10 @@ namespace Testbed.Tests {
 	{
 		public Web()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -26,22 +26,22 @@ namespace Testbed.Tests {
 				shape.SetAsBox(0.5f, 0.5f);
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 
 				bd.position.Set(-5.0f, 5.0f);
-				m_bodies[0] = m_world.CreateBody(&bd);
+				m_bodies[0] = m_world.CreateBody(bd);
 				m_bodies[0].CreateFixture(&shape, 5.0f);
 
 				bd.position.Set(5.0f, 5.0f);
-				m_bodies[1] = m_world.CreateBody(&bd);
+				m_bodies[1] = m_world.CreateBody(bd);
 				m_bodies[1].CreateFixture(&shape, 5.0f);
 
 				bd.position.Set(5.0f, 15.0f);
-				m_bodies[2] = m_world.CreateBody(&bd);
+				m_bodies[2] = m_world.CreateBody(bd);
 				m_bodies[2].CreateFixture(&shape, 5.0f);
 
 				bd.position.Set(-5.0f, 15.0f);
-				m_bodies[3] = m_world.CreateBody(&bd);
+				m_bodies[3] = m_world.CreateBody(bd);
 				m_bodies[3].CreateFixture(&shape, 5.0f);
 
 				b2DistanceJointDef jd;

@@ -12,10 +12,10 @@ namespace Testbed.Tests {
 	{
 		public SliderCrank()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -23,7 +23,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Body* prevBody = ground;
+				b2Body prevBody = ground;
 
 				// Define crank.
 				{
@@ -31,10 +31,10 @@ namespace Testbed.Tests {
 					shape.SetAsBox(0.5f, 2.0f);
 
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.0f, 7.0f);
-					b2Body* body = m_world.CreateBody(&bd);
-					body.CreateFixture(&shape, 2.0f);
+					b2Body body = m_world.CreateBody(bd);
+					body.CreateFixture(shape, 2.0f);
 
 					b2RevoluteJointDef rjd;
 					rjd.Initialize(prevBody, body, b2Vec2(0.0f, 5.0f));
@@ -52,10 +52,10 @@ namespace Testbed.Tests {
 					shape.SetAsBox(0.5f, 4.0f);
 
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.0f, 13.0f);
-					b2Body* body = m_world.CreateBody(&bd);
-					body.CreateFixture(&shape, 2.0f);
+					b2Body body = m_world.CreateBody(bd);
+					body.CreateFixture(shape, 2.0f);
 
 					b2RevoluteJointDef rjd;
 					rjd.Initialize(prevBody, body, b2Vec2(0.0f, 9.0f));
@@ -71,11 +71,11 @@ namespace Testbed.Tests {
 					shape.SetAsBox(1.5f, 1.5f);
 
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.fixedRotation = true;
 					bd.position.Set(0.0f, 17.0f);
-					b2Body* body = m_world.CreateBody(&bd);
-					body.CreateFixture(&shape, 2.0f);
+					b2Body body = m_world.CreateBody(bd);
+					body.CreateFixture(shape, 2.0f);
 
 					b2RevoluteJointDef rjd;
 					rjd.Initialize(prevBody, body, b2Vec2(0.0f, 17.0f));
@@ -96,10 +96,10 @@ namespace Testbed.Tests {
 					shape.SetAsBox(1.5f, 1.5f);
 
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.0f, 23.0f);
-					b2Body* body = m_world.CreateBody(&bd);
-					body.CreateFixture(&shape, 2.0f);
+					b2Body body = m_world.CreateBody(bd);
+					body.CreateFixture(shape, 2.0f);
 				}
 			}
 		}

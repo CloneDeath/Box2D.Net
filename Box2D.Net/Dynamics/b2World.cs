@@ -450,8 +450,8 @@ namespace Box2D {
 			    Color color = Color.FromArgb(75, 225, 225);
 				foreach (b2Contact c in m_contactManager.m_contactList)
 			    {
-			        //b2Fixture* fixtureA = c.GetFixtureA();
-			        //b2Fixture* fixtureB = c.GetFixtureB();
+			        //b2Fixture fixtureA = c.GetFixtureA();
+			        //b2Fixture fixtureB = c.GetFixtureB();
 
 			        //b2Vec2 cA = fixtureA.GetAABB().GetCenter();
 			        //b2Vec2 cB = fixtureB.GetAABB().GetCenter();

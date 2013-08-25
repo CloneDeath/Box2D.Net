@@ -22,7 +22,7 @@ namespace Testbed.Tests {
 			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -43,9 +43,9 @@ namespace Testbed.Tests {
 				for (int i = 0; i < e_count; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-14.5f + 1.0f * i, 5.0f);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&fd);
 
 					b2Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
@@ -72,9 +72,9 @@ namespace Testbed.Tests {
 				for (int i = 0; i < 3; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-14.0f + 2.0f * i, 15.0f);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&fd);
 
 					b2Vec2 anchor(-15.0f + 2.0f * i, 15.0f);
@@ -99,9 +99,9 @@ namespace Testbed.Tests {
 				for (int i = 0; i < e_count; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-4.5f + 1.0f * i, 5.0f);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&fd);
 
 					if (i > 0)
@@ -131,9 +131,9 @@ namespace Testbed.Tests {
 				for (int i = 0; i < e_count; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(5.5f + 1.0f * i, 10.0f);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 					body.CreateFixture(&fd);
 
 					if (i > 0)
@@ -162,9 +162,9 @@ namespace Testbed.Tests {
 				fd.density = 1.0f;
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-8.0f + 8.0f * i, 12.0f);
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 				body.CreateFixture(&fd);
 			}
 
@@ -178,9 +178,9 @@ namespace Testbed.Tests {
 				fd.density = 1.0f;
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-6.0f + 6.0f * i, 10.0f);
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 				body.CreateFixture(&fd);
 			}
 		}

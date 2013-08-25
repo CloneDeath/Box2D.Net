@@ -11,10 +11,10 @@ namespace Testbed.Tests {
 	{
 		public Prismatic()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -26,12 +26,12 @@ namespace Testbed.Tests {
 				shape.SetAsBox(2.0f, 0.5f);
 
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-10.0f, 10.0f);
 				bd.angle = 0.5f * Math.PI;
 				bd.allowSleep = false;
-				b2Body* body = m_world.CreateBody(&bd);
-				body.CreateFixture(&shape, 5.0f);
+				b2Body body = m_world.CreateBody(bd);
+				body.CreateFixture(shape, 5.0f);
 
 				b2PrismaticJointDef pjd;
 

@@ -13,7 +13,7 @@ namespace Testbed.Tests {
 			m_fixture = null;
 		}
 
-		public float ReportFixture(	b2Fixture* fixture, b2Vec2 point,
+		public float ReportFixture(	b2Fixture fixture, b2Vec2 point,
 			b2Vec2 normal, float fraction)
 		{
 			m_fixture = fixture;
@@ -23,7 +23,7 @@ namespace Testbed.Tests {
 			return fraction;
 		}
 
-		b2Fixture* m_fixture;
+		b2Fixture m_fixture;
 		b2Vec2 m_point;
 		b2Vec2 m_normal;
 	};
@@ -40,7 +40,7 @@ namespace Testbed.Tests {
 			// Ground body
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				float x1 = -20.0f;
 				float y1 = 2.0f * cosf(x1 / 10.0f * Math.PI);
@@ -120,14 +120,14 @@ namespace Testbed.Tests {
 			float y = RandomFloat(10.0f, 20.0f);
 			bd.position.Set(x, y);
 			bd.angle = RandomFloat(-Math.PI, Math.PI);
-			bd.type = b2_dynamicBody;
+			bd.type = b2BodyType.b2_dynamicBody;
 
 			if (index == 4)
 			{
 				bd.angularDamping = 0.02f;
 			}
 
-			m_bodies[m_bodyIndex] = m_world.CreateBody(&bd);
+			m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
 			if (index < 4)
 			{

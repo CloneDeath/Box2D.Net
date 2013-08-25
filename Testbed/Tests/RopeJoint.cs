@@ -18,10 +18,10 @@ namespace Testbed.Tests {
 	{
 		public RopeJoint()
 		{
-			b2Body* ground = null;
+			b2Body ground = null;
 			{
 				b2BodyDef bd;
-				ground = m_world.CreateBody(&bd);
+				ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -46,11 +46,11 @@ namespace Testbed.Tests {
 				const float y = 15.0f;
 				m_ropeDef.localAnchorA.Set(0.0f, y);
 
-				b2Body* prevBody = ground;
+				b2Body prevBody = ground;
 				for (int i = 0; i < N; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(0.5f + 1.0f * i, y);
 					if (i == N - 1)
 					{
@@ -61,7 +61,7 @@ namespace Testbed.Tests {
 						bd.angularDamping = 0.4f;
 					}
 
-					b2Body* body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 
 					body.CreateFixture(&fd);
 

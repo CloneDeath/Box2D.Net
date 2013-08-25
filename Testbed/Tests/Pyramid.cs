@@ -8,16 +8,13 @@ using Box2D;
 namespace Testbed.Tests {
 	class Pyramid : Test
 	{
-		public enum
-		{
-			e_count = 20
-		};
+		const int e_count = 20;
 
 		public Pyramid()
 		{
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
@@ -41,10 +38,10 @@ namespace Testbed.Tests {
 					for (int j = i; j < e_count; ++j)
 					{
 						b2BodyDef bd;
-						bd.type = b2_dynamicBody;
+						bd.type = b2BodyType.b2_dynamicBody;
 						bd.position = y;
-						b2Body* body = m_world.CreateBody(&bd);
-						body.CreateFixture(&shape, 5.0f);
+						b2Body body = m_world.CreateBody(bd);
+						body.CreateFixture(shape, 5.0f);
 
 						y += deltaY;
 					}

@@ -18,11 +18,11 @@ namespace Testbed.Tests {
 			m_hit = false;
 		}
 
-		public float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
-			b2Body* body = fixture.GetBody();
-			void* userData = body.GetUserData();
-			if (userData)
+			b2Body body = fixture.GetBody();
+			object userData = body.GetUserData();
+			if (userData != null)
 			{
 				int index = *(int*)userData;
 				if (index == 0)
@@ -57,11 +57,11 @@ namespace Testbed.Tests {
 			m_hit = false;
 		}
 
-		public float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
-			b2Body* body = fixture.GetBody();
-			void* userData = body.GetUserData();
-			if (userData)
+			b2Body body = fixture.GetBody();
+			object userData = body.GetUserData();
+			if (userData != null)
 			{
 				int index = *(int*)userData;
 				if (index == 0)
@@ -98,13 +98,13 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		public float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
-			b2Body* body = fixture.GetBody();
-			void* userData = body.GetUserData();
-			if (userData)
+			b2Body body = fixture.GetBody();
+			object userData = body.GetUserData();
+			if (userData != null)
 			{
-				int index = *(int*)userData;
+				int index = (int)userData;
 				if (index == 0)
 				{
 					// By returning -1, we instruct the calling code to ignore this fixture
@@ -130,18 +130,15 @@ namespace Testbed.Tests {
 			return 1.0f;
 		}
 
-		b2Vec2 m_points[e_maxCount];
-		b2Vec2 m_normals[e_maxCount];
+		b2Vec2 m_points = new b2Vec2[e_maxCount];
+		b2Vec2 m_normals= new b2Vec2[e_maxCount];
 		int m_count;
 	};
 
 
 	class RayCast : Test
 	{
-		public enum
-		{
-			e_maxBodies = 256
-		};
+		const int e_maxBodies = 256;
 
 		public enum Mode
 		{
@@ -155,7 +152,7 @@ namespace Testbed.Tests {
 			// Ground body
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -163,7 +160,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices[3];
+				b2Vec2 vertices = new b2Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -171,7 +168,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2 vertices[3];
+				b2Vec2 vertices = new b2Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -183,7 +180,7 @@ namespace Testbed.Tests {
 				float b = w / (2.0f + b2Sqrt(2.0f));
 				float s = b2Sqrt(2.0f) * b;
 
-				b2Vec2 vertices[8];
+				b2Vec2 vertices = new b2Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -235,7 +232,7 @@ namespace Testbed.Tests {
 				bd.angularDamping = 0.02f;
 			}
 
-			m_bodies[m_bodyIndex] = m_world.CreateBody(&bd);
+			m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
 			if (index < 4)
 			{

@@ -31,7 +31,7 @@ namespace Testbed.Tests {
 			bd.bullet = bool(0);
 			bd.active = bool(32);
 			bd.gravityScale = 1.000000000000000e+000f;
-			bodies[0] = m_world.CreateBody(&bd);
+			bodies[0] = m_world.CreateBody(bd);
 			{
 				b2FixtureDef fd;
 				fd.friction = 6.000000238418579e-001f;
@@ -70,7 +70,7 @@ namespace Testbed.Tests {
 			  bd.bullet = bool(0);
 			  bd.active = bool(32);
 			  bd.gravityScale = 1.000000000000000e+000f;
-			  bodies[1] = m_world.CreateBody(&bd);
+			  bodies[1] = m_world.CreateBody(bd);
 			  {
 				b2FixtureDef fd;
 				fd.friction = 0.000000000000000e+000f;

@@ -17,7 +17,7 @@ namespace Testbed.Tests {
 		{
 			{
 				b2BodyDef bd;
-				b2Body ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -42,7 +42,7 @@ namespace Testbed.Tests {
 				for (int i = 0; i < e_rowCount; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 
 					int n = j * e_rowCount + i;
 					Utilities.Assert(n < e_rowCount * e_columnCount);
@@ -53,7 +53,7 @@ namespace Testbed.Tests {
 					//float x = RandomFloat(-0.02f, 0.02f);
 					//float x = i % 2 == 0 ? -0.025f : 0.025f;
 					bd.position.Set(xs[j] + x, 0.752f + 1.54f * i);
-					b2Body body = m_world.CreateBody(&bd);
+					b2Body body = m_world.CreateBody(bd);
 
 					m_bodies[n] = body;
 
@@ -85,11 +85,11 @@ namespace Testbed.Tests {
 					fd.restitution = 0.05f;
 
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
+					bd.type = b2BodyType.b2_dynamicBody;
 					bd.bullet = true;
 					bd.position.Set(-31.0f, 5.0f);
 
-					m_bullet = m_world.CreateBody(&bd);
+					m_bullet = m_world.CreateBody(bd);
 					m_bullet.CreateFixture(&fd);
 
 					m_bullet.SetLinearVelocity(b2Vec2(400.0f, 0.0f));
@@ -122,11 +122,11 @@ namespace Testbed.Tests {
 			//		fd.restitution = 0.05f;
 
 			//		b2BodyDef bd;
-			//		bd.type = b2_dynamicBody;
+			//		bd.type = b2BodyType.b2_dynamicBody;
 			//		bd.bullet = true;
 			//		bd.position.Set(-31.0f, 5.0f);
 
-			//		m_bullet = m_world.CreateBody(&bd);
+			//		m_bullet = m_world.CreateBody(bd);
 			//		m_bullet.CreateFixture(&fd);
 
 			//		m_bullet.SetLinearVelocity(b2Vec2(400.0f, 0.0f));

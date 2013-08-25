@@ -13,7 +13,7 @@ namespace Testbed.Tests {
 			{
 				b2BodyDef bd;
 				bd.position.Set(0.0f, 0.0f);
-				b2Body body = m_world.CreateBody(&bd);
+				b2Body body = m_world.CreateBody(bd);
 
 				b2EdgeShape edge;
 
@@ -22,18 +22,18 @@ namespace Testbed.Tests {
 
 				b2PolygonShape shape;
 				shape.SetAsBox(0.2f, 1.0f, b2Vec2(0.5f, 1.0f), 0.0f);
-				body.CreateFixture(&shape, 0.0f);
+				body.CreateFixture(shape, 0.0f);
 			}
 
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(0.0f, 4.0f);
 
 				b2PolygonShape box;
 				box.SetAsBox(2.0f, 0.1f);
 
-				m_body = m_world.CreateBody(&bd);
+				m_body = m_world.CreateBody(bd);
 				m_body.CreateFixture(&box, 1.0f);
 
 				box.SetAsBox(0.25f, 0.25f);
@@ -43,7 +43,7 @@ namespace Testbed.Tests {
 				bd.position.Set(m_x, 10.0f);
 				bd.bullet = true;
 
-				m_bullet = m_world.CreateBody(&bd);
+				m_bullet = m_world.CreateBody(bd);
 				m_bullet.CreateFixture(&box, 100.0f);
 
 				m_bullet.SetLinearVelocity(b2Vec2(0.0f, -50.0f));

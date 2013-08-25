@@ -23,7 +23,7 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		public void DrawFixture(b2Fixture* fixture)
+		public void DrawFixture(b2Fixture fixture)
 		{
 			b2Color color(0.95f, 0.95f, 0.6f);
 			const b2Transform& xf = fixture.GetBody().GetTransform();
@@ -64,14 +64,14 @@ namespace Testbed.Tests {
 
 		/// Called for each fixture found in the query AABB.
 		/// @return false to terminate the query.
-		public bool ReportFixture(b2Fixture* fixture)
+		public bool ReportFixture(b2Fixture fixture)
 		{
 			if (m_count == e_maxCount)
 			{
 				return false;
 			}
 
-			b2Body* body = fixture.GetBody();
+			b2Body body = fixture.GetBody();
 			b2Shape* shape = fixture.GetShape();
 
 			bool overlap = b2TestOverlap(shape, 0, &m_circle, 0, body.GetTransform(), m_transform);
@@ -98,7 +98,7 @@ namespace Testbed.Tests {
 			// Ground body
 			{
 				b2BodyDef bd;
-				b2Body* ground = m_world.CreateBody(&bd);
+				b2Body ground = m_world.CreateBody(bd);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
@@ -160,7 +160,7 @@ namespace Testbed.Tests {
 			}
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = b2BodyType.b2_dynamicBody;
 
 			float x = RandomFloat(-2.0f, 2.0f);
 			bd.position.Set(x, 10.0f);
@@ -171,7 +171,7 @@ namespace Testbed.Tests {
 				bd.angularDamping = 0.02f;
 			}
 
-			m_bodies[m_bodyIndex] = m_world.CreateBody(&bd);
+			m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
 
 			if (index < 4)
 			{

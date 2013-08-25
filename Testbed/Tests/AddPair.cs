@@ -24,10 +24,10 @@ namespace Testbed.Tests {
 				for (int i = 0; i < 400; ++i)
 				{
 					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
-					bd.position = b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
-					b2Body body = m_world.CreateBody(&bd);
-					body.CreateFixture(&shape, 0.01f);
+					bd.type = b2BodyType.b2_dynamicBody;
+					bd.position = new b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
+					b2Body body = m_world.CreateBody(bd);
+					body.CreateFixture(shape, 0.01f);
 				}
 			}
 		
@@ -35,11 +35,11 @@ namespace Testbed.Tests {
 				b2PolygonShape shape;
 				shape.SetAsBox(1.5f, 1.5f);
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = b2BodyType.b2_dynamicBody;
 				bd.position.Set(-40.0f,5.0f);
 				bd.bullet = true;
-				b2Body body = m_world.CreateBody(&bd);
-				body.CreateFixture(&shape, 1.0f);
+				b2Body body = m_world.CreateBody(bd);
+				body.CreateFixture(shape, 1.0f);
 				body.SetLinearVelocity(b2Vec2(150.0f, 0.0f));
 			}
 		}
