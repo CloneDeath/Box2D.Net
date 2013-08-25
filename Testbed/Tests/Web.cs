@@ -44,7 +44,7 @@ namespace Testbed.Tests {
 				m_bodies[3] = m_world.CreateBody(bd);
 				m_bodies[3].CreateFixture(shape, 5.0f);
 
-				b2DistanceJointDef jd;
+				b2DistanceJointDef jd = new b2DistanceJointDef();
 				b2Vec2 p1, p2, d;
 
 				jd.frequencyHz = 2.0f;
@@ -188,7 +188,7 @@ namespace Testbed.Tests {
 			return new Web();
 		}
 
-		b2Body[] m_bodied = new b2Body[4];
+		b2Body[] m_bodies = new b2Body[4];
 		b2Joint[] m_joints = new b2Joint[8];
 	};
 }

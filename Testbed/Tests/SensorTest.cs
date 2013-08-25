@@ -53,7 +53,7 @@ namespace Testbed.Tests {
 					b2BodyDef bd = new b2BodyDef();
 					bd.type = b2BodyType.b2_dynamicBody;
 					bd.position.Set(-10.0f + 3.0f * i, 20.0f);
-					bd.userData = m_touching + i;
+					bd.userData = m_touching[i];
 
 					m_touching[i] = false;
 					m_bodies[i] = m_world.CreateBody(bd);
@@ -129,13 +129,13 @@ namespace Testbed.Tests {
 				b2Body body = m_bodies[i];
 				b2Body ground = m_sensor.GetBody();
 
-				b2CircleShape circle = (b2CircleShape*)m_sensor.GetShape();
+				b2CircleShape circle = (b2CircleShape)m_sensor.GetShape();
 				b2Vec2 center = ground.GetWorldPoint(circle.m_p);
 
 				b2Vec2 position = body.GetPosition();
 
 				b2Vec2 d = center - position;
-				if (d.LengthSquared() < FLT_EPSILON * FLT_EPSILON)
+				if (d.LengthSquared() < Single.Epsilon * Single.Epsilon)
 				{
 					continue;
 				}
@@ -152,7 +152,7 @@ namespace Testbed.Tests {
 		}
 
 		b2Fixture m_sensor;
-		b2Body[] m_bodied = new b2Body[e_count];
-		bool m_touching = new bool[e_count];
+		b2Body[] m_bodies = new b2Body[e_count];
+		bool[] m_touching = new bool[e_count];
 	};
 }

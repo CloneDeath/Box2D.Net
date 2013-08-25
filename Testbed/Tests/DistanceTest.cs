@@ -78,7 +78,7 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawPoint(x2, 4.0f, c2);
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

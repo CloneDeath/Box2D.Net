@@ -212,7 +212,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

@@ -118,7 +118,7 @@ namespace Testbed.Tests {
 			// are touching heavier bodies.
 			for (int i = 0; i < m_pointCount; ++i)
 			{
-				ContactPoint point = m_points + i;
+				ContactPoint point = m_points[i];
 
 				b2Body body1 = point.fixtureA.GetBody();
 				b2Body body2 = point.fixtureB.GetBody();

@@ -207,9 +207,9 @@ namespace Box2D {
 			//b2Settings.b2Log("    fd.restitution = %.15lef;\n", m_restitution);
 			//b2Settings.b2Log("    fd.density = %.15lef;\n", m_density);
 			//b2Settings.b2Log("    fd.isSensor = (bool)(%d);\n", m_isSensor);
-			//b2Settings.b2Log("    fd.filter.categoryBits = ushort(%d);\n", m_filter.categoryBits);
-			//b2Settings.b2Log("    fd.filter.maskBits = ushort(%d);\n", m_filter.maskBits);
-			//b2Settings.b2Log("    fd.filter.groupIndex = short(%d);\n", m_filter.groupIndex);
+			//b2Settings.b2Log("    fd.filter.categoryBits = (ushort)(%d);\n", m_filter.categoryBits);
+			//b2Settings.b2Log("    fd.filter.maskBits = (ushort)(%d);\n", m_filter.maskBits);
+			//b2Settings.b2Log("    fd.filter.groupIndex = (short)(%d);\n", m_filter.groupIndex);
 
 			//switch (m_shape.m_type)
 			//{

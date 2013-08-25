@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class ShapeEditing : Test
@@ -33,37 +35,33 @@ namespace Testbed.Tests {
 			m_sensor = false;
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'c':
-				if (m_fixture2 == null)
-				{
+			if (KeyboardManager.IsPressed(Key.C)) {
+				if (m_fixture2 == null) {
 					b2CircleShape shape = new b2CircleShape();
 					shape.m_radius = 3.0f;
 					shape.m_p.Set(0.5f, -4.0f);
 					m_fixture2 = m_body.CreateFixture(shape, 10.0f);
 					m_body.SetAwake(true);
 				}
-				break;
+			}
 
-			case 'd':
+			if (KeyboardManager.IsPressed(Key.D)){
 				if (m_fixture2 != null)
 				{
 					m_body.DestroyFixture(m_fixture2);
 					m_fixture2 = null;
 					m_body.SetAwake(true);
 				}
-				break;
+			}
 
-			case 's':
+			if (KeyboardManager.IsPressed(Key.S)){
 				if (m_fixture2 != null)
 				{
 					m_sensor = !m_sensor;
 					m_fixture2.SetSensor(m_sensor);
 				}
-				break;
 			}
 		}
 

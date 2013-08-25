@@ -14,9 +14,7 @@ namespace Testbed.Tests {
 	/// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
 	/// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
 	class PolyShapesCallback : b2QueryCallback
-	{
-		const int k_maxBodies = 256;
-	
+	{	
 		const int e_maxCount = 4;
 
 		public PolyShapesCallback()
@@ -94,6 +92,7 @@ namespace Testbed.Tests {
 
 	class PolyShapes : Test
 	{
+		const int k_maxBodies = 256;
 		public PolyShapes()
 		{
 			// Ground body
@@ -149,7 +148,7 @@ namespace Testbed.Tests {
 			}
 
 			m_bodyIndex = 0;
-			memset(m_bodies, 0, sizeof(m_bodies));
+			Array.Clear(m_bodies, 0, m_bodies.Length);
 		}
 
 		public void Create(int index)
@@ -177,7 +176,7 @@ namespace Testbed.Tests {
 			if (index < 4)
 			{
 				b2FixtureDef fd = new b2FixtureDef();
-				fd.shape = m_polygons + index;
+				fd.shape = m_polygons[index];
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
@@ -208,7 +207,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -269,7 +268,7 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body[] m_bodied = new b2Body[k_maxBodies];
+		b2Body[] m_bodies = new b2Body[k_maxBodies];
 		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
 		b2CircleShape m_circle;
 	};

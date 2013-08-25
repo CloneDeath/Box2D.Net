@@ -62,6 +62,6 @@ namespace Testbed.Tests {
 			return new SphereStack();
 		}
 
-		b2Body[] m_bodied = new b2Body[e_count];
+		b2Body[] m_bodies = new b2Body[e_count];
 	};
 }

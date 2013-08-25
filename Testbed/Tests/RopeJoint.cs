@@ -85,7 +85,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -108,7 +108,7 @@ namespace Testbed.Tests {
 			base.Step(settings);
 			m_debugDraw.DrawString("Press (j) to toggle the rope joint.");
 			
-			if (m_rope)
+			if (m_rope != null)
 			{
 				m_debugDraw.DrawString("Rope ON");
 			}

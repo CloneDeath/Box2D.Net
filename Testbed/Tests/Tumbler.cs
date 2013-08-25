@@ -26,13 +26,13 @@ namespace Testbed.Tests {
 				b2Body body = m_world.CreateBody(bd);
 
 				b2PolygonShape shape = new b2PolygonShape();
-				shape.SetAsBox(0.5f, 10.0f, new b2Vec2( 10.0f, 0.0f), 0.0);
+				shape.SetAsBox(0.5f, 10.0f, new b2Vec2( 10.0f, 0.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
-				shape.SetAsBox(0.5f, 10.0f, new b2Vec2(-10.0f, 0.0f), 0.0);
+				shape.SetAsBox(0.5f, 10.0f, new b2Vec2(-10.0f, 0.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
-				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, 10.0f), 0.0);
+				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, 10.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
-				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, -10.0f), 0.0);
+				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, -10.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
 
 				b2RevoluteJointDef jd = new b2RevoluteJointDef();

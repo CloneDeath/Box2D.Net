@@ -51,18 +51,18 @@ namespace Testbed.Tests {
 				b2Body body2 = m_world.CreateBody(bd);
 				body2.CreateFixture(shape, 5.0f);
 
-				b2PulleyJointDef pulleyDef;
-				b2Vec2 anchor1(-10.0f, y + b);
-				b2Vec2 anchor2(10.0f, y + b);
-				b2Vec2 groundAnchor1(-10.0f, y + b + L);
-				b2Vec2 groundAnchor2(10.0f, y + b + L);
+				b2PulleyJointDef pulleyDef = new b2PulleyJointDef();
+				b2Vec2 anchor1 = new b2Vec2(-10.0f, y + b);
+				b2Vec2 anchor2 = new b2Vec2(10.0f, y + b);
+				b2Vec2 groundAnchor1 = new b2Vec2(-10.0f, y + b + L);
+				b2Vec2 groundAnchor2 = new b2Vec2(10.0f, y + b + L);
 				pulleyDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f);
 
-				m_joint1 = (b2PulleyJoint*)m_world.CreateJoint(pulleyDef);
+				m_joint1 = (b2PulleyJoint)m_world.CreateJoint(pulleyDef);
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

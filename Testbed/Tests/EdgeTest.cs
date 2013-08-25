@@ -14,8 +14,8 @@ namespace Testbed.Tests {
 				b2BodyDef bd = new b2BodyDef();
 				b2Body ground = m_world.CreateBody(bd);
 
-				b2Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
-				b2Vec2 v4(0.0f, 0.0f), v5(4.0f, 0.0f), v6(7.0f, 2.0f), v7(10.0f, 0.0f);
+				b2Vec2 v1 = new b2Vec2(-10.0f, 0.0f), v2 = new b2Vec2(-7.0f, -2.0f), v3 = new b2Vec2(-4.0f, 0.0f);
+				b2Vec2 v4 = new b2Vec2(0.0f, 0.0f), v5 = new b2Vec2(4.0f, 0.0f), v6 = new b2Vec2(7.0f, 2.0f), v7 = new b2Vec2(10.0f, 0.0f);
 
 				b2EdgeShape shape = new b2EdgeShape();
 

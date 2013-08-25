@@ -87,7 +87,7 @@ namespace Testbed.Tests {
 					pjd.maxMotorForce = 1000.0f;
 					pjd.enableMotor = true;
 
-					m_joint2 = (b2PrismaticJoint*)m_world.CreateJoint(pjd);
+					m_joint2 = (b2PrismaticJoint)m_world.CreateJoint(pjd);
 				}
 
 				// Create a payload
@@ -104,7 +104,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

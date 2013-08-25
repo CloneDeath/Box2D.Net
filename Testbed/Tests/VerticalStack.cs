@@ -47,7 +47,7 @@ namespace Testbed.Tests {
 					int n = j * e_rowCount + i;
 					Utilities.Assert(n < e_rowCount * e_columnCount);
 					m_indices[n] = n;
-					bd.userData = m_indices + n;
+					bd.userData = m_indices[n];
 
 					float x = 0.0f;
 					//float x = RandomFloat(-0.02f, 0.02f);
@@ -64,7 +64,7 @@ namespace Testbed.Tests {
 			m_bullet = null;
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -140,7 +140,7 @@ namespace Testbed.Tests {
 		}
 
 		b2Body m_bullet;
-		b2Body[] m_bodied = new b2Body[e_rowCount * e_columnCount];
-		int m_indices = new int[e_rowCount * e_columnCount];
+		b2Body[] m_bodies = new b2Body[e_rowCount * e_columnCount];
+		int[] m_indices = new int[e_rowCount * e_columnCount];
 	};
 }

@@ -534,9 +534,8 @@ namespace Box2D {
 		/// Get the world body list. With the returned body, use b2Body::GetNext to get
 		/// the next body in the world list. A null body indicates the end of the list.
 		/// @return the head of the world body list.
-		public b2Body GetBodyList(){
-			throw new NotImplementedException();
-			//return m_bodyList;
+		public List<b2Body> GetBodyList(){
+			return m_bodyList;
 		}
 
 		/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get

@@ -554,7 +554,7 @@ namespace Box2D {
 			//}
 		}
 
-		internal static bool b2TestOverlap(b2AABB a, b2AABB b) {
+		public static bool b2TestOverlap(b2AABB a, b2AABB b) {
 			b2Vec2 d1, d2;
 			d1 = b.lowerBound - a.upperBound;
 			d2 = a.lowerBound - b.upperBound;

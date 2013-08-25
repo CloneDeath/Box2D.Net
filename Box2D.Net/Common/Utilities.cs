@@ -210,5 +210,10 @@ namespace Box2D {
 		internal static float b2Clamp(float val, float lo, float hi) {
 			return Math.Max(lo, Math.Min(hi, val));
 		}
+
+		public static b2Vec2 b2Clamp(b2Vec2 a, b2Vec2 low, b2Vec2 high)
+		{
+			return Max(low, Min(a, high));
+		}
 	}
 }

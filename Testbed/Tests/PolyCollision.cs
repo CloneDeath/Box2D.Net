@@ -31,20 +31,18 @@ namespace Testbed.Tests {
 
 		public override void Step(Settings settings)
 		{
-			B2_NOT_USED(settings);
-
 			b2Manifold manifold;
-			b2CollidePolygons(&manifold, &m_polygonA, m_transformA, &m_polygonB, m_transformB);
+			b2Collision.b2CollidePolygons(out manifold, m_polygonA, m_transformA, m_polygonB, m_transformB);
 
-			b2WorldManifold worldManifold;
-			worldManifold.Initialize(&manifold, m_transformA, m_polygonA.m_radius, m_transformB, m_polygonB.m_radius);
+			b2WorldManifold worldManifold = new b2WorldManifold();
+			worldManifold.Initialize(manifold, m_transformA, m_polygonA.m_radius, m_transformB, m_polygonB.m_radius);
 
-			m_debugDraw.DrawString("point count = %d", manifold.pointCount);
+			m_debugDraw.DrawString("point count = {0}", manifold.points.Count());
 			
 
 			{
 				Color color = Color.FromArgb(225, 225, 225);
-				b2Vec2 v[b2Settings.b2_maxPolygonVertices];
+				b2Vec2[] v = new b2Vec2[b2Settings.b2_maxPolygonVertices];
 				for (int i = 0; i < m_polygonA.m_count; ++i)
 				{
 					v[i] = Utilities.b2Mul(m_transformA, m_polygonA.m_vertices[i]);
@@ -58,13 +56,13 @@ namespace Testbed.Tests {
 				m_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
 			}
 
-			for (int i = 0; i < manifold.pointCount; ++i)
+			for (int i = 0; i < manifold.points.Count(); ++i)
 			{
-				m_debugDraw.DrawPoint(worldManifold.points[i], 4.0f, Color.FromArgb(225, 0.3f, 0.3f));
+				m_debugDraw.DrawPoint(worldManifold.points[i], 4.0f, Color.FromArgb(225, 75, 75));
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

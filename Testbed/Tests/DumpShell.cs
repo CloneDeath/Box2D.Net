@@ -23,11 +23,11 @@ namespace Testbed.Tests {
 				bd.angularVelocity = 0.000000000000000e+000f;
 				bd.linearDamping = 0.000000000000000e+000f;
 				bd.angularDamping = 0.000000000000000e+000f;
-				bd.allowSleep = (bool)(4);
-				bd.awake = (bool)(2);
-				bd.fixedRotation = (bool)(16);
-				bd.bullet = (bool)(0);
-				bd.active = (bool)(32);
+				bd.allowSleep = true;
+				bd.awake = true;
+				bd.fixedRotation = true;
+				bd.bullet = false;
+				bd.active = true;
 				bd.gravityScale = 1.000000000000000e+000f;
 				bodies[0] = m_world.CreateBody(bd);
 				{
@@ -35,10 +35,10 @@ namespace Testbed.Tests {
 					fd.friction = 6.000000238418579e-001f;
 					fd.restitution = 0.000000000000000e+000f;
 					fd.density = 5.000000000000000e-001f;
-					fd.isSensor = (bool)(0);
-					fd.filter.categoryBits = ushort(1);
-					fd.filter.maskBits = ushort(2);
-					fd.filter.groupIndex = short(0);
+					fd.isSensor = false;
+					fd.filter.categoryBits = (ushort)(1);
+					fd.filter.maskBits = (ushort)(2);
+					fd.filter.groupIndex = (short)(0);
 					b2PolygonShape shape = new b2PolygonShape();
 					b2Vec2[] vs = new b2Vec2[8];
 					vs[0].Set(-1.950000047683716e+000f, -4.750000000000000e+000f);
@@ -55,18 +55,18 @@ namespace Testbed.Tests {
 		
 			{
 			  b2BodyDef bd = new b2BodyDef();
-			  bd.type = b2BodyType(0);
+			  bd.type = (b2BodyType)(0);
 			  bd.position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
 			  bd.angle = 0.000000000000000e+000f;
 			  bd.linearVelocity.Set(0.000000000000000e+000f, 0.000000000000000e+000f);
 			  bd.angularVelocity = 0.000000000000000e+000f;
 			  bd.linearDamping = 0.000000000000000e+000f;
 			  bd.angularDamping = 0.000000000000000e+000f;
-			  bd.allowSleep = (bool)(4);
-			  bd.awake = (bool)(2);
-			  bd.fixedRotation = (bool)(0);
-			  bd.bullet = (bool)(0);
-			  bd.active = (bool)(32);
+			  bd.allowSleep = true;
+			  bd.awake = true;
+			  bd.fixedRotation = false;
+			  bd.bullet = false;
+			  bd.active = true;
 			  bd.gravityScale = 1.000000000000000e+000f;
 			  bodies[1] = m_world.CreateBody(bd);
 			  {
@@ -74,10 +74,10 @@ namespace Testbed.Tests {
 				fd.friction = 0.000000000000000e+000f;
 				fd.restitution = 0.000000000000000e+000f;
 				fd.density = 1.000000000000000e+000f;
-				fd.isSensor = (bool)(0);
-				fd.filter.categoryBits = ushort(2);
-				fd.filter.maskBits = ushort(65535);
-				fd.filter.groupIndex = short(0);
+				fd.isSensor = false;
+				fd.filter.categoryBits = (ushort)(2);
+				fd.filter.maskBits = (ushort)(65535);
+				fd.filter.groupIndex = (short)(0);
 				b2PolygonShape shape = new b2PolygonShape();
 				b2Vec2[] vs = new b2Vec2[8];
 				vs[0].Set(-5.120000076293945e+001f, -5.000000000000000e-001f);
@@ -92,11 +92,8 @@ namespace Testbed.Tests {
 			  }
 			}
 
-			b2Free(joints);
-			b2Free(bodies);
 			joints = null;
 			bodies = null;
-
 		}
 
 		public static Test Create()

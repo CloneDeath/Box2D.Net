@@ -26,10 +26,10 @@ namespace Testbed.Tests {
 				b2PolygonShape shape = new b2PolygonShape();
 				shape.SetAsBox(a, a);
 
-				b2Vec2 x(-7.0f, 0.75f);
+				b2Vec2 x = new b2Vec2(-7.0f, 0.75f);
 				b2Vec2 y;
-				b2Vec2 deltaX(0.5625f, 1.25f);
-				b2Vec2 deltaY(1.125f, 0.0f);
+				b2Vec2 deltaX = new b2Vec2(0.5625f, 1.25f);
+				b2Vec2 deltaY = new b2Vec2(1.125f, 0.0f);
 
 				for (int i = 0; i < e_count; ++i)
 				{

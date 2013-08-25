@@ -108,7 +108,7 @@ namespace Testbed.Tests {
 			m_offset.Set(0.0f, 8.0f);
 			m_motorSpeed = 2.0f;
 			m_motorOn = true;
-			b2Vec2 pivot(0.0f, 0.8f);
+			b2Vec2 pivot = new b2Vec2(0.0f, 0.8f);
 
 			// Ground
 			{
@@ -205,7 +205,7 @@ namespace Testbed.Tests {
 			base.Step(settings);
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

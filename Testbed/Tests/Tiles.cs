@@ -15,7 +15,7 @@ namespace Testbed.Tests {
 		public Tiles()
 		{
 			m_fixtureCount = 0;
-			b2Timer timer;
+			b2Timer timer = new b2Timer();
 
 			{
 				float a = 0.5f;

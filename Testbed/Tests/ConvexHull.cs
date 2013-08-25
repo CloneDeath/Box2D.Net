@@ -5,6 +5,8 @@ using System.Text;
 using Testbed.Framework;
 using Box2D;
 using System.Drawing;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class ConvexHull : Test
@@ -19,8 +21,8 @@ namespace Testbed.Tests {
 
 		public void Generate()
 		{
-			b2Vec2 lowerBound(-8.0f, -8.0f);
-			b2Vec2 upperBound(8.0f, 8.0f);
+			b2Vec2 lowerBound = new b2Vec2(-8.0f, -8.0f);
+			b2Vec2 upperBound = new b2Vec2(8.0f, 8.0f);
 
 			for (int i = 0; i < e_count; ++i)
 			{
@@ -29,8 +31,8 @@ namespace Testbed.Tests {
 
 				// Clamp onto a square to help create collinearities.
 				// This will stress the convex hull algorithm.
-				b2Vec2 v(x, y);
-				v = b2Clamp(v, lowerBound, upperBound);
+				b2Vec2 v = new b2Vec2(x, y);
+				v = Utilities.b2Clamp(v, lowerBound, upperBound);
 				m_points[i] = v;
 			}
 		}
@@ -40,17 +42,15 @@ namespace Testbed.Tests {
 			return new ConvexHull();
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'a':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_auto = !m_auto;
-				break;
+			}
+			if (KeyboardManager.IsPressed(Key.G)){
 
-			case 'g':
 				Generate();
-				break;
+				
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace Testbed.Tests {
 
 			for (int i = 0; i < e_count; ++i)
 			{
-				m_debugDraw.DrawPoint(m_points[i], 2.0f, Color.FromArgb(225, 0.5f, 0.5f));
+				m_debugDraw.DrawPoint(m_points[i], 2.0f, Color.FromArgb(225, 128, 128));
 				//m_debugDraw.DrawString(m_points[i] + new b2Vec2(0.05f, 0.05f), "%d", i);
 			}
 

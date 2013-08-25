@@ -27,14 +27,14 @@ namespace Testbed.Tests {
 		{
 			base.Step(settings);
 
-			b2Sweep sweepA;
+			b2Sweep sweepA = new b2Sweep();
 			sweepA.c0.Set(24.0f, -60.0f);
 			sweepA.a0 = 2.95f;
 			sweepA.c = sweepA.c0;
 			sweepA.a = sweepA.a0;
 			sweepA.localCenter.SetZero();
 
-			b2Sweep sweepB;
+			b2Sweep sweepB = new b2Sweep();
 			sweepB.c0.Set(53.474274f, -50.252514f);
 			sweepB.a0 = 513.36676f; // - 162.0f * (float)Math.PI;
 			sweepB.c.Set(54.595478f, -51.083473f);
@@ -44,7 +44,7 @@ namespace Testbed.Tests {
 			//sweepB.a0 -= 300.0f * (float)Math.PI;
 			//sweepB.a -= 300.0f * (float)Math.PI;
 
-			b2TOIInput input;
+			b2TOIInput input = new b2TOIInput();
 			input.proxyA.Set(m_shapeA, 0);
 			input.proxyB.Set(m_shapeB, 0);
 			input.sweepA = sweepA;

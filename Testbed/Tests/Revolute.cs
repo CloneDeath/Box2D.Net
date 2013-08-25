@@ -55,10 +55,10 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2CircleShape circle_shape;
+				b2CircleShape circle_shape = new b2CircleShape();
 				circle_shape.m_radius = 3.0f;
 
-				b2BodyDef circle_bd;
+				b2BodyDef circle_bd = new b2BodyDef();
 				circle_bd.type = b2BodyType.b2_dynamicBody;
 				circle_bd.position.Set(5.0f, 30.0f);
 
@@ -70,10 +70,10 @@ namespace Testbed.Tests {
 				m_ball = m_world.CreateBody(circle_bd);
 				m_ball.CreateFixture(fd);
 
-				b2PolygonShape polygon_shape;
+				b2PolygonShape polygon_shape = new b2PolygonShape();
 				polygon_shape.SetAsBox(10.0f, 0.2f, new b2Vec2(-10.0f, 0.0f), 0.0f);
 
-				b2BodyDef polygon_bd;
+				b2BodyDef polygon_bd = new b2BodyDef();
 				polygon_bd.position.Set(20.0f, 10.0f);
 				polygon_bd.type = b2BodyType.b2_dynamicBody;
 				polygon_bd.bullet = true;
@@ -94,14 +94,14 @@ namespace Testbed.Tests {
 				bodyDef.type = b2BodyType.b2_dynamicBody;
 				b2Body body = m_world.CreateBody(bodyDef);
 		
-				b2PolygonShape polyShape;
+				b2PolygonShape polyShape = new b2PolygonShape();
 				b2Vec2[] verts = new b2Vec2[3];
 				verts[0].Set( 17.63f, 36.31f );
 				verts[1].Set( 17.52f, 36.69f );
 				verts[2].Set( 17.19f, 36.36f );
 				polyShape.Set(verts, 3);
 		
-				b2FixtureDef polyFixtureDef;
+				b2FixtureDef polyFixtureDef = new b2FixtureDef();
 				polyFixtureDef.shape = polyShape;
 				polyFixtureDef.density = 1;
 
@@ -110,7 +110,7 @@ namespace Testbed.Tests {
 
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

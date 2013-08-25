@@ -84,7 +84,7 @@ namespace Testbed.Tests {
 			body.CreateFixture(fd);
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -99,7 +99,7 @@ namespace Testbed.Tests {
 			bool sleeping = true;
 			foreach (b2Body b in m_world.GetBodyList())
 			{
-				if (b.GetType() != b2BodyType.b2_dynamicBody)
+				if (b.GetBodyType() != b2BodyType.b2_dynamicBody)
 				{
 					continue;
 				}
@@ -124,7 +124,7 @@ namespace Testbed.Tests {
 
 			foreach (b2Body b in m_world.GetBodyList())
 			{
-				if (b.GetType() != b2BodyType.b2_dynamicBody)
+				if (b.GetBodyType() != b2BodyType.b2_dynamicBody)
 				{
 					continue;
 				}

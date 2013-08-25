@@ -5,6 +5,8 @@ using System.Text;
 using Testbed.Framework;
 using Box2D;
 using System.Drawing;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	/// This test shows how to use a motor joint. A motor joint
@@ -44,24 +46,21 @@ namespace Testbed.Tests {
 				fd.density = 2.0f;
 				body.CreateFixture(fd);
 
-				b2MotorJointDef mjd;
+				b2MotorJointDef mjd = new b2MotorJointDef();
 				mjd.Initialize(ground, body);
 				mjd.maxForce = 1000.0f;
 				mjd.maxTorque = 1000.0f;
-				m_joint = (b2MotorJoint*)m_world.CreateJoint(mjd);
+				m_joint = (b2MotorJoint)m_world.CreateJoint(mjd);
 			}
 
 			m_go = false;
 			m_time = 0.0f;
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 's':
+			if (KeyboardManager.IsPressed(Key.S)) {
 				m_go = !m_go;
-				break;
 			}
 		}
 

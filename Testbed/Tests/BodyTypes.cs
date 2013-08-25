@@ -93,7 +93,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			if (KeyboardManager.IsPressed(Key.D)){
 				m_platform.SetType(b2BodyType.b2_dynamicBody);

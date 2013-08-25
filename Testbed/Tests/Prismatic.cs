@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text; 
+using System.Text;
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	// The motor in this test gets smoother with higher velocity iterations.
-	class Prismatic : Test
-	{
-		public Prismatic()
-		{
+	class Prismatic : Test {
+		public Prismatic() {
 			b2Body ground = null;
 			{
 				b2BodyDef bd = new b2BodyDef();
@@ -50,40 +50,33 @@ namespace Testbed.Tests {
 				pjd.upperTranslation = 20.0f;
 				pjd.enableLimit = true;
 
-				m_joint = (b2PrismaticJoint*)m_world.CreateJoint(pjd);
+				m_joint = (b2PrismaticJoint)m_world.CreateJoint(pjd);
 			}
 		}
 
-		public void Keyboard()
-		{
-			switch (key)
-			{
-			case 'l':
+		public override void Keyboard() {
+			if (KeyboardManager.IsPressed(Key.L)) {
 				m_joint.EnableLimit(!m_joint.IsLimitEnabled());
-				break;
-
-			case 'm':
+			}
+			if (KeyboardManager.IsPressed(Key.M)) {
 				m_joint.EnableMotor(!m_joint.IsMotorEnabled());
-				break;
+			}
 
-			case 's':
+			if (KeyboardManager.IsPressed(Key.S)) {
 				m_joint.SetMotorSpeed(-m_joint.GetMotorSpeed());
-				break;
 			}
 		}
 
-		public override void Step(Settings settings)
-		{
+		public override void Step(Settings settings) {
 			base.Step(settings);
 			m_debugDraw.DrawString("Keys: (l) limits, (m) motors, (s) speed");
-			
+
 			float force = m_joint.GetMotorForce(settings.hz);
-			m_debugDraw.DrawString("Motor Force = %4.0f", (float) force);
-			
+			m_debugDraw.DrawString("Motor Force = %4.0f", (float)force);
+
 		}
 
-		public static Test Create()
-		{
+		public static Test Create() {
 			return new Prismatic();
 		}
 

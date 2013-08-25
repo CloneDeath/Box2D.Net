@@ -55,7 +55,7 @@ namespace Testbed.Tests {
 
 				body.SetLinearVelocity(new b2Vec2(0.0f, -50.0f));
 
-				m_state = e_unknown;
+				m_state = State.e_unknown;
 			}
 		}
 

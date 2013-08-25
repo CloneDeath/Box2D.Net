@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	///
@@ -38,19 +40,15 @@ namespace Testbed.Tests {
 			m_rope.SetAngle(m_angle);
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'q':
+			if (KeyboardManager.IsPressed(Key.Q)){
 				m_angle = Math.Max(-(float)Math.PI, m_angle - 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
-				break;
-
-			case 'e':
+			}
+			if (KeyboardManager.IsPressed(Key.E)) {
 				m_angle = Math.Min(Math.PI, m_angle + 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
-				break;
 			}
 		}
 
@@ -58,7 +56,7 @@ namespace Testbed.Tests {
 		{
 			float dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
 
-			if (settings.pause == 1 && settings.singleStep == 0)
+			if (settings.pause == true && settings.singleStep == false)
 			{
 				dt = 0.0f;
 			}

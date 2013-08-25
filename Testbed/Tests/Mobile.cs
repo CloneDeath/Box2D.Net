@@ -37,7 +37,7 @@ namespace Testbed.Tests {
 		public b2Body AddNode(b2Body parent, b2Vec2 localAnchor, int depth, float offset, float a)
 		{
 			float density = 20.0f;
-			b2Vec2 h(0.0f, a);
+			b2Vec2 h = new b2Vec2(0.0f, a);
 
 			b2Vec2 p = parent.GetPosition() + localAnchor - h;
 

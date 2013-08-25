@@ -117,7 +117,7 @@ namespace Testbed.Tests {
 			++m_stepCount;
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -142,7 +142,7 @@ namespace Testbed.Tests {
 		public bool QueryCallback(int proxyId)
 		{
 			Actor actor = (Actor)m_tree.GetUserData(proxyId);
-			actor.overlap = b2TestOverlap(m_queryAABB, actor.aabb);
+			actor.overlap = b2Collision.b2TestOverlap(m_queryAABB, actor.aabb);
 			return true;
 		}
 
@@ -194,9 +194,9 @@ namespace Testbed.Tests {
 			aabb.upperBound += d;
 
 			b2Vec2 c0 = 0.5f * (aabb.lowerBound + aabb.upperBound);
-			b2Vec2 min; min.Set(-m_worldExtent, 0.0f);
-			b2Vec2 max; max.Set(m_worldExtent, 2.0f * m_worldExtent);
-			b2Vec2 c = b2Clamp(c0, min, max);
+			b2Vec2 min = new b2Vec2(); min.Set(-m_worldExtent, 0.0f);
+			b2Vec2 max = new b2Vec2(); max.Set(m_worldExtent, 2.0f * m_worldExtent);
+			b2Vec2 c = Utilities.b2Clamp(c0, min, max);
 
 			aabb.lowerBound += c - c0;
 			aabb.upperBound += c - c0;
@@ -206,9 +206,9 @@ namespace Testbed.Tests {
 		{
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				int j = rand() % e_actorCount;
-				Actor actor = m_actors + j;
-				if (actor.proxyId == b2_nullNode)
+				int j = rand.Next(e_actorCount);
+				Actor actor = m_actors[j];
+				if (actor.proxyId == b2TreeNode.b2_nullNode)
 				{
 					GetRandomAABB(actor.aabb);
 					actor.proxyId = m_tree.CreateProxy(actor.aabb, actor);
@@ -221,12 +221,12 @@ namespace Testbed.Tests {
 		{
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				int j = rand() % e_actorCount;
-				Actor actor = m_actors + j;
-				if (actor.proxyId != b2_nullNode)
+				int j = rand.Next(e_actorCount);
+				Actor actor = m_actors[j];
+				if (actor.proxyId != b2TreeNode.b2_nullNode)
 				{
 					m_tree.DestroyProxy(actor.proxyId);
-					actor.proxyId = b2_nullNode;
+					actor.proxyId = b2TreeNode.b2_nullNode;
 					return;
 				}
 			}
@@ -236,9 +236,9 @@ namespace Testbed.Tests {
 		{
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				int j = rand() % e_actorCount;
-				Actor actor = m_actors + j;
-				if (actor.proxyId == b2_nullNode)
+				int j = rand.Next(e_actorCount);
+				Actor actor = m_actors[j];
+				if (actor.proxyId == b2TreeNode.b2_nullNode)
 				{
 					continue;
 				}
@@ -253,7 +253,7 @@ namespace Testbed.Tests {
 
 		private void Action()
 		{
-			int choice = rand() % 20;
+			int choice = rand.Next(20);
 
 			switch (choice)
 			{
@@ -267,22 +267,22 @@ namespace Testbed.Tests {
 
 			default:
 				MoveProxy();
+				break;
 			}
 		}
 
 		private void Query()
 		{
-			m_tree.Query(this, m_queryAABB);
+			m_tree.Query(this.QueryCallback, m_queryAABB);
 
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				if (m_actors[i].proxyId == b2_nullNode)
+				if (m_actors[i].proxyId == b2TreeNode.b2_nullNode)
 				{
 					continue;
 				}
 
-				bool overlap = b2TestOverlap(m_queryAABB, m_actors[i].aabb);
-				B2_NOT_USED(overlap);
+				bool overlap = b2Collision.b2TestOverlap(m_queryAABB, m_actors[i].aabb);
 				Utilities.Assert(overlap == m_actors[i].overlap);
 			}
 		}
@@ -298,10 +298,10 @@ namespace Testbed.Tests {
 
 			// Brute force ray cast.
 			Actor bruteActor = null;
-			b2RayCastOutput bruteOutput;
+			b2RayCastOutput bruteOutput = new b2RayCastOutput();
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				if (m_actors[i].proxyId == b2_nullNode)
+				if (m_actors[i].proxyId == b2TreeNode.b2_nullNode)
 				{
 					continue;
 				}

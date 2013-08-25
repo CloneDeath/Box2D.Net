@@ -21,42 +21,42 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2CircleShape circle1;
+				b2CircleShape circle1 = new b2CircleShape();
 				circle1.m_radius = 1.0f;
 
 				b2PolygonShape box = new b2PolygonShape();
 				box.SetAsBox(0.5f, 5.0f);
 
-				b2CircleShape circle2;
+				b2CircleShape circle2 = new b2CircleShape();
 				circle2.m_radius = 2.0f;
 			
-				b2BodyDef bd1;
-				bd1.type = b2_staticBody;
+				b2BodyDef bd1 = new b2BodyDef();
+				bd1.type = b2BodyType.b2_staticBody;
 				bd1.position.Set(10.0f, 9.0f);
 				b2Body body1 = m_world.CreateBody(bd1);
 				body1.CreateFixture(circle1, 5.0f);
 
-				b2BodyDef bd2;
+				b2BodyDef bd2 = new b2BodyDef();
 				bd2.type = b2BodyType.b2_dynamicBody;
 				bd2.position.Set(10.0f, 8.0f);
 				b2Body body2 = m_world.CreateBody(bd2);
 				body2.CreateFixture(box, 5.0f);
 
-				b2BodyDef bd3;
+				b2BodyDef bd3 = new b2BodyDef();
 				bd3.type = b2BodyType.b2_dynamicBody;
 				bd3.position.Set(10.0f, 6.0f);
 				b2Body body3 = m_world.CreateBody(bd3);
 				body3.CreateFixture(circle2, 5.0f);
 
-				b2RevoluteJointDef jd1;
+				b2RevoluteJointDef jd1 = new b2RevoluteJointDef();
 				jd1.Initialize(body2, body1, bd1.position);
 				b2Joint joint1 = m_world.CreateJoint(jd1);
 
-				b2RevoluteJointDef jd2;
+				b2RevoluteJointDef jd2 = new b2RevoluteJointDef();
 				jd2.Initialize(body2, body3, bd3.position);
 				b2Joint joint2 = m_world.CreateJoint(jd2);
 
-				b2GearJointDef jd4;
+				b2GearJointDef jd4 = new b2GearJointDef();
 				jd4.bodyA = body1;
 				jd4.bodyB = body3;
 				jd4.joint1 = joint1;
@@ -66,22 +66,22 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2CircleShape circle1;
+				b2CircleShape circle1 = new b2CircleShape();
 				circle1.m_radius = 1.0f;
 
-				b2CircleShape circle2;
+				b2CircleShape circle2 = new b2CircleShape();
 				circle2.m_radius = 2.0f;
 			
 				b2PolygonShape box = new b2PolygonShape();
 				box.SetAsBox(0.5f, 5.0f);
 
-				b2BodyDef bd1;
+				b2BodyDef bd1 = new b2BodyDef();
 				bd1.type = b2BodyType.b2_dynamicBody;
 				bd1.position.Set(-3.0f, 12.0f);
 				b2Body body1 = m_world.CreateBody(bd1);
 				body1.CreateFixture(circle1, 5.0f);
 
-				b2RevoluteJointDef jd1;
+				b2RevoluteJointDef jd1 = new b2RevoluteJointDef();
 				jd1.bodyA = ground;
 				jd1.bodyB = body1;
 				jd1.localAnchorA = ground.GetLocalPoint(bd1.position);
@@ -89,49 +89,49 @@ namespace Testbed.Tests {
 				jd1.referenceAngle = body1.GetAngle() - ground.GetAngle();
 				m_joint1 = (b2RevoluteJoint)m_world.CreateJoint(jd1);
 
-				b2BodyDef bd2;
+				b2BodyDef bd2 = new b2BodyDef();
 				bd2.type = b2BodyType.b2_dynamicBody;
 				bd2.position.Set(0.0f, 12.0f);
 				b2Body body2 = m_world.CreateBody(bd2);
 				body2.CreateFixture(circle2, 5.0f);
 
-				b2RevoluteJointDef jd2;
+				b2RevoluteJointDef jd2 = new b2RevoluteJointDef();
 				jd2.Initialize(ground, body2, bd2.position);
 				m_joint2 = (b2RevoluteJoint)m_world.CreateJoint(jd2);
 
-				b2BodyDef bd3;
+				b2BodyDef bd3 = new b2BodyDef();
 				bd3.type = b2BodyType.b2_dynamicBody;
 				bd3.position.Set(2.5f, 12.0f);
 				b2Body body3 = m_world.CreateBody(bd3);
 				body3.CreateFixture(box, 5.0f);
 
-				b2PrismaticJointDef jd3;
+				b2PrismaticJointDef jd3 = new b2PrismaticJointDef();
 				jd3.Initialize(ground, body3, bd3.position, new b2Vec2(0.0f, 1.0f));
 				jd3.lowerTranslation = -5.0f;
 				jd3.upperTranslation = 5.0f;
 				jd3.enableLimit = true;
 
-				m_joint3 = (b2PrismaticJoint*)m_world.CreateJoint(jd3);
+				m_joint3 = (b2PrismaticJoint)m_world.CreateJoint(jd3);
 
-				b2GearJointDef jd4;
+				b2GearJointDef jd4 = new b2GearJointDef();
 				jd4.bodyA = body1;
 				jd4.bodyB = body2;
 				jd4.joint1 = m_joint1;
 				jd4.joint2 = m_joint2;
 				jd4.ratio = circle2.m_radius / circle1.m_radius;
-				m_joint4 = (b2GearJoint*)m_world.CreateJoint(jd4);
+				m_joint4 = (b2GearJoint)m_world.CreateJoint(jd4);
 
-				b2GearJointDef jd5;
+				b2GearJointDef jd5 = new b2GearJointDef();
 				jd5.bodyA = body2;
 				jd5.bodyB = body3;
 				jd5.joint1 = m_joint2;
 				jd5.joint2 = m_joint3;
 				jd5.ratio = -1.0f / circle2.m_radius;
-				m_joint5 = (b2GearJoint*)m_world.CreateJoint(jd5);
+				m_joint5 = (b2GearJoint)m_world.CreateJoint(jd5);
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{

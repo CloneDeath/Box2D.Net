@@ -31,10 +31,7 @@ namespace Testbed.Tests {
 
 	class EdgeShapes : Test
 	{
-		public enum BodiesEnum
-		{
-			e_maxBodies = 256
-		};
+		const int e_maxBodies = 256;
 
 		public EdgeShapes()
 		{
@@ -102,8 +99,7 @@ namespace Testbed.Tests {
 			}
 
 			m_bodyIndex = 0;
-			m_bodies = new List<b2Body>();
-			//memset(m_bodies, 0, sizeof(m_bodies));
+			Array.Clear(m_bodies, 0, m_bodies.Length);
 
 			m_angle = 0.0f;
 		}
@@ -134,7 +130,7 @@ namespace Testbed.Tests {
 			if (index < 4)
 			{
 				b2FixtureDef fd = new b2FixtureDef();
-				fd.shape = m_polygons + index;
+				fd.shape = m_polygons[index];
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
@@ -164,7 +160,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -184,7 +180,7 @@ namespace Testbed.Tests {
 
 		public override void Step(Settings settings)
 		{
-			bool advanceRay = settings.pause == 0 || settings.singleStep;
+			bool advanceRay = settings.pause == false || settings.singleStep;
 
 			base.Step(settings);
 			m_debugDraw.DrawString("Press 1-5 to drop stuff");
@@ -195,22 +191,22 @@ namespace Testbed.Tests {
 			b2Vec2 d = new b2Vec2(L * (float)Math.Cos(m_angle), -L * Math.Abs((float)Math.Sin(m_angle)));
 			b2Vec2 point2 = point1 + d;
 
-			EdgeShapesCallback callback;
+			EdgeShapesCallback callback = new EdgeShapesCallback();
 
 			m_world.RayCast(callback, point1, point2);
 
-			if (callback.m_fixture)
+			if (callback.m_fixture != null)
 			{
-				m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
+				m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(100, 225, 100));
 
-				m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(0.8f, 0.8f, 0.8f));
+				m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(200, 200, 200));
 
 				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 0.4f));
+				m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 100));
 			}
 			else
 			{
-				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
+				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(200, 200, 200));
 			}
 
 			if (advanceRay)
@@ -225,7 +221,7 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body[] m_bodied = new b2Body[e_maxBodies];
+		b2Body[] m_bodies = new b2Body[e_maxBodies];
 		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
 		b2CircleShape m_circle;
 

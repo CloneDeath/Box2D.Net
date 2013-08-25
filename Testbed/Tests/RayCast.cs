@@ -25,7 +25,7 @@ namespace Testbed.Tests {
 			object userData = body.GetUserData();
 			if (userData != null)
 			{
-				int index = *(int*)userData;
+				int index = (int)userData;
 				if (index == 0)
 				{
 					// By returning -1, we instruct the calling code to ignore this fixture and
@@ -64,7 +64,7 @@ namespace Testbed.Tests {
 			object userData = body.GetUserData();
 			if (userData != null)
 			{
-				int index = *(int*)userData;
+				int index = (int)userData;
 				if (index == 0)
 				{
 					// By returning -1, we instruct the calling code to ignore this fixture
@@ -203,11 +203,12 @@ namespace Testbed.Tests {
 			}
 
 			m_bodyIndex = 0;
-			memset(m_bodies, 0, sizeof(m_bodies));
+
+			Array.Clear(m_bodies, 0, m_bodies.Length);
 
 			m_angle = 0.0f;
 
-			m_mode = e_closest;
+			m_mode = Mode.e_closest;
 		}
 
 		public void Create(int index)
@@ -226,7 +227,7 @@ namespace Testbed.Tests {
 			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 
 			m_userData[m_bodyIndex] = index;
-			bd.userData = m_userData + m_bodyIndex;
+			bd.userData = m_userData[m_bodyIndex];
 
 			if (index == 4)
 			{
@@ -238,7 +239,7 @@ namespace Testbed.Tests {
 			if (index < 4)
 			{
 				b2FixtureDef fd = new b2FixtureDef();
-				fd.shape = m_polygons + index;
+				fd.shape = m_polygons[index];
 				fd.friction = 0.3f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
@@ -267,7 +268,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void Keyboard()
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -301,24 +302,24 @@ namespace Testbed.Tests {
 
 		public override void Step(Settings settings)
 		{
-			bool advanceRay = settings.pause == 0 || settings.singleStep;
+			bool advanceRay = settings.pause == false || settings.singleStep;
 
 			base.Step(settings);
 			m_debugDraw.DrawString("Press 1-5 to drop stuff, m to change the mode");
 			
 			switch (m_mode)
 			{
-			case e_closest:
-				m_debugDraw.DrawString("Ray-cast mode: closest - find closest fixture along the ray");
-				break;
-		
-			case e_any:
-				m_debugDraw.DrawString("Ray-cast mode: any - check for obstruction");
-				break;
+				case Mode.e_closest:
+					m_debugDraw.DrawString("Ray-cast mode: closest - find closest fixture along the ray");
+					break;
 
-			case e_multiple:
-				m_debugDraw.DrawString("Ray-cast mode: multiple - gather multiple fixtures");
-				break;
+				case Mode.e_any:
+					m_debugDraw.DrawString("Ray-cast mode: any - check for obstruction");
+					break;
+
+				case Mode.e_multiple:
+					m_debugDraw.DrawString("Ray-cast mode: multiple - gather multiple fixtures");
+					break;
 			}
 
 			float L = 11.0f;
@@ -326,54 +327,54 @@ namespace Testbed.Tests {
 			b2Vec2 d = new b2Vec2(L * (float)Math.Cos(m_angle), L * (float)Math.Sin(m_angle));
 			b2Vec2 point2 = point1 + d;
 
-			if (m_mode == e_closest)
+			if (m_mode == Mode.e_closest)
 			{
-				RayCastClosestCallback callback;
+				RayCastClosestCallback callback = new RayCastClosestCallback();
 				m_world.RayCast(callback, point1, point2);
 
 				if (callback.m_hit)
 				{
-					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
-					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(100, 225, 100));
+					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(200, 200, 200));
 					b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 0.4f));
+					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 100));
 				}
 				else
 				{
-					m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(200, 200, 200));
 				}
 			}
-			else if (m_mode == e_any)
+			else if (m_mode == Mode.e_any)
 			{
-				RayCastAnyCallback callback;
+				RayCastAnyCallback callback = new RayCastAnyCallback();
 				m_world.RayCast(callback, point1, point2);
 
 				if (callback.m_hit)
 				{
-					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
-					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(100, 225, 100));
+					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(200, 200, 200));
 					b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 0.4f));
+					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 100));
 				}
 				else
 				{
-					m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(200, 200, 200));
 				}
 			}
-			else if (m_mode == e_multiple)
+			else if (m_mode == Mode.e_multiple)
 			{
-				RayCastMultipleCallback callback;
+				RayCastMultipleCallback callback = new RayCastMultipleCallback();
 				m_world.RayCast(callback, point1, point2);
-				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(0.8f, 0.8f, 0.8f));
+				m_debugDraw.DrawSegment(point1, point2, Color.FromArgb(200, 200, 200));
 
 				for (int i = 0; i < callback.m_count; ++i)
 				{
 					b2Vec2 p = callback.m_points[i];
 					b2Vec2 n = callback.m_normals[i];
-					m_debugDraw.DrawPoint(p, 5.0f, Color.FromArgb(0.4f, 225, 0.4f));
-					m_debugDraw.DrawSegment(point1, p, Color.FromArgb(0.8f, 0.8f, 0.8f));
+					m_debugDraw.DrawPoint(p, 5.0f, Color.FromArgb(100, 225, 100));
+					m_debugDraw.DrawSegment(point1, p, Color.FromArgb(200, 200, 200));
 					b2Vec2 head = p + 0.5f * n;
-					m_debugDraw.DrawSegment(p, head, Color.FromArgb(225, 225, 0.4f));
+					m_debugDraw.DrawSegment(p, head, Color.FromArgb(225, 225, 100));
 				}
 			}
 
@@ -429,7 +430,7 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body[] m_bodied = new b2Body[e_maxBodies];
+		b2Body[] m_bodies = new b2Body[e_maxBodies];
 		int[] m_userData = new int[e_maxBodies];
 		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
 		b2CircleShape m_circle;
