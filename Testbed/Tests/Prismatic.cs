@@ -11,37 +11,37 @@ namespace Testbed.Tests {
 	// The motor in this test gets smoother with higher velocity iterations.
 	class Prismatic : Test {
 		public Prismatic() {
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(2.0f, 0.5f);
 
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(-10.0f, 10.0f);
 				bd.angle = 0.5f * (float)Math.PI;
 				bd.allowSleep = false;
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 5.0f);
 
-				b2PrismaticJointDef pjd = new b2PrismaticJointDef();
+				PrismaticJointDef pjd = new PrismaticJointDef();
 
 				// Bouncy limit
-				b2Vec2 axis = new b2Vec2(2.0f, 1.0f);
+				Vec2 axis = new Vec2(2.0f, 1.0f);
 				axis.Normalize();
-				pjd.Initialize(ground, body, new b2Vec2(0.0f, 0.0f), axis);
+				pjd.Initialize(ground, body, new Vec2(0.0f, 0.0f), axis);
 
 				// Non-bouncy limit
-				//pjd.Initialize(ground, body, new b2Vec2(-10.0f, 10.0f), new b2Vec2(1.0f, 0.0f));
+				//pjd.Initialize(ground, body, new Vec2(-10.0f, 10.0f), new Vec2(1.0f, 0.0f));
 
 				pjd.motorSpeed = 10.0f;
 				pjd.maxMotorForce = 10000.0f;
@@ -50,7 +50,7 @@ namespace Testbed.Tests {
 				pjd.upperTranslation = 20.0f;
 				pjd.enableLimit = true;
 
-				m_joint = (b2PrismaticJoint)m_world.CreateJoint(pjd);
+				m_joint = (PrismaticJoint)m_world.CreateJoint(pjd);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings) {
+		public override void Step(TestSettings settings) {
 			base.Step(settings);
 			m_debugDraw.DrawString("Keys: (l) limits, (m) motors, (s) speed");
 
@@ -80,6 +80,6 @@ namespace Testbed.Tests {
 			return new Prismatic();
 		}
 
-		b2PrismaticJoint m_joint;
+		PrismaticJoint m_joint;
 	};
 }

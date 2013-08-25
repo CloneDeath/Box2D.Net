@@ -20,39 +20,39 @@ namespace Testbed.Tests {
 	{
 		public RopeJoint()
 		{
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 0.125f);
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.density = 20.0f;
 				fd.friction = 0.2f;
 				fd.filter.categoryBits = 0x0001;
 				fd.filter.maskBits = 0xFFFF & ~0x0002;
 
-				b2RevoluteJointDef jd = new b2RevoluteJointDef();
+				RevoluteJointDef jd = new RevoluteJointDef();
 				jd.collideConnected = false;
 
 				const int N = 10;
 				const float y = 15.0f;
 				m_ropeDef.localAnchorA.Set(0.0f, y);
 
-				b2Body prevBody = ground;
+				Body prevBody = ground;
 				for (int i = 0; i < N; ++i)
 				{
-					b2BodyDef bd = new b2BodyDef();
-					bd.type = b2BodyType.b2_dynamicBody;
+					BodyDef bd = new BodyDef();
+					bd.type = BodyType._dynamicBody;
 					bd.position.Set(0.5f + 1.0f * i, y);
 					if (i == N - 1)
 					{
@@ -63,11 +63,11 @@ namespace Testbed.Tests {
 						bd.angularDamping = 0.4f;
 					}
 
-					b2Body body = m_world.CreateBody(bd);
+					Body body = m_world.CreateBody(bd);
 
 					body.CreateFixture(fd);
 
-					b2Vec2 anchor = new b2Vec2((float)(i), y);
+					Vec2 anchor = new Vec2((float)(i), y);
 					jd.Initialize(prevBody, body, anchor);
 					m_world.CreateJoint(jd);
 
@@ -102,7 +102,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 			m_debugDraw.DrawString("Press (j) to toggle the rope joint.");
@@ -123,7 +123,7 @@ namespace Testbed.Tests {
 			return new RopeJoint();
 		}
 
-		b2RopeJointDef m_ropeDef;
-		b2Joint m_rope;
+		RopeJointDef m_ropeDef;
+		Joint m_rope;
 	};
 }

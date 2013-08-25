@@ -6,17 +6,17 @@ using Testbed.Framework;
 using Box2D;
 
 namespace Testbed.Tests {
-	// This test holds worlds dumped using b2World::Dump.
+	// This test holds worlds dumped using World::Dump.
 	class DumpShell : Test {
 		DumpShell() {
-			b2Vec2 g = new b2Vec2(0, 0);
+			Vec2 g = new Vec2(0, 0);
 			m_world.SetGravity(g);
-			List<b2Body> bodies = new List<b2Body>();
-			List<b2Joint> joints = new List<b2Joint>();
+			List<Body> bodies = new List<Body>();
+			List<Joint> joints = new List<Joint>();
 
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = (b2BodyType)2;
+				BodyDef bd = new BodyDef();
+				bd.type = (BodyType)2;
 				bd.position.Set(3.000000000000000e+001f, 6.909857940673828e+001f);
 				bd.angle = 0.000000000000000e+000f;
 				bd.linearVelocity.Set(0.000000000000000e+000f, -8.618643951416016e+001f);
@@ -31,7 +31,7 @@ namespace Testbed.Tests {
 				bd.gravityScale = 1.000000000000000e+000f;
 				bodies[0] = m_world.CreateBody(bd);
 				{
-					b2FixtureDef fd = new b2FixtureDef();
+					FixtureDef fd = new FixtureDef();
 					fd.friction = 6.000000238418579e-001f;
 					fd.restitution = 0.000000000000000e+000f;
 					fd.density = 5.000000000000000e-001f;
@@ -39,8 +39,8 @@ namespace Testbed.Tests {
 					fd.filter.categoryBits = (ushort)(1);
 					fd.filter.maskBits = (ushort)(2);
 					fd.filter.groupIndex = (short)(0);
-					b2PolygonShape shape = new b2PolygonShape();
-					b2Vec2[] vs = new b2Vec2[8];
+					PolygonShape shape = new PolygonShape();
+					Vec2[] vs = new Vec2[8];
 					vs[0].Set(-1.950000047683716e+000f, -4.750000000000000e+000f);
 					vs[1].Set(1.950000047683716e+000f, -4.750000000000000e+000f);
 					vs[2].Set(1.950000047683716e+000f, 4.750000000000000e+000f);
@@ -54,8 +54,8 @@ namespace Testbed.Tests {
 			}
 		
 			{
-			  b2BodyDef bd = new b2BodyDef();
-			  bd.type = (b2BodyType)(0);
+			  BodyDef bd = new BodyDef();
+			  bd.type = (BodyType)(0);
 			  bd.position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
 			  bd.angle = 0.000000000000000e+000f;
 			  bd.linearVelocity.Set(0.000000000000000e+000f, 0.000000000000000e+000f);
@@ -70,7 +70,7 @@ namespace Testbed.Tests {
 			  bd.gravityScale = 1.000000000000000e+000f;
 			  bodies[1] = m_world.CreateBody(bd);
 			  {
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.friction = 0.000000000000000e+000f;
 				fd.restitution = 0.000000000000000e+000f;
 				fd.density = 1.000000000000000e+000f;
@@ -78,8 +78,8 @@ namespace Testbed.Tests {
 				fd.filter.categoryBits = (ushort)(2);
 				fd.filter.maskBits = (ushort)(65535);
 				fd.filter.groupIndex = (short)(0);
-				b2PolygonShape shape = new b2PolygonShape();
-				b2Vec2[] vs = new b2Vec2[8];
+				PolygonShape shape = new PolygonShape();
+				Vec2[] vs = new Vec2[8];
 				vs[0].Set(-5.120000076293945e+001f, -5.000000000000000e-001f);
 				vs[1].Set(5.120000076293945e+001f, -5.000000000000000e-001f);
 				vs[2].Set(5.120000076293945e+001f, 5.000000000000000e-001f);

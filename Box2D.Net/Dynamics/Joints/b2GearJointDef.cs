@@ -6,24 +6,24 @@ using System.Text;
 namespace Box2D {
 	/// Gear joint definition. This definition requires two existing
 	/// revolute or prismatic joints (any combination will work).
-	public class b2GearJointDef : b2JointDef
+	public class GearJointDef : JointDef
 	{
-		public b2GearJointDef()
+		public GearJointDef()
 		{
-			type = b2JointType.e_gearJoint;
+			type = JointType.e_gearJoint;
 			joint1 = null;
 			joint2 = null;
 			ratio = 1.0f;
 		}
 
 		/// The first revolute/prismatic joint attached to the gear joint.
-		public b2Joint joint1;
+		public Joint joint1;
 
 		/// The second revolute/prismatic joint attached to the gear joint.
-		public b2Joint joint2;
+		public Joint joint2;
 
 		/// The gear ratio.
-		/// @see b2GearJoint for explanation.
+		/// @see GearJoint for explanation.
 		public float ratio;
 	};
 }

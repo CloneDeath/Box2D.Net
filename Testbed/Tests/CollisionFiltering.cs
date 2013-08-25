@@ -30,27 +30,27 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 
-				b2FixtureDef sd = new b2FixtureDef();
+				FixtureDef sd = new FixtureDef();
 				sd.shape = shape;
 				sd.friction = 0.3f;
 
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 				ground.CreateFixture(sd);
 			}
 
 			// Small triangle
-			b2Vec2[] vertices = new b2Vec2[3];
+			Vec2[] vertices = new Vec2[3];
 			vertices[0].Set(-1.0f, 0.0f);
 			vertices[1].Set(1.0f, 0.0f);
 			vertices[2].Set(0.0f, 2.0f);
-			b2PolygonShape polygon = new b2PolygonShape();
+			PolygonShape polygon = new PolygonShape();
 			polygon.Set(vertices, 3);
 
-			b2FixtureDef triangleShapeDef = new b2FixtureDef();
+			FixtureDef triangleShapeDef = new FixtureDef();
 			triangleShapeDef.shape = polygon;
 			triangleShapeDef.density = 1.0f;
 
@@ -58,11 +58,11 @@ namespace Testbed.Tests {
 			triangleShapeDef.filter.categoryBits = k_triangleCategory;
 			triangleShapeDef.filter.maskBits = k_triangleMask;
 
-			b2BodyDef triangleBodyDef = new b2BodyDef();
-			triangleBodyDef.type = b2BodyType.b2_dynamicBody;
+			BodyDef triangleBodyDef = new BodyDef();
+			triangleBodyDef.type = BodyType._dynamicBody;
 			triangleBodyDef.position.Set(-5.0f, 2.0f);
 
-			b2Body body1 = m_world.CreateBody(triangleBodyDef);
+			Body body1 = m_world.CreateBody(triangleBodyDef);
 			body1.CreateFixture(triangleShapeDef);
 
 			// Large triangle (recycle definitions)
@@ -74,20 +74,20 @@ namespace Testbed.Tests {
 			triangleBodyDef.position.Set(-5.0f, 6.0f);
 			triangleBodyDef.fixedRotation = true; // look at me!
 
-			b2Body body2 = m_world.CreateBody(triangleBodyDef);
+			Body body2 = m_world.CreateBody(triangleBodyDef);
 			body2.CreateFixture(triangleShapeDef);
 
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(-5.0f, 10.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape p = new b2PolygonShape();
+				PolygonShape p = new PolygonShape();
 				p.SetAsBox(0.5f, 1.0f);
 				body.CreateFixture(p, 1.0f);
 
-				b2PrismaticJointDef jd = new b2PrismaticJointDef();
+				PrismaticJointDef jd = new PrismaticJointDef();
 				jd.bodyA = body2;
 				jd.bodyB = body;
 				jd.enableLimit = true;
@@ -102,7 +102,7 @@ namespace Testbed.Tests {
 
 			// Small box
 			polygon.SetAsBox(1.0f, 0.5f);
-			b2FixtureDef boxShapeDef = new b2FixtureDef();
+			FixtureDef boxShapeDef = new FixtureDef();
 			boxShapeDef.shape = polygon;
 			boxShapeDef.density = 1.0f;
 			boxShapeDef.restitution = 0.1f;
@@ -111,11 +111,11 @@ namespace Testbed.Tests {
 			boxShapeDef.filter.categoryBits = k_boxCategory;
 			boxShapeDef.filter.maskBits = k_boxMask;
 
-			b2BodyDef boxBodyDef = new b2BodyDef();
-			boxBodyDef.type = b2BodyType.b2_dynamicBody;
+			BodyDef boxBodyDef = new BodyDef();
+			boxBodyDef.type = BodyType._dynamicBody;
 			boxBodyDef.position.Set(0.0f, 2.0f);
 
-			b2Body body3 = m_world.CreateBody(boxBodyDef);
+			Body body3 = m_world.CreateBody(boxBodyDef);
 			body3.CreateFixture(boxShapeDef);
 
 			// Large box (recycle definitions)
@@ -123,14 +123,14 @@ namespace Testbed.Tests {
 			boxShapeDef.filter.groupIndex = k_largeGroup;
 			boxBodyDef.position.Set(0.0f, 6.0f);
 
-			b2Body body4 = m_world.CreateBody(boxBodyDef);
+			Body body4 = m_world.CreateBody(boxBodyDef);
 			body4.CreateFixture(boxShapeDef);
 
 			// Small circle
-			b2CircleShape circle = new b2CircleShape();
+			CircleShape circle = new CircleShape();
 			circle.m_radius = 1.0f;
 
-			b2FixtureDef circleShapeDef = new b2FixtureDef();
+			FixtureDef circleShapeDef = new FixtureDef();
 			circleShapeDef.shape = circle;
 			circleShapeDef.density = 1.0f;
 
@@ -138,11 +138,11 @@ namespace Testbed.Tests {
 			circleShapeDef.filter.categoryBits = k_circleCategory;
 			circleShapeDef.filter.maskBits = k_circleMask;
 
-			b2BodyDef circleBodyDef = new b2BodyDef();
-			circleBodyDef.type = b2BodyType.b2_dynamicBody;
+			BodyDef circleBodyDef = new BodyDef();
+			circleBodyDef.type = BodyType._dynamicBody;
 			circleBodyDef.position.Set(5.0f, 2.0f);
 		
-			b2Body body5 = m_world.CreateBody(circleBodyDef);
+			Body body5 = m_world.CreateBody(circleBodyDef);
 			body5.CreateFixture(circleShapeDef);
 
 			// Large circle
@@ -150,7 +150,7 @@ namespace Testbed.Tests {
 			circleShapeDef.filter.groupIndex = k_largeGroup;
 			circleBodyDef.position.Set(5.0f, 6.0f);
 
-			b2Body body6 = m_world.CreateBody(circleBodyDef);
+			Body body6 = m_world.CreateBody(circleBodyDef);
 			body6.CreateFixture(circleShapeDef);
 		}
 

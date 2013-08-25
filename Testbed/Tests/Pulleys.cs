@@ -15,16 +15,16 @@ namespace Testbed.Tests {
 			float a = 1.0f;
 			float b = 2.0f;
 
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape edge = new b2EdgeShape();
-				edge.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape edge = new EdgeShape();
+				edge.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				//ground.CreateFixture(shape, 0.0f);
 
-				b2CircleShape circle = new b2CircleShape();
+				CircleShape circle = new CircleShape();
 				circle.m_radius = 2.0f;
 
 				circle.m_p.Set(-10.0f, y + b + L);
@@ -36,29 +36,29 @@ namespace Testbed.Tests {
 
 			{
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(a, b);
 
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 
 				//bd.fixedRotation = true;
 				bd.position.Set(-10.0f, y);
-				b2Body body1 = m_world.CreateBody(bd);
+				Body body1 = m_world.CreateBody(bd);
 				body1.CreateFixture(shape, 5.0f);
 
 				bd.position.Set(10.0f, y);
-				b2Body body2 = m_world.CreateBody(bd);
+				Body body2 = m_world.CreateBody(bd);
 				body2.CreateFixture(shape, 5.0f);
 
-				b2PulleyJointDef pulleyDef = new b2PulleyJointDef();
-				b2Vec2 anchor1 = new b2Vec2(-10.0f, y + b);
-				b2Vec2 anchor2 = new b2Vec2(10.0f, y + b);
-				b2Vec2 groundAnchor1 = new b2Vec2(-10.0f, y + b + L);
-				b2Vec2 groundAnchor2 = new b2Vec2(10.0f, y + b + L);
+				PulleyJointDef pulleyDef = new PulleyJointDef();
+				Vec2 anchor1 = new Vec2(-10.0f, y + b);
+				Vec2 anchor2 = new Vec2(10.0f, y + b);
+				Vec2 groundAnchor1 = new Vec2(-10.0f, y + b + L);
+				Vec2 groundAnchor2 = new Vec2(10.0f, y + b + L);
 				pulleyDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f);
 
-				m_joint1 = (b2PulleyJoint)m_world.CreateJoint(pulleyDef);
+				m_joint1 = (PulleyJoint)m_world.CreateJoint(pulleyDef);
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace Testbed.Tests {
 		{
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
@@ -81,6 +81,6 @@ namespace Testbed.Tests {
 			return new Pulleys();
 		}
 
-		b2PulleyJoint m_joint1;
+		PulleyJoint m_joint1;
 	};
 }

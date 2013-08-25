@@ -5,17 +5,17 @@ using System.Text;
 
 namespace Box2D {
 	/// Rotation
-	public struct b2Rot {
+	public struct Rot {
 		/// Sine and cosine
 		public float s, c;
 
-		public b2Rot(object ignore) {
+		public Rot(object ignore) {
 			s = 0;
 			c = 1;
 		}
 
 		/// Initialize from an angle in radians
-		public b2Rot(float angle)
+		public Rot(float angle)
 		{
 			/// TODO_ERIN optimize
 			s = (float)Math.Sin(angle);
@@ -44,15 +44,15 @@ namespace Box2D {
 		}
 
 		/// Get the x-axis
-		public b2Vec2 GetXAxis()
+		public Vec2 GetXAxis()
 		{
-			return new b2Vec2(c, s);
+			return new Vec2(c, s);
 		}
 
 		/// Get the u-axis
-		public b2Vec2 GetYAxis()
+		public Vec2 GetYAxis()
 		{
-			return new b2Vec2(-s, c);
+			return new Vec2(-s, c);
 		}
 	}
 }

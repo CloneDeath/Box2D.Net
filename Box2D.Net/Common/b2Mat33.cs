@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Box2D {
 	/// A 3-by-3 matrix. Stored in column-major order.
-	public struct b2Mat33
+	public struct Mat33
 	{
 		/// Construct this matrix using columns.
-		public b2Mat33(b2Vec3 c1, b2Vec3 c2, b2Vec3 c3)
+		public Mat33(Vec3 c1, Vec3 c2, Vec3 c3)
 		{
 			ex = c1;
 			ey = c2;
@@ -25,28 +25,28 @@ namespace Box2D {
 
 		/// Solve A * x = b, where b is a column vector. This is more efficient
 		/// than computing the inverse in one-shot cases.
-		public b2Vec3 Solve33(b2Vec3 b) {
-			float det = Utilities.b2Dot(ex, Utilities.b2Cross(ey, ez));
+		public Vec3 Solve33(Vec3 b) {
+			float det = Utilities.Dot(ex, Utilities.Cross(ey, ez));
 			if (det != 0.0f) {
 				det = 1.0f / det;
 			}
-			b2Vec3 x;
-			x.x = det * Utilities.b2Dot(b, Utilities.b2Cross(ey, ez));
-			x.y = det * Utilities.b2Dot(ex, Utilities.b2Cross(b, ez));
-			x.z = det * Utilities.b2Dot(ex, Utilities.b2Cross(ey, b));
+			Vec3 x;
+			x.x = det * Utilities.Dot(b, Utilities.Cross(ey, ez));
+			x.y = det * Utilities.Dot(ex, Utilities.Cross(b, ez));
+			x.z = det * Utilities.Dot(ex, Utilities.Cross(ey, b));
 			return x;
 		}
 
 		/// Solve A * x = b, where b is a column vector. This is more efficient
 		/// than computing the inverse in one-shot cases. Solve only the upper
 		/// 2-by-2 matrix equation.
-		public b2Vec2 Solve22(b2Vec2 b) {
+		public Vec2 Solve22(Vec2 b) {
 			float a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 			float det = a11 * a22 - a12 * a21;
 			if (det != 0.0f) {
 				det = 1.0f / det;
 			}
-			b2Vec2 x;
+			Vec2 x;
 			x.x = det * (a22 * b.x - a12 * b.y);
 			x.y = det * (a11 * b.y - a21 * b.x);
 			return x;
@@ -54,7 +54,7 @@ namespace Box2D {
 
 		/// Get the inverse of this matrix as a 2-by-2.
 		/// Returns the zero matrix if singular.
-		public void GetInverse22(out b2Mat33 M) {
+		public void GetInverse22(out Mat33 M) {
 			float a = ex.x, b = ey.x, c = ex.y, d = ey.y;
 			float det = a * d - b * c;
 			if (det != 0.0f) {
@@ -68,8 +68,8 @@ namespace Box2D {
 
 		/// Get the symmetric inverse of this matrix as a 3-by-3.
 		/// Returns the zero matrix if singular.
-		public void GetSymInverse33(out b2Mat33 M) {
-			float det = Utilities.b2Dot(ex, Utilities.b2Cross(ey, ez));
+		public void GetSymInverse33(out Mat33 M) {
+			float det = Utilities.Dot(ex, Utilities.Cross(ey, ez));
 			if (det != 0.0f) {
 				det = 1.0f / det;
 			}
@@ -91,6 +91,6 @@ namespace Box2D {
 			M.ez.z = det * (a11 * a22 - a12 * a12);
 		}
 
-		public b2Vec3 ex, ey, ez;
+		public Vec3 ex, ey, ez;
 	}
 }

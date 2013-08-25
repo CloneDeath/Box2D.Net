@@ -9,13 +9,13 @@ using System.Drawing;
 namespace Testbed.Tests {
 	class TimeOfImpact : Test
 	{
-		b2PolygonShape m_shapeA;
-		b2PolygonShape m_shapeB;
+		PolygonShape m_shapeA;
+		PolygonShape m_shapeB;
 
 		public TimeOfImpact()
 		{
-			m_shapeA = new b2PolygonShape();
-			m_shapeB = new b2PolygonShape();
+			m_shapeA = new PolygonShape();
+			m_shapeB = new PolygonShape();
 			m_shapeA.SetAsBox(25.0f, 5.0f);
 			m_shapeB.SetAsBox(2.5f, 2.5f);
 		}
@@ -25,18 +25,18 @@ namespace Testbed.Tests {
 			return new TimeOfImpact();
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
-			b2Sweep sweepA = new b2Sweep();
+			Sweep sweepA = new Sweep();
 			sweepA.c0.Set(24.0f, -60.0f);
 			sweepA.a0 = 2.95f;
 			sweepA.c = sweepA.c0;
 			sweepA.a = sweepA.a0;
 			sweepA.localCenter.SetZero();
 
-			b2Sweep sweepB = new b2Sweep();
+			Sweep sweepB = new Sweep();
 			sweepB.c0.Set(53.474274f, -50.252514f);
 			sweepB.a0 = 513.36676f; // - 162.0f * (float)Math.PI;
 			sweepB.c.Set(54.595478f, -51.083473f);
@@ -46,53 +46,53 @@ namespace Testbed.Tests {
 			//sweepB.a0 -= 300.0f * (float)Math.PI;
 			//sweepB.a -= 300.0f * (float)Math.PI;
 
-			b2TOIInput input = new b2TOIInput();
+			TOIInput input = new TOIInput();
 			input.proxyA.Set(m_shapeA, 0);
 			input.proxyB.Set(m_shapeB, 0);
 			input.sweepA = sweepA;
 			input.sweepB = sweepB;
 			input.tMax = 1.0f;
 
-			b2TOIOutput output;
+			TOIOutput output;
 
-			b2TimeOfImpact.TimeOfImpact(out output, input);
+			Utilities.TimeOfImpact(out output, input);
 
 			m_debugDraw.DrawString("toi = {0}", output.t);
 
-			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", b2TimeOfImpact.b2_toiMaxIters, b2TimeOfImpact.b2_toiMaxRootIters);
+			m_debugDraw.DrawString("max toi iters = {0}, max root iters = {1}", Utilities._toiMaxIters, Utilities._toiMaxRootIters);
 
-			b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+			Vec2[] vertices = new Vec2[Settings._maxPolygonVertices];
 
-			b2Transform transformA;
+			Transform transformA;
 			sweepA.GetTransform(out transformA, 0.0f);
 			for (int i = 0; i < m_shapeA.m_count; ++i)
 			{
-				vertices[i] = Utilities.b2Mul(transformA, m_shapeA.m_vertices[i]);
+				vertices[i] = Utilities.Mul(transformA, m_shapeA.m_vertices[i]);
 			}
 			m_debugDraw.DrawPolygon(vertices, m_shapeA.m_count, Color.FromArgb(225, 225, 225));
 
-			b2Transform transformB;
+			Transform transformB;
 			sweepB.GetTransform(out transformB, 0.0f);
 		
-			//b2Vec2 localPoint(2.0f, -0.1f);
+			//Vec2 localPoint(2.0f, -0.1f);
 
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
-				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
+				vertices[i] = Utilities.Mul(transformB, m_shapeB.m_vertices[i]);
 			}
 			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(128, 225, 128));
 
 			sweepB.GetTransform(out transformB, output.t);
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
-				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
+				vertices[i] = Utilities.Mul(transformB, m_shapeB.m_vertices[i]);
 			}
 			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(128, 175, 225));
 
 			sweepB.GetTransform(out transformB, 1.0f);
 			for (int i = 0; i < m_shapeB.m_count; ++i)
 			{
-				vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
+				vertices[i] = Utilities.Mul(transformB, m_shapeB.m_vertices[i]);
 			}
 			m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(225, 128, 128));
 
@@ -102,7 +102,7 @@ namespace Testbed.Tests {
 				sweepB.GetTransform(out transformB, t);
 				for (int i = 0; i < m_shapeB.m_count; ++i)
 				{
-					vertices[i] = Utilities.b2Mul(transformB, m_shapeB.m_vertices[i]);
+					vertices[i] = Utilities.Mul(transformB, m_shapeB.m_vertices[i]);
 				}
 				m_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, Color.FromArgb(225, 0.5f, 0.5f));
 			}

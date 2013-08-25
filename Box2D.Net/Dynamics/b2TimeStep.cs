@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	/// Profiling data. Times are in milliseconds.
-	public struct b2Profile {
+	public struct Profile {
 		public float step;
 		public float collide;
 		public float solve;
@@ -17,7 +17,7 @@ namespace Box2D {
 	}
 
 	/// This is an internal structure.
-	public struct b2TimeStep {
+	public struct TimeStep {
 		public float dt;			// time step
 		public float inv_dt;		// inverse time step (0 if dt == 0).
 		public float dtRatio;	// dt * inv_dt0
@@ -27,21 +27,21 @@ namespace Box2D {
 	}
 
 	/// This is an internal structure.
-	public class b2Position { //was struct
-		public b2Vec2 c;
+	public class Position { //was struct
+		public Vec2 c;
 		public float a;
 	}
 
 	/// This is an internal structure.
-	public class b2Velocity { //was struct
-		public b2Vec2 v;
+	public class Velocity { //was struct
+		public Vec2 v;
 		public float w;
 	}
 
 	/// Solver Data
-	public struct b2SolverData {
-		public b2TimeStep step;
-		public List<b2Position> positions; //was pointer
-		public List<b2Velocity> velocities; //was pointer
+	public struct SolverData {
+		public TimeStep step;
+		public List<Position> positions; //was pointer
+		public List<Velocity> velocities; //was pointer
 	}
 }

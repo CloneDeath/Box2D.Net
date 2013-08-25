@@ -32,18 +32,18 @@ namespace Box2D {
 	// Cdot = dot(v + cross(w, r), ug)
 	// J = [ug cross(r, ug)]
 	// K = J * invM * JT = invMass + invI * cross(r, ug)^2
-	public class b2GearJoint : b2Joint
+	public class GearJoint : Joint
 	{
 	
-		public override b2Vec2 GetAnchorA(){
+		public override Vec2 GetAnchorA(){
 			return m_bodyA.GetWorldPoint(m_localAnchorA);
 		}
-		public override b2Vec2 GetAnchorB(){
+		public override Vec2 GetAnchorB(){
 			return m_bodyB.GetWorldPoint(m_localAnchorB);
 		}
 
-		public override b2Vec2 GetReactionForce(float inv_dt){
-			b2Vec2 P = m_impulse * m_JvAC;
+		public override Vec2 GetReactionForce(float inv_dt){
+			Vec2 P = m_impulse * m_JvAC;
 			return inv_dt * P;
 		}
 
@@ -53,10 +53,10 @@ namespace Box2D {
 		}
 
 		/// Get the first joint.
-		public b2Joint GetJoint1() { return m_joint1; }
+		public Joint GetJoint1() { return m_joint1; }
 
 		/// Get the second joint.
-		public b2Joint GetJoint2() { return m_joint2; }
+		public Joint GetJoint2() { return m_joint2; }
 
 		/// Set/Get the gear ratio.
 		public void SetRatio(float ratio){
@@ -75,18 +75,18 @@ namespace Box2D {
 			int index1 = m_joint1.m_index;
 			int index2 = m_joint2.m_index;
 
-			b2Settings.b2Log("  b2GearJointDef jd;\n");
-			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
-			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			b2Settings.b2Log("  jd.joint1 = joints[%d];\n", index1);
-			b2Settings.b2Log("  jd.joint2 = joints[%d];\n", index2);
-			b2Settings.b2Log("  jd.ratio = %.15lef;\n", m_ratio);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
+			Settings.Log("  GearJointDef jd;\n");
+			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
+			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
+			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
+			Settings.Log("  jd.joint1 = joints[%d];\n", index1);
+			Settings.Log("  jd.joint2 = joints[%d];\n", index2);
+			Settings.Log("  jd.ratio = %.15lef;\n", m_ratio);
+			Settings.Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 
 		
-		internal b2GearJoint(b2GearJointDef def): base(def)
+		internal GearJoint(GearJointDef def): base(def)
 		{
 			m_joint1 = def.joint1;
 			m_joint2 = def.joint2;
@@ -94,25 +94,25 @@ namespace Box2D {
 			m_typeA = m_joint1.GetJointType();
 			m_typeB = m_joint2.GetJointType();
 
-			Utilities.Assert(m_typeA == b2JointType.e_revoluteJoint || m_typeA == b2JointType.e_prismaticJoint);
-			Utilities.Assert(m_typeB == b2JointType.e_revoluteJoint || m_typeB == b2JointType.e_prismaticJoint);
+			Utilities.Assert(m_typeA == JointType.e_revoluteJoint || m_typeA == JointType.e_prismaticJoint);
+			Utilities.Assert(m_typeB == JointType.e_revoluteJoint || m_typeB == JointType.e_prismaticJoint);
 
 			float coordinateA, coordinateB;
 
-			// TODO_ERIN there might be some problem with the joint edges in b2Joint.
+			// TODO_ERIN there might be some problem with the joint edges in Joint.
 
 			m_bodyC = m_joint1.GetBodyA();
 			m_bodyA = m_joint1.GetBodyB();
 
 			// Get geometry of joint1
-			b2Transform xfA = m_bodyA.m_xf;
+			Transform xfA = m_bodyA.m_xf;
 			float aA = m_bodyA.m_sweep.a;
-			b2Transform xfC = m_bodyC.m_xf;
+			Transform xfC = m_bodyC.m_xf;
 			float aC = m_bodyC.m_sweep.a;
 
-			if (m_typeA == b2JointType.e_revoluteJoint)
+			if (m_typeA == JointType.e_revoluteJoint)
 			{
-				b2RevoluteJoint revolute = (b2RevoluteJoint)def.joint1;
+				RevoluteJoint revolute = (RevoluteJoint)def.joint1;
 				m_localAnchorC = revolute.m_localAnchorA;
 				m_localAnchorA = revolute.m_localAnchorB;
 				m_referenceAngleA = revolute.m_referenceAngle;
@@ -122,29 +122,29 @@ namespace Box2D {
 			}
 			else
 			{
-				b2PrismaticJoint prismatic = (b2PrismaticJoint)def.joint1;
+				PrismaticJoint prismatic = (PrismaticJoint)def.joint1;
 				m_localAnchorC = prismatic.m_localAnchorA;
 				m_localAnchorA = prismatic.m_localAnchorB;
 				m_referenceAngleA = prismatic.m_referenceAngle;
 				m_localAxisC = prismatic.m_localXAxisA;
 
-				b2Vec2 pC = m_localAnchorC;
-				b2Vec2 pA = Utilities.b2MulT(xfC.q, Utilities.b2Mul(xfA.q, m_localAnchorA) + (xfA.p - xfC.p));
-				coordinateA = Utilities.b2Dot(pA - pC, m_localAxisC);
+				Vec2 pC = m_localAnchorC;
+				Vec2 pA = Utilities.MulT(xfC.q, Utilities.Mul(xfA.q, m_localAnchorA) + (xfA.p - xfC.p));
+				coordinateA = Utilities.Dot(pA - pC, m_localAxisC);
 			}
 
 			m_bodyD = m_joint2.GetBodyA();
 			m_bodyB = m_joint2.GetBodyB();
 
 			// Get geometry of joint2
-			b2Transform xfB = m_bodyB.m_xf;
+			Transform xfB = m_bodyB.m_xf;
 			float aB = m_bodyB.m_sweep.a;
-			b2Transform xfD = m_bodyD.m_xf;
+			Transform xfD = m_bodyD.m_xf;
 			float aD = m_bodyD.m_sweep.a;
 
-			if (m_typeB == b2JointType.e_revoluteJoint)
+			if (m_typeB == JointType.e_revoluteJoint)
 			{
-				b2RevoluteJoint revolute = (b2RevoluteJoint)def.joint2;
+				RevoluteJoint revolute = (RevoluteJoint)def.joint2;
 				m_localAnchorD = revolute.m_localAnchorA;
 				m_localAnchorB = revolute.m_localAnchorB;
 				m_referenceAngleB = revolute.m_referenceAngle;
@@ -154,15 +154,15 @@ namespace Box2D {
 			}
 			else
 			{
-				b2PrismaticJoint prismatic = (b2PrismaticJoint)def.joint2;
+				PrismaticJoint prismatic = (PrismaticJoint)def.joint2;
 				m_localAnchorD = prismatic.m_localAnchorA;
 				m_localAnchorB = prismatic.m_localAnchorB;
 				m_referenceAngleB = prismatic.m_referenceAngle;
 				m_localAxisD = prismatic.m_localXAxisA;
 
-				b2Vec2 pD = m_localAnchorD;
-				b2Vec2 pB = Utilities.b2MulT(xfD.q, Utilities.b2Mul(xfB.q, m_localAnchorB) + (xfB.p - xfD.p));
-				coordinateB = Utilities.b2Dot(pB - pD, m_localAxisD);
+				Vec2 pD = m_localAnchorD;
+				Vec2 pB = Utilities.MulT(xfD.q, Utilities.Mul(xfB.q, m_localAnchorB) + (xfB.p - xfD.p));
+				coordinateB = Utilities.Dot(pB - pD, m_localAxisD);
 			}
 
 			m_ratio = def.ratio;
@@ -172,7 +172,7 @@ namespace Box2D {
 			m_impulse = 0.0f;
 		}
 
-		internal override void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_indexC = m_bodyC.m_islandIndex;
@@ -191,29 +191,29 @@ namespace Box2D {
 			m_iD = m_bodyD.m_invI;
 
 			float aA = data.positions[m_indexA].a;
-			b2Vec2 vA = data.velocities[m_indexA].v;
+			Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 
 			float aB = data.positions[m_indexB].a;
-			b2Vec2 vB = data.velocities[m_indexB].v;
+			Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
 			float aC = data.positions[m_indexC].a;
-			b2Vec2 vC = data.velocities[m_indexC].v;
+			Vec2 vC = data.velocities[m_indexC].v;
 			float wC = data.velocities[m_indexC].w;
 
 			float aD = data.positions[m_indexD].a;
-			b2Vec2 vD = data.velocities[m_indexD].v;
+			Vec2 vD = data.velocities[m_indexD].v;
 			float wD = data.velocities[m_indexD].w;
 
-			b2Rot qA = new b2Rot(aA);
-			b2Rot qB = new b2Rot(aB);
-			b2Rot qC= new b2Rot(aC);
-			b2Rot qD= new b2Rot(aD);
+			Rot qA = new Rot(aA);
+			Rot qB = new Rot(aB);
+			Rot qC= new Rot(aC);
+			Rot qD= new Rot(aD);
 
 			m_mass = 0.0f;
 
-			if (m_typeA == b2JointType.e_revoluteJoint)
+			if (m_typeA == JointType.e_revoluteJoint)
 			{
 				m_JvAC.SetZero();
 				m_JwA = 1.0f;
@@ -222,16 +222,16 @@ namespace Box2D {
 			}
 			else
 			{
-				b2Vec2 u = Utilities.b2Mul(qC, m_localAxisC);
-				b2Vec2 rC = Utilities.b2Mul(qC, m_localAnchorC - m_lcC);
-				b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_lcA);
+				Vec2 u = Utilities.Mul(qC, m_localAxisC);
+				Vec2 rC = Utilities.Mul(qC, m_localAnchorC - m_lcC);
+				Vec2 rA = Utilities.Mul(qA, m_localAnchorA - m_lcA);
 				m_JvAC = u;
-				m_JwC = Utilities.b2Cross(rC, u);
-				m_JwA = Utilities.b2Cross(rA, u);
+				m_JwC = Utilities.Cross(rC, u);
+				m_JwA = Utilities.Cross(rA, u);
 				m_mass += m_mC + m_mA + m_iC * m_JwC * m_JwC + m_iA * m_JwA * m_JwA;
 			}
 
-			if (m_typeB == b2JointType.e_revoluteJoint)
+			if (m_typeB == JointType.e_revoluteJoint)
 			{
 				m_JvBD.SetZero();
 				m_JwB = m_ratio;
@@ -240,12 +240,12 @@ namespace Box2D {
 			}
 			else
 			{
-				b2Vec2 u = Utilities.b2Mul(qD, m_localAxisD);
-				b2Vec2 rD = Utilities.b2Mul(qD, m_localAnchorD - m_lcD);
-				b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_lcB);
+				Vec2 u = Utilities.Mul(qD, m_localAxisD);
+				Vec2 rD = Utilities.Mul(qD, m_localAnchorD - m_lcD);
+				Vec2 rB = Utilities.Mul(qB, m_localAnchorB - m_lcB);
 				m_JvBD = m_ratio * u;
-				m_JwD = m_ratio * Utilities.b2Cross(rD, u);
-				m_JwB = m_ratio * Utilities.b2Cross(rB, u);
+				m_JwD = m_ratio * Utilities.Cross(rD, u);
+				m_JwB = m_ratio * Utilities.Cross(rB, u);
 				m_mass += m_ratio * m_ratio * (m_mD + m_mB) + m_iD * m_JwD * m_JwD + m_iB * m_JwB * m_JwB;
 			}
 
@@ -278,17 +278,17 @@ namespace Box2D {
 			data.velocities[m_indexD].w = wD;
 		}
 
-		internal override void SolveVelocityConstraints(b2SolverData data){
-			b2Vec2 vA = data.velocities[m_indexA].v;
+		internal override void SolveVelocityConstraints(SolverData data){
+			Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
-			b2Vec2 vB = data.velocities[m_indexB].v;
+			Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
-			b2Vec2 vC = data.velocities[m_indexC].v;
+			Vec2 vC = data.velocities[m_indexC].v;
 			float wC = data.velocities[m_indexC].w;
-			b2Vec2 vD = data.velocities[m_indexD].v;
+			Vec2 vD = data.velocities[m_indexD].v;
 			float wD = data.velocities[m_indexD].w;
 
-			float Cdot = Utilities.b2Dot(m_JvAC, vA - vC) + Utilities.b2Dot(m_JvBD, vB - vD);
+			float Cdot = Utilities.Dot(m_JvAC, vA - vC) + Utilities.Dot(m_JvBD, vB - vD);
 			Cdot += (m_JwA * wA - m_JwC * wC) + (m_JwB * wB - m_JwD * wD);
 
 			float impulse = -m_mass * Cdot;
@@ -313,31 +313,31 @@ namespace Box2D {
 			data.velocities[m_indexD].w = wD;
 		}
 
-		internal override bool SolvePositionConstraints(b2SolverData data){
-			b2Vec2 cA = data.positions[m_indexA].c;
+		internal override bool SolvePositionConstraints(SolverData data){
+			Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
-			b2Vec2 cB = data.positions[m_indexB].c;
+			Vec2 cB = data.positions[m_indexB].c;
 			float aB = data.positions[m_indexB].a;
-			b2Vec2 cC = data.positions[m_indexC].c;
+			Vec2 cC = data.positions[m_indexC].c;
 			float aC = data.positions[m_indexC].a;
-			b2Vec2 cD = data.positions[m_indexD].c;
+			Vec2 cD = data.positions[m_indexD].c;
 			float aD = data.positions[m_indexD].a;
 
-			b2Rot qA = new b2Rot(aA);
-			b2Rot qB = new b2Rot(aB);
-			b2Rot qC= new b2Rot(aC);
-			b2Rot qD = new b2Rot(aD);
+			Rot qA = new Rot(aA);
+			Rot qB = new Rot(aB);
+			Rot qC= new Rot(aC);
+			Rot qD = new Rot(aD);
 
 			float linearError = 0.0f;
 
 			float coordinateA, coordinateB;
 
-			b2Vec2 JvAC = new b2Vec2();
-			b2Vec2 JvBD = new b2Vec2();
+			Vec2 JvAC = new Vec2();
+			Vec2 JvBD = new Vec2();
 			float JwA, JwB, JwC, JwD;
 			float mass = 0.0f;
 
-			if (m_typeA == b2JointType.e_revoluteJoint)
+			if (m_typeA == JointType.e_revoluteJoint)
 			{
 				JvAC.SetZero();
 				JwA = 1.0f;
@@ -348,20 +348,20 @@ namespace Box2D {
 			}
 			else
 			{
-				b2Vec2 u = Utilities.b2Mul(qC, m_localAxisC);
-				b2Vec2 rC = Utilities.b2Mul(qC, m_localAnchorC - m_lcC);
-				b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_lcA);
+				Vec2 u = Utilities.Mul(qC, m_localAxisC);
+				Vec2 rC = Utilities.Mul(qC, m_localAnchorC - m_lcC);
+				Vec2 rA = Utilities.Mul(qA, m_localAnchorA - m_lcA);
 				JvAC = u;
-				JwC = Utilities.b2Cross(rC, u);
-				JwA = Utilities.b2Cross(rA, u);
+				JwC = Utilities.Cross(rC, u);
+				JwA = Utilities.Cross(rA, u);
 				mass += m_mC + m_mA + m_iC * JwC * JwC + m_iA * JwA * JwA;
 
-				b2Vec2 pC = m_localAnchorC - m_lcC;
-				b2Vec2 pA = Utilities.b2MulT(qC, rA + (cA - cC));
-				coordinateA = Utilities.b2Dot(pA - pC, m_localAxisC);
+				Vec2 pC = m_localAnchorC - m_lcC;
+				Vec2 pA = Utilities.MulT(qC, rA + (cA - cC));
+				coordinateA = Utilities.Dot(pA - pC, m_localAxisC);
 			}
 
-			if (m_typeB == b2JointType.e_revoluteJoint)
+			if (m_typeB == JointType.e_revoluteJoint)
 			{
 				JvBD.SetZero();
 				JwB = m_ratio;
@@ -372,17 +372,17 @@ namespace Box2D {
 			}
 			else
 			{
-				b2Vec2 u = Utilities.b2Mul(qD, m_localAxisD);
-				b2Vec2 rD = Utilities.b2Mul(qD, m_localAnchorD - m_lcD);
-				b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_lcB);
+				Vec2 u = Utilities.Mul(qD, m_localAxisD);
+				Vec2 rD = Utilities.Mul(qD, m_localAnchorD - m_lcD);
+				Vec2 rB = Utilities.Mul(qB, m_localAnchorB - m_lcB);
 				JvBD = m_ratio * u;
-				JwD = m_ratio * Utilities.b2Cross(rD, u);
-				JwB = m_ratio * Utilities.b2Cross(rB, u);
+				JwD = m_ratio * Utilities.Cross(rD, u);
+				JwB = m_ratio * Utilities.Cross(rB, u);
 				mass += m_ratio * m_ratio * (m_mD + m_mB) + m_iD * JwD * JwD + m_iB * JwB * JwB;
 
-				b2Vec2 pD = m_localAnchorD - m_lcD;
-				b2Vec2 pB = Utilities.b2MulT(qD, rB + (cB - cD));
-				coordinateB = Utilities.b2Dot(pB - pD, m_localAxisD);
+				Vec2 pD = m_localAnchorD - m_lcD;
+				Vec2 pB = Utilities.MulT(qD, rB + (cB - cD));
+				coordinateB = Utilities.Dot(pB - pD, m_localAxisD);
 			}
 
 			float C = (coordinateA + m_ratio * coordinateB) - m_constant;
@@ -412,28 +412,28 @@ namespace Box2D {
 			data.positions[m_indexD].a = aD;
 
 			// TODO_ERIN not implemented
-			return linearError <b2Settings.b2_linearSlop;
+			return linearError <Settings._linearSlop;
 		}
 
-		b2Joint m_joint1;
-		b2Joint m_joint2;
+		Joint m_joint1;
+		Joint m_joint2;
 
-		b2JointType m_typeA;
-		b2JointType m_typeB;
+		JointType m_typeA;
+		JointType m_typeB;
 
 		// Body A is connected to body C
 		// Body B is connected to body D
-		b2Body m_bodyC;
-		b2Body m_bodyD;
+		Body m_bodyC;
+		Body m_bodyD;
 
 		// Solver shared
-		b2Vec2 m_localAnchorA;
-		b2Vec2 m_localAnchorB;
-		b2Vec2 m_localAnchorC;
-		b2Vec2 m_localAnchorD;
+		Vec2 m_localAnchorA;
+		Vec2 m_localAnchorB;
+		Vec2 m_localAnchorC;
+		Vec2 m_localAnchorD;
 
-		b2Vec2 m_localAxisC;
-		b2Vec2 m_localAxisD;
+		Vec2 m_localAxisC;
+		Vec2 m_localAxisD;
 
 		float m_referenceAngleA;
 		float m_referenceAngleB;
@@ -445,10 +445,10 @@ namespace Box2D {
 
 		// Solver temp
 		int m_indexA, m_indexB, m_indexC, m_indexD;
-		b2Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
+		Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
 		float m_mA, m_mB, m_mC, m_mD;
 		float m_iA, m_iB, m_iC, m_iD;
-		b2Vec2 m_JvAC, m_JvBD;
+		Vec2 m_JvAC, m_JvBD;
 		float m_JwA, m_JwB, m_JwC, m_JwD;
 		float m_mass;
 	};

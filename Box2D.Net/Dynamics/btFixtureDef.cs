@@ -6,11 +6,11 @@ using System.Text;
 namespace Box2D {
 	/// A fixture definition is used to create a fixture. This class defines an
 	/// abstract fixture definition. You can reuse fixture definitions safely.
-	public class b2FixtureDef
+	public class FixtureDef
 	{
 		/// The shape, this must be set. The shape will be cloned, so you
 		/// can create the shape on the stack.
-		public b2Shape shape; //was const*
+		public Shape shape; //was const*
 
 		/// Use this to store application specific fixture data.
 		public object userData;
@@ -29,10 +29,10 @@ namespace Box2D {
 		public bool isSensor;
 
 		/// Contact filtering data.
-		public b2Filter filter;
+		public Filter filter;
 
 		/// The constructor sets the default fixture definition values.
-		public b2FixtureDef()
+		public FixtureDef()
 		{
 			shape = null;
 			userData = null;
@@ -40,7 +40,7 @@ namespace Box2D {
 			restitution = 0.0f;
 			density = 0.0f;
 			isSensor = false;
-			filter = new b2Filter();
+			filter = new Filter();
 		}
 	}
 }

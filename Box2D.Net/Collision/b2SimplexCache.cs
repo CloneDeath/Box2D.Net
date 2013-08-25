@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	/// Used to warm start b2Distance.
+	/// Used to warm start Distance.
 	/// Set count to zero on first call.
-	public class b2SimplexCache
+	public class SimplexCache
 	{
-		public b2SimplexCache(){
+		public SimplexCache(){
 			indexA = new byte[3];
 			indexB = new byte[3];
 		}

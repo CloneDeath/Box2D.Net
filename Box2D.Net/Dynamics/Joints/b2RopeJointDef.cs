@@ -7,25 +7,25 @@ namespace Box2D {
 	/// Rope joint definition. This requires two body anchor points and
 	/// a maximum lengths.
 	/// Note: by default the connected objects will not collide.
-	/// see collideConnected in b2JointDef.
-	public class b2RopeJointDef : b2JointDef
+	/// see collideConnected in JointDef.
+	public class RopeJointDef : JointDef
 	{
-		public b2RopeJointDef()
+		public RopeJointDef()
 		{
-			type = b2JointType.e_ropeJoint;
+			type = JointType.e_ropeJoint;
 			localAnchorA.Set(-1.0f, 0.0f);
 			localAnchorB.Set(1.0f, 0.0f);
 			maxLength = 0.0f;
 		}
 
 		/// The local anchor point relative to bodyA's origin.
-		public b2Vec2 localAnchorA;
+		public Vec2 localAnchorA;
 
 		/// The local anchor point relative to bodyB's origin.
-		public b2Vec2 localAnchorB;
+		public Vec2 localAnchorB;
 
 		/// The maximum length of the rope.
-		/// Warning: this must be larger thanb2Settings.b2_linearSlop or
+		/// Warning: this must be larger thanSettings._linearSlop or
 		/// the joint will have no effect.
 		public float maxLength;
 	};

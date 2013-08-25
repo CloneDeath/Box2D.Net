@@ -7,11 +7,11 @@ namespace Box2D {
 	/// Weld joint definition. You need to specify local anchor points
 	/// where they are attached and the relative body angle. The position
 	/// of the anchor points is important for computing the reaction torque.
-	public class b2WeldJointDef : b2JointDef
+	public class WeldJointDef : JointDef
 	{
-		public b2WeldJointDef()
+		public WeldJointDef()
 		{
-			type = b2JointType.e_weldJoint;
+			type = JointType.e_weldJoint;
 			localAnchorA.Set(0.0f, 0.0f);
 			localAnchorB.Set(0.0f, 0.0f);
 			referenceAngle = 0.0f;
@@ -34,7 +34,7 @@ namespace Box2D {
 		// Cdot = w2 - w1
 		// J = [0 0 -1 0 0 1]
 		// K = invI1 + invI2
-		public void Initialize(b2Body bA, b2Body bB, b2Vec2 anchor) {
+		public void Initialize(Body bA, Body bB, Vec2 anchor) {
 			bodyA = bA;
 			bodyB = bB;
 			localAnchorA = bodyA.GetLocalPoint(anchor);
@@ -43,10 +43,10 @@ namespace Box2D {
 		}
 
 		/// The local anchor point relative to bodyA's origin.
-		public b2Vec2 localAnchorA;
+		public Vec2 localAnchorA;
 
 		/// The local anchor point relative to bodyB's origin.
-		public b2Vec2 localAnchorB;
+		public Vec2 localAnchorB;
 
 		/// The bodyB angle minus bodyA angle in the reference state (radians).
 		public float referenceAngle;

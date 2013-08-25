@@ -5,27 +5,27 @@ using System.Text;
 using System.Drawing;
 
 namespace Box2D {
-	public class b2Rope {
+	public class Rope {
 		private int m_count;
-		private List<b2Vec2> m_ps;
-		private b2Vec2 m_p0s; //was pointer
-		private b2Vec2 m_vs; //was pointer
+		private List<Vec2> m_ps;
+		private Vec2 m_p0s; //was pointer
+		private Vec2 m_vs; //was pointer
 
 		private float m_ims; //was pointer
 
 		private float m_Ls; //was pointer
 		private float m_as; //was pointer
 
-		private b2Vec2 m_gravity;
+		private Vec2 m_gravity;
 		private float m_damping;
 
 		private float m_k2;
 		private float m_k3;
 
-		public b2Rope(){
+		public Rope(){
 			throw new NotImplementedException();
 			//m_count = 0;
-			//m_ps = new List<b2Vec2>();
+			//m_ps = new List<Vec2>();
 			//m_p0s = null;
 			//m_vs = null;
 			//m_ims = null;
@@ -36,26 +36,26 @@ namespace Box2D {
 			//m_k3 = 0.1f;
 		}
 
-		~b2Rope()
+		~Rope()
 		{
 			throw new NotImplementedException();
-			//b2Free(m_ps);
-			//b2Free(m_p0s);
-			//b2Free(m_vs);
-			//b2Free(m_ims);
-			//b2Free(m_Ls);
-			//b2Free(m_as);
+			//Free(m_ps);
+			//Free(m_p0s);
+			//Free(m_vs);
+			//Free(m_ims);
+			//Free(m_Ls);
+			//Free(m_as);
 		}
 
 		///
-		public void Initialize(b2RopeDef def){
+		public void Initialize(RopeDef def){
 			throw new NotImplementedException();
 			//Utilities.Assert(def.count >= 3);
 			//m_count = def.count;
-			//m_ps = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-			//m_p0s = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-			//m_vs = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-			//m_ims = (float*)b2Alloc(m_count * sizeof(float));
+			//m_ps = (Vec2*)Alloc(m_count * sizeof(Vec2));
+			//m_p0s = (Vec2*)Alloc(m_count * sizeof(Vec2));
+			//m_vs = (Vec2*)Alloc(m_count * sizeof(Vec2));
+			//m_ims = (float*)Alloc(m_count * sizeof(float));
 
 			//for (int i = 0; i < m_count; ++i)
 			//{
@@ -76,29 +76,29 @@ namespace Box2D {
 
 			//int count2 = m_count - 1;
 			//int count3 = m_count - 2;
-			//m_Ls = (float*)b2Alloc(count2 * sizeof(float));
-			//m_as = (float*)b2Alloc(count3 * sizeof(float));
+			//m_Ls = (float*)Alloc(count2 * sizeof(float));
+			//m_as = (float*)Alloc(count3 * sizeof(float));
 
 			//for (int i = 0; i < count2; ++i)
 			//{
-			//    b2Vec2 p1 = m_ps[i];
-			//    b2Vec2 p2 = m_ps[i+1];
-			//    m_Ls[i] = b2Distance(p1, p2);
+			//    Vec2 p1 = m_ps[i];
+			//    Vec2 p2 = m_ps[i+1];
+			//    m_Ls[i] = Distance(p1, p2);
 			//}
 
 			//for (int i = 0; i < count3; ++i)
 			//{
-			//    b2Vec2 p1 = m_ps[i];
-			//    b2Vec2 p2 = m_ps[i + 1];
-			//    b2Vec2 p3 = m_ps[i + 2];
+			//    Vec2 p1 = m_ps[i];
+			//    Vec2 p2 = m_ps[i + 1];
+			//    Vec2 p3 = m_ps[i + 2];
 
-			//    b2Vec2 d1 = p2 - p1;
-			//    b2Vec2 d2 = p3 - p2;
+			//    Vec2 d1 = p2 - p1;
+			//    Vec2 d2 = p3 - p2;
 
-			//    float a = Utilities.b2Cross(d1, d2);
-			//    float b = Utilities.b2Dot(d1, d2);
+			//    float a = Utilities.Cross(d1, d2);
+			//    float b = Utilities.Dot(d1, d2);
 
-			//    m_as[i] = b2Atan2(a, b);
+			//    m_as[i] = Atan2(a, b);
 			//}
 
 			//m_gravity = def.gravity;
@@ -150,13 +150,13 @@ namespace Box2D {
 		}
 
 		///
-		public List<b2Vec2> GetVertices()
+		public List<Vec2> GetVertices()
 		{
 			return m_ps;
 		}
 
 		///
-		public void Draw(b2Draw draw){
+		public void Draw(Draw draw){
 			Color c = Color.FromArgb(102, 127, 179);
 
 			for (int i = 0; i < m_count - 1; ++i)
@@ -183,10 +183,10 @@ namespace Box2D {
 
 			//for (int i = 0; i < count2; ++i)
 			//{
-			//    b2Vec2 p1 = m_ps[i];
-			//    b2Vec2 p2 = m_ps[i + 1];
+			//    Vec2 p1 = m_ps[i];
+			//    Vec2 p2 = m_ps[i + 1];
 
-			//    b2Vec2 d = p2 - p1;
+			//    Vec2 d = p2 - p1;
 			//    float L = d.Normalize();
 
 			//    float im1 = m_ims[i];
@@ -213,16 +213,16 @@ namespace Box2D {
 			//int count3 = m_count - 2;
 
 			//for (int i = 0; i < count3; ++i) {
-			//    b2Vec2 p1 = m_ps[i];
-			//    b2Vec2 p2 = m_ps[i + 1];
-			//    b2Vec2 p3 = m_ps[i + 2];
+			//    Vec2 p1 = m_ps[i];
+			//    Vec2 p2 = m_ps[i + 1];
+			//    Vec2 p3 = m_ps[i + 2];
 
 			//    float m1 = m_ims[i];
 			//    float m2 = m_ims[i + 1];
 			//    float m3 = m_ims[i + 2];
 
-			//    b2Vec2 d1 = p2 - p1;
-			//    b2Vec2 d2 = p3 - p2;
+			//    Vec2 d1 = p2 - p1;
+			//    Vec2 d2 = p3 - p2;
 
 			//    float L1sqr = d1.LengthSquared();
 			//    float L2sqr = d2.LengthSquared();
@@ -231,19 +231,19 @@ namespace Box2D {
 			//        continue;
 			//    }
 
-			//    float a = Utilities.b2Cross(d1, d2);
-			//    float b = Utilities.b2Dot(d1, d2);
+			//    float a = Utilities.Cross(d1, d2);
+			//    float b = Utilities.Dot(d1, d2);
 
-			//    float angle = b2Atan2(a, b);
+			//    float angle = Atan2(a, b);
 
-			//    b2Vec2 Jd1 = (-1.0f / L1sqr) * d1.Skew();
-			//    b2Vec2 Jd2 = (1.0f / L2sqr) * d2.Skew();
+			//    Vec2 Jd1 = (-1.0f / L1sqr) * d1.Skew();
+			//    Vec2 Jd2 = (1.0f / L2sqr) * d2.Skew();
 
-			//    b2Vec2 J1 = -Jd1;
-			//    b2Vec2 J2 = Jd1 - Jd2;
-			//    b2Vec2 J3 = Jd2;
+			//    Vec2 J1 = -Jd1;
+			//    Vec2 J2 = Jd1 - Jd2;
+			//    Vec2 J3 = Jd2;
 
-			//    float mass = m1 * Utilities.b2Dot(J1, J1) + m2 * Utilities.b2Dot(J2, J2) + m3 * Utilities.b2Dot(J3, J3);
+			//    float mass = m1 * Utilities.Dot(J1, J1) + m2 * Utilities.Dot(J2, J2) + m3 * Utilities.Dot(J3, J3);
 			//    if (mass == 0.0f) {
 			//        continue;
 			//    }

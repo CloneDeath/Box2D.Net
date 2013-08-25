@@ -20,7 +20,7 @@ namespace Testbed {
 		static int testCount = 0;
 		static TestEntry entry; //pointer
 		static Test test; //pointer
-		static Settings settings = new Settings();
+		static TestSettings settings = new TestSettings();
 		static int width = 800;
 		static int height = 600;
 		static int framePeriod = 16;
@@ -29,7 +29,7 @@ namespace Testbed {
 		static float viewZoom = 12.0f;
 		static int tx, ty, tw, th;
 		static bool rMouseDown;
-		static b2Vec2 lastp;
+		static Vec2 lastp;
 
 		static Camera2D camera;
 		static ListBox testList;
@@ -39,7 +39,7 @@ namespace Testbed {
 			{
 				new TestEntry("Continuous Test", ContinuousTest.Create),
 				new TestEntry("Time of Impact", TimeOfImpact.Create),
-				new TestEntry("Motor Joint", MotorJoint.Create),
+				new TestEntry("Motor Joint", MotorJointTest.Create),
 				new TestEntry("One-Sided Platform", OneSidedPlatform.Create),
 				new TestEntry("Dump Shell", DumpShell.Create),
 				new TestEntry("Mobile", Mobile.Create),
@@ -100,7 +100,7 @@ namespace Testbed {
 			test = entry.createFcn();
 
 			GraphicsManager.SetResolution(width, height);
-			string title = String.Format("Box2D Version {0}.{1}.{2}", b2Settings.b2_version.major, b2Settings.b2_version.minor, b2Settings.b2_version.revision);
+			string title = String.Format("Box2D Version {0}.{1}.{2}", Settings._version.major, Settings._version.minor, Settings._version.revision);
 			GraphicsManager.SetTitle(title);
 
 			camera = new Camera2D();
@@ -227,26 +227,26 @@ namespace Testbed {
 			camera.SetZoom(viewZoom);
 		}
 
-		static b2Vec2 ConvertScreenToWorld(int x, int y)
+		static Vec2 ConvertScreenToWorld(int x, int y)
 		{
 			float u = x / tw;
 			float v = (th - y) / th;
 
 			float ratio = tw / th;
-			b2Vec2 extents = new b2Vec2(ratio * 25.0f, 25.0f);
+			Vec2 extents = new Vec2(ratio * 25.0f, 25.0f);
 			extents *= viewZoom;
 
-			b2Vec2 lower = settings.viewCenter - extents;
-			b2Vec2 upper = settings.viewCenter + extents;
+			Vec2 lower = settings.viewCenter - extents;
+			Vec2 upper = settings.viewCenter + extents;
 
-			b2Vec2 p;
+			Vec2 p;
 			p.x = (1.0f - u) * lower.x + u * upper.x;
 			p.y = (1.0f - v) * lower.y + v * upper.y;
 			return p;
 		}
 
 		static void SimulationLoop() {
-			b2Vec2 oldCenter = settings.viewCenter;
+			Vec2 oldCenter = settings.viewCenter;
 			settings.hz = settingsHz;
 			test.Step(settings);
 
@@ -318,7 +318,7 @@ namespace Testbed {
 			if (KeyboardManager.IsDown(Key.Left)){
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
-			        b2Vec2 newOrigin = new b2Vec2(2.0f, 0.0f);
+			        Vec2 newOrigin = new Vec2(2.0f, 0.0f);
 			        test.ShiftOrigin(newOrigin);
 			    }
 			    else
@@ -331,7 +331,7 @@ namespace Testbed {
 			if (KeyboardManager.IsDown(Key.Right)) {
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
-			        b2Vec2 newOrigin = new b2Vec2(-2.0f, 0.0f);
+			        Vec2 newOrigin = new Vec2(-2.0f, 0.0f);
 			        test.ShiftOrigin(newOrigin);
 			    }
 			    else
@@ -344,7 +344,7 @@ namespace Testbed {
 			if (KeyboardManager.IsDown(Key.Down)) {
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
-			        b2Vec2 newOrigin = new b2Vec2(0.0f, 2.0f);
+			        Vec2 newOrigin = new Vec2(0.0f, 2.0f);
 			        test.ShiftOrigin(newOrigin);
 			    }
 			    else
@@ -357,7 +357,7 @@ namespace Testbed {
 			if (KeyboardManager.IsDown(Key.Up)) {
 			    if ( KeyboardManager.IsDown(Key.LControl) || KeyboardManager.IsDown(Key.RControl))
 			    {
-			        b2Vec2 newOrigin = new b2Vec2(0.0f, -2.0f);
+			        Vec2 newOrigin = new Vec2(0.0f, -2.0f);
 			        test.ShiftOrigin(newOrigin);
 			    }
 			    else
@@ -383,10 +383,10 @@ namespace Testbed {
 			//if (button == GLUT_LEFT_BUTTON)
 			//{
 			//    int mod = glutGetModifiers();
-			//    b2Vec2 p = ConvertScreenToWorld(x, y);
+			//    Vec2 p = ConvertScreenToWorld(x, y);
 			//    if (state == GLUT_DOWN)
 			//    {
-			//        b2Vec2 p = ConvertScreenToWorld(x, y);
+			//        Vec2 p = ConvertScreenToWorld(x, y);
 			//        if (mod == GLUT_ACTIVE_SHIFT)
 			//        {
 			//            test.ShiftMouseDown(p);
@@ -420,12 +420,12 @@ namespace Testbed {
 		static void MouseMotion(int x, int y)
 		{
 			throw new NotImplementedException();
-			//b2Vec2 p = ConvertScreenToWorld(x, y);
+			//Vec2 p = ConvertScreenToWorld(x, y);
 			//test.MouseMove(p);
 	
 			//if (rMouseDown)
 			//{
-			//    b2Vec2 diff = p - lastp;
+			//    Vec2 diff = p - lastp;
 			//    settings.viewCenter.x -= diff.x;
 			//    settings.viewCenter.y -= diff.y;
 			//    Resize(width, height);

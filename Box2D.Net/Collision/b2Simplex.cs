@@ -4,26 +4,26 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	struct b2Simplex
+	struct Simplex
 	{
-		public void ReadCache(b2SimplexCache cache,
-					   b2DistanceProxy proxyA, b2Transform transformA,
-					   b2DistanceProxy proxyB, b2Transform transformB)
+		public void ReadCache(SimplexCache cache,
+					   DistanceProxy proxyA, Transform transformA,
+					   DistanceProxy proxyB, Transform transformB)
 		{
 			Utilities.Assert(cache.count <= 3);
 		
 			// Copy data from cache.
 			m_count = cache.count;
-			b2SimplexVertex[] vertices = this.verticies;
+			SimplexVertex[] vertices = this.verticies;
 			for (int i = 0; i < m_count; ++i)
 			{
-			    b2SimplexVertex v = vertices[i];
+			    SimplexVertex v = vertices[i];
 			    v.indexA = cache.indexA[i];
 			    v.indexB = cache.indexB[i];
-			    b2Vec2 wALocal = proxyA.GetVertex(v.indexA);
-			    b2Vec2 wBLocal = proxyB.GetVertex(v.indexB);
-			    v.wA = Utilities.b2Mul(transformA, wALocal);
-			    v.wB = Utilities.b2Mul(transformB, wBLocal);
+			    Vec2 wALocal = proxyA.GetVertex(v.indexA);
+			    Vec2 wBLocal = proxyB.GetVertex(v.indexB);
+			    v.wA = Utilities.Mul(transformA, wALocal);
+			    v.wB = Utilities.Mul(transformB, wBLocal);
 			    v.w = v.wB - v.wA;
 			    v.a = 0.0f;
 			}
@@ -44,24 +44,24 @@ namespace Box2D {
 			// If the cache is empty or invalid ...
 			if (m_count == 0)
 			{
-			    b2SimplexVertex v = vertices[0];
+			    SimplexVertex v = vertices[0];
 			    v.indexA = 0;
 			    v.indexB = 0;
-			    b2Vec2 wALocal = proxyA.GetVertex(0);
-			    b2Vec2 wBLocal = proxyB.GetVertex(0);
-			    v.wA = Utilities.b2Mul(transformA, wALocal);
-			    v.wB = Utilities.b2Mul(transformB, wBLocal);
+			    Vec2 wALocal = proxyA.GetVertex(0);
+			    Vec2 wBLocal = proxyB.GetVertex(0);
+			    v.wA = Utilities.Mul(transformA, wALocal);
+			    v.wB = Utilities.Mul(transformB, wBLocal);
 			    v.w = v.wB - v.wA;
 			    v.a = 1.0f;
 			    m_count = 1;
 			}
 		}
 
-		public void WriteCache(b2SimplexCache cache)
+		public void WriteCache(SimplexCache cache)
 		{
 			cache.metric = GetMetric();
 			cache.count = (ushort)m_count;
-			b2SimplexVertex[] vertices = this.verticies;
+			SimplexVertex[] vertices = this.verticies;
 			for (int i = 0; i < m_count; ++i)
 			{
 			    cache.indexA[i] = (byte)(vertices[i].indexA);
@@ -69,36 +69,36 @@ namespace Box2D {
 			}
 		}
 
-		public b2Vec2 GetSearchDirection()
+		public Vec2 GetSearchDirection()
 		{
 			switch (m_count) {
 				case 1:
 					return -m_v1.w;
 
 				case 2: {
-						b2Vec2 e12 = m_v2.w - m_v1.w;
-						float sgn = Utilities.b2Cross(e12, -m_v1.w);
+						Vec2 e12 = m_v2.w - m_v1.w;
+						float sgn = Utilities.Cross(e12, -m_v1.w);
 						if (sgn > 0.0f) {
 							// Origin is left of e12.
-							return Utilities.b2Cross(1.0f, e12);
+							return Utilities.Cross(1.0f, e12);
 						} else {
 							// Origin is right of e12.
-							return Utilities.b2Cross(e12, 1.0f);
+							return Utilities.Cross(e12, 1.0f);
 						}
 					}
 
 				default:
 					Utilities.Assert(false);
-					return new b2Vec2(0, 0);
+					return new Vec2(0, 0);
 			}
 		}
 
-		public b2Vec2 GetClosestPoint()
+		public Vec2 GetClosestPoint()
 		{
 			switch (m_count) {
 				case 0:
 					Utilities.Assert(false);
-					return new b2Vec2(0, 0);
+					return new Vec2(0, 0);
 
 				case 1:
 					return m_v1.w;
@@ -107,18 +107,18 @@ namespace Box2D {
 					return m_v1.a * m_v1.w + m_v2.a * m_v2.w;
 
 				case 3:
-					return new b2Vec2(0, 0);
+					return new Vec2(0, 0);
 
 				default:
 					Utilities.Assert(false);
-					return new b2Vec2(0, 0);
+					return new Vec2(0, 0);
 			}
 		}
 
-		public void GetWitnessPoints(out b2Vec2 pA, out b2Vec2 pB)
+		public void GetWitnessPoints(out Vec2 pA, out Vec2 pB)
 		{
-			pA = new b2Vec2();
-			pB = new b2Vec2();
+			pA = new Vec2();
+			pB = new Vec2();
 			switch (m_count) {
 				case 0:
 					Utilities.Assert(false);
@@ -156,10 +156,10 @@ namespace Box2D {
 					return 0.0f;
 
 				case 2:
-					return Utilities.b2Distance(m_v1.w, m_v2.w);
+					return Utilities.Distance(m_v1.w, m_v2.w);
 
 				case 3:
-					return Utilities.b2Cross(m_v2.w - m_v1.w, m_v3.w - m_v1.w);
+					return Utilities.Cross(m_v2.w - m_v1.w, m_v3.w - m_v1.w);
 
 				default:
 					Utilities.Assert(false);
@@ -191,12 +191,12 @@ namespace Box2D {
 		// a1 = d12_1 / d12
 		// a2 = d12_2 / d12
 		public void Solve2() {
-			b2Vec2 w1 = m_v1.w;
-			b2Vec2 w2 = m_v2.w;
-			b2Vec2 e12 = w2 - w1;
+			Vec2 w1 = m_v1.w;
+			Vec2 w2 = m_v2.w;
+			Vec2 e12 = w2 - w1;
 
 			// w1 region
-			float d12_2 = -Utilities.b2Dot(w1, e12);
+			float d12_2 = -Utilities.Dot(w1, e12);
 			if (d12_2 <= 0.0f) {
 				// a2 <= 0, so we clamp it to 0
 				m_v1.a = 1.0f;
@@ -205,7 +205,7 @@ namespace Box2D {
 			}
 
 			// w2 region
-			float d12_1 = Utilities.b2Dot(w2, e12);
+			float d12_1 = Utilities.Dot(w2, e12);
 			if (d12_1 <= 0.0f) {
 				// a1 <= 0, so we clamp it to 0
 				m_v2.a = 1.0f;
@@ -227,17 +227,17 @@ namespace Box2D {
 		// - edge points[1]-points[2]
 		// - inside the triangle
 		public void Solve3() {
-			b2Vec2 w1 = m_v1.w;
-			b2Vec2 w2 = m_v2.w;
-			b2Vec2 w3 = m_v3.w;
+			Vec2 w1 = m_v1.w;
+			Vec2 w2 = m_v2.w;
+			Vec2 w3 = m_v3.w;
 
 			// Edge12
 			// [1      1     ][a1] = [1]
 			// [w1.e12 w2.e12][a2] = [0]
 			// a3 = 0
-			b2Vec2 e12 = w2 - w1;
-			float w1e12 = Utilities.b2Dot(w1, e12);
-			float w2e12 = Utilities.b2Dot(w2, e12);
+			Vec2 e12 = w2 - w1;
+			float w1e12 = Utilities.Dot(w1, e12);
+			float w2e12 = Utilities.Dot(w2, e12);
 			float d12_1 = w2e12;
 			float d12_2 = -w1e12;
 
@@ -245,9 +245,9 @@ namespace Box2D {
 			// [1      1     ][a1] = [1]
 			// [w1.e13 w3.e13][a3] = [0]
 			// a2 = 0
-			b2Vec2 e13 = w3 - w1;
-			float w1e13 = Utilities.b2Dot(w1, e13);
-			float w3e13 = Utilities.b2Dot(w3, e13);
+			Vec2 e13 = w3 - w1;
+			float w1e13 = Utilities.Dot(w1, e13);
+			float w3e13 = Utilities.Dot(w3, e13);
 			float d13_1 = w3e13;
 			float d13_2 = -w1e13;
 
@@ -255,18 +255,18 @@ namespace Box2D {
 			// [1      1     ][a2] = [1]
 			// [w2.e23 w3.e23][a3] = [0]
 			// a1 = 0
-			b2Vec2 e23 = w3 - w2;
-			float w2e23 = Utilities.b2Dot(w2, e23);
-			float w3e23 = Utilities.b2Dot(w3, e23);
+			Vec2 e23 = w3 - w2;
+			float w2e23 = Utilities.Dot(w2, e23);
+			float w3e23 = Utilities.Dot(w3, e23);
 			float d23_1 = w3e23;
 			float d23_2 = -w2e23;
 
 			// Triangle123
-			float n123 = Utilities.b2Cross(e12, e13);
+			float n123 = Utilities.Cross(e12, e13);
 
-			float d123_1 = n123 * Utilities.b2Cross(w2, w3);
-			float d123_2 = n123 * Utilities.b2Cross(w3, w1);
-			float d123_3 = n123 * Utilities.b2Cross(w1, w2);
+			float d123_1 = n123 * Utilities.Cross(w2, w3);
+			float d123_2 = n123 * Utilities.Cross(w3, w1);
+			float d123_3 = n123 * Utilities.Cross(w1, w2);
 
 			// w1 region
 			if (d12_2 <= 0.0f && d13_2 <= 0.0f) {
@@ -329,11 +329,11 @@ namespace Box2D {
 		}
 
 
-		public b2SimplexVertex m_v1, m_v2, m_v3;
+		public SimplexVertex m_v1, m_v2, m_v3;
 
-		public b2SimplexVertex[] verticies {
+		public SimplexVertex[] verticies {
 			get {
-				return new b2SimplexVertex[] { m_v1, m_v2, m_v3 };
+				return new SimplexVertex[] { m_v1, m_v2, m_v3 };
 			}
 		}
 		public int m_count;

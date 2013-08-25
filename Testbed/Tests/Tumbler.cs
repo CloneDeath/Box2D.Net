@@ -12,30 +12,30 @@ namespace Testbed.Tests {
 
 		public Tumbler()
 		{
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 			}
 
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.allowSleep = false;
 				bd.position.Set(0.0f, 10.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape = new b2PolygonShape();
-				shape.SetAsBox(0.5f, 10.0f, new b2Vec2( 10.0f, 0.0f), 0.0f);
+				PolygonShape shape = new PolygonShape();
+				shape.SetAsBox(0.5f, 10.0f, new Vec2( 10.0f, 0.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
-				shape.SetAsBox(0.5f, 10.0f, new b2Vec2(-10.0f, 0.0f), 0.0f);
+				shape.SetAsBox(0.5f, 10.0f, new Vec2(-10.0f, 0.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
-				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, 10.0f), 0.0f);
+				shape.SetAsBox(10.0f, 0.5f, new Vec2(0.0f, 10.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
-				shape.SetAsBox(10.0f, 0.5f, new b2Vec2(0.0f, -10.0f), 0.0f);
+				shape.SetAsBox(10.0f, 0.5f, new Vec2(0.0f, -10.0f), 0.0f);
 				body.CreateFixture(shape, 5.0f);
 
-				b2RevoluteJointDef jd = new b2RevoluteJointDef();
+				RevoluteJointDef jd = new RevoluteJointDef();
 				jd.bodyA = ground;
 				jd.bodyB = body;
 				jd.localAnchorA.Set(0.0f, 10.0f);
@@ -44,24 +44,24 @@ namespace Testbed.Tests {
 				jd.motorSpeed = 0.05f * (float)Math.PI;
 				jd.maxMotorTorque = 1e8f;
 				jd.enableMotor = true;
-				m_joint = (b2RevoluteJoint)m_world.CreateJoint(jd);
+				m_joint = (RevoluteJoint)m_world.CreateJoint(jd);
 			}
 
 			m_count = 0;
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
 			if (m_count < e_count)
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 10.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.125f, 0.125f);
 				body.CreateFixture(shape, 1.0f);
 
@@ -74,7 +74,7 @@ namespace Testbed.Tests {
 			return new Tumbler();
 		}
 
-		b2RevoluteJoint m_joint;
+		RevoluteJoint m_joint;
 		int m_count;
 	};
 }

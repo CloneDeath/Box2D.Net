@@ -14,16 +14,16 @@ namespace Testbed.Tests {
 	// the ray will always miss one type of polygon.
 
 	// This callback finds the closest hit. Polygon 0 is filtered.
-	class RayCastClosestCallback : b2RayCastCallback
+	class RayCastClosestCallback : RayCastCallback
 	{
 		public RayCastClosestCallback()
 		{
 			m_hit = false;
 		}
 
-		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public override float ReportFixture(Fixture fixture, Vec2 point, Vec2 normal, float fraction)
 		{
-			b2Body body = fixture.GetBody();
+			Body body = fixture.GetBody();
 			if (body.UserData != null)
 			{
 				int index = (int)body.UserData;
@@ -46,22 +46,22 @@ namespace Testbed.Tests {
 		}
 
 		public bool m_hit;
-		public b2Vec2 m_point;
-		public b2Vec2 m_normal;
+		public Vec2 m_point;
+		public Vec2 m_normal;
 	}
 
 	// This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
 	// just checking for obstruction, so the actual fixture and hit point are irrelevant. 
-	class RayCastAnyCallback : b2RayCastCallback
+	class RayCastAnyCallback : RayCastCallback
 	{
 		public RayCastAnyCallback()
 		{
 			m_hit = false;
 		}
 
-		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public override float ReportFixture(Fixture fixture, Vec2 point, Vec2 normal, float fraction)
 		{
-			b2Body body = fixture.GetBody();
+			Body body = fixture.GetBody();
 			if (body.UserData != null)
 			{
 				int index = (int)body.UserData;
@@ -83,14 +83,14 @@ namespace Testbed.Tests {
 		}
 
 		public bool m_hit;
-		public b2Vec2 m_point;
-		public b2Vec2 m_normal;
+		public Vec2 m_point;
+		public Vec2 m_normal;
 	};
 
 	// This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
 	// The fixtures are not necessary reported in order, so we might not capture
 	// the closest fixture.
-	class RayCastMultipleCallback : b2RayCastCallback
+	class RayCastMultipleCallback : RayCastCallback
 	{
 		const int e_maxCount = 3;
 
@@ -99,9 +99,9 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		public override float ReportFixture(b2Fixture fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public override float ReportFixture(Fixture fixture, Vec2 point, Vec2 normal, float fraction)
 		{
-			b2Body body = fixture.GetBody();
+			Body body = fixture.GetBody();
 			if (body.UserData != null)
 			{
 				int index = (int)body.UserData;
@@ -130,8 +130,8 @@ namespace Testbed.Tests {
 			return 1.0f;
 		}
 
-		public b2Vec2[] m_points = new b2Vec2[e_maxCount];
-		public b2Vec2[] m_normals = new b2Vec2[e_maxCount];
+		public Vec2[] m_points = new Vec2[e_maxCount];
+		public Vec2[] m_normals = new Vec2[e_maxCount];
 		public int m_count;
 	};
 
@@ -151,16 +151,16 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -168,7 +168,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -180,7 +180,7 @@ namespace Testbed.Tests {
 				float b = w / (2.0f + (float)Math.Sqrt(2.0f));
 				float s = (float)Math.Sqrt(2.0f) * b;
 
-				b2Vec2[] vertices = new b2Vec2[8];
+				Vec2[] vertices = new Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -218,7 +218,7 @@ namespace Testbed.Tests {
 				m_bodies[m_bodyIndex] = null;
 			}
 
-			b2BodyDef bd = new b2BodyDef();
+			BodyDef bd = new BodyDef();
 
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(0.0f, 20.0f);
@@ -237,14 +237,14 @@ namespace Testbed.Tests {
 
 			if (index < 4)
 			{
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = m_polygons[index];
 				fd.friction = 0.3f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 			else
 			{
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = m_circle;
 				fd.friction = 0.3f;
 
@@ -309,7 +309,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			bool advanceRay = settings.pause == false || settings.singleStep;
 
@@ -332,9 +332,9 @@ namespace Testbed.Tests {
 			}
 
 			float L = 11.0f;
-			b2Vec2 point1 = new b2Vec2(0.0f, 10.0f);
-			b2Vec2 d = new b2Vec2(L * (float)Math.Cos(m_angle), L * (float)Math.Sin(m_angle));
-			b2Vec2 point2 = point1 + d;
+			Vec2 point1 = new Vec2(0.0f, 10.0f);
+			Vec2 d = new Vec2(L * (float)Math.Cos(m_angle), L * (float)Math.Sin(m_angle));
+			Vec2 point2 = point1 + d;
 
 			if (m_mode == Mode.e_closest)
 			{
@@ -345,7 +345,7 @@ namespace Testbed.Tests {
 				{
 					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(100, 225, 100));
 					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(200, 200, 200));
-					b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+					Vec2 head = callback.m_point + 0.5f * callback.m_normal;
 					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 100));
 				}
 				else
@@ -362,7 +362,7 @@ namespace Testbed.Tests {
 				{
 					m_debugDraw.DrawPoint(callback.m_point, 5.0f, Color.FromArgb(100, 225, 100));
 					m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(200, 200, 200));
-					b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+					Vec2 head = callback.m_point + 0.5f * callback.m_normal;
 					m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 100));
 				}
 				else
@@ -378,11 +378,11 @@ namespace Testbed.Tests {
 
 				for (int i = 0; i < callback.m_count; ++i)
 				{
-					b2Vec2 p = callback.m_points[i];
-					b2Vec2 n = callback.m_normals[i];
+					Vec2 p = callback.m_points[i];
+					Vec2 n = callback.m_normals[i];
 					m_debugDraw.DrawPoint(p, 5.0f, Color.FromArgb(100, 225, 100));
 					m_debugDraw.DrawSegment(point1, p, Color.FromArgb(200, 200, 200));
-					b2Vec2 head = p + 0.5f * n;
+					Vec2 head = p + 0.5f * n;
 					m_debugDraw.DrawSegment(p, head, Color.FromArgb(225, 225, 100));
 				}
 			}
@@ -395,36 +395,36 @@ namespace Testbed.Tests {
 	#if ZERO
 			// This case was failing.
 			{
-				b2Vec2[] vertices = new b2Vec2[4];
+				Vec2[] vertices = new Vec2[4];
 				//vertices[0].Set(-22.875f, -3.0f);
 				//vertices[1].Set(22.875f, -3.0f);
 				//vertices[2].Set(22.875f, 3.0f);
 				//vertices[3].Set(-22.875f, 3.0f);
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				//shape.Set(vertices, 4);
 				shape.SetAsBox(22.875f, 3.0f);
 
-				b2RayCastInput input;
+				RayCastInput input;
 				input.p1.Set(10.2725f,1.71372f);
 				input.p2.Set(10.2353f,2.21807f);
 				//input.maxFraction = 0.567623f;
 				input.maxFraction = 0.56762173f;
 
-				b2Transform xf;
+				Transform xf;
 				xf.SetIdentity();
 				xf.position.Set(23.0f, 5.0f);
 
-				b2RayCastOutput output;
+				RayCastOutput output;
 				bool hit;
 				hit = shape.RayCast(out output, input, xf);
 				hit = false;
 
 				Color color(1.0f, 1.0f, 1.0f);
-				b2Vec2[] vs = new b2Vec2[4];
+				Vec2[] vs = new Vec2[4];
 				for (int i = 0; i < 4; ++i)
 				{
-					vs[i] = Utilities.b2Mul(xf, shape.m_vertices[i]);
+					vs[i] = Utilities.Mul(xf, shape.m_vertices[i]);
 				}
 
 				m_debugDraw.DrawPolygon(vs, 4, color);
@@ -439,10 +439,10 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body[] m_bodies = new b2Body[e_maxBodies];
+		Body[] m_bodies = new Body[e_maxBodies];
 		int[] m_userData = new int[e_maxBodies];
-		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
-		b2CircleShape m_circle;
+		PolygonShape[] m_polygons = new PolygonShape[4];
+		CircleShape m_circle;
 
 		float m_angle;
 

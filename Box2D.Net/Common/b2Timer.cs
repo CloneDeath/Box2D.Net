@@ -5,11 +5,11 @@ using System.Text;
 using System.Diagnostics;
 
 namespace Box2D {
-	public class b2Timer {
+	public class Timer {
 		Stopwatch timer;
 
 		/// Constructor
-		public b2Timer(){
+		public Timer(){
 			timer = new Stopwatch();
 			timer.Start();
 		}

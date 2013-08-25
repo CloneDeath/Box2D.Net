@@ -48,7 +48,7 @@ namespace Testbed.Tests {
 			return new DynamicTreeTest();
 		}
 
-		public void Step(Settings settings)
+		public void Step(TestSettings settings)
 		{
 			m_rayActor = null;
 			for (int i = 0; i < e_actorCount; ++i)
@@ -73,7 +73,7 @@ namespace Testbed.Tests {
 			for (int i = 0; i < e_actorCount; ++i)
 			{
 				Actor actor = m_actors[i];
-				if (actor.proxyId == b2TreeNode.b2_nullNode)
+				if (actor.proxyId == TreeNode._nullNode)
 					continue;
 
 				Color cv = Color.FromArgb(225, 225, 225);
@@ -106,7 +106,7 @@ namespace Testbed.Tests {
 			if (m_rayActor != null)
 			{
 				Color cr = Color.FromArgb(50, 50, 225);
-				b2Vec2 p = m_rayCastInput.p1 + m_rayActor.fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
+				Vec2 p = m_rayCastInput.p1 + m_rayActor.fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
 				m_debugDraw.DrawPoint(p, 6.0f, cr);
 			}
 
@@ -141,15 +141,15 @@ namespace Testbed.Tests {
 		public bool QueryCallback(int proxyId)
 		{
 			Actor actor = (Actor)m_tree.GetUserData(proxyId);
-			actor.overlap = b2Collision.b2TestOverlap(m_queryAABB, actor.aabb);
+			actor.overlap = Collision.TestOverlap(m_queryAABB, actor.aabb);
 			return true;
 		}
 
-		public float RayCastCallback(b2RayCastInput input, int proxyId)
+		public float RayCastCallback(RayCastInput input, int proxyId)
 		{
 			Actor actor = (Actor)m_tree.GetUserData(proxyId);
 
-			b2RayCastOutput output;
+			RayCastOutput output;
 			bool hit = actor.aabb.RayCast(out output, input);
 
 			if (hit)
@@ -165,15 +165,15 @@ namespace Testbed.Tests {
 
 		private class Actor
 		{
-			public b2AABB aabb;
+			public AABB aabb;
 			public float fraction;
 			public bool overlap;
 			public int proxyId;
 		};
 
-		private void GetRandomAABB(b2AABB aabb)
+		private void GetRandomAABB(AABB aabb)
 		{
-			b2Vec2 w = new b2Vec2(); 
+			Vec2 w = new Vec2(); 
 			w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
 			//aabb.lowerBound.x = -m_proxyExtent;
 			//aabb.lowerBound.y = -m_proxyExtent + m_worldExtent;
@@ -182,9 +182,9 @@ namespace Testbed.Tests {
 			aabb.upperBound = aabb.lowerBound + w;
 		}
 
-		private void MoveAABB(b2AABB aabb)
+		private void MoveAABB(AABB aabb)
 		{
-			b2Vec2 d;
+			Vec2 d;
 			d.x = RandomFloat(-0.5f, 0.5f);
 			d.y = RandomFloat(-0.5f, 0.5f);
 			//d.x = 2.0f;
@@ -192,10 +192,10 @@ namespace Testbed.Tests {
 			aabb.lowerBound += d;
 			aabb.upperBound += d;
 
-			b2Vec2 c0 = 0.5f * (aabb.lowerBound + aabb.upperBound);
-			b2Vec2 min = new b2Vec2(); min.Set(-m_worldExtent, 0.0f);
-			b2Vec2 max = new b2Vec2(); max.Set(m_worldExtent, 2.0f * m_worldExtent);
-			b2Vec2 c = Utilities.b2Clamp(c0, min, max);
+			Vec2 c0 = 0.5f * (aabb.lowerBound + aabb.upperBound);
+			Vec2 min = new Vec2(); min.Set(-m_worldExtent, 0.0f);
+			Vec2 max = new Vec2(); max.Set(m_worldExtent, 2.0f * m_worldExtent);
+			Vec2 c = Utilities.Clamp(c0, min, max);
 
 			aabb.lowerBound += c - c0;
 			aabb.upperBound += c - c0;
@@ -207,7 +207,7 @@ namespace Testbed.Tests {
 			{
 				int j = rand.Next(e_actorCount);
 				Actor actor = m_actors[j];
-				if (actor.proxyId == b2TreeNode.b2_nullNode)
+				if (actor.proxyId == TreeNode._nullNode)
 				{
 					GetRandomAABB(actor.aabb);
 					actor.proxyId = m_tree.CreateProxy(actor.aabb, actor);
@@ -222,10 +222,10 @@ namespace Testbed.Tests {
 			{
 				int j = rand.Next(e_actorCount);
 				Actor actor = m_actors[j];
-				if (actor.proxyId != b2TreeNode.b2_nullNode)
+				if (actor.proxyId != TreeNode._nullNode)
 				{
 					m_tree.DestroyProxy(actor.proxyId);
-					actor.proxyId = b2TreeNode.b2_nullNode;
+					actor.proxyId = TreeNode._nullNode;
 					return;
 				}
 			}
@@ -237,14 +237,14 @@ namespace Testbed.Tests {
 			{
 				int j = rand.Next(e_actorCount);
 				Actor actor = m_actors[j];
-				if (actor.proxyId == b2TreeNode.b2_nullNode)
+				if (actor.proxyId == TreeNode._nullNode)
 				{
 					continue;
 				}
 
-				b2AABB aabb0 = actor.aabb;
+				AABB aabb0 = actor.aabb;
 				MoveAABB(actor.aabb);
-				b2Vec2 displacement = actor.aabb.GetCenter() - aabb0.GetCenter();
+				Vec2 displacement = actor.aabb.GetCenter() - aabb0.GetCenter();
 				m_tree.MoveProxy(actor.proxyId, actor.aabb, displacement);
 				return;
 			}
@@ -276,12 +276,12 @@ namespace Testbed.Tests {
 
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				if (m_actors[i].proxyId == b2TreeNode.b2_nullNode)
+				if (m_actors[i].proxyId == TreeNode._nullNode)
 				{
 					continue;
 				}
 
-				bool overlap = b2Collision.b2TestOverlap(m_queryAABB, m_actors[i].aabb);
+				bool overlap = Collision.TestOverlap(m_queryAABB, m_actors[i].aabb);
 				Utilities.Assert(overlap == m_actors[i].overlap);
 			}
 		}
@@ -290,22 +290,22 @@ namespace Testbed.Tests {
 		{
 			m_rayActor = null;
 
-			b2RayCastInput input = m_rayCastInput;
+			RayCastInput input = m_rayCastInput;
 
 			// Ray cast against the dynamic tree.
 			m_tree.RayCast(this, input);
 
 			// Brute force ray cast.
 			Actor bruteActor = null;
-			b2RayCastOutput bruteOutput = new b2RayCastOutput();
+			RayCastOutput bruteOutput = new RayCastOutput();
 			for (int i = 0; i < e_actorCount; ++i)
 			{
-				if (m_actors[i].proxyId == b2TreeNode.b2_nullNode)
+				if (m_actors[i].proxyId == TreeNode._nullNode)
 				{
 					continue;
 				}
 
-				b2RayCastOutput output;
+				RayCastOutput output;
 				bool hit = m_actors[i].aabb.RayCast(out output, input);
 				if (hit)
 				{
@@ -324,10 +324,10 @@ namespace Testbed.Tests {
 		private float m_worldExtent;
 		private float m_proxyExtent;
 
-		private b2DynamicTree m_tree;
-		private b2AABB m_queryAABB;
-		private b2RayCastInput m_rayCastInput;
-		private b2RayCastOutput m_rayCastOutput;
+		private DynamicTree m_tree;
+		private AABB m_queryAABB;
+		private RayCastInput m_rayCastInput;
+		private RayCastOutput m_rayCastOutput;
 		private Actor m_rayActor;
 		private Actor[] m_actors = new Actor[e_actorCount];
 		private int m_stepCount;

@@ -4,27 +4,27 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	class b2ChainAndPolygonContact : b2Contact
+	class ChainAndPolygonContact : Contact
 	{
-		public static b2Contact Create(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
-			return new b2ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
+		public static Contact Create(Fixture fixtureA, int indexA, Fixture fixtureB, int indexB){
+			return new ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
 		}
 
-		public static void Destroy(b2Contact contact){}
+		public static void Destroy(Contact contact){}
 
-		public b2ChainAndPolygonContact(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB) : base(fixtureA, indexA, fixtureB, indexB)
+		public ChainAndPolygonContact(Fixture fixtureA, int indexA, Fixture fixtureB, int indexB) : base(fixtureA, indexA, fixtureB, indexB)
 		{
 			Utilities.Assert(m_fixtureA.GetShapeType() == ShapeType.Chain);
 			Utilities.Assert(m_fixtureB.GetShapeType() == ShapeType.Polygon);
 		}
 
 
-		public override void Evaluate(out b2Manifold manifold, b2Transform xfA, b2Transform xfB) {
-			b2ChainShape chain = (b2ChainShape)m_fixtureA.GetShape();
-			b2EdgeShape edge;
+		public override void Evaluate(out Manifold manifold, Transform xfA, Transform xfB) {
+			ChainShape chain = (ChainShape)m_fixtureA.GetShape();
+			EdgeShape edge;
 			chain.GetChildEdge(out edge, m_indexA);
-			b2Collision.b2CollideEdgeAndPolygon(out manifold, edge, xfA,
-										(b2PolygonShape)m_fixtureB.GetShape(), xfB);
+			Collision.CollideEdgeAndPolygon(out manifold, edge, xfA,
+										(PolygonShape)m_fixtureB.GetShape(), xfB);
 		}
 	}
 }

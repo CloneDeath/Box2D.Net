@@ -9,13 +9,13 @@ using GLImp;
 using OpenTK.Input;
 
 namespace Testbed.Tests {
-	/// This tests stacking. It also shows how to use b2World::Query
-	/// and b2TestOverlap.
+	/// This tests stacking. It also shows how to use World::Query
+	/// and TestOverlap.
 
-	/// This callback is called by b2World::QueryAABB. We find all the fixtures
-	/// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
+	/// This callback is called by World::QueryAABB. We find all the fixtures
+	/// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
 	/// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-	class PolyShapesCallback : b2QueryCallback
+	class PolyShapesCallback : QueryCallback
 	{	
 		const int e_maxCount = 4;
 
@@ -24,18 +24,18 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		public void DrawFixture(b2Fixture fixture)
+		public void DrawFixture(Fixture fixture)
 		{
 			Color color = Color.FromArgb(245, 245, 150);
-			b2Transform xf = fixture.GetBody().GetTransform();
+			Transform xf = fixture.GetBody().GetTransform();
 
 			switch (fixture.GetShapeType())
 			{
 			case ShapeType.Circle:
 				{
-					b2CircleShape circle = (b2CircleShape)fixture.GetShape();
+					CircleShape circle = (CircleShape)fixture.GetShape();
 
-					b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
+					Vec2 center = Utilities.Mul(xf, circle.m_p);
 					float radius = circle.m_radius;
 
 					m_debugDraw.DrawCircle(center, radius, color);
@@ -44,14 +44,14 @@ namespace Testbed.Tests {
 
 			case ShapeType.Polygon:
 				{
-					b2PolygonShape poly = (b2PolygonShape)fixture.GetShape();
+					PolygonShape poly = (PolygonShape)fixture.GetShape();
 					int vertexCount = poly.m_count;
-					Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
-					b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+					Utilities.Assert(vertexCount <= Settings._maxPolygonVertices);
+					Vec2[] vertices = new Vec2[Settings._maxPolygonVertices];
 
 					for (int i = 0; i < vertexCount; ++i)
 					{
-						vertices[i] = Utilities.b2Mul(xf, poly.m_vertices[i]);
+						vertices[i] = Utilities.Mul(xf, poly.m_vertices[i]);
 					}
 
 					m_debugDraw.DrawPolygon(vertices, vertexCount, color);
@@ -65,17 +65,17 @@ namespace Testbed.Tests {
 
 		/// Called for each fixture found in the query AABB.
 		/// @return false to terminate the query.
-		public override bool ReportFixture(b2Fixture fixture)
+		public override bool ReportFixture(Fixture fixture)
 		{
 			if (m_count == e_maxCount)
 			{
 				return false;
 			}
 
-			b2Body body = fixture.GetBody();
-			b2Shape shape = fixture.GetShape();
+			Body body = fixture.GetBody();
+			Shape shape = fixture.GetShape();
 
-			bool overlap = b2Collision.b2TestOverlap(shape, 0, m_circle, 0, body.GetTransform(), m_transform);
+			bool overlap = Collision.TestOverlap(shape, 0, m_circle, 0, body.GetTransform(), m_transform);
 
 			if (overlap)
 			{
@@ -86,9 +86,9 @@ namespace Testbed.Tests {
 			return true;
 		}
 
-		public b2CircleShape m_circle;
-		public b2Transform m_transform;
-		public b2Draw m_debugDraw;
+		public CircleShape m_circle;
+		public Transform m_transform;
+		public Draw m_debugDraw;
 		public int m_count;
 	};
 
@@ -99,16 +99,16 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -116,7 +116,7 @@ namespace Testbed.Tests {
 			}
 		
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -128,7 +128,7 @@ namespace Testbed.Tests {
 				float b = w / (2.0f + (float)Math.Sqrt(2.0f));
 				float s = (float)Math.Sqrt(2.0f) * b;
 
-				b2Vec2[] vertices = new b2Vec2[8];
+				Vec2[] vertices = new Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -161,8 +161,8 @@ namespace Testbed.Tests {
 				m_bodies[m_bodyIndex] = null;
 			}
 
-			b2BodyDef bd = new b2BodyDef();
-			bd.type = b2BodyType.b2_dynamicBody;
+			BodyDef bd = new BodyDef();
+			bd.type = BodyType._dynamicBody;
 
 			float x = RandomFloat(-2.0f, 2.0f);
 			bd.position.Set(x, 10.0f);
@@ -177,7 +177,7 @@ namespace Testbed.Tests {
 
 			if (index < 4)
 			{
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = m_polygons[index];
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
@@ -185,7 +185,7 @@ namespace Testbed.Tests {
 			}
 			else
 			{
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = m_circle;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
@@ -241,7 +241,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
@@ -251,7 +251,7 @@ namespace Testbed.Tests {
 			callback.m_transform.SetIdentity();
 			callback.m_debugDraw = m_debugDraw;
 
-			b2AABB aabb;
+			AABB aabb;
 			callback.m_circle.ComputeAABB(out aabb, callback.m_transform, 0);
 
 			m_world.QueryAABB(callback, aabb);
@@ -273,8 +273,8 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body[] m_bodies = new b2Body[k_maxBodies];
-		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
-		b2CircleShape m_circle;
+		Body[] m_bodies = new Body[k_maxBodies];
+		PolygonShape[] m_polygons = new PolygonShape[4];
+		CircleShape m_circle;
 	};
 }

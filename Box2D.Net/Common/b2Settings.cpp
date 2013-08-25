@@ -16,26 +16,26 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Common/b2Settings.h>
+#include <Box2D/Common/Settings.h>
 #include <cstdlib>
 #include <cstdio>
 #include <cstdarg>
 
-b2Version b2_version = {2, 3, 0};
+Version _version = {2, 3, 0};
 
 // Memory allocators. Modify these to use your own allocator.
-void* b2Alloc(int size)
+void* Alloc(int size)
 {
 	return malloc(size);
 }
 
-void b2Free(void* mem)
+void Free(void* mem)
 {
 	free(mem);
 }
 
 // You can modify this to use your logging facility.
-void b2Settings.b2Log(const char* string, ...)
+void Settings.Log(const char* string, ...)
 {
 	va_list args;
 	va_start(args, string);

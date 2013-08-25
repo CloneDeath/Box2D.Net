@@ -10,9 +10,9 @@ namespace Testbed.Tests {
 	{
 		public AddPair()
 		{
-			m_world.SetGravity(new b2Vec2(0.0f,0.0f));
+			m_world.SetGravity(new Vec2(0.0f,0.0f));
 			{
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_p.SetZero();
 				shape.m_radius = 0.1f;
 
@@ -23,24 +23,24 @@ namespace Testbed.Tests {
 			
 				for (int i = 0; i < 400; ++i)
 				{
-					b2BodyDef bd = new b2BodyDef();
-					bd.type = b2BodyType.b2_dynamicBody;
-					bd.position = new b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
-					b2Body body = m_world.CreateBody(bd);
+					BodyDef bd = new BodyDef();
+					bd.type = BodyType._dynamicBody;
+					bd.position = new Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
+					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(shape, 0.01f);
 				}
 			}
 		
 			{
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(1.5f, 1.5f);
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(-40.0f,5.0f);
 				bd.bullet = true;
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 1.0f);
-				body.SetLinearVelocity(new b2Vec2(150.0f, 0.0f));
+				body.SetLinearVelocity(new Vec2(150.0f, 0.0f));
 			}
 		}
 

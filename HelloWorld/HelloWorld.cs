@@ -14,22 +14,22 @@ namespace HelloWorld {
 		public static int Main(string[] args)
 		{
 			// Define the gravity vector.
-			b2Vec2 gravity = new b2Vec2(0.0f, -10.0f);
+			Vec2 gravity = new Vec2(0.0f, -10.0f);
 
 			// Construct a world object, which will hold and simulate the rigid bodies.
-			b2World world = new b2World(gravity);
+			World world = new World(gravity);
 
 			// Define the ground body.
-			b2BodyDef groundBodyDef = new b2BodyDef();
+			BodyDef groundBodyDef = new BodyDef();
 			groundBodyDef.position.Set(0.0f, -10.0f);
 
 			// Call the body factory which allocates memory for the ground body
 			// from a pool and creates the ground box shape (also from a pool).
 			// The body is also added to the world.
-			b2Body groundBody = world.CreateBody(groundBodyDef);
+			Body groundBody = world.CreateBody(groundBodyDef);
 
 			// Define the ground box shape.
-			b2PolygonShape groundBox = new b2PolygonShape();
+			PolygonShape groundBox = new PolygonShape();
 
 			// The extents are the half-widths of the box.
 			groundBox.SetAsBox(50.0f, 10.0f);
@@ -38,17 +38,17 @@ namespace HelloWorld {
 			groundBody.CreateFixture(groundBox, 0.0f);
 
 			// Define the dynamic body. We set its position and call the body factory.
-			b2BodyDef bodyDef = new b2BodyDef();
-			bodyDef.type = b2BodyType.b2_dynamicBody;
-			bodyDef.position = new b2Vec2(0.0f, 4.0f);
-			b2Body body = world.CreateBody(bodyDef);
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.type = BodyType._dynamicBody;
+			bodyDef.position = new Vec2(0.0f, 4.0f);
+			Body body = world.CreateBody(bodyDef);
 
 			// Define another box shape for our dynamic body.
-			b2PolygonShape dynamicBox = new b2PolygonShape();
+			PolygonShape dynamicBox = new PolygonShape();
 			dynamicBox.SetAsBox(1.0f, 1.0f);
 
 			// Define the dynamic body fixture.
-			b2FixtureDef fixtureDef = new b2FixtureDef();
+			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = dynamicBox;
 
 			// Set the box density to be non-zero, so it will be dynamic.
@@ -75,7 +75,7 @@ namespace HelloWorld {
 				world.Step(timeStep, velocityIterations, positionIterations);
 
 				// Now print the position and angle of the body.
-				b2Vec2 position = body.GetPosition();
+				Vec2 position = body.GetPosition();
 				float angle = body.GetAngle();
 
 				Console.WriteLine("{0} {1} {2}", position.x.ToString("0000.00"), position.y.ToString("0000.00"), angle.ToString("0000.00"));

@@ -19,43 +19,43 @@
 #ifndef B2_BLOCK_ALLOCATOR_H
 #define B2_BLOCK_ALLOCATOR_H
 
-#include <Box2D/Common/b2Settings.h>
+#include <Box2D/Common/Settings.h>
 
-const int b2_chunkSize = 16 * 1024;
-const int b2_maxBlockSize = 640;
-const int b2_blockSizes = 14;
-const int b2_chunkArrayIncrement = 128;
+const int _chunkSize = 16 * 1024;
+const int _maxBlockSize = 640;
+const int _blockSizes = 14;
+const int _chunkArrayIncrement = 128;
 
-struct b2Block;
-struct b2Chunk;
+struct Block;
+struct Chunk;
 
 /// This is a small object allocator used for allocating small
 /// objects that persist for more than one time step.
 /// See: http://www.codeproject.com/useritems/Small_Block_Allocator.asp
-class b2BlockAllocator
+class BlockAllocator
 {
 
-	b2BlockAllocator();
-	~b2BlockAllocator();
+	BlockAllocator();
+	~BlockAllocator();
 
-	/// Allocate memory. This will use b2Alloc if the size is larger than b2_maxBlockSize.
+	/// Allocate memory. This will use Alloc if the size is larger than _maxBlockSize.
 	void* Allocate(int size);
 
-	/// Free memory. This will use b2Free if the size is larger than b2_maxBlockSize.
+	/// Free memory. This will use Free if the size is larger than _maxBlockSize.
 	void Free(void* p, int size);
 
 	void Clear();
 
 private:
 
-	b2Chunk* m_chunks;
+	Chunk* m_chunks;
 	int m_chunkCount;
 	int m_chunkSpace;
 
-	b2Block* m_freeLists[b2_blockSizes];
+	Block* m_freeLists[_blockSizes];
 
-	static int s_blockSizes[b2_blockSizes];
-	static byte s_blockSizeLookup[b2_maxBlockSize + 1];
+	static int s_blockSizes[_blockSizes];
+	static byte s_blockSizeLookup[_maxBlockSize + 1];
 	static bool s_blockSizeLookupInitialized;
 };
 

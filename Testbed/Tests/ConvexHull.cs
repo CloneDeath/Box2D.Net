@@ -11,7 +11,7 @@ using OpenTK.Input;
 namespace Testbed.Tests {
 	class ConvexHull : Test
 	{
-		const int e_count = b2Settings.b2_maxPolygonVertices;
+		const int e_count = Settings._maxPolygonVertices;
 
 		public ConvexHull()
 		{
@@ -21,8 +21,8 @@ namespace Testbed.Tests {
 
 		public void Generate()
 		{
-			b2Vec2 lowerBound = new b2Vec2(-8.0f, -8.0f);
-			b2Vec2 upperBound = new b2Vec2(8.0f, 8.0f);
+			Vec2 lowerBound = new Vec2(-8.0f, -8.0f);
+			Vec2 upperBound = new Vec2(8.0f, 8.0f);
 
 			for (int i = 0; i < e_count; ++i)
 			{
@@ -31,8 +31,8 @@ namespace Testbed.Tests {
 
 				// Clamp onto a square to help create collinearities.
 				// This will stress the convex hull algorithm.
-				b2Vec2 v = new b2Vec2(x, y);
-				v = Utilities.b2Clamp(v, lowerBound, upperBound);
+				Vec2 v = new Vec2(x, y);
+				v = Utilities.Clamp(v, lowerBound, upperBound);
 				m_points[i] = v;
 			}
 		}
@@ -54,11 +54,11 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
-			b2PolygonShape shape = new b2PolygonShape();
+			PolygonShape shape = new PolygonShape();
 			shape.Set(m_points, e_count);
 
 			m_debugDraw.DrawString("Press g to generate a new random convex hull");
@@ -69,7 +69,7 @@ namespace Testbed.Tests {
 			for (int i = 0; i < e_count; ++i)
 			{
 				m_debugDraw.DrawPoint(m_points[i], 2.0f, Color.FromArgb(225, 128, 128));
-				//m_debugDraw.DrawString(m_points[i] + new b2Vec2(0.05f, 0.05f), "%d", i);
+				//m_debugDraw.DrawString(m_points[i] + new Vec2(0.05f, 0.05f), "%d", i);
 			}
 
 			if (shape.Validate() == false)
@@ -83,7 +83,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		b2Vec2[] m_points = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+		Vec2[] m_points = new Vec2[Settings._maxPolygonVertices];
 		bool m_auto;
 	};
 }

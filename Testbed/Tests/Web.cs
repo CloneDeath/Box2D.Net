@@ -13,22 +13,22 @@ namespace Testbed.Tests {
 	{
 		public Web()
 		{
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 
 				bd.position.Set(-5.0f, 5.0f);
 				m_bodies[0] = m_world.CreateBody(bd);
@@ -46,8 +46,8 @@ namespace Testbed.Tests {
 				m_bodies[3] = m_world.CreateBody(bd);
 				m_bodies[3].CreateFixture(shape, 5.0f);
 
-				b2DistanceJointDef jd = new b2DistanceJointDef();
-				b2Vec2 p1, p2, d;
+				DistanceJointDef jd = new DistanceJointDef();
+				Vec2 p1, p2, d;
 
 				jd.frequencyHz = 2.0f;
 				jd.dampingRatio = 0.0f;
@@ -161,7 +161,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 			m_debugDraw.DrawString("This demonstrates a soft distance joint.");
@@ -170,7 +170,7 @@ namespace Testbed.Tests {
 			
 		}
 
-		public override void JointDestroyed(b2Joint joint)
+		public override void JointDestroyed(Joint joint)
 		{
 			for (int i = 0; i < 8; ++i)
 			{
@@ -187,7 +187,7 @@ namespace Testbed.Tests {
 			return new Web();
 		}
 
-		b2Body[] m_bodies = new b2Body[4];
-		b2Joint[] m_joints = new b2Joint[8];
+		Body[] m_bodies = new Body[4];
+		Joint[] m_joints = new Joint[8];
 	};
 }

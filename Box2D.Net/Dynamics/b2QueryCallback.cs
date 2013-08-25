@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Box2D {
 	/// Callback class for AABB queries.
-	/// See b2World::Query
-	public abstract class b2QueryCallback
+	/// See World::Query
+	public abstract class QueryCallback
 	{
-		~b2QueryCallback() {}
+		~QueryCallback() {}
 
 		/// Called for each fixture found in the query AABB.
 		/// @return false to terminate the query.
-		public abstract bool ReportFixture(b2Fixture fixture); //fixture was pointer
+		public abstract bool ReportFixture(Fixture fixture); //fixture was pointer
 	}
 }

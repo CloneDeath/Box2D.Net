@@ -11,58 +11,58 @@ namespace Box2D {
 	/// NOTE: this joint is not documented in the manual because it was
 	/// developed to be used in the testbed. If you want to learn how to
 	/// use the mouse joint, look at the testbed.
-	public class b2MouseJoint : b2Joint
+	public class MouseJoint : Joint
 	{
-		protected b2Vec2 m_localAnchorB;
-		protected b2Vec2 m_targetA;
+		protected Vec2 m_localAnchorB;
+		protected Vec2 m_targetA;
 		protected float m_frequencyHz;
 		protected float m_dampingRatio;
 		protected float m_beta;
 	
 		// Solver shared
-		protected b2Vec2 m_impulse;
+		protected Vec2 m_impulse;
 		protected float m_maxForce;
 		protected float m_gamma;
 
 		// Solver temp
 		protected int m_indexA;
 		protected int m_indexB;
-		protected b2Vec2 m_rB;
-		protected b2Vec2 m_localCenterB;
+		protected Vec2 m_rB;
+		protected Vec2 m_localCenterB;
 		protected float m_invMassB;
 		protected float m_invIB;
-		protected b2Mat22 m_mass;
-		protected b2Vec2 m_C;
+		protected Mat22 m_mass;
+		protected Vec2 m_C;
 
-		/// Implements b2Joint.
-		public override b2Vec2 GetAnchorA(){
+		/// Implements Joint.
+		public override Vec2 GetAnchorA(){
 			return m_targetA;
 		}
 
-		/// Implements b2Joint.
-		public override b2Vec2 GetAnchorB() {
+		/// Implements Joint.
+		public override Vec2 GetAnchorB() {
 			return m_bodyB.GetWorldPoint(m_localAnchorB);
 		}
 
-		/// Implements b2Joint.
-		public override b2Vec2 GetReactionForce(float inv_dt) {
+		/// Implements Joint.
+		public override Vec2 GetReactionForce(float inv_dt) {
 			return inv_dt * m_impulse;
 		}
 
-		/// Implements b2Joint.
+		/// Implements Joint.
 		public override float GetReactionTorque(float inv_dt) {
 			return inv_dt * 0.0f;
 		}
 
 		/// Use this to update the target point.
-		public void SetTarget(b2Vec2 target){
+		public void SetTarget(Vec2 target){
 			if (m_bodyB.IsAwake() == false)
 			{
 				m_bodyB.SetAwake(true);
 			}
 			m_targetA = target;
 		}
-		public b2Vec2 GetTarget(){
+		public Vec2 GetTarget(){
 			return m_targetA;
 		}
 
@@ -91,10 +91,10 @@ namespace Box2D {
 		}
 
 		/// The mouse joint does not support dumping.
-		public override void Dump() { b2Settings.b2Log("Mouse joint dumping is not supported.\n"); }
+		public override void Dump() { Settings.Log("Mouse joint dumping is not supported.\n"); }
 
-		/// Implement b2Joint::ShiftOrigin
-		public override void ShiftOrigin(b2Vec2 newOrigin) {
+		/// Implement Joint::ShiftOrigin
+		public override void ShiftOrigin(Vec2 newOrigin) {
 			m_targetA -= newOrigin;
 		}
 
@@ -105,14 +105,14 @@ namespace Box2D {
 		// J = [I r_skew]
 		// Identity used:
 		// w k % (rx i + ry j) = w * (-ry i + rx j)
-		internal b2MouseJoint(b2MouseJointDef def) : base(def){
+		internal MouseJoint(MouseJointDef def) : base(def){
 			Utilities.Assert(def.target.IsValid());
 			Utilities.Assert(Utilities.IsValid(def.maxForce) && def.maxForce >= 0.0f);
 			Utilities.Assert(Utilities.IsValid(def.frequencyHz) && def.frequencyHz >= 0.0f);
 			Utilities.Assert(Utilities.IsValid(def.dampingRatio) && def.dampingRatio >= 0.0f);
 
 			m_targetA = def.target;
-			m_localAnchorB = Utilities.b2MulT(m_bodyB.GetTransform(), m_targetA);
+			m_localAnchorB = Utilities.MulT(m_bodyB.GetTransform(), m_targetA);
 
 			m_maxForce = def.maxForce;
 			m_impulse.SetZero();
@@ -124,19 +124,19 @@ namespace Box2D {
 			m_gamma = 0.0f;
 		}
 
-		internal override void InitVelocityConstraints(b2SolverData data) {
+		internal override void InitVelocityConstraints(SolverData data) {
 			throw new NotImplementedException();
 			//m_indexB = m_bodyB.m_islandIndex;
 			//m_localCenterB = m_bodyB.m_sweep.localCenter;
 			//m_invMassB = m_bodyB.m_invMass;
 			//m_invIB = m_bodyB.m_invI;
 
-			//b2Vec2 cB = data.positions[m_indexB].c;
+			//Vec2 cB = data.positions[m_indexB].c;
 			//float aB = data.positions[m_indexB].a;
-			//b2Vec2 vB = data.velocities[m_indexB].v;
+			//Vec2 vB = data.velocities[m_indexB].v;
 			//float wB = data.velocities[m_indexB].w;
 
-			//b2Rot qB(aB);
+			//Rot qB(aB);
 
 			//float mass = m_bodyB.GetMass();
 
@@ -162,12 +162,12 @@ namespace Box2D {
 			//m_beta = h * k * m_gamma;
 
 			//// Compute the effective mass matrix.
-			//m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
+			//m_rB = Utilities.Mul(qB, m_localAnchorB - m_localCenterB);
 
 			//// K    = [(1/m1 + 1/m2) * eye(2) - skew(r1) * invI1 * skew(r1) - skew(r2) * invI2 * skew(r2)]
 			////      = [1/m1+1/m2     0    ] + invI1 * [r1.y*r1.y -r1.x*r1.y] + invI2 * [r1.y*r1.y -r1.x*r1.y]
 			////        [    0     1/m1+1/m2]           [-r1.x*r1.y r1.x*r1.x]           [-r1.x*r1.y r1.x*r1.x]
-			//b2Mat22 K;
+			//Mat22 K;
 			//K.ex.x = m_invMassB + m_invIB * m_rB.y * m_rB.y + m_gamma;
 			//K.ex.y = -m_invIB * m_rB.x * m_rB.y;
 			//K.ey.x = K.ex.y;
@@ -185,7 +185,7 @@ namespace Box2D {
 			//{
 			//    m_impulse *= data.step.dtRatio;
 			//    vB += m_invMassB * m_impulse;
-			//    wB += m_invIB * Utilities.b2Cross(m_rB, m_impulse);
+			//    wB += m_invIB * Utilities.Cross(m_rB, m_impulse);
 			//}
 			//else
 			//{
@@ -196,16 +196,16 @@ namespace Box2D {
 			//data.velocities[m_indexB].w = wB;
 		}
 
-		internal override void SolveVelocityConstraints(b2SolverData data) {
+		internal override void SolveVelocityConstraints(SolverData data) {
 			throw new NotImplementedException();
-			//b2Vec2 vB = data.velocities[m_indexB].v;
+			//Vec2 vB = data.velocities[m_indexB].v;
 			//float wB = data.velocities[m_indexB].w;
 
 			//// Cdot = v + cross(w, r)
-			//b2Vec2 Cdot = vB + Utilities.b2Cross(wB, m_rB);
-			//b2Vec2 impulse = Utilities.b2Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
+			//Vec2 Cdot = vB + Utilities.Cross(wB, m_rB);
+			//Vec2 impulse = Utilities.Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
 
-			//b2Vec2 oldImpulse = m_impulse;
+			//Vec2 oldImpulse = m_impulse;
 			//m_impulse += impulse;
 			//float maxImpulse = data.step.dt * m_maxForce;
 			//if (m_impulse.LengthSquared() > maxImpulse * maxImpulse)
@@ -215,13 +215,13 @@ namespace Box2D {
 			//impulse = m_impulse - oldImpulse;
 
 			//vB += m_invMassB * impulse;
-			//wB += m_invIB * Utilities.b2Cross(m_rB, impulse);
+			//wB += m_invIB * Utilities.Cross(m_rB, impulse);
 
 			//data.velocities[m_indexB].v = vB;
 			//data.velocities[m_indexB].w = wB;
 		}
 
-		internal override bool SolvePositionConstraints(b2SolverData data) {
+		internal override bool SolvePositionConstraints(SolverData data) {
 			return true;
 		}
 

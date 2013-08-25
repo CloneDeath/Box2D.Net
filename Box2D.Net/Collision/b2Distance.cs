@@ -4,30 +4,30 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	public class b2Distance {
-		public static int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+	public static partial class Utilities {
+		public static int _gjkCalls, _gjkIters, _gjkMaxIters;
 
 		/// Compute the closest points between two shapes. Supports any combination of:
-		/// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
-		/// On the first call set b2SimplexCache.count to zero.
-		public static void Distance(out b2DistanceOutput output,
-						b2SimplexCache cache,
-						b2DistanceInput input)
+		/// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
+		/// On the first call set SimplexCache.count to zero.
+		public static void Distance(out DistanceOutput output,
+						SimplexCache cache,
+						DistanceInput input)
 		{
-			++b2_gjkCalls;
+			++_gjkCalls;
 
-			b2DistanceProxy proxyA = input.proxyA;
-			b2DistanceProxy proxyB = input.proxyB;
+			DistanceProxy proxyA = input.proxyA;
+			DistanceProxy proxyB = input.proxyB;
 
-			b2Transform transformA = input.transformA;
-			b2Transform transformB = input.transformB;
+			Transform transformA = input.transformA;
+			Transform transformB = input.transformB;
 
 			// Initialize the simplex.
-			b2Simplex simplex = new b2Simplex();
+			Simplex simplex = new Simplex();
 			simplex.ReadCache(cache, proxyA, transformA, proxyB, transformB);
 
 			// Get simplex vertices as an array.
-			b2SimplexVertex[] vertices = simplex.verticies;
+			SimplexVertex[] vertices = simplex.verticies;
 			const int k_maxIters = 20;
 
 			// These store the vertices of the last simplex so that we
@@ -76,7 +76,7 @@ namespace Box2D {
 			    }
 
 			    // Compute closest point.
-			    b2Vec2 p = simplex.GetClosestPoint();
+			    Vec2 p = simplex.GetClosestPoint();
 			    distanceSqr2 = p.LengthSquared();
 
 			    // Ensure progress
@@ -87,7 +87,7 @@ namespace Box2D {
 			    distanceSqr1 = distanceSqr2;
 
 			    // Get search direction.
-			    b2Vec2 d = simplex.GetSearchDirection();
+			    Vec2 d = simplex.GetSearchDirection();
 
 			    // Ensure the search direction is numerically fit.
 			    if (d.LengthSquared() < Single.Epsilon * Single.Epsilon)
@@ -102,17 +102,17 @@ namespace Box2D {
 			    }
 
 			    // Compute a tentative new simplex vertex using support points.
-			    b2SimplexVertex vertex = vertices[simplex.m_count];
-			    vertex.indexA = proxyA.GetSupport(Utilities.b2MulT(transformA.q, -d));
-			    vertex.wA = Utilities.b2Mul(transformA, proxyA.GetVertex(vertex.indexA));
-			    b2Vec2 wBLocal;
-			    vertex.indexB = proxyB.GetSupport(Utilities.b2MulT(transformB.q, d));
-			    vertex.wB = Utilities.b2Mul(transformB, proxyB.GetVertex(vertex.indexB));
+			    SimplexVertex vertex = vertices[simplex.m_count];
+			    vertex.indexA = proxyA.GetSupport(Utilities.MulT(transformA.q, -d));
+			    vertex.wA = Utilities.Mul(transformA, proxyA.GetVertex(vertex.indexA));
+			    Vec2 wBLocal;
+			    vertex.indexB = proxyB.GetSupport(Utilities.MulT(transformB.q, d));
+			    vertex.wB = Utilities.Mul(transformB, proxyB.GetVertex(vertex.indexB));
 			    vertex.w = vertex.wB - vertex.wA;
 
 			    // Iteration count is equated to the number of support point calls.
 			    ++iter;
-			    ++b2_gjkIters;
+			    ++_gjkIters;
 
 			    // Check for duplicate support points. This is the main termination criteria.
 			    bool duplicate = false;
@@ -135,11 +135,11 @@ namespace Box2D {
 			    ++simplex.m_count;
 			}
 
-			b2_gjkMaxIters = Math.Max(b2_gjkMaxIters, iter);
+			_gjkMaxIters = Math.Max(_gjkMaxIters, iter);
 
 			// Prepare output.
 			simplex.GetWitnessPoints(out output.pointA, out output.pointB);
-			output.distance = Utilities.b2Distance(output.pointA, output.pointB);
+			output.distance = Utilities.Distance(output.pointA, output.pointB);
 			output.iterations = iter;
 
 			// Cache the simplex.
@@ -156,7 +156,7 @@ namespace Box2D {
 			        // Shapes are still no overlapped.
 			        // Move the witness points to the outer surface.
 			        output.distance -= rA + rB;
-			        b2Vec2 normal = output.pointB - output.pointA;
+			        Vec2 normal = output.pointB - output.pointA;
 			        normal.Normalize();
 			        output.pointA += rA * normal;
 			        output.pointB -= rB * normal;
@@ -165,7 +165,7 @@ namespace Box2D {
 			    {
 			        // Shapes are overlapped when radii are considered.
 			        // Move the witness points to the middle.
-			        b2Vec2 p = 0.5f * (output.pointA + output.pointB);
+			        Vec2 p = 0.5f * (output.pointA + output.pointB);
 			        output.pointA = p;
 			        output.pointB = p;
 			        output.distance = 0.0f;

@@ -12,15 +12,15 @@ namespace Testbed.Tests {
 	{
 		public BodyTypes()
 		{
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-20.0f, 0.0f), new Vec2(20.0f, 0.0f));
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 
 				ground.CreateFixture(fd);
@@ -28,40 +28,40 @@ namespace Testbed.Tests {
 
 			// Define attachment
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 3.0f);
 				m_attachment = m_world.CreateBody(bd);
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 2.0f);
 				m_attachment.CreateFixture(shape, 2.0f);
 			}
 
 			// Define platform
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(-4.0f, 5.0f);
 				m_platform = m_world.CreateBody(bd);
 
-				b2PolygonShape shape = new b2PolygonShape();
-				shape.SetAsBox(0.5f, 4.0f, new b2Vec2(4.0f, 0.0f), 0.5f * (float)Math.PI);
+				PolygonShape shape = new PolygonShape();
+				shape.SetAsBox(0.5f, 4.0f, new Vec2(4.0f, 0.0f), 0.5f * (float)Math.PI);
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;
 				m_platform.CreateFixture(fd);
 
-				b2RevoluteJointDef rjd = new b2RevoluteJointDef();
-				rjd.Initialize(m_attachment, m_platform, new b2Vec2(0.0f, 5.0f));
+				RevoluteJointDef rjd = new RevoluteJointDef();
+				rjd.Initialize(m_attachment, m_platform, new Vec2(0.0f, 5.0f));
 				rjd.maxMotorTorque = 50.0f;
 				rjd.enableMotor = true;
 				m_world.CreateJoint(rjd);
 
-				b2PrismaticJointDef pjd = new b2PrismaticJointDef();
-				pjd.Initialize(ground, m_platform, new b2Vec2(0.0f, 5.0f), new b2Vec2(1.0f, 0.0f));
+				PrismaticJointDef pjd = new PrismaticJointDef();
+				pjd.Initialize(ground, m_platform, new Vec2(0.0f, 5.0f), new Vec2(1.0f, 0.0f));
 
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
@@ -76,15 +76,15 @@ namespace Testbed.Tests {
 
 			// Create a payload
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 8.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.75f, 0.75f);
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;
@@ -96,27 +96,27 @@ namespace Testbed.Tests {
 		public override void Keyboard()
 		{
 			if (KeyboardManager.IsPressed(Key.D)){
-				m_platform.SetType(b2BodyType.b2_dynamicBody);
+				m_platform.SetType(BodyType._dynamicBody);
 			}
 
 			if (KeyboardManager.IsPressed(Key.S)){
-				m_platform.SetType(b2BodyType.b2_staticBody);
+				m_platform.SetType(BodyType._staticBody);
 			}
 
 			if (KeyboardManager.IsPressed(Key.K)){
-				m_platform.SetType(b2BodyType.b2_kinematicBody);
-				m_platform.SetLinearVelocity(new b2Vec2(-m_speed, 0.0f));
+				m_platform.SetType(BodyType._kinematicBody);
+				m_platform.SetLinearVelocity(new Vec2(-m_speed, 0.0f));
 				m_platform.SetAngularVelocity(0.0f);
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			// Drive the kinematic body.
-			if (m_platform.GetBodyType() == b2BodyType.b2_kinematicBody)
+			if (m_platform.GetBodyType() == BodyType._kinematicBody)
 			{
-				b2Vec2 p = m_platform.GetTransform().p;
-				b2Vec2 v = m_platform.GetLinearVelocity();
+				Vec2 p = m_platform.GetTransform().p;
+				Vec2 v = m_platform.GetLinearVelocity();
 
 				if ((p.x < -10.0f && v.x < 0.0f) ||
 					(p.x > 10.0f && v.x > 0.0f))
@@ -135,8 +135,8 @@ namespace Testbed.Tests {
 			return new BodyTypes();
 		}
 
-		b2Body m_attachment;
-		b2Body m_platform;
+		Body m_attachment;
+		Body m_platform;
 		float m_speed;
 	};
 }

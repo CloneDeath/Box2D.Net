@@ -33,20 +33,20 @@ namespace Testbed.Tests {
 			return new DistanceTest();
 		}
 
-		public void Step(Settings settings)
+		public void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
-			b2DistanceInput input = new b2DistanceInput();
+			DistanceInput input = new DistanceInput();
 			input.proxyA.Set(m_polygonA, 0);
 			input.proxyB.Set(m_polygonB, 0);
 			input.transformA = m_transformA;
 			input.transformB = m_transformB;
 			input.useRadii = true;
-			b2SimplexCache cache = new b2SimplexCache();
+			SimplexCache cache = new SimplexCache();
 			cache.count = 0;
-			b2DistanceOutput output;
-			b2Distance.Distance(out output, cache, input);
+			DistanceOutput output;
+			Utilities.Distance(out output, cache, input);
 
 			m_debugDraw.DrawString("distance = %g", output.distance);
 			
@@ -56,22 +56,22 @@ namespace Testbed.Tests {
 
 			{
 				Color color = Color.FromArgb(225, 225, 225);
-				b2Vec2[] v = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+				Vec2[] v = new Vec2[Settings._maxPolygonVertices];
 				for (int i = 0; i < m_polygonA.m_count; ++i)
 				{
-					v[i] = Utilities.b2Mul(m_transformA, m_polygonA.m_vertices[i]);
+					v[i] = Utilities.Mul(m_transformA, m_polygonA.m_vertices[i]);
 				}
 				m_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
 
 				for (int i = 0; i < m_polygonB.m_count; ++i)
 				{
-					v[i] = Utilities.b2Mul(m_transformB, m_polygonB.m_vertices[i]);
+					v[i] = Utilities.Mul(m_transformB, m_polygonB.m_vertices[i]);
 				}
 				m_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
 			}
 
-			b2Vec2 x1 = output.pointA;
-			b2Vec2 x2 = output.pointB;
+			Vec2 x1 = output.pointA;
+			Vec2 x2 = output.pointB;
 
 			Color c1 = Color.FromArgb(255, 0, 0);
 			m_debugDraw.DrawPoint(x1, 4.0f, c1);
@@ -109,12 +109,12 @@ namespace Testbed.Tests {
 			m_transformB.Set(m_positionB, m_angleB);
 		}
 
-		b2Vec2 m_positionB;
+		Vec2 m_positionB;
 		float m_angleB;
 
-		b2Transform m_transformA;
-		b2Transform m_transformB;
-		b2PolygonShape m_polygonA;
-		b2PolygonShape m_polygonB;
+		Transform m_transformA;
+		Transform m_transformB;
+		PolygonShape m_polygonA;
+		PolygonShape m_polygonB;
 	};
 }

@@ -6,11 +6,11 @@ using System.Text;
 namespace Box2D {
 	/// Mouse joint definition. This requires a world target point,
 	/// tuning parameters, and the time step.
-	public class b2MouseJointDef : b2JointDef
+	public class MouseJointDef : JointDef
 	{
-		public b2MouseJointDef()
+		public MouseJointDef()
 		{
-			type = b2JointType.e_mouseJoint;
+			type = JointType.e_mouseJoint;
 			target.Set(0.0f, 0.0f);
 			maxForce = 0.0f;
 			frequencyHz = 5.0f;
@@ -19,7 +19,7 @@ namespace Box2D {
 
 		/// The initial world target point. This is assumed
 		/// to coincide with the body anchor initially.
-		public b2Vec2 target;
+		public Vec2 target;
 
 		/// The maximum constraint force that can be exerted
 		/// to move the candidate body. Usually you will express

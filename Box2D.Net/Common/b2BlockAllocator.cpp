@@ -16,14 +16,14 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Common/b2BlockAllocator.h>
+#include <Box2D/Common/BlockAllocator.h>
 #include <cstdlib>
 #include <climits>
 #include <cstring>
 #include <memory>
 using namespace std;
 
-int b2BlockAllocator::s_blockSizes[b2_blockSizes] = 
+int BlockAllocator::s_blockSizes[_blockSizes] = 
 {
 	16,		// 0
 	32,		// 1
@@ -40,37 +40,37 @@ int b2BlockAllocator::s_blockSizes[b2_blockSizes] =
 	512,	// 12
 	640,	// 13
 };
-byte b2BlockAllocator::s_blockSizeLookup[b2_maxBlockSize + 1];
-bool b2BlockAllocator::s_blockSizeLookupInitialized;
+byte BlockAllocator::s_blockSizeLookup[_maxBlockSize + 1];
+bool BlockAllocator::s_blockSizeLookupInitialized;
 
-struct b2Chunk
+struct Chunk
 {
 	int blockSize;
-	b2Block* blocks;
+	Block* blocks;
 };
 
-struct b2Block
+struct Block
 {
-	b2Block* next;
+	Block* next;
 };
 
-b2BlockAllocator::b2BlockAllocator()
+BlockAllocator::BlockAllocator()
 {
-	Utilities.Assert(b2_blockSizes < UCHAR_MAX);
+	Utilities.Assert(_blockSizes < UCHAR_MAX);
 
-	m_chunkSpace = b2_chunkArrayIncrement;
+	m_chunkSpace = _chunkArrayIncrement;
 	m_chunkCount = 0;
-	m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk));
+	m_chunks = (Chunk*)Alloc(m_chunkSpace * sizeof(Chunk));
 	
-	memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
+	memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
 	memset(m_freeLists, 0, sizeof(m_freeLists));
 
 	if (s_blockSizeLookupInitialized == false)
 	{
 		int j = 0;
-		for (int i = 1; i <= b2_maxBlockSize; ++i)
+		for (int i = 1; i <= _maxBlockSize; ++i)
 		{
-			Utilities.Assert(j < b2_blockSizes);
+			Utilities.Assert(j < _blockSizes);
 			if (i <= s_blockSizes[j])
 			{
 				s_blockSizeLookup[i] = (byte)j;
@@ -86,34 +86,34 @@ b2BlockAllocator::b2BlockAllocator()
 	}
 }
 
-b2BlockAllocator::~b2BlockAllocator()
+BlockAllocator::~BlockAllocator()
 {
 	for (int i = 0; i < m_chunkCount; ++i)
 	{
-		b2Free(m_chunks[i].blocks);
+		Free(m_chunks[i].blocks);
 	}
 
-	b2Free(m_chunks);
+	Free(m_chunks);
 }
 
-void* b2BlockAllocator::Allocate(int size)
+void* BlockAllocator::Allocate(int size)
 {
 	if (size == 0)
 		return null;
 
 	Utilities.Assert(0 < size);
 
-	if (size > b2_maxBlockSize)
+	if (size > _maxBlockSize)
 	{
-		return b2Alloc(size);
+		return Alloc(size);
 	}
 
 	int index = s_blockSizeLookup[size];
-	Utilities.Assert(0 <= index && index < b2_blockSizes);
+	Utilities.Assert(0 <= index && index < _blockSizes);
 
 	if (m_freeLists[index])
 	{
-		b2Block* block = m_freeLists[index];
+		Block* block = m_freeLists[index];
 		m_freeLists[index] = block.next;
 		return block;
 	}
@@ -121,30 +121,30 @@ void* b2BlockAllocator::Allocate(int size)
 	{
 		if (m_chunkCount == m_chunkSpace)
 		{
-			b2Chunk* oldChunks = m_chunks;
-			m_chunkSpace += b2_chunkArrayIncrement;
-			m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk));
-			memcpy(m_chunks, oldChunks, m_chunkCount * sizeof(b2Chunk));
-			memset(m_chunks + m_chunkCount, 0, b2_chunkArrayIncrement * sizeof(b2Chunk));
-			b2Free(oldChunks);
+			Chunk* oldChunks = m_chunks;
+			m_chunkSpace += _chunkArrayIncrement;
+			m_chunks = (Chunk*)Alloc(m_chunkSpace * sizeof(Chunk));
+			memcpy(m_chunks, oldChunks, m_chunkCount * sizeof(Chunk));
+			memset(m_chunks + m_chunkCount, 0, _chunkArrayIncrement * sizeof(Chunk));
+			Free(oldChunks);
 		}
 
-		b2Chunk* chunk = m_chunks + m_chunkCount;
-		chunk.blocks = (b2Block*)b2Alloc(b2_chunkSize);
+		Chunk* chunk = m_chunks + m_chunkCount;
+		chunk.blocks = (Block*)Alloc(_chunkSize);
 #if defined(_DEBUG)
-		memset(chunk.blocks, 0xcd, b2_chunkSize);
+		memset(chunk.blocks, 0xcd, _chunkSize);
 #endif
 		int blockSize = s_blockSizes[index];
 		chunk.blockSize = blockSize;
-		int blockCount = b2_chunkSize / blockSize;
-		Utilities.Assert(blockCount * blockSize <= b2_chunkSize);
+		int blockCount = _chunkSize / blockSize;
+		Utilities.Assert(blockCount * blockSize <= _chunkSize);
 		for (int i = 0; i < blockCount - 1; ++i)
 		{
-			b2Block* block = (b2Block*)((int8*)chunk.blocks + blockSize * i);
-			b2Block* next = (b2Block*)((int8*)chunk.blocks + blockSize * (i + 1));
+			Block* block = (Block*)((int8*)chunk.blocks + blockSize * i);
+			Block* next = (Block*)((int8*)chunk.blocks + blockSize * (i + 1));
 			block.next = next;
 		}
-		b2Block* last = (b2Block*)((int8*)chunk.blocks + blockSize * (blockCount - 1));
+		Block* last = (Block*)((int8*)chunk.blocks + blockSize * (blockCount - 1));
 		last.next = null;
 
 		m_freeLists[index] = chunk.blocks.next;
@@ -154,7 +154,7 @@ void* b2BlockAllocator::Allocate(int size)
 	}
 }
 
-void b2BlockAllocator::Free(void* p, int size)
+void BlockAllocator::Free(void* p, int size)
 {
 	if (size == 0)
 	{
@@ -163,14 +163,14 @@ void b2BlockAllocator::Free(void* p, int size)
 
 	Utilities.Assert(0 < size);
 
-	if (size > b2_maxBlockSize)
+	if (size > _maxBlockSize)
 	{
-		b2Free(p);
+		Free(p);
 		return;
 	}
 
 	int index = s_blockSizeLookup[size];
-	Utilities.Assert(0 <= index && index < b2_blockSizes);
+	Utilities.Assert(0 <= index && index < _blockSizes);
 
 #ifdef _DEBUG
 	// Verify the memory address and size is valid.
@@ -178,15 +178,15 @@ void b2BlockAllocator::Free(void* p, int size)
 	bool found = false;
 	for (int i = 0; i < m_chunkCount; ++i)
 	{
-		b2Chunk* chunk = m_chunks + i;
+		Chunk* chunk = m_chunks + i;
 		if (chunk.blockSize != blockSize)
 		{
 			Utilities.Assert(	(int8*)p + blockSize <= (int8*)chunk.blocks ||
-						(int8*)chunk.blocks + b2_chunkSize <= (int8*)p);
+						(int8*)chunk.blocks + _chunkSize <= (int8*)p);
 		}
 		else
 		{
-			if ((int8*)chunk.blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk.blocks + b2_chunkSize)
+			if ((int8*)chunk.blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk.blocks + _chunkSize)
 			{
 				found = true;
 			}
@@ -198,20 +198,20 @@ void b2BlockAllocator::Free(void* p, int size)
 	memset(p, 0xfd, blockSize);
 #endif
 
-	b2Block* block = (b2Block*)p;
+	Block* block = (Block*)p;
 	block.next = m_freeLists[index];
 	m_freeLists[index] = block;
 }
 
-void b2BlockAllocator::Clear()
+void BlockAllocator::Clear()
 {
 	for (int i = 0; i < m_chunkCount; ++i)
 	{
-		b2Free(m_chunks[i].blocks);
+		Free(m_chunks[i].blocks);
 	}
 
 	m_chunkCount = 0;
-	memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
+	memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
 
 	memset(m_freeLists, 0, sizeof(m_freeLists));
 }

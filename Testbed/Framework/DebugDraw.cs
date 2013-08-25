@@ -7,8 +7,8 @@ using Box2D;
 using System.Drawing;
 
 namespace Testbed.Framework {
-	class DebugDraw : b2Draw {
-		public override void DrawCircle(b2Vec2 center, float radius, Color color) {
+	class DebugDraw : Draw {
+		public override void DrawCircle(Vec2 center, float radius, Color color) {
 			float k_segments = 16.0f;
 			float k_increment = 2.0f * (float)System.Math.PI / k_segments;
 			float theta = 0.0f;
@@ -16,7 +16,7 @@ namespace Testbed.Framework {
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.LineLoop);
 			for (int i = 0; i < k_segments; ++i) {
-				b2Vec2 v = center + radius * new b2Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
+				Vec2 v = center + radius * new Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
 				GL.Vertex2(v.x, v.y);
 				theta += k_increment;
 			}
@@ -24,7 +24,7 @@ namespace Testbed.Framework {
 			GL.Enable(EnableCap.Texture2D);
 		}
 
-		public override void DrawPolygon(b2Vec2[] vertices, int vertexCount, Color color) {
+		public override void DrawPolygon(Vec2[] vertices, int vertexCount, Color color) {
 			GL.Color3(color.R, color.G, color.B);
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.LineLoop);
@@ -35,7 +35,7 @@ namespace Testbed.Framework {
 			GL.Enable(EnableCap.Texture2D);
 		}
 
-		public override void DrawSegment(b2Vec2 p1, b2Vec2 p2, Color color) {
+		public override void DrawSegment(Vec2 p1, Vec2 p2, Color color) {
 			GL.Color3(color.R, color.G, color.B);
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.Lines);
@@ -47,7 +47,7 @@ namespace Testbed.Framework {
 			GL.Enable(EnableCap.Texture2D);
 		}
 
-		public override void DrawSolidCircle(b2Vec2 center, float radius, b2Vec2 axis, Color color) {
+		public override void DrawSolidCircle(Vec2 center, float radius, Vec2 axis, Color color) {
 			float k_segments = 16.0f;
 			float k_increment = 2.0f * (float)System.Math.PI / k_segments;
 			float theta = 0.0f;
@@ -55,7 +55,7 @@ namespace Testbed.Framework {
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.TriangleFan);
 			for (int i = 0; i < k_segments; ++i) {
-				b2Vec2 v = center + radius * new b2Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
+				Vec2 v = center + radius * new Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
 				GL.Vertex2(v.x, v.y);
 				theta += k_increment;
 			}
@@ -65,13 +65,13 @@ namespace Testbed.Framework {
 			GL.Color4(color.R, color.G, color.B, 1.0f);
 			GL.Begin(BeginMode.LineLoop);
 			for (int i = 0; i < k_segments; ++i) {
-				b2Vec2 v = center + radius * new b2Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
+				Vec2 v = center + radius * new Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
 				GL.Vertex2(v.x, v.y);
 				theta += k_increment;
 			}
 			GL.End();
 
-			b2Vec2 p = center + radius * axis;
+			Vec2 p = center + radius * axis;
 			GL.Begin(BeginMode.Lines);
 			GL.Vertex2(center.x, center.y);
 			GL.Vertex2(p.x, p.y);
@@ -79,7 +79,7 @@ namespace Testbed.Framework {
 			GL.Enable(EnableCap.Texture2D);
 		}
 
-		public override void DrawSolidPolygon(b2Vec2[] vertices, int vertexCount, Color color) {
+		public override void DrawSolidPolygon(Vec2[] vertices, int vertexCount, Color color) {
 			GL.Color3(0.5f * color.R, 0.5f * color.G, 0.5f * color.B);
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.TriangleFan);
@@ -97,8 +97,8 @@ namespace Testbed.Framework {
 			GL.Enable(EnableCap.Texture2D);
 		}
 
-		public override void DrawTransform(b2Transform xf) {
-			b2Vec2 p1 = xf.p, p2;
+		public override void DrawTransform(Transform xf) {
+			Vec2 p1 = xf.p, p2;
 			float k_axisScale = 0.4f;
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.Lines);
@@ -117,7 +117,7 @@ namespace Testbed.Framework {
 			GL.Enable(EnableCap.Texture2D);
 		}
 
-		public void DrawSegment(b2Vec2 p1, b2Vec2 p2, Color color, params object[] p) {
+		public void DrawSegment(Vec2 p1, Vec2 p2, Color color, params object[] p) {
 			GL.Color3(color.R, color.G, color.B);
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.Lines);
@@ -133,7 +133,7 @@ namespace Testbed.Framework {
 			Console.WriteLine(String.Format(title, args));
 		}
 
-		internal void DrawPoint(b2Vec2 xy, float p, Color c) {
+		internal void DrawPoint(Vec2 xy, float p, Color c) {
 			GL.Begin(BeginMode.Points);
 			{
 				GL.Color3(c);
@@ -142,12 +142,12 @@ namespace Testbed.Framework {
 			GL.End();
 		}
 
-		internal void DrawAABB(b2AABB b2AABB, Color c) {
-			this.DrawPolygon(new b2Vec2[] { 
-				b2AABB.lowerBound,
-				new b2Vec2(b2AABB.lowerBound.x, b2AABB.upperBound.y),
-				b2AABB.upperBound,
-				new b2Vec2(b2AABB.upperBound.x, b2AABB.lowerBound.y)}, 
+		internal void DrawAABB(AABB AABB, Color c) {
+			this.DrawPolygon(new Vec2[] { 
+				AABB.lowerBound,
+				new Vec2(AABB.lowerBound.x, AABB.upperBound.y),
+				AABB.upperBound,
+				new Vec2(AABB.upperBound.x, AABB.lowerBound.y)}, 
 				4, c);
 		}
 	}

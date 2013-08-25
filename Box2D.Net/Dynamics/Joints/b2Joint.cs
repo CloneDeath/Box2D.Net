@@ -6,15 +6,15 @@ using System.Text;
 namespace Box2D {
 	/// The base joint class. Joints are used to constraint two bodies together in
 	/// various fashions. Some joints also feature limits and motors.
-	public abstract class b2Joint
+	public abstract class Joint
 	{
-		protected b2JointType m_type;
-		protected b2Joint m_prev;
-		protected b2Joint m_next;
-		internal List<b2JointEdge> m_edgeA;
-		internal List<b2JointEdge> m_edgeB;
-		internal b2Body m_bodyA;
-		internal b2Body m_bodyB;
+		protected JointType m_type;
+		protected Joint m_prev;
+		protected Joint m_next;
+		internal List<JointEdge> m_edgeA;
+		internal List<JointEdge> m_edgeB;
+		internal Body m_bodyA;
+		internal Body m_bodyB;
 
 		internal int m_index;
 
@@ -23,7 +23,7 @@ namespace Box2D {
 
 		protected object m_userData;
 
-		protected b2Joint(b2JointDef def){
+		protected Joint(JointDef def){
 			Utilities.Assert(def.bodyA != def.bodyB);
 
 			m_type = def.type;
@@ -36,46 +36,46 @@ namespace Box2D {
 			m_islandFlag = false;
 			m_userData = def.userData;
 
-			m_edgeA = new List<b2JointEdge>();
-			m_edgeB = new List<b2JointEdge>();
+			m_edgeA = new List<JointEdge>();
+			m_edgeB = new List<JointEdge>();
 		}
-		~b2Joint() {}
+		~Joint() {}
 
-		internal abstract void InitVelocityConstraints(b2SolverData data);
-		internal abstract void SolveVelocityConstraints(b2SolverData data);
+		internal abstract void InitVelocityConstraints(SolverData data);
+		internal abstract void SolveVelocityConstraints(SolverData data);
 
 		// This returns true if the position errors are within tolerance.
-		internal abstract bool SolvePositionConstraints(b2SolverData data);
+		internal abstract bool SolvePositionConstraints(SolverData data);
 
 		/// Get the type of the concrete joint.
-		public b2JointType GetJointType(){
+		public JointType GetJointType(){
 			return m_type;
 		}
 
 		/// Get the first body attached to this joint.
-		public b2Body GetBodyA(){
+		public Body GetBodyA(){
 			return m_bodyA;
 		}
 
 		/// Get the second body attached to this joint.
-		public b2Body GetBodyB(){
+		public Body GetBodyB(){
 			return m_bodyB;
 		}
 
 		/// Get the anchor point on bodyA in world coordinates.
-		public abstract b2Vec2 GetAnchorA();
+		public abstract Vec2 GetAnchorA();
 
 		/// Get the anchor point on bodyB in world coordinates.
-		public abstract b2Vec2 GetAnchorB();
+		public abstract Vec2 GetAnchorB();
 
 		/// Get the reaction force on bodyB at the joint anchor in Newtons.
-		public abstract b2Vec2 GetReactionForce(float inv_dt);
+		public abstract Vec2 GetReactionForce(float inv_dt);
 
 		/// Get the reaction torque on bodyB in N*m.
 		public abstract float GetReactionTorque(float inv_dt);
 
 		/// Get the next joint the world joint list.
-		public b2Joint GetNext(){
+		public Joint GetNext(){
 			return m_next;
 		}
 
@@ -102,82 +102,82 @@ namespace Box2D {
 		}
 
 		/// Dump this joint to the log file.
-		public virtual void Dump() { b2Settings.b2Log("// Dump is not supported for this joint type.\n"); }
+		public virtual void Dump() { Settings.Log("// Dump is not supported for this joint type.\n"); }
 
 		/// Shift the origin for any points stored in world coordinates.
-		public virtual void ShiftOrigin(b2Vec2 newOrigin) {
+		public virtual void ShiftOrigin(Vec2 newOrigin) {
 			
 		}
 
-		internal static b2Joint Create(b2JointDef def){
-			b2Joint joint = null;
+		internal static Joint Create(JointDef def){
+			Joint joint = null;
 
 			switch (def.type)
 			{
-			case b2JointType.e_distanceJoint:
+			case JointType.e_distanceJoint:
 			    {
-					joint = new b2DistanceJoint((b2DistanceJointDef)def);
+					joint = new DistanceJoint((DistanceJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_mouseJoint:
+			case JointType.e_mouseJoint:
 			    {
-			        joint = new b2MouseJoint((b2MouseJointDef)def);
+			        joint = new MouseJoint((MouseJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_prismaticJoint:
+			case JointType.e_prismaticJoint:
 			    {
-			        joint = new b2PrismaticJoint((b2PrismaticJointDef)def);
+			        joint = new PrismaticJoint((PrismaticJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_revoluteJoint:
+			case JointType.e_revoluteJoint:
 			    {
-					joint = new b2RevoluteJoint((b2RevoluteJointDef)def);
+					joint = new RevoluteJoint((RevoluteJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_pulleyJoint:
+			case JointType.e_pulleyJoint:
 			    {
-					joint = new b2PulleyJoint((b2PulleyJointDef)def);
+					joint = new PulleyJoint((PulleyJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_gearJoint:
+			case JointType.e_gearJoint:
 			    {
-					joint = new b2GearJoint((b2GearJointDef)def);
+					joint = new GearJoint((GearJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_wheelJoint:
+			case JointType.e_wheelJoint:
 			    {
-					joint = new b2WheelJoint((b2WheelJointDef)def);
+					joint = new WheelJoint((WheelJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_weldJoint:
+			case JointType.e_weldJoint:
 			    {
-					joint = new b2WeldJoint((b2WeldJointDef)def);
+					joint = new WeldJoint((WeldJointDef)def);
 			    }
 			    break;
         
-			case b2JointType.e_frictionJoint:
+			case JointType.e_frictionJoint:
 			    {
-			        joint = new b2FrictionJoint((b2FrictionJointDef)def);
+			        joint = new FrictionJoint((FrictionJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_ropeJoint:
+			case JointType.e_ropeJoint:
 			    {
 					throw new NotImplementedException();
-					//joint = new b2RopeJoint((b2RopeJointDef)def);
+					//joint = new RopeJoint((RopeJointDef)def);
 			    }
 			    break;
 
-			case b2JointType.e_motorJoint:
+			case JointType.e_motorJoint:
 			    {
-			        joint = new b2MotorJoint((b2MotorJointDef)def);
+			        joint = new MotorJoint((MotorJointDef)def);
 			    }
 			    break;
 
@@ -188,53 +188,53 @@ namespace Box2D {
 
 			return joint;
 		}
-		protected static void Destroy(b2Joint joint){
+		protected static void Destroy(Joint joint){
 			throw new NotImplementedException();
-			//joint.~b2Joint();
+			//joint.~Joint();
 			//switch (joint.m_type)
 			//{
-			//case b2JointType.e_distanceJoint:
-			//    allocator.Free(joint, sizeof(b2DistanceJoint));
+			//case JointType.e_distanceJoint:
+			//    allocator.Free(joint, sizeof(DistanceJoint));
 			//    break;
 
-			//case b2JointType.e_mouseJoint:
-			//    allocator.Free(joint, sizeof(b2MouseJoint));
+			//case JointType.e_mouseJoint:
+			//    allocator.Free(joint, sizeof(MouseJoint));
 			//    break;
 
-			//case b2JointType.e_prismaticJoint:
-			//    allocator.Free(joint, sizeof(b2PrismaticJoint));
+			//case JointType.e_prismaticJoint:
+			//    allocator.Free(joint, sizeof(PrismaticJoint));
 			//    break;
 
-			//case b2JointType.e_revoluteJoint:
-			//    allocator.Free(joint, sizeof(b2RevoluteJoint));
+			//case JointType.e_revoluteJoint:
+			//    allocator.Free(joint, sizeof(RevoluteJoint));
 			//    break;
 
-			//case b2JointType.e_pulleyJoint:
-			//    allocator.Free(joint, sizeof(b2PulleyJoint));
+			//case JointType.e_pulleyJoint:
+			//    allocator.Free(joint, sizeof(PulleyJoint));
 			//    break;
 
-			//case b2JointType.e_gearJoint:
-			//    allocator.Free(joint, sizeof(b2GearJoint));
+			//case JointType.e_gearJoint:
+			//    allocator.Free(joint, sizeof(GearJoint));
 			//    break;
 
-			//case b2JointType.e_wheelJoint:
-			//    allocator.Free(joint, sizeof(b2WheelJoint));
+			//case JointType.e_wheelJoint:
+			//    allocator.Free(joint, sizeof(WheelJoint));
 			//    break;
     
-			//case b2JointType.e_weldJoint:
-			//    allocator.Free(joint, sizeof(b2WeldJoint));
+			//case JointType.e_weldJoint:
+			//    allocator.Free(joint, sizeof(WeldJoint));
 			//    break;
 
-			//case b2JointType.e_frictionJoint:
-			//    allocator.Free(joint, sizeof(b2FrictionJoint));
+			//case JointType.e_frictionJoint:
+			//    allocator.Free(joint, sizeof(FrictionJoint));
 			//    break;
 
-			//case b2JointType.e_ropeJoint:
-			//    allocator.Free(joint, sizeof(b2RopeJoint));
+			//case JointType.e_ropeJoint:
+			//    allocator.Free(joint, sizeof(RopeJoint));
 			//    break;
 
-			//case b2JointType.e_motorJoint:
-			//    allocator.Free(joint, sizeof(b2MotorJoint));
+			//case JointType.e_motorJoint:
+			//    allocator.Free(joint, sizeof(MotorJoint));
 			//    break;
 
 			//default:

@@ -16,42 +16,42 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Collision/b2Collision.h>
-#include <Box2D/Collision/Shapes/b2CircleShape.h>
-#include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.h>
 
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-void b2CollideEdgeAndCircle(b2Manifold manifold,
-							const b2EdgeShape* edgeA, const b2Transform& xfA,
-							const b2CircleShape* circleB, const b2Transform& xfB)
+void CollideEdgeAndCircle(Manifold manifold,
+							const EdgeShape* edgeA, const Transform& xfA,
+							const CircleShape* circleB, const Transform& xfB)
 {
 	manifold.pointCount = 0;
 	
 	// Compute circle in frame of edge
-	b2Vec2 Q = Utilities.b2MulT(xfA, Utilities.b2Mul(xfB, circleB.m_p));
+	Vec2 Q = Utilities.MulT(xfA, Utilities.Mul(xfB, circleB.m_p));
 	
-	b2Vec2 A = edgeA.m_vertex1, B = edgeA.m_vertex2;
-	b2Vec2 e = B - A;
+	Vec2 A = edgeA.m_vertex1, B = edgeA.m_vertex2;
+	Vec2 e = B - A;
 	
 	// Barycentric coordinates
-	float u = Utilities.b2Dot(e, B - Q);
-	float v = Utilities.b2Dot(e, Q - A);
+	float u = Utilities.Dot(e, B - Q);
+	float v = Utilities.Dot(e, Q - A);
 	
 	float radius = edgeA.m_radius + circleB.m_radius;
 	
-	b2ContactFeature cf;
+	ContactFeature cf;
 	cf.indexB = 0;
-	cf.typeB = b2ContactFeature::e_vertex;
+	cf.typeB = ContactFeature::e_vertex;
 	
 	// Region A
 	if (v <= 0.0f)
 	{
-		b2Vec2 P = A;
-		b2Vec2 d = Q - P;
-		float dd = Utilities.b2Dot(d, d);
+		Vec2 P = A;
+		Vec2 d = Q - P;
+		float dd = Utilities.Dot(d, d);
 		if (dd > radius * radius)
 		{
 			return;
@@ -60,10 +60,10 @@ void b2CollideEdgeAndCircle(b2Manifold manifold,
 		// Is there an edge connected to A?
 		if (edgeA.m_hasVertex0)
 		{
-			b2Vec2 A1 = edgeA.m_vertex0;
-			b2Vec2 B1 = A;
-			b2Vec2 e1 = B1 - A1;
-			float u1 = Utilities.b2Dot(e1, B1 - Q);
+			Vec2 A1 = edgeA.m_vertex0;
+			Vec2 B1 = A;
+			Vec2 e1 = B1 - A1;
+			float u1 = Utilities.Dot(e1, B1 - Q);
 			
 			// Is the circle in Region AB of the previous edge?
 			if (u1 > 0.0f)
@@ -73,9 +73,9 @@ void b2CollideEdgeAndCircle(b2Manifold manifold,
 		}
 		
 		cf.indexA = 0;
-		cf.typeA = b2ContactFeature::e_vertex;
+		cf.typeA = ContactFeature::e_vertex;
 		manifold.pointCount = 1;
-		manifold.type = b2Manifold::e_circles;
+		manifold.type = Manifold::e_circles;
 		manifold.localNormal.SetZero();
 		manifold.localPoint = P;
 		manifold.points[0].id.key = 0;
@@ -87,9 +87,9 @@ void b2CollideEdgeAndCircle(b2Manifold manifold,
 	// Region B
 	if (u <= 0.0f)
 	{
-		b2Vec2 P = B;
-		b2Vec2 d = Q - P;
-		float dd = Utilities.b2Dot(d, d);
+		Vec2 P = B;
+		Vec2 d = Q - P;
+		float dd = Utilities.Dot(d, d);
 		if (dd > radius * radius)
 		{
 			return;
@@ -98,10 +98,10 @@ void b2CollideEdgeAndCircle(b2Manifold manifold,
 		// Is there an edge connected to B?
 		if (edgeA.m_hasVertex3)
 		{
-			b2Vec2 B2 = edgeA.m_vertex3;
-			b2Vec2 A2 = B;
-			b2Vec2 e2 = B2 - A2;
-			float v2 = Utilities.b2Dot(e2, Q - A2);
+			Vec2 B2 = edgeA.m_vertex3;
+			Vec2 A2 = B;
+			Vec2 e2 = B2 - A2;
+			float v2 = Utilities.Dot(e2, Q - A2);
 			
 			// Is the circle in Region AB of the next edge?
 			if (v2 > 0.0f)
@@ -111,9 +111,9 @@ void b2CollideEdgeAndCircle(b2Manifold manifold,
 		}
 		
 		cf.indexA = 1;
-		cf.typeA = b2ContactFeature::e_vertex;
+		cf.typeA = ContactFeature::e_vertex;
 		manifold.pointCount = 1;
-		manifold.type = b2Manifold::e_circles;
+		manifold.type = Manifold::e_circles;
 		manifold.localNormal.SetZero();
 		manifold.localPoint = P;
 		manifold.points[0].id.key = 0;
@@ -123,27 +123,27 @@ void b2CollideEdgeAndCircle(b2Manifold manifold,
 	}
 	
 	// Region AB
-	float den = Utilities.b2Dot(e, e);
+	float den = Utilities.Dot(e, e);
 	Utilities.Assert(den > 0.0f);
-	b2Vec2 P = (1.0f / den) * (u * A + v * B);
-	b2Vec2 d = Q - P;
-	float dd = Utilities.b2Dot(d, d);
+	Vec2 P = (1.0f / den) * (u * A + v * B);
+	Vec2 d = Q - P;
+	float dd = Utilities.Dot(d, d);
 	if (dd > radius * radius)
 	{
 		return;
 	}
 	
-	b2Vec2 n(-e.y, e.x);
-	if (Utilities.b2Dot(n, Q - A) < 0.0f)
+	Vec2 n(-e.y, e.x);
+	if (Utilities.Dot(n, Q - A) < 0.0f)
 	{
 		n.Set(-n.x, -n.y);
 	}
 	n.Normalize();
 	
 	cf.indexA = 0;
-	cf.typeA = b2ContactFeature::e_face;
+	cf.typeA = ContactFeature::e_face;
 	manifold.pointCount = 1;
-	manifold.type = b2Manifold::e_faceA;
+	manifold.type = Manifold::e_faceA;
 	manifold.localNormal = n;
 	manifold.localPoint = A;
 	manifold.points[0].id.key = 0;

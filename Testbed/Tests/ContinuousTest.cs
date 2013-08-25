@@ -11,28 +11,28 @@ namespace Testbed.Tests {
 		public ContinuousTest()
 		{
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				bd.position.Set(0.0f, 0.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2EdgeShape edge = new b2EdgeShape();
+				EdgeShape edge = new EdgeShape();
 
-				edge.Set(new b2Vec2(-10.0f, 0.0f), new b2Vec2(10.0f, 0.0f));
+				edge.Set(new Vec2(-10.0f, 0.0f), new Vec2(10.0f, 0.0f));
 				body.CreateFixture(edge, 0.0f);
 
-				b2PolygonShape shape = new b2PolygonShape();
-				shape.SetAsBox(0.2f, 1.0f, new b2Vec2(0.5f, 1.0f), 0.0f);
+				PolygonShape shape = new PolygonShape();
+				shape.SetAsBox(0.2f, 1.0f, new Vec2(0.5f, 1.0f), 0.0f);
 				body.CreateFixture(shape, 0.0f);
 			}
 
 	#if true
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 20.0f);
 				//bd.angle = 0.1f;
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(2.0f, 0.1f);
 
 				m_body = m_world.CreateBody(bd);
@@ -40,17 +40,17 @@ namespace Testbed.Tests {
 
 				m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 				//m_angularVelocity = 46.661274f;
-				m_body.SetLinearVelocity(new b2Vec2(0.0f, -100.0f));
+				m_body.SetLinearVelocity(new Vec2(0.0f, -100.0f));
 				m_body.SetAngularVelocity(m_angularVelocity);
 			}
 	#else
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 2.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_p.SetZero();
 				shape.m_radius = 0.5f;
 				body.CreateFixture(shape, 1.0f);
@@ -59,53 +59,53 @@ namespace Testbed.Tests {
 				bd.position.Set(0.0f, 10.0f);
 				body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 1.0f);
-				body.SetLinearVelocity(new b2Vec2(0.0f, -100.0f));
+				body.SetLinearVelocity(new Vec2(0.0f, -100.0f));
 			}
 	#endif
 
-			b2Distance.b2_gjkCalls = 0; b2Distance.b2_gjkIters = 0; b2Distance.b2_gjkMaxIters = 0;
-			b2TimeOfImpact.b2_toiCalls = 0; b2TimeOfImpact.b2_toiIters = 0;
-			b2TimeOfImpact.b2_toiRootIters = 0; b2TimeOfImpact.b2_toiMaxRootIters = 0;
-			b2TimeOfImpact.b2_toiTime = 0.0f; b2TimeOfImpact.b2_toiMaxTime = 0.0f;
+			Utilities._gjkCalls = 0; Utilities._gjkIters = 0; Utilities._gjkMaxIters = 0;
+			Utilities._toiCalls = 0; Utilities._toiIters = 0;
+			Utilities._toiRootIters = 0; Utilities._toiMaxRootIters = 0;
+			Utilities._toiTime = 0.0f; Utilities._toiMaxTime = 0.0f;
 		}
 
 		public void Launch()
 		{
 
-			b2Distance.b2_gjkCalls = 0; b2Distance.b2_gjkIters = 0; b2Distance.b2_gjkMaxIters = 0;
-			b2TimeOfImpact.b2_toiCalls = 0; b2TimeOfImpact.b2_toiIters = 0;
-			b2TimeOfImpact.b2_toiRootIters = 0; b2TimeOfImpact.b2_toiMaxRootIters = 0;
-			b2TimeOfImpact.b2_toiTime = 0.0f; b2TimeOfImpact.b2_toiMaxTime = 0.0f;
+			Utilities._gjkCalls = 0; Utilities._gjkIters = 0; Utilities._gjkMaxIters = 0;
+			Utilities._toiCalls = 0; Utilities._toiIters = 0;
+			Utilities._toiRootIters = 0; Utilities._toiMaxRootIters = 0;
+			Utilities._toiTime = 0.0f; Utilities._toiMaxTime = 0.0f;
 
-			m_body.SetTransform(new b2Vec2(0.0f, 20.0f), 0.0f);
+			m_body.SetTransform(new Vec2(0.0f, 20.0f), 0.0f);
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
-			m_body.SetLinearVelocity(new b2Vec2(0.0f, -100.0f));
+			m_body.SetLinearVelocity(new Vec2(0.0f, -100.0f));
 			m_body.SetAngularVelocity(m_angularVelocity);
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
-			if (b2Distance.b2_gjkCalls > 0)
+			if (Utilities._gjkCalls > 0)
 			{
 				m_debugDraw.DrawString("gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-					b2Distance.b2_gjkCalls, b2Distance.b2_gjkIters / (float)(b2Distance.b2_gjkCalls), b2Distance.b2_gjkMaxIters);
+					Utilities._gjkCalls, Utilities._gjkIters / (float)(Utilities._gjkCalls), Utilities._gjkMaxIters);
 				
 			}
 
-			if (b2TimeOfImpact.b2_toiCalls > 0)
+			if (Utilities._toiCalls > 0)
 			{
 				m_debugDraw.DrawString("toi calls = %d, ave [max] toi iters = %3.1f [%d]",
-									b2TimeOfImpact.b2_toiCalls, b2TimeOfImpact.b2_toiIters / (float)(b2TimeOfImpact.b2_toiCalls), b2TimeOfImpact.b2_toiMaxRootIters);
+									Utilities._toiCalls, Utilities._toiIters / (float)(Utilities._toiCalls), Utilities._toiMaxRootIters);
 				
 			
 				m_debugDraw.DrawString("ave [max] toi root iters = %3.1f [%d]",
-					b2TimeOfImpact.b2_toiRootIters / (float)(b2TimeOfImpact.b2_toiCalls), b2TimeOfImpact.b2_toiMaxRootIters);
+					Utilities._toiRootIters / (float)(Utilities._toiCalls), Utilities._toiMaxRootIters);
 				
 
 				m_debugDraw.DrawString("ave [max] toi time = %.1f [%.1f] (microseconds)",
-					1000.0f * b2TimeOfImpact.b2_toiTime / (float)(b2TimeOfImpact.b2_toiCalls), 1000.0f * b2TimeOfImpact.b2_toiMaxTime);
+					1000.0f * Utilities._toiTime / (float)(Utilities._toiCalls), 1000.0f * Utilities._toiMaxTime);
 				
 			}
 
@@ -120,7 +120,7 @@ namespace Testbed.Tests {
 			return new ContinuousTest();
 		}
 
-		b2Body m_body;
+		Body m_body;
 		float m_angularVelocity;
 	};
 }

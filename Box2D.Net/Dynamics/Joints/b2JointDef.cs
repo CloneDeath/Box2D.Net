@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Box2D {
 	/// Joint definitions are used to construct joints.
-	public class b2JointDef { //was struct
-		public b2JointDef() {
-			type = b2JointType.e_unknownJoint;
+	public class JointDef { //was struct
+		public JointDef() {
+			type = JointType.e_unknownJoint;
 			userData = null;
 			bodyA = null;
 			bodyB = null;
@@ -15,16 +15,16 @@ namespace Box2D {
 		}
 
 		/// The joint type is set automatically for concrete joint types.
-		public b2JointType type;
+		public JointType type;
 
 		/// Use this to attach application specific data to your joints.
 		public object userData;
 
 		/// The first attached body.
-		public b2Body bodyA;
+		public Body bodyA;
 
 		/// The second attached body.
-		public b2Body bodyB;
+		public Body bodyB;
 
 		/// Set this flag to true if the attached bodies should collide.
 		public bool collideConnected;

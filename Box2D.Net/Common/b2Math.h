@@ -19,7 +19,7 @@
 #ifndef B2_MATH_H
 #define B2_MATH_H
 
-#include <Box2D/Common/b2Settings.h>
+#include <Box2D/Common/Settings.h>
 
 #include <cmath>
 #include <cfloat>
@@ -29,7 +29,7 @@
 
 
 /// This is a approximate yet fast inverse square-root.
-inline float b2InvSqrt(float x)
+inline float InvSqrt(float x)
 {
 	union
 	{
@@ -56,20 +56,20 @@ inline T Math.Abs(T a)
 	return a > T(0) ? a : -a;
 }
 
-inline b2Vec2 Math.Abs(b2Vec2 a)
+inline Vec2 Math.Abs(Vec2 a)
 {
-	return b2Vec2(Math.Abs(a.x), Math.Abs(a.y));
+	return Vec2(Math.Abs(a.x), Math.Abs(a.y));
 }
 
-inline b2Mat22 b2Abs(const b2Mat22& A)
+inline Mat22 Abs(const Mat22& A)
 {
-	return b2Mat22(Math.Abs(A.ex), Math.Abs(A.ey));
+	return Mat22(Math.Abs(A.ex), Math.Abs(A.ey));
 }
 
 
 
 
-template<typename T> inline void b2Swap(T& a, T& b)
+template<typename T> inline void Swap(T& a, T& b)
 {
 	T tmp = a;
 	a = b;
@@ -81,7 +81,7 @@ template<typename T> inline void b2Swap(T& a, T& b)
 /// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
 /// the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
 /// largest power of 2. For a 32-bit value:"
-inline uint b2NextPowerOfTwo(uint x)
+inline uint NextPowerOfTwo(uint x)
 {
 	x |= (x >> 1);
 	x |= (x >> 2);
@@ -91,7 +91,7 @@ inline uint b2NextPowerOfTwo(uint x)
 	return x + 1;
 }
 
-inline bool b2IsPowerOfTwo(uint x)
+inline bool IsPowerOfTwo(uint x)
 {
 	bool result = x > 0 && (x & (x - 1)) == 0;
 	return result;

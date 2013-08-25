@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Box2D {
 	/// Friction joint definition.
-	public class b2FrictionJointDef : b2JointDef
+	public class FrictionJointDef : JointDef
 	{
-		public b2FrictionJointDef()
+		public FrictionJointDef()
 		{
-			type = b2JointType.e_frictionJoint;
+			type = JointType.e_frictionJoint;
 			localAnchorA.SetZero();
 			localAnchorB.SetZero();
 			maxForce = 0.0f;
@@ -29,7 +29,7 @@ namespace Box2D {
 		// Cdot = w2 - w1
 		// J = [0 0 -1 0 0 1]
 		// K = invI1 + invI2
-		public void Initialize(b2Body bA, b2Body bB, b2Vec2 anchor) {
+		public void Initialize(Body bA, Body bB, Vec2 anchor) {
 			bodyA = bA;
 			bodyB = bB;
 			localAnchorA = bodyA.GetLocalPoint(anchor);
@@ -37,10 +37,10 @@ namespace Box2D {
 		}
 
 		/// The local anchor point relative to bodyA's origin.
-		public b2Vec2 localAnchorA;
+		public Vec2 localAnchorA;
 
 		/// The local anchor point relative to bodyB's origin.
-		public b2Vec2 localAnchorB;
+		public Vec2 localAnchorB;
 
 		/// The maximum friction force in N.
 		public float maxForce;

@@ -13,19 +13,19 @@ namespace Testbed.Tests {
 		public VaryingRestitution()
 		{
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_radius = 1.0f;
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 
@@ -33,11 +33,11 @@ namespace Testbed.Tests {
 
 				for (int i = 0; i < 7; ++i)
 				{
-					b2BodyDef bd = new b2BodyDef();
-					bd.type = b2BodyType.b2_dynamicBody;
+					BodyDef bd = new BodyDef();
+					bd.type = BodyType._dynamicBody;
 					bd.position.Set(-10.0f + 3.0f * i, 20.0f);
 
-					b2Body body = m_world.CreateBody(bd);
+					Body body = m_world.CreateBody(bd);
 
 					fd.restitution = restitution[i];
 					body.CreateFixture(fd);

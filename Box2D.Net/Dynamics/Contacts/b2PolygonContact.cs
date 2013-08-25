@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	class b2PolygonContact : b2Contact
+	class PolygonContact : Contact
 	{
-		public static b2Contact Create(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
-			return new b2PolygonContact(fixtureA, fixtureB);
+		public static Contact Create(Fixture fixtureA, int indexA, Fixture fixtureB, int indexB){
+			return new PolygonContact(fixtureA, fixtureB);
 		}
 
-		public static void Destroy(b2Contact contact){}
+		public static void Destroy(Contact contact){}
 
-		public b2PolygonContact(b2Fixture fixtureA, b2Fixture fixtureB): base(fixtureA, 0, fixtureB, 0)
+		public PolygonContact(Fixture fixtureA, Fixture fixtureB): base(fixtureA, 0, fixtureB, 0)
 		{
 			Utilities.Assert(m_fixtureA.GetShapeType() == ShapeType.Polygon);
 			Utilities.Assert(m_fixtureB.GetShapeType() == ShapeType.Polygon);
 		}
 
-		public override void Evaluate(out b2Manifold manifold, b2Transform xfA, b2Transform xfB) {
-			b2Collision.b2CollidePolygons( out manifold,
-								(b2PolygonShape)m_fixtureA.GetShape(), xfA,
-								(b2PolygonShape)m_fixtureB.GetShape(), xfB);
+		public override void Evaluate(out Manifold manifold, Transform xfA, Transform xfB) {
+			Collision.CollidePolygons( out manifold,
+								(PolygonShape)m_fixtureA.GetShape(), xfA,
+								(PolygonShape)m_fixtureB.GetShape(), xfB);
 		}
 	}
 }

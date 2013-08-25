@@ -17,15 +17,15 @@ namespace Box2D {
 	/// The world class manages all physics entities, dynamic simulation,
 	/// and asynchronous queries. The world also contains efficient memory
 	/// management facilities.
-	public class b2World {
+	public class World {
 		/// Construct a world object.
 		/// @param gravity the world gravity vector.
-		public b2World(b2Vec2 gravity){
+		public World(Vec2 gravity){
 			m_destructionListener = null;
 			m_debugDraw = null;
 
-			m_bodyList = new List<b2Body>();
-			m_jointList = new List<b2Joint>();
+			m_bodyList = new List<Body>();
+			m_jointList = new List<Joint>();
 
 			m_warmStarting = true;
 			m_continuousPhysics = true;
@@ -40,47 +40,47 @@ namespace Box2D {
 
 			m_inv_dt0 = 0.0f;
 
-			m_profile = new b2Profile();
-			m_contactManager = new b2ContactManager();
+			m_profile = new Profile();
+			m_contactManager = new ContactManager();
 		}
 
 		/// Register a destruction listener. The listener is owned by you and must
 		/// remain in scope.
-		public void SetDestructionListener(b2DestructionListener listener){
+		public void SetDestructionListener(DestructionListener listener){
 			m_destructionListener = listener;
 		}
 
 		/// Register a contact filter to provide specific control over collision.
-		/// Otherwise the default filter is used (b2_defaultFilter). The listener is
+		/// Otherwise the default filter is used (_defaultFilter). The listener is
 		/// owned by you and must remain in scope. 
-		public void SetContactFilter(b2ContactFilter filter){
+		public void SetContactFilter(ContactFilter filter){
 			m_contactManager.m_contactFilter = filter;
 		}
 
 		/// Register a contact event listener. The listener is owned by you and must
 		/// remain in scope.
-		public void SetContactListener(b2ContactListener listener){
+		public void SetContactListener(ContactListener listener){
 			m_contactManager.m_contactListener = listener;
 		}
 
 		/// Register a routine for debug drawing. The debug draw functions are called
-		/// inside with b2World::DrawDebugData method. The debug draw object is owned
+		/// inside with World::DrawDebugData method. The debug draw object is owned
 		/// by you and must remain in scope.
-		public void SetDebugDraw(b2Draw debugDraw){
+		public void SetDebugDraw(Draw debugDraw){
 			m_debugDraw = debugDraw;
 		}
 
 		/// Create a rigid body given a definition. No reference to the definition
 		/// is retained.
 		/// @warning This function is locked during callbacks.
-		public b2Body CreateBody(b2BodyDef def){
+		public Body CreateBody(BodyDef def){
 			Utilities.Assert(IsLocked() == false);
 			if (IsLocked())
 			{
 			    return null;
 			}
 			
-			b2Body b = new b2Body(def, this);
+			Body b = new Body(def, this);
 
 			// Add to world doubly linked list.
 			m_bodyList.Add(b);
@@ -92,7 +92,7 @@ namespace Box2D {
 		/// is retained. This function is locked during callbacks.
 		/// @warning This automatically deletes all associated shapes and joints.
 		/// @warning This function is locked during callbacks.
-		public void DestroyBody(b2Body body){
+		public void DestroyBody(Body body){
 			throw new NotImplementedException();
 			//Utilities.Assert(m_bodyList.Count() > 0);
 			//Utilities.Assert(IsLocked() == false);
@@ -102,10 +102,10 @@ namespace Box2D {
 			//}
 
 			//// Delete the attached joints.
-			//b2JointEdge* je = b.m_jointList;
+			//JointEdge* je = b.m_jointList;
 			//while (je)
 			//{
-			//    b2JointEdge* je0 = je;
+			//    JointEdge* je0 = je;
 			//    je = je.next;
 
 			//    if (m_destructionListener)
@@ -120,20 +120,20 @@ namespace Box2D {
 			//b.m_jointList = null;
 
 			//// Delete the attached contacts.
-			//b2ContactEdge* ce = b.m_contactList;
+			//ContactEdge* ce = b.m_contactList;
 			//while (ce)
 			//{
-			//    b2ContactEdge* ce0 = ce;
+			//    ContactEdge* ce0 = ce;
 			//    ce = ce.next;
 			//    m_contactManager.Destroy(ce0.contact);
 			//}
 			//b.m_contactList = null;
 
 			//// Delete the attached fixtures. This destroys broad-phase proxies.
-			//b2Fixture* f = b.m_fixtureList;
+			//Fixture* f = b.m_fixtureList;
 			//while (f)
 			//{
-			//    b2Fixture* f0 = f;
+			//    Fixture* f0 = f;
 			//    f = f.m_next;
 
 			//    if (m_destructionListener)
@@ -143,8 +143,8 @@ namespace Box2D {
 
 			//    f0.DestroyProxies(&m_contactManager.m_broadPhase);
 			//    f0.Destroy(&m_blockAllocator);
-			//    f0.~b2Fixture();
-			//    m_blockAllocator.Free(f0, sizeof(b2Fixture));
+			//    f0.~Fixture();
+			//    m_blockAllocator.Free(f0, sizeof(Fixture));
 
 			//    b.m_fixtureList = f;
 			//    b.m_fixtureCount -= 1;
@@ -169,44 +169,44 @@ namespace Box2D {
 			//}
 
 			//--m_bodyList.Count();
-			//b.~b2Body();
-			//m_blockAllocator.Free(b, sizeof(b2Body));
+			//b.~Body();
+			//m_blockAllocator.Free(b, sizeof(Body));
 		}
 
 		/// Create a joint to constrain bodies together. No reference to the definition
 		/// is retained. This may cause the connected bodies to cease colliding.
 		/// @warning This function is locked during callbacks.
-		public b2Joint CreateJoint(b2JointDef def){
+		public Joint CreateJoint(JointDef def){
 			Utilities.Assert(IsLocked() == false);
 			if (IsLocked())
 			{
 			    return null;
 			}
 
-			b2Joint j = b2Joint.Create(def);
+			Joint j = Joint.Create(def);
 
 			// Connect to the world list.
 			m_jointList.Add(j);
 
 			// Connect to the bodies' doubly linked lists.
 			j.m_edgeA.Clear();
-			j.m_edgeA.Add(new b2JointEdge(j, j.m_bodyB));
+			j.m_edgeA.Add(new JointEdge(j, j.m_bodyB));
 
 			j.m_edgeA.AddRange(j.m_bodyA.m_jointList);
 			j.m_bodyA.m_jointList = j.m_edgeA;
 
 			j.m_edgeB.Clear();
-			j.m_edgeB.Add(new b2JointEdge(j, j.m_bodyA));
+			j.m_edgeB.Add(new JointEdge(j, j.m_bodyA));
 			j.m_edgeB.AddRange(j.m_bodyB.m_jointList);
 			j.m_bodyB.m_jointList = j.m_edgeB;
 
-			b2Body bodyA = def.bodyA;
-			b2Body bodyB = def.bodyB;
+			Body bodyA = def.bodyA;
+			Body bodyB = def.bodyB;
 
 			// If the joint prevents collisions, then flag any contacts for filtering.
 			if (def.collideConnected == false)
 			{
-				foreach (b2ContactEdge edge in bodyB.GetContactList())
+				foreach (ContactEdge edge in bodyB.GetContactList())
 			    {
 			        if (edge.other == bodyA)
 			        {
@@ -224,7 +224,7 @@ namespace Box2D {
 
 		/// Destroy a joint. This may cause the connected bodies to begin colliding.
 		/// @warning This function is locked during callbacks.
-		public void DestroyJoint(b2Joint joint){
+		public void DestroyJoint(Joint joint){
 			throw new NotImplementedException();
 			//Utilities.Assert(IsLocked() == false);
 			//if (IsLocked())
@@ -251,8 +251,8 @@ namespace Box2D {
 			//}
 
 			//// Disconnect from island graph.
-			//b2Body* bodyA = j.m_bodyA;
-			//b2Body* bodyB = j.m_bodyB;
+			//Body* bodyA = j.m_bodyA;
+			//Body* bodyB = j.m_bodyB;
 
 			//// Wake up connected bodies.
 			//bodyA.SetAwake(true);
@@ -296,7 +296,7 @@ namespace Box2D {
 			//j.m_edgeB.prev = null;
 			//j.m_edgeB.next = null;
 
-			//b2Joint::Destroy(j, &m_blockAllocator);
+			//Joint::Destroy(j, &m_blockAllocator);
 
 			//Utilities.Assert(m_jointCount > 0);
 			//--m_jointCount;
@@ -304,7 +304,7 @@ namespace Box2D {
 			//// If the joint prevents collisions, then flag any contacts for filtering.
 			//if (collideConnected == false)
 			//{
-			//    b2ContactEdge* edge = bodyB.GetContactList();
+			//    ContactEdge* edge = bodyB.GetContactList();
 			//    while (edge)
 			//    {
 			//        if (edge.other == bodyA)
@@ -325,7 +325,7 @@ namespace Box2D {
 		/// @param velocityIterations for the velocity constraint solver.
 		/// @param positionIterations for the position constraint solver.
 		public void Step(float timeStep, int velocityIterations, int positionIterations){
-			b2Timer stepTimer = new b2Timer();
+			Timer stepTimer = new Timer();
 
 			// If new fixtures were added, we need to find the new contacts.
 			if (m_flags.HasFlag(WorldFlags.e_newFixture)) {
@@ -335,7 +335,7 @@ namespace Box2D {
 
 			m_flags |= WorldFlags.e_locked;
 
-			b2TimeStep step;
+			TimeStep step;
 			step.dt = timeStep;
 			step.velocityIterations = velocityIterations;
 			step.positionIterations = positionIterations;
@@ -351,21 +351,21 @@ namespace Box2D {
 
 			// Update contacts. This is where some contacts are destroyed.
 			{
-				b2Timer timer = new b2Timer();
+				Timer timer = new Timer();
 				m_contactManager.Collide();
 				m_profile.collide = timer.GetMilliseconds();
 			}
 
 			// Integrate velocities, solve velocity constraints, and integrate positions.
 			if (m_stepComplete && step.dt > 0.0f) {
-				b2Timer timer = new b2Timer();
+				Timer timer = new Timer();
 				Solve(step);
 				m_profile.solve = timer.GetMilliseconds();
 			}
 
 			// Handle TOI events.
 			if (m_continuousPhysics && step.dt > 0.0f) {
-				b2Timer timer = new b2Timer();
+				Timer timer = new Timer();
 				SolveTOI(step);
 				m_profile.solveTOI = timer.GetMilliseconds();
 			}
@@ -391,7 +391,7 @@ namespace Box2D {
 		/// ClearForces after all sub-steps are complete in one pass of your game loop.
 		/// @see SetAutoClearForces
 		public void ClearForces(){
-			foreach (b2Body body in m_bodyList){
+			foreach (Body body in m_bodyList){
 				body.m_force.SetZero();
 				body.m_torque = 0.0f;
 			}
@@ -404,24 +404,24 @@ namespace Box2D {
 			    return;
 			}
 
-			b2Draw.DrawFlags flags = m_debugDraw.GetFlags();
+			Draw.DrawFlags flags = m_debugDraw.GetFlags();
 
-			if (flags.HasFlag(b2Draw.DrawFlags.e_shapeBit))
+			if (flags.HasFlag(Draw.DrawFlags.e_shapeBit))
 			{
-				foreach(b2Body b in m_bodyList)
+				foreach(Body b in m_bodyList)
 			    {
-			        b2Transform xf = b.GetTransform();
-					foreach (b2Fixture f in b.GetFixtureList())
+			        Transform xf = b.GetTransform();
+					foreach (Fixture f in b.GetFixtureList())
 			        {
 			            if (b.IsActive() == false)
 			            {
 			                DrawShape(f, xf, Color.FromArgb(128, 128, 75));
 			            }
-			            else if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			            else if (b.GetBodyType() == BodyType._staticBody)
 			            {
 							DrawShape(f, xf, Color.FromArgb(128, 225, 128));
 			            }
-			            else if (b.GetBodyType() == b2BodyType.b2_kinematicBody)
+			            else if (b.GetBodyType() == BodyType._kinematicBody)
 			            {
 							DrawShape(f, xf, Color.FromArgb(128, 128, 225));
 			            }
@@ -437,48 +437,48 @@ namespace Box2D {
 			    }
 			}
 
-			if (flags.HasFlag(b2Draw.DrawFlags.e_jointBit))
+			if (flags.HasFlag(Draw.DrawFlags.e_jointBit))
 			{
-				foreach (b2Joint j in m_jointList)
+				foreach (Joint j in m_jointList)
 			    {
 			        DrawJoint(j);
 			    }
 			}
 
-			if (flags.HasFlag(b2Draw.DrawFlags.e_pairBit))
+			if (flags.HasFlag(Draw.DrawFlags.e_pairBit))
 			{
 			    Color color = Color.FromArgb(75, 225, 225);
-				foreach (b2Contact c in m_contactManager.m_contactList)
+				foreach (Contact c in m_contactManager.m_contactList)
 			    {
-			        //b2Fixture fixtureA = c.GetFixtureA();
-			        //b2Fixture fixtureB = c.GetFixtureB();
+			        //Fixture fixtureA = c.GetFixtureA();
+			        //Fixture fixtureB = c.GetFixtureB();
 
-			        //b2Vec2 cA = fixtureA.GetAABB().GetCenter();
-			        //b2Vec2 cB = fixtureB.GetAABB().GetCenter();
+			        //Vec2 cA = fixtureA.GetAABB().GetCenter();
+			        //Vec2 cB = fixtureB.GetAABB().GetCenter();
 
 			        //m_debugDraw.DrawSegment(cA, cB, color);
 			    }
 			}
 
-			if (flags.HasFlag(b2Draw.DrawFlags.e_aabbBit))
+			if (flags.HasFlag(Draw.DrawFlags.e_aabbBit))
 			{
 			    Color color = Color.FromArgb(225, 75, 225);
-			    b2BroadPhase bp = m_contactManager.m_broadPhase;
+			    BroadPhase bp = m_contactManager.m_broadPhase;
 
-				foreach (b2Body b in m_bodyList)
+				foreach (Body b in m_bodyList)
 			    {
 			        if (b.IsActive() == false)
 			        {
 			            continue;
 			        }
 
-					foreach (b2Fixture f in b.GetFixtureList())
+					foreach (Fixture f in b.GetFixtureList())
 			        {
 			            for (int i = 0; i < f.m_proxies.Count(); ++i)
 			            {
-			                b2FixtureProxy proxy = f.m_proxies[i];
-			                b2AABB aabb = bp.GetFatAABB(proxy.proxyId);
-			                b2Vec2[] vs = new b2Vec2[4];
+			                FixtureProxy proxy = f.m_proxies[i];
+			                AABB aabb = bp.GetFatAABB(proxy.proxyId);
+			                Vec2[] vs = new Vec2[4];
 			                vs[0].Set(aabb.lowerBound.x, aabb.lowerBound.y);
 			                vs[1].Set(aabb.upperBound.x, aabb.lowerBound.y);
 			                vs[2].Set(aabb.upperBound.x, aabb.upperBound.y);
@@ -490,11 +490,11 @@ namespace Box2D {
 			    }
 			}
 
-			if (flags.HasFlag(b2Draw.DrawFlags.e_centerOfMassBit))
+			if (flags.HasFlag(Draw.DrawFlags.e_centerOfMassBit))
 			{
-				foreach(b2Body b in m_bodyList)
+				foreach(Body b in m_bodyList)
 			    {
-			        b2Transform xf = b.GetTransform();
+			        Transform xf = b.GetTransform();
 			        xf.p = b.GetWorldCenter();
 			        m_debugDraw.DrawTransform(xf);
 			    }
@@ -505,9 +505,9 @@ namespace Box2D {
 		/// provided AABB.
 		/// @param callback a user implemented callback class.
 		/// @param aabb the query box.
-		public void QueryAABB(b2QueryCallback callback, b2AABB aabb){
+		public void QueryAABB(QueryCallback callback, AABB aabb){
 			throw new NotImplementedException();
-			//b2WorldQueryWrapper wrapper;
+			//WorldQueryWrapper wrapper;
 			//wrapper.broadPhase = &m_contactManager.m_broadPhase;
 			//wrapper.callback = callback;
 			//m_contactManager.m_broadPhase.Query(&wrapper, aabb);
@@ -519,39 +519,39 @@ namespace Box2D {
 		/// @param callback a user implemented callback class.
 		/// @param point1 the ray starting point
 		/// @param point2 the ray ending point
-		public void RayCast(b2RayCastCallback callback, b2Vec2 point1, b2Vec2 point2){
+		public void RayCast(RayCastCallback callback, Vec2 point1, Vec2 point2){
 			throw new NotImplementedException();
-			//b2WorldRayCastWrapper wrapper;
+			//WorldRayCastWrapper wrapper;
 			//wrapper.broadPhase = &m_contactManager.m_broadPhase;
 			//wrapper.callback = callback;
-			//b2RayCastInput input;
+			//RayCastInput input;
 			//input.maxFraction = 1.0f;
 			//input.p1 = point1;
 			//input.p2 = point2;
 			//m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 		}
 
-		/// Get the world body list. With the returned body, use b2Body::GetNext to get
+		/// Get the world body list. With the returned body, use Body::GetNext to get
 		/// the next body in the world list. A null body indicates the end of the list.
 		/// @return the head of the world body list.
-		public List<b2Body> GetBodyList(){
+		public List<Body> GetBodyList(){
 			return m_bodyList;
 		}
 
-		/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
+		/// Get the world joint list. With the returned joint, use Joint::GetNext to get
 		/// the next joint in the world list. A null joint indicates the end of the list.
 		/// @return the head of the world joint list.
-		public List<b2Joint> GetJointList(){
+		public List<Joint> GetJointList(){
 			throw new NotImplementedException();
 			//return m_jointList;
 		}
 
-		/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
+		/// Get the world contact list. With the returned contact, use Contact::GetNext to get
 		/// the next contact in the world list. A null contact indicates the end of the list.
 		/// @return the head of the world contact list.
 		/// @warning contacts are created and destroyed in the middle of a time step.
-		/// Use b2ContactListener to avoid missing contacts.
-		public List<b2Contact> GetContactList(){
+		/// Use ContactListener to avoid missing contacts.
+		public List<Contact> GetContactList(){
 			throw new NotImplementedException();
 			//return m_contactManager.m_contactList;
 		}
@@ -564,7 +564,7 @@ namespace Box2D {
 
 			m_allowSleep = flag;
 			if (m_allowSleep == false) {
-				foreach (b2Body b in m_bodyList) {
+				foreach (Body b in m_bodyList) {
 					b.SetAwake(true);
 				}
 			}
@@ -621,12 +621,12 @@ namespace Box2D {
 
 
 		/// Change the global gravity vector.
-		public void SetGravity(b2Vec2 gravity){
+		public void SetGravity(Vec2 gravity){
 			m_gravity = gravity;
 		}
 	
 		/// Get the global gravity vector.
-		public b2Vec2 GetGravity(){
+		public Vec2 GetGravity(){
 			return m_gravity;
 		}
 
@@ -655,7 +655,7 @@ namespace Box2D {
 		/// Shift the world origin. Useful for large worlds.
 		/// The body shift formula is: position -= newOrigin
 		/// @param newOrigin the new origin with respect to the old origin
-		public void ShiftOrigin(b2Vec2 newOrigin){
+		public void ShiftOrigin(Vec2 newOrigin){
 			throw new NotImplementedException();
 			//Utilities.Assert((m_flags & WorldFlags.e_locked) == 0);
 			//if ((m_flags & e_locked) == e_locked)
@@ -663,14 +663,14 @@ namespace Box2D {
 			//    return;
 			//}
 
-			//foreach (b2Body b in m_bodyList)
+			//foreach (Body b in m_bodyList)
 			//{
 			//    b.m_xf.p -= newOrigin;
 			//    b.m_sweep.c0 -= newOrigin;
 			//    b.m_sweep.c -= newOrigin;
 			//}
 
-			//for (b2Joint* j = m_jointList; j; j = j.m_next)
+			//for (Joint* j = m_jointList; j; j = j.m_next)
 			//{
 			//    j.ShiftOrigin(newOrigin);
 			//}
@@ -679,12 +679,12 @@ namespace Box2D {
 		}
 
 		/// Get the contact manager for testing.
-		public b2ContactManager GetContactManager(){
+		public ContactManager GetContactManager(){
 			return m_contactManager;
 		}
 
 		/// Get the current profile.
-		public b2Profile GetProfile(){
+		public Profile GetProfile(){
 			return m_profile;
 		}
 
@@ -697,13 +697,13 @@ namespace Box2D {
 			//    return;
 			//}
 
-			//b2Settings.b2Log("b2Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
-			//b2Settings.b2Log("m_world.SetGravity(g);\n");
+			//Settings.Log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
+			//Settings.Log("m_world.SetGravity(g);\n");
 
-			//b2Settings.b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyList.Count());
-			//b2Settings.b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
+			//Settings.Log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", m_bodyList.Count());
+			//Settings.Log("Joint** joints = (Joint**)Alloc(%d * sizeof(Joint*));\n", m_jointCount);
 			//int i = 0;
-			//foreach (b2Body b in m_bodyList)
+			//foreach (Body b in m_bodyList)
 			//{
 			//    b.m_islandIndex = i;
 			//    b.Dump();
@@ -711,73 +711,73 @@ namespace Box2D {
 			//}
 
 			//i = 0;
-			//for (b2Joint* j = m_jointList; j; j = j.m_next)
+			//for (Joint* j = m_jointList; j; j = j.m_next)
 			//{
 			//    j.m_index = i;
 			//    ++i;
 			//}
 
 			//// First pass on joints, skip gear joints.
-			//for (b2Joint* j = m_jointList; j; j = j.m_next)
+			//for (Joint* j = m_jointList; j; j = j.m_next)
 			//{
-			//    if (j.m_type == b2JointType.e_gearJoint)
+			//    if (j.m_type == JointType.e_gearJoint)
 			//    {
 			//        continue;
 			//    }
 
-			//    b2Settings.b2Log("{\n");
+			//    Settings.Log("{\n");
 			//    j.Dump();
-			//    b2Settings.b2Log("}\n");
+			//    Settings.Log("}\n");
 			//}
 
 			//// Second pass on joints, only gear joints.
-			//for (b2Joint* j = m_jointList; j; j = j.m_next)
+			//for (Joint* j = m_jointList; j; j = j.m_next)
 			//{
-			//    if (j.m_type != b2JointType.e_gearJoint)
+			//    if (j.m_type != JointType.e_gearJoint)
 			//    {
 			//        continue;
 			//    }
 
-			//    b2Settings.b2Log("{\n");
+			//    Settings.Log("{\n");
 			//    j.Dump();
-			//    b2Settings.b2Log("}\n");
+			//    Settings.Log("}\n");
 			//}
 
-			//b2Settings.b2Log("b2Free(joints);\n");
-			//b2Settings.b2Log("b2Free(bodies);\n");
-			//b2Settings.b2Log("joints = null;\n");
-			//b2Settings.b2Log("bodies = null;\n");
+			//Settings.Log("Free(joints);\n");
+			//Settings.Log("Free(bodies);\n");
+			//Settings.Log("joints = null;\n");
+			//Settings.Log("bodies = null;\n");
 		}
 
 		
 
-		private void Solve(b2TimeStep step){
+		private void Solve(TimeStep step){
 			m_profile.solveInit = 0.0f;
 			m_profile.solveVelocity = 0.0f;
 			m_profile.solvePosition = 0.0f;
 
 			// Size the island for the worst case.
-			b2Island island = new b2Island(m_contactManager.m_contactListener);
+			Island island = new Island(m_contactManager.m_contactListener);
 
 			// Clear all the island flags.
-			foreach (b2Body b in m_bodyList)
+			foreach (Body b in m_bodyList)
 			{
-			    b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+			    b.m_flags &= ~Body.BodyFlags.e_islandFlag;
 			}
-			foreach (b2Contact c in m_contactManager.m_contactList)
+			foreach (Contact c in m_contactManager.m_contactList)
 			{
 			    c.m_flags &= ~ContactFlags.e_islandFlag;
 			}
-			foreach (b2Joint j in m_jointList)
+			foreach (Joint j in m_jointList)
 			{
 			    j.m_islandFlag = false;
 			}
 
 			// Build and simulate all awake islands.
-			List<b2Body> stack = new List<b2Body>(m_bodyList.Count());
-			foreach (b2Body seed in m_bodyList)
+			List<Body> stack = new List<Body>(m_bodyList.Count());
+			foreach (Body seed in m_bodyList)
 			{
-			    if (seed.m_flags.HasFlag(b2Body.BodyFlags.e_islandFlag))
+			    if (seed.m_flags.HasFlag(Body.BodyFlags.e_islandFlag))
 			    {
 			        continue;
 			    }
@@ -788,7 +788,7 @@ namespace Box2D {
 			    }
 
 			    // The seed can be dynamic or kinematic.
-			    if (seed.GetBodyType() == b2BodyType.b2_staticBody)
+			    if (seed.GetBodyType() == BodyType._staticBody)
 			    {
 			        continue;
 			    }
@@ -797,13 +797,13 @@ namespace Box2D {
 			    island.Clear();
 			    int stackCount = 0;
 				stack.Add(seed); stackCount++;
-			    seed.m_flags |= b2Body.BodyFlags.e_islandFlag;
+			    seed.m_flags |= Body.BodyFlags.e_islandFlag;
 
 			    // Perform a depth first search (DFS) on the constraint graph.
 			    while (stackCount > 0)
 			    {
 			        // Grab the next body off the stack and add it to the island.
-			        b2Body b = stack[--stackCount];
+			        Body b = stack[--stackCount];
 			        Utilities.Assert(b.IsActive() == true);
 			        island.Add(b);
 
@@ -812,15 +812,15 @@ namespace Box2D {
 
 			        // To keep islands as small as possible, we don't
 			        // propagate islands across static bodies.
-			        if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			        if (b.GetBodyType() == BodyType._staticBody)
 			        {
 			            continue;
 			        }
 
 			        // Search all contacts connected to this body.
-			        foreach (b2ContactEdge ce in b.m_contactList)
+			        foreach (ContactEdge ce in b.m_contactList)
 			        {
-			            b2Contact contact = ce.contact;
+			            Contact contact = ce.contact;
 
 			            // Has this contact already been added to an island?
 			            if (contact.m_flags.HasFlag(ContactFlags.e_islandFlag))
@@ -846,26 +846,26 @@ namespace Box2D {
 			            island.Add(contact);
 			            contact.m_flags |= ContactFlags.e_islandFlag;
 
-			            b2Body other = ce.other;
+			            Body other = ce.other;
 
 			            // Was the other body already added to this island?
-			            if (other.m_flags.HasFlag(b2Body.BodyFlags.e_islandFlag))
+			            if (other.m_flags.HasFlag(Body.BodyFlags.e_islandFlag))
 			            {
 			                continue;
 			            }
 
 			            Utilities.Assert(stackCount < m_bodyList.Count());
 						stack.Add(other); stackCount++;
-			            other.m_flags |= b2Body.BodyFlags.e_islandFlag;
+			            other.m_flags |= Body.BodyFlags.e_islandFlag;
 			        }
 
 					// Search all joints connect to this body.
-					foreach (b2JointEdge je in b.m_jointList){
+					foreach (JointEdge je in b.m_jointList){
 						if (je.joint.m_islandFlag == true) {
 							continue;
 						}
 
-						b2Body other = je.other;
+						Body other = je.other;
 
 						// Don't simulate joints connected to inactive bodies.
 						if (other.IsActive() == false) {
@@ -875,16 +875,16 @@ namespace Box2D {
 						island.Add(je.joint);
 						je.joint.m_islandFlag = true;
 
-						if (other.m_flags.HasFlag(b2Body.BodyFlags.e_islandFlag)) {
+						if (other.m_flags.HasFlag(Body.BodyFlags.e_islandFlag)) {
 							continue;
 						}
 
 						stack.Add(other); stackCount++;
-						other.m_flags |= b2Body.BodyFlags.e_islandFlag;
+						other.m_flags |= Body.BodyFlags.e_islandFlag;
 					}
 			    }
 
-			    b2Profile profile = new b2Profile();
+			    Profile profile = new Profile();
 				island.Solve(profile, step, m_gravity, m_allowSleep);
 				m_profile.solveInit += profile.solveInit;
 				m_profile.solveVelocity += profile.solveVelocity;
@@ -893,25 +893,25 @@ namespace Box2D {
 				// Post solve cleanup.
 				for (int i = 0; i < island.m_bodies.Count(); ++i) {
 					// Allow static bodies to participate in other islands.
-					b2Body b = island.m_bodies[i];
-					if (b.GetBodyType() == b2BodyType.b2_staticBody) {
-						b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+					Body b = island.m_bodies[i];
+					if (b.GetBodyType() == BodyType._staticBody) {
+						b.m_flags &= ~Body.BodyFlags.e_islandFlag;
 					}
 				}
 			}
 
 			{
-			    b2Timer timer = new b2Timer();
+			    Timer timer = new Timer();
 			    // Synchronize fixtures, check for out of range bodies.
-			    foreach (b2Body b in m_bodyList)
+			    foreach (Body b in m_bodyList)
 			    {
 			        // If a body was not in an island then it did not move.
-			        if ((b.m_flags & b2Body.BodyFlags.e_islandFlag) == 0)
+			        if ((b.m_flags & Body.BodyFlags.e_islandFlag) == 0)
 			        {
 			            continue;
 			        }
 
-			        if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			        if (b.GetBodyType() == BodyType._staticBody)
 			        {
 			            continue;
 			        }
@@ -925,18 +925,18 @@ namespace Box2D {
 			    m_profile.broadphase = timer.GetMilliseconds();
 			}
 		}
-		private void SolveTOI(b2TimeStep step){
-			b2Island island = new b2Island(m_contactManager.m_contactListener);
+		private void SolveTOI(TimeStep step){
+			Island island = new Island(m_contactManager.m_contactListener);
 
 			if (m_stepComplete)
 			{
-			    foreach (b2Body b in m_bodyList)
+			    foreach (Body b in m_bodyList)
 			    {
-			        b.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+			        b.m_flags &= ~Body.BodyFlags.e_islandFlag;
 			        b.m_sweep.alpha0 = 0.0f;
 			    }
 
-			    foreach (b2Contact c in m_contactManager.m_contactList)
+			    foreach (Contact c in m_contactManager.m_contactList)
 			    {
 			        // Invalidate TOI
 			        c.m_flags &= ~(ContactFlags.e_toiFlag | ContactFlags.e_islandFlag);
@@ -945,19 +945,19 @@ namespace Box2D {
 			    }
 			}
 
-			b2Fixture fA = null;
-			b2Fixture fB = null;
-			b2Body bA = null;
-			b2Body bB = null;
+			Fixture fA = null;
+			Fixture fB = null;
+			Body bA = null;
+			Body bB = null;
 
 			// Find TOI events and solve them.
 			for (;;)
 			{
 			    // Find the first TOI.
-			    b2Contact minContact = null;
+			    Contact minContact = null;
 			    float minAlpha = 1.0f;
 
-			    foreach (b2Contact c in m_contactManager.m_contactList)
+			    foreach (Contact c in m_contactManager.m_contactList)
 			    {
 			        // Is this contact disabled?
 			        if (c.IsEnabled() == false)
@@ -966,7 +966,7 @@ namespace Box2D {
 			        }
 
 			        // Prevent excessive sub-stepping.
-			        if (c.m_toiCount > b2Settings.b2_maxSubSteps)
+			        if (c.m_toiCount > Settings._maxSubSteps)
 			        {
 			            continue;
 			        }
@@ -993,12 +993,12 @@ namespace Box2D {
 			            bA = fA.GetBody();
 			            bB = fB.GetBody();
 
-			            b2BodyType typeA = bA.m_type;
-			            b2BodyType typeB = bB.m_type;
-			            Utilities.Assert(typeA == b2BodyType.b2_dynamicBody || typeB == b2BodyType.b2_dynamicBody);
+			            BodyType typeA = bA.m_type;
+			            BodyType typeB = bB.m_type;
+			            Utilities.Assert(typeA == BodyType._dynamicBody || typeB == BodyType._dynamicBody);
 
-			            bool activeA = bA.IsAwake() && typeA != b2BodyType.b2_staticBody;
-			            bool activeB = bB.IsAwake() && typeB != b2BodyType.b2_staticBody;
+			            bool activeA = bA.IsAwake() && typeA != BodyType._staticBody;
+			            bool activeB = bB.IsAwake() && typeB != BodyType._staticBody;
 
 			            // Is at least one body active (awake and dynamic or kinematic)?
 			            if (activeA == false && activeB == false)
@@ -1006,8 +1006,8 @@ namespace Box2D {
 			                continue;
 			            }
 
-			            bool collideA = bA.IsBullet() || typeA != b2BodyType.b2_dynamicBody;
-			            bool collideB = bB.IsBullet() || typeB != b2BodyType.b2_dynamicBody;
+			            bool collideA = bA.IsBullet() || typeA != BodyType._dynamicBody;
+			            bool collideB = bB.IsBullet() || typeB != BodyType._dynamicBody;
 
 			            // Are these two non-bullet dynamic bodies?
 			            if (collideA == false && collideB == false)
@@ -1036,19 +1036,19 @@ namespace Box2D {
 			            int indexB = c.GetChildIndexB();
 
 			            // Compute the time of impact in interval [0, minTOI]
-			            b2TOIInput input = new b2TOIInput();
+			            TOIInput input = new TOIInput();
 			            input.proxyA.Set(fA.GetShape(), indexA);
 			            input.proxyB.Set(fB.GetShape(), indexB);
 			            input.sweepA = bA.m_sweep;
 			            input.sweepB = bB.m_sweep;
 			            input.tMax = 1.0f;
 
-			            b2TOIOutput output;
-			            b2TimeOfImpact.TimeOfImpact(out output, input);
+			            TOIOutput output;
+			            Utilities.TimeOfImpact(out output, input);
 
 			            // Beta is the fraction of the remaining portion of the .
 			            float beta = output.t;
-			            if (output.state == b2TOIOutput.State.e_touching)
+			            if (output.state == TOIOutput.State.e_touching)
 			            {
 			                alpha = Math.Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
 			            }
@@ -1082,8 +1082,8 @@ namespace Box2D {
 			    bA = fA.GetBody();
 			    bB = fB.GetBody();
 
-			    b2Sweep backup1 = bA.m_sweep;
-			    b2Sweep backup2 = bB.m_sweep;
+			    Sweep backup1 = bA.m_sweep;
+			    Sweep backup2 = bB.m_sweep;
 
 			    bA.Advance(minAlpha);
 			    bB.Advance(minAlpha);
@@ -1114,18 +1114,18 @@ namespace Box2D {
 			    island.Add(bB);
 			    island.Add(minContact);
 
-			    bA.m_flags |= b2Body.BodyFlags.e_islandFlag;
-			    bB.m_flags |= b2Body.BodyFlags.e_islandFlag;
+			    bA.m_flags |= Body.BodyFlags.e_islandFlag;
+			    bB.m_flags |= Body.BodyFlags.e_islandFlag;
 			    minContact.m_flags |= ContactFlags.e_islandFlag;
 
 			    // Get contacts on bodyA and bodyB.
-			    b2Body[] bodies = {bA, bB};
+			    Body[] bodies = {bA, bB};
 			    for (int i = 0; i < 2; ++i)
 			    {
-			        b2Body body = bodies[i];
-			        if (body.m_type == b2BodyType.b2_dynamicBody)
+			        Body body = bodies[i];
+			        if (body.m_type == BodyType._dynamicBody)
 			        {
-						foreach (b2ContactEdge ce in body.m_contactList)
+						foreach (ContactEdge ce in body.m_contactList)
 			            {
 							throw new NotImplementedException();
 
@@ -1139,7 +1139,7 @@ namespace Box2D {
 							//    break;
 							//}
 
-							//b2Contact* contact = ce.contact;
+							//Contact* contact = ce.contact;
 
 							//// Has this contact already been added to the island?
 							//if (contact.m_flags & ContactFlags.e_islandFlag)
@@ -1148,8 +1148,8 @@ namespace Box2D {
 							//}
 
 							//// Only add static, kinematic, or bullet bodies.
-							//b2Body* other = ce.other;
-							//if (other.m_type == b2_dynamicBody &&
+							//Body* other = ce.other;
+							//if (other.m_type == _dynamicBody &&
 							//    body.IsBullet() == false && other.IsBullet() == false)
 							//{
 							//    continue;
@@ -1164,8 +1164,8 @@ namespace Box2D {
 							//}
 
 							//// Tentatively advance the body to the TOI.
-							//b2Sweep backup = other.m_sweep;
-							//if ((other.m_flags & b2Body.BodyFlags.e_islandFlag) == 0)
+							//Sweep backup = other.m_sweep;
+							//if ((other.m_flags & Body.BodyFlags.e_islandFlag) == 0)
 							//{
 							//    other.Advance(minAlpha);
 							//}
@@ -1194,15 +1194,15 @@ namespace Box2D {
 							//island.Add(contact);
 
 							//// Has the other body already been added to the island?
-							//if (other.m_flags & b2Body.BodyFlags.e_islandFlag)
+							//if (other.m_flags & Body.BodyFlags.e_islandFlag)
 							//{
 							//    continue;
 							//}
 					
 							//// Add the other body to the island.
-							//other.m_flags |= b2Body.BodyFlags.e_islandFlag;
+							//other.m_flags |= Body.BodyFlags.e_islandFlag;
 
-							//if (other.m_type != b2_staticBody)
+							//if (other.m_type != _staticBody)
 							//{
 							//    other.SetAwake(true);
 							//}
@@ -1212,7 +1212,7 @@ namespace Box2D {
 			        }
 			    }
 
-			    b2TimeStep subStep;
+			    TimeStep subStep;
 			    subStep.dt = (1.0f - minAlpha) * step.dt;
 			    subStep.inv_dt = 1.0f / subStep.dt;
 			    subStep.dtRatio = 1.0f;
@@ -1225,10 +1225,10 @@ namespace Box2D {
 			    for (int i = 0; i < island.m_bodies.Count(); ++i)
 			    {
 					throw new NotImplementedException();
-					//b2Body* body = island.m_bodies[i];
-					//body.m_flags &= ~b2Body.BodyFlags.e_islandFlag;
+					//Body* body = island.m_bodies[i];
+					//body.m_flags &= ~Body.BodyFlags.e_islandFlag;
 
-					//if (body.m_type != b2_dynamicBody)
+					//if (body.m_type != _dynamicBody)
 					//{
 					//    continue;
 					//}
@@ -1236,7 +1236,7 @@ namespace Box2D {
 					//body.SynchronizeFixtures();
 
 					//// Invalidate all contact TOIs on this displaced body.
-					//for (b2ContactEdge* ce = body.m_contactList; ce; ce = ce.next)
+					//for (ContactEdge* ce = body.m_contactList; ce; ce = ce.next)
 					//{
 					//    ce.contact.m_flags &= ~(ContactFlags.e_toiFlag | ContactFlags.e_islandFlag);
 					//}
@@ -1255,38 +1255,38 @@ namespace Box2D {
 		}
 
 
-		private void DrawJoint(b2Joint joint)
+		private void DrawJoint(Joint joint)
 		{
-			b2Body bodyA = joint.GetBodyA();
-			b2Body bodyB = joint.GetBodyB();
-			b2Transform xf1 = bodyA.GetTransform();
-			b2Transform xf2 = bodyB.GetTransform();
-			b2Vec2 x1 = xf1.p;
-			b2Vec2 x2 = xf2.p;
-			b2Vec2 p1 = joint.GetAnchorA();
-			b2Vec2 p2 = joint.GetAnchorB();
+			Body bodyA = joint.GetBodyA();
+			Body bodyB = joint.GetBodyB();
+			Transform xf1 = bodyA.GetTransform();
+			Transform xf2 = bodyB.GetTransform();
+			Vec2 x1 = xf1.p;
+			Vec2 x2 = xf2.p;
+			Vec2 p1 = joint.GetAnchorA();
+			Vec2 p2 = joint.GetAnchorB();
 
 			Color color = Color.FromArgb(128, 200, 200);
 
 			switch (joint.GetJointType())
 			{
-			case b2JointType.e_distanceJoint:
+			case JointType.e_distanceJoint:
 			    m_debugDraw.DrawSegment(p1, p2, color);
 			    break;
 
-			case b2JointType.e_pulleyJoint:
+			case JointType.e_pulleyJoint:
 			    {
 					throw new NotImplementedException();
-					//b2PulleyJoint pulley = (b2PulleyJoint)joint;
-					//b2Vec2 s1 = pulley.GetGroundAnchorA();
-					//b2Vec2 s2 = pulley.GetGroundAnchorB();
+					//PulleyJoint pulley = (PulleyJoint)joint;
+					//Vec2 s1 = pulley.GetGroundAnchorA();
+					//Vec2 s2 = pulley.GetGroundAnchorB();
 					//m_debugDraw.DrawSegment(s1, p1, color);
 					//m_debugDraw.DrawSegment(s2, p2, color);
 					//m_debugDraw.DrawSegment(s1, s2, color);
 			    }
 			    break;
 
-			case b2JointType.e_mouseJoint:
+			case JointType.e_mouseJoint:
 			    // don't draw this
 			    break;
 
@@ -1297,16 +1297,16 @@ namespace Box2D {
 				break;
 			}
 		}
-		private void DrawShape(b2Fixture fixture, b2Transform xf, Color color){
+		private void DrawShape(Fixture fixture, Transform xf, Color color){
 			switch (fixture.GetShapeType())
 			{
 			case ShapeType.Circle:
 			    {
-			        b2CircleShape circle = (b2CircleShape)fixture.GetShape();
+			        CircleShape circle = (CircleShape)fixture.GetShape();
 
-			        b2Vec2 center = Utilities.b2Mul(xf, circle.m_p);
+			        Vec2 center = Utilities.Mul(xf, circle.m_p);
 			        float radius = circle.m_radius;
-			        b2Vec2 axis = Utilities.b2Mul(xf.q, new b2Vec2(1.0f, 0.0f));
+			        Vec2 axis = Utilities.Mul(xf.q, new Vec2(1.0f, 0.0f));
 
 			        m_debugDraw.DrawSolidCircle(center, radius, axis, color);
 			    }
@@ -1314,23 +1314,23 @@ namespace Box2D {
 
 			case ShapeType.Edge:
 			    {
-			        b2EdgeShape edge = (b2EdgeShape)fixture.GetShape();
-			        b2Vec2 v1 = Utilities.b2Mul(xf, edge.m_vertex1);
-			        b2Vec2 v2 = Utilities.b2Mul(xf, edge.m_vertex2);
+			        EdgeShape edge = (EdgeShape)fixture.GetShape();
+			        Vec2 v1 = Utilities.Mul(xf, edge.m_vertex1);
+			        Vec2 v2 = Utilities.Mul(xf, edge.m_vertex2);
 			        m_debugDraw.DrawSegment(v1, v2, color);
 			    }
 			    break;
 
 			case ShapeType.Chain:
 			    {
-			        b2ChainShape chain = (b2ChainShape)fixture.GetShape();
+			        ChainShape chain = (ChainShape)fixture.GetShape();
 			        int count = chain.m_count;
-			        List<b2Vec2> vertices = chain.m_vertices;
+			        List<Vec2> vertices = chain.m_vertices;
 
-			        b2Vec2 v1 = Utilities.b2Mul(xf, vertices[0]);
+			        Vec2 v1 = Utilities.Mul(xf, vertices[0]);
 			        for (int i = 1; i < count; ++i)
 			        {
-			            b2Vec2 v2 = Utilities.b2Mul(xf, vertices[i]);
+			            Vec2 v2 = Utilities.Mul(xf, vertices[i]);
 			            m_debugDraw.DrawSegment(v1, v2, color);
 			            m_debugDraw.DrawCircle(v1, 0.05f, color);
 			            v1 = v2;
@@ -1340,14 +1340,14 @@ namespace Box2D {
 
 			case ShapeType.Polygon:
 			    {
-			        b2PolygonShape poly = (b2PolygonShape)fixture.GetShape();
+			        PolygonShape poly = (PolygonShape)fixture.GetShape();
 			        int vertexCount = poly.m_count;
-			        Utilities.Assert(vertexCount <= b2Settings.b2_maxPolygonVertices);
-			        b2Vec2[] vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+			        Utilities.Assert(vertexCount <= Settings._maxPolygonVertices);
+			        Vec2[] vertices = new Vec2[Settings._maxPolygonVertices];
 
 			        for (int i = 0; i < vertexCount; ++i)
 			        {
-			            vertices[i] = Utilities.b2Mul(xf, poly.m_vertices[i]);
+			            vertices[i] = Utilities.Mul(xf, poly.m_vertices[i]);
 			        }
 
 			        m_debugDraw.DrawSolidPolygon(vertices, vertexCount, color);
@@ -1361,16 +1361,16 @@ namespace Box2D {
 
 		internal WorldFlags m_flags;
 
-		internal b2ContactManager m_contactManager;
+		internal ContactManager m_contactManager;
 
-		private List<b2Body> m_bodyList;//pointer
-		private List<b2Joint> m_jointList;//pointer
+		private List<Body> m_bodyList;//pointer
+		private List<Joint> m_jointList;//pointer
 
-		private b2Vec2 m_gravity;
+		private Vec2 m_gravity;
 		private bool m_allowSleep;
 
-		private b2DestructionListener m_destructionListener; //pointer
-		private b2Draw m_debugDraw;//pointer
+		private DestructionListener m_destructionListener; //pointer
+		private Draw m_debugDraw;//pointer
 
 		// This is used to compute the time step ratio to
 		// support a variable time step.
@@ -1383,6 +1383,6 @@ namespace Box2D {
 
 		private bool m_stepComplete;
 
-		private b2Profile m_profile;
+		private Profile m_profile;
 	}
 }

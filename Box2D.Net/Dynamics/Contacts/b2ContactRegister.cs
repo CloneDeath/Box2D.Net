@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	public struct b2ContactRegister {
-		public b2Contact.b2ContactCreateFcn createFcn;
-		public b2Contact.b2ContactDestroyFcn destroyFcn;
+	public struct ContactRegister {
+		public Contact.ContactCreateFcn createFcn;
+		public Contact.ContactDestroyFcn destroyFcn;
 		public bool primary;
 	};
 }

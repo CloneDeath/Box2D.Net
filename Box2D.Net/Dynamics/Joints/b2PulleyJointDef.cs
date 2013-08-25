@@ -6,11 +6,11 @@ using System.Text;
 namespace Box2D {
 	/// Pulley joint definition. This requires two ground anchors,
 	/// two dynamic body anchor points, and a pulley ratio.
-	public class b2PulleyJointDef : b2JointDef
+	public class PulleyJointDef : JointDef
 	{
-		public b2PulleyJointDef()
+		public PulleyJointDef()
 		{
-			type = b2JointType.e_pulleyJoint;
+			type = JointType.e_pulleyJoint;
 			groundAnchorA.Set(-1.0f, 1.0f);
 			groundAnchorB.Set(1.0f, 1.0f);
 			localAnchorA.Set(-1.0f, 0.0f);
@@ -33,9 +33,9 @@ namespace Box2D {
 		// J = -[u1 cross(r1, u1) ratio * u2  ratio * cross(r2, u2)]
 		// K = J * invM * JT
 		//   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
-		public void Initialize(b2Body bA, b2Body bB,
-						b2Vec2 groundA, b2Vec2 groundB,
-						b2Vec2 anchorA, b2Vec2 anchorB,
+		public void Initialize(Body bA, Body bB,
+						Vec2 groundA, Vec2 groundB,
+						Vec2 anchorA, Vec2 anchorB,
 						float r) {
 			bodyA = bA;
 			bodyB = bB;
@@ -43,25 +43,25 @@ namespace Box2D {
 			groundAnchorB = groundB;
 			localAnchorA = bodyA.GetLocalPoint(anchorA);
 			localAnchorB = bodyB.GetLocalPoint(anchorB);
-			b2Vec2 dA = anchorA - groundA;
+			Vec2 dA = anchorA - groundA;
 			lengthA = dA.Length();
-			b2Vec2 dB = anchorB - groundB;
+			Vec2 dB = anchorB - groundB;
 			lengthB = dB.Length();
 			ratio = r;
 			Utilities.Assert(ratio > Single.Epsilon);
 		}
 
 		/// The first ground anchor in world coordinates. This point never moves.
-		public b2Vec2 groundAnchorA;
+		public Vec2 groundAnchorA;
 
 		/// The second ground anchor in world coordinates. This point never moves.
-		public b2Vec2 groundAnchorB;
+		public Vec2 groundAnchorB;
 
 		/// The local anchor point relative to bodyA's origin.
-		public b2Vec2 localAnchorA;
+		public Vec2 localAnchorA;
 
 		/// The local anchor point relative to bodyB's origin.
-		public b2Vec2 localAnchorB;
+		public Vec2 localAnchorB;
 
 		/// The a reference length for the segment attached to bodyA.
 		public float lengthA;

@@ -7,19 +7,19 @@ namespace Box2D {
 	/// A distance joint constrains two points on two bodies
 	/// to remain at a fixed distance from each other. You can view
 	/// this as a massless, rigid rod.
-	class b2DistanceJoint : b2Joint
+	class DistanceJoint : Joint
 	{
-		public override b2Vec2 GetAnchorA(){
+		public override Vec2 GetAnchorA(){
 			return m_bodyA.GetWorldPoint(m_localAnchorA);
 		}
-		public override b2Vec2 GetAnchorB(){
+		public override Vec2 GetAnchorB(){
 			return m_bodyB.GetWorldPoint(m_localAnchorB);
 		}
 
 		/// Get the reaction force given the inverse time step.
 		/// Unit is N.
-		public override b2Vec2 GetReactionForce(float inv_dt){
-			b2Vec2 F = (inv_dt * m_impulse) * m_u;
+		public override Vec2 GetReactionForce(float inv_dt){
+			Vec2 F = (inv_dt * m_impulse) * m_u;
 			return F;
 		}
 
@@ -30,10 +30,10 @@ namespace Box2D {
 		}
 
 		/// The local anchor point relative to bodyA's origin.
-		public b2Vec2 GetLocalAnchorA() { return m_localAnchorA; }
+		public Vec2 GetLocalAnchorA() { return m_localAnchorA; }
 
 		/// The local anchor point relative to bodyB's origin.
-		public b2Vec2 GetLocalAnchorB()  { return m_localAnchorB; }
+		public Vec2 GetLocalAnchorB()  { return m_localAnchorB; }
 
 		/// Set/get the natural length.
 		/// Manipulating the length can lead to non-physical behavior when the frequency is zero.
@@ -66,19 +66,19 @@ namespace Box2D {
 			int indexA = m_bodyA.m_islandIndex;
 			int indexB = m_bodyB.m_islandIndex;
 
-			b2Settings.b2Log("  b2DistanceJointDef jd;\n");
-			b2Settings.b2Log("  jd.bodyA = bodies[%d];\n", indexA);
-			b2Settings.b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-			b2Settings.b2Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			b2Settings.b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			b2Settings.b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-			b2Settings.b2Log("  jd.length = %.15lef;\n", m_length);
-			b2Settings.b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
-			b2Settings.b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
-			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
+			Settings.Log("  DistanceJointDef jd;\n");
+			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
+			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
+			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+			Settings.Log("  jd.length = %.15lef;\n", m_length);
+			Settings.Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
+			Settings.Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
+			Settings.Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
 		}
 		
-		internal b2DistanceJoint(b2DistanceJointDef def) : base(def)
+		internal DistanceJoint(DistanceJointDef def) : base(def)
 		{
 			m_localAnchorA = def.localAnchorA;
 			m_localAnchorB = def.localAnchorB;
@@ -90,7 +90,7 @@ namespace Box2D {
 			m_bias = 0.0f;
 		}
 
-		internal override void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -100,26 +100,26 @@ namespace Box2D {
 			m_invIA = m_bodyA.m_invI;
 			m_invIB = m_bodyB.m_invI;
 
-			b2Vec2 cA = data.positions[m_indexA].c;
+			Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
-			b2Vec2 vA = data.velocities[m_indexA].v;
+			Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 
-			b2Vec2 cB = data.positions[m_indexB].c;
+			Vec2 cB = data.positions[m_indexB].c;
 			float aB = data.positions[m_indexB].a;
-			b2Vec2 vB = data.velocities[m_indexB].v;
+			Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
-			b2Rot qA = new b2Rot(aA); 
-			b2Rot qB = new b2Rot(aB);
+			Rot qA = new Rot(aA); 
+			Rot qB = new Rot(aB);
 
-			m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
-			m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
+			m_rA = Utilities.Mul(qA, m_localAnchorA - m_localCenterA);
+			m_rB = Utilities.Mul(qB, m_localAnchorB - m_localCenterB);
 			m_u = cB + m_rB - cA - m_rA;
 
 			// Handle singularity.
 			float length = m_u.Length();
-			if (length >b2Settings.b2_linearSlop)
+			if (length >Settings._linearSlop)
 			{
 				m_u *= 1.0f / length;
 			}
@@ -128,8 +128,8 @@ namespace Box2D {
 				m_u.Set(0.0f, 0.0f);
 			}
 
-			float crAu = Utilities.b2Cross(m_rA, m_u);
-			float crBu = Utilities.b2Cross(m_rB, m_u);
+			float crAu = Utilities.Cross(m_rA, m_u);
+			float crBu = Utilities.Cross(m_rB, m_u);
 			float invMass = m_invMassA + m_invIA * crAu * crAu + m_invMassB + m_invIB * crBu * crBu;
 
 			// Compute the effective mass matrix.
@@ -168,11 +168,11 @@ namespace Box2D {
 				// Scale the impulse to support a variable time step.
 				m_impulse *= data.step.dtRatio;
 
-				b2Vec2 P = m_impulse * m_u;
+				Vec2 P = m_impulse * m_u;
 				vA -= m_invMassA * P;
-				wA -= m_invIA * Utilities.b2Cross(m_rA, P);
+				wA -= m_invIA * Utilities.Cross(m_rA, P);
 				vB += m_invMassB * P;
-				wB += m_invIB * Utilities.b2Cross(m_rB, P);
+				wB += m_invIB * Utilities.Cross(m_rB, P);
 			}
 			else
 			{
@@ -184,67 +184,67 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		internal override void SolveVelocityConstraints(b2SolverData data){
-			b2Vec2 vA = data.velocities[m_indexA].v;
+		internal override void SolveVelocityConstraints(SolverData data){
+			Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
-			b2Vec2 vB = data.velocities[m_indexB].v;
+			Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
 			// Cdot = dot(u, v + cross(w, r))
-			b2Vec2 vpA = vA + Utilities.b2Cross(wA, m_rA);
-			b2Vec2 vpB = vB + Utilities.b2Cross(wB, m_rB);
-			float Cdot = Utilities.b2Dot(m_u, vpB - vpA);
+			Vec2 vpA = vA + Utilities.Cross(wA, m_rA);
+			Vec2 vpB = vB + Utilities.Cross(wB, m_rB);
+			float Cdot = Utilities.Dot(m_u, vpB - vpA);
 
 			float impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);
 			m_impulse += impulse;
 
-			b2Vec2 P = impulse * m_u;
+			Vec2 P = impulse * m_u;
 			vA -= m_invMassA * P;
-			wA -= m_invIA * Utilities.b2Cross(m_rA, P);
+			wA -= m_invIA * Utilities.Cross(m_rA, P);
 			vB += m_invMassB * P;
-			wB += m_invIB * Utilities.b2Cross(m_rB, P);
+			wB += m_invIB * Utilities.Cross(m_rB, P);
 
 			data.velocities[m_indexA].v = vA;
 			data.velocities[m_indexA].w = wA;
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		internal override bool SolvePositionConstraints(b2SolverData data){
+		internal override bool SolvePositionConstraints(SolverData data){
 			if (m_frequencyHz > 0.0f)
 			{
 				// There is no position correction for soft distance constraints.
 				return true;
 			}
 
-			b2Vec2 cA = data.positions[m_indexA].c;
+			Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
-			b2Vec2 cB = data.positions[m_indexB].c;
+			Vec2 cB = data.positions[m_indexB].c;
 			float aB = data.positions[m_indexB].a;
 
-			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
+			Rot qA = new Rot(aA); Rot qB = new Rot(aB);
 
-			b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
-			b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
-			b2Vec2 u = cB + rB - cA - rA;
+			Vec2 rA = Utilities.Mul(qA, m_localAnchorA - m_localCenterA);
+			Vec2 rB = Utilities.Mul(qB, m_localAnchorB - m_localCenterB);
+			Vec2 u = cB + rB - cA - rA;
 
 			float length = u.Normalize();
 			float C = length - m_length;
-			C = Utilities.b2Clamp(C, -b2Settings.b2_maxLinearCorrection, b2Settings.b2_maxLinearCorrection);
+			C = Utilities.Clamp(C, -Settings._maxLinearCorrection, Settings._maxLinearCorrection);
 
 			float impulse = -m_mass * C;
-			b2Vec2 P = impulse * u;
+			Vec2 P = impulse * u;
 
 			cA -= m_invMassA * P;
-			aA -= m_invIA * Utilities.b2Cross(rA, P);
+			aA -= m_invIA * Utilities.Cross(rA, P);
 			cB += m_invMassB * P;
-			aB += m_invIB * Utilities.b2Cross(rB, P);
+			aB += m_invIB * Utilities.Cross(rB, P);
 
 			data.positions[m_indexA].c = cA;
 			data.positions[m_indexA].a = aA;
 			data.positions[m_indexB].c = cB;
 			data.positions[m_indexB].a = aB;
 
-			return Math.Abs(C) <b2Settings.b2_linearSlop;
+			return Math.Abs(C) <Settings._linearSlop;
 		}
 
 		float m_frequencyHz;
@@ -252,8 +252,8 @@ namespace Box2D {
 		float m_bias;
 
 		// Solver shared
-		b2Vec2 m_localAnchorA;
-		b2Vec2 m_localAnchorB;
+		Vec2 m_localAnchorA;
+		Vec2 m_localAnchorB;
 		float m_gamma;
 		float m_impulse;
 		float m_length;
@@ -261,11 +261,11 @@ namespace Box2D {
 		// Solver temp
 		int m_indexA;
 		int m_indexB;
-		b2Vec2 m_u;
-		b2Vec2 m_rA;
-		b2Vec2 m_rB;
-		b2Vec2 m_localCenterA;
-		b2Vec2 m_localCenterB;
+		Vec2 m_u;
+		Vec2 m_rA;
+		Vec2 m_rB;
+		Vec2 m_localCenterA;
+		Vec2 m_localCenterB;
 		float m_invMassA;
 		float m_invMassB;
 		float m_invIA;

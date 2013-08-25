@@ -12,15 +12,15 @@ namespace Testbed.Tests {
 	{
 		public Revolute()
 		{
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				//fd.filter.categoryBits = 2;
 
@@ -28,23 +28,23 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_radius = 0.5f;
 
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 
-				b2RevoluteJointDef rjd = new b2RevoluteJointDef();
+				RevoluteJointDef rjd = new RevoluteJointDef();
 
 				bd.position.Set(-10.0f, 20.0f);
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 5.0f);
 
 				float w = 100.0f;
 				body.SetAngularVelocity(w);
-				body.SetLinearVelocity(new b2Vec2(-8.0f * w, 0.0f));
+				body.SetLinearVelocity(new Vec2(-8.0f * w, 0.0f));
 
-				rjd.Initialize(ground, body, new b2Vec2(-10.0f, 12.0f));
+				rjd.Initialize(ground, body, new Vec2(-10.0f, 12.0f));
 				rjd.motorSpeed = 1.0f * (float)Math.PI;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = false;
@@ -53,18 +53,18 @@ namespace Testbed.Tests {
 				rjd.enableLimit = true;
 				rjd.collideConnected = true;
 
-				m_joint = (b2RevoluteJoint)m_world.CreateJoint(rjd);
+				m_joint = (RevoluteJoint)m_world.CreateJoint(rjd);
 			}
 
 			{
-				b2CircleShape circle_shape = new b2CircleShape();
+				CircleShape circle_shape = new CircleShape();
 				circle_shape.m_radius = 3.0f;
 
-				b2BodyDef circle_bd = new b2BodyDef();
-				circle_bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef circle_bd = new BodyDef();
+				circle_bd.type = BodyType._dynamicBody;
 				circle_bd.position.Set(5.0f, 30.0f);
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.density = 5.0f;
 				fd.filter.maskBits = 1;
 				fd.shape = circle_shape;
@@ -72,18 +72,18 @@ namespace Testbed.Tests {
 				m_ball = m_world.CreateBody(circle_bd);
 				m_ball.CreateFixture(fd);
 
-				b2PolygonShape polygon_shape = new b2PolygonShape();
-				polygon_shape.SetAsBox(10.0f, 0.2f, new b2Vec2(-10.0f, 0.0f), 0.0f);
+				PolygonShape polygon_shape = new PolygonShape();
+				polygon_shape.SetAsBox(10.0f, 0.2f, new Vec2(-10.0f, 0.0f), 0.0f);
 
-				b2BodyDef polygon_bd = new b2BodyDef();
+				BodyDef polygon_bd = new BodyDef();
 				polygon_bd.position.Set(20.0f, 10.0f);
-				polygon_bd.type = b2BodyType.b2_dynamicBody;
+				polygon_bd.type = BodyType._dynamicBody;
 				polygon_bd.bullet = true;
-				b2Body polygon_body = m_world.CreateBody(polygon_bd);
+				Body polygon_body = m_world.CreateBody(polygon_bd);
 				polygon_body.CreateFixture(polygon_shape, 2.0f);
 
-				b2RevoluteJointDef rjd = new b2RevoluteJointDef();
-				rjd.Initialize(ground, polygon_body, new b2Vec2(20.0f, 10.0f));
+				RevoluteJointDef rjd = new RevoluteJointDef();
+				rjd.Initialize(ground, polygon_body, new Vec2(20.0f, 10.0f));
 				rjd.lowerAngle = -0.25f * (float)Math.PI;
 				rjd.upperAngle = 0.0f * (float)Math.PI;
 				rjd.enableLimit = true;
@@ -92,18 +92,18 @@ namespace Testbed.Tests {
 
 			// Tests mass computation of a small object far from the origin
 			{
-				b2BodyDef bodyDef = new b2BodyDef();
-				bodyDef.type = b2BodyType.b2_dynamicBody;
-				b2Body body = m_world.CreateBody(bodyDef);
+				BodyDef bodyDef = new BodyDef();
+				bodyDef.type = BodyType._dynamicBody;
+				Body body = m_world.CreateBody(bodyDef);
 		
-				b2PolygonShape polyShape = new b2PolygonShape();
-				b2Vec2[] verts = new b2Vec2[3];
+				PolygonShape polyShape = new PolygonShape();
+				Vec2[] verts = new Vec2[3];
 				verts[0].Set( 17.63f, 36.31f );
 				verts[1].Set( 17.52f, 36.69f );
 				verts[2].Set( 17.19f, 36.36f );
 				polyShape.Set(verts, 3);
 		
-				b2FixtureDef polyFixtureDef = new b2FixtureDef();
+				FixtureDef polyFixtureDef = new FixtureDef();
 				polyFixtureDef.shape = polyShape;
 				polyFixtureDef.density = 1;
 
@@ -123,7 +123,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 			m_debugDraw.DrawString("Keys: (l) limits, (m) motor");
@@ -131,7 +131,7 @@ namespace Testbed.Tests {
 
 			//if (m_stepCount == 360)
 			//{
-			//	m_ball.SetTransform(new b2Vec2(0.0f, 0.5f), 0.0f);
+			//	m_ball.SetTransform(new Vec2(0.0f, 0.5f), 0.0f);
 			//}
 
 			//float torque1 = m_joint1.GetMotorTorque();
@@ -144,7 +144,7 @@ namespace Testbed.Tests {
 			return new Revolute();
 		}
 
-		b2Body m_ball;
-		b2RevoluteJoint m_joint;
+		Body m_ball;
+		RevoluteJoint m_joint;
 	};
 }

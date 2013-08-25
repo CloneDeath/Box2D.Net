@@ -6,48 +6,48 @@ using System.Text;
 namespace Box2D {
 	/// A convex polygon. It is assumed that the interior of the polygon is to
 	/// the left of each edge.
-	/// Polygons have a maximum number of vertices equal to b2Settings.b2_maxPolygonVertices.
+	/// Polygons have a maximum number of vertices equal to Settings._maxPolygonVertices.
 	/// In most cases you should not need many vertices for a convex polygon.
-	public class b2PolygonShape : b2Shape {
-		public b2Vec2 m_centroid;
-		public b2Vec2[] m_vertices = new b2Vec2[b2Settings.b2_maxPolygonVertices];
-		public b2Vec2[] m_normals = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+	public class PolygonShape : Shape {
+		public Vec2 m_centroid;
+		public Vec2[] m_vertices = new Vec2[Settings._maxPolygonVertices];
+		public Vec2[] m_normals = new Vec2[Settings._maxPolygonVertices];
 		public int m_count;
 		
-		public b2PolygonShape(){
+		public PolygonShape(){
 			m_type = ShapeType.Polygon;
-			m_radius = b2Settings.b2_polygonRadius;
+			m_radius = Settings._polygonRadius;
 			m_count = 0;
 			m_centroid.SetZero();
 		}
 
-		/// Implement b2Shape.
-		public override b2Shape Clone() {
-			return (b2Shape)this.MemberwiseClone();
+		/// Implement Shape.
+		public override Shape Clone() {
+			return (Shape)this.MemberwiseClone();
 		}
 
-		/// @see b2Shape::GetChildCount
+		/// @see Shape::GetChildCount
 		public override int GetChildCount() {
 			return 1;
 		}
 
 		/// Create a convex hull from the given array of local points.
-		/// The count must be in the range [3, b2Settings.b2_maxPolygonVertices].
+		/// The count must be in the range [3, Settings._maxPolygonVertices].
 		/// @warning the points may be re-ordered, even if they form a convex polygon
 		/// @warning collinear points are handled but not removed. Collinear points
 		/// may lead to poor stacking behavior.
-		public void Set(b2Vec2[] vertices, int count){
-			Utilities.Assert(3 <= count && count <= b2Settings.b2_maxPolygonVertices);
+		public void Set(Vec2[] vertices, int count){
+			Utilities.Assert(3 <= count && count <= Settings._maxPolygonVertices);
 			if (count < 3)
 			{
 			    SetAsBox(1.0f, 1.0f);
 			    return;
 			}
 			
-			int n = Math.Min(count, b2Settings.b2_maxPolygonVertices);
+			int n = Math.Min(count, Settings._maxPolygonVertices);
 
 			// Copy vertices into local buffer
-			b2Vec2[] ps = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+			Vec2[] ps = new Vec2[Settings._maxPolygonVertices];
 			for (int i = 0; i < n; ++i)
 			{
 			    ps[i] = vertices[i];
@@ -69,7 +69,7 @@ namespace Box2D {
 			    }
 			}
 
-			int[] hull = new int[b2Settings.b2_maxPolygonVertices];
+			int[] hull = new int[Settings._maxPolygonVertices];
 			int m = 0;
 			int ih = i0;
 
@@ -86,9 +86,9 @@ namespace Box2D {
 			            continue;
 			        }
 
-			        b2Vec2 r = ps[ie] - ps[hull[m]];
-			        b2Vec2 v = ps[j] - ps[hull[m]];
-			        float c = Utilities.b2Cross(r, v);
+			        Vec2 r = ps[ie] - ps[hull[m]];
+			        Vec2 v = ps[j] - ps[hull[m]];
+			        float c = Utilities.Cross(r, v);
 			        if (c < 0.0f)
 			        {
 			            ie = j;
@@ -123,9 +123,9 @@ namespace Box2D {
 			{
 			    int i1 = i;
 			    int i2 = i + 1 < m ? i + 1 : 0;
-			    b2Vec2 edge = m_vertices[i2] - m_vertices[i1];
+			    Vec2 edge = m_vertices[i2] - m_vertices[i1];
 			    Utilities.Assert(edge.LengthSquared() > Single.Epsilon * Single.Epsilon);
-			    m_normals[i] = Utilities.b2Cross(edge, 1.0f);
+			    m_normals[i] = Utilities.Cross(edge, 1.0f);
 			    m_normals[i].Normalize();
 			}
 
@@ -155,7 +155,7 @@ namespace Box2D {
 		/// @param hy the half-height.
 		/// @param center the center of the box in local coordinates.
 		/// @param angle the rotation of the box in local coordinates.
-		public void SetAsBox(float hx, float hy, b2Vec2 center, float angle){
+		public void SetAsBox(float hx, float hy, Vec2 center, float angle){
 			m_count = 4;
 			m_vertices[0].Set(-hx, -hy);
 			m_vertices[1].Set(hx, -hy);
@@ -167,27 +167,27 @@ namespace Box2D {
 			m_normals[3].Set(-1.0f, 0.0f);
 			m_centroid = center;
 
-			b2Transform xf = new b2Transform();
+			Transform xf = new Transform();
 			xf.p = center;
 			xf.q.Set(angle);
 
 			// Transform vertices and normals.
 			for (int i = 0; i < m_count; ++i) {
-				m_vertices[i] = Utilities.b2Mul(xf, m_vertices[i]);
-				m_normals[i] = Utilities.b2Mul(xf.q, m_normals[i]);
+				m_vertices[i] = Utilities.Mul(xf, m_vertices[i]);
+				m_normals[i] = Utilities.Mul(xf.q, m_normals[i]);
 			}
 		}
 		
-		private static b2Vec2 ComputeCentroid(b2Vec2[] vs, int count)
+		private static Vec2 ComputeCentroid(Vec2[] vs, int count)
 		{
 		    Utilities.Assert(count >= 3);
 
-		    b2Vec2 c = new b2Vec2(0.0f, 0.0f);
+		    Vec2 c = new Vec2(0.0f, 0.0f);
 		    float area = 0.0f;
 
 		    // pRef is the reference point for forming triangles.
 		    // It's location doesn't change the result (except for rounding error).
-		    b2Vec2 pRef = new b2Vec2(0.0f, 0.0f);
+		    Vec2 pRef = new Vec2(0.0f, 0.0f);
 		#if ZERO
 		    // This code would put the reference point inside the polygon.
 		    for (int i = 0; i < count; ++i)
@@ -202,14 +202,14 @@ namespace Box2D {
 		    for (int i = 0; i < count; ++i)
 		    {
 		        // Triangle vertices.
-		        b2Vec2 p1 = pRef;
-		        b2Vec2 p2 = vs[i];
-		        b2Vec2 p3 = i + 1 < count ? vs[i+1] : vs[0];
+		        Vec2 p1 = pRef;
+		        Vec2 p2 = vs[i];
+		        Vec2 p3 = i + 1 < count ? vs[i+1] : vs[0];
 
-		        b2Vec2 e1 = p2 - p1;
-		        b2Vec2 e2 = p3 - p1;
+		        Vec2 e1 = p2 - p1;
+		        Vec2 e2 = p3 - p1;
 
-		        float D = Utilities.b2Cross(e1, e2);
+		        float D = Utilities.Cross(e1, e2);
 
 		        float triangleArea = 0.5f * D;
 		        area += triangleArea;
@@ -224,14 +224,14 @@ namespace Box2D {
 		    return c;
 		}
 
-		/// @see b2Shape::TestPoint
-		public override bool TestPoint(b2Transform transform, b2Vec2 p) {
+		/// @see Shape::TestPoint
+		public override bool TestPoint(Transform transform, Vec2 p) {
 			throw new NotImplementedException();
-			//b2Vec2 pLocal = Utilities.b2MulT(xf.q, p - xf.p);
+			//Vec2 pLocal = Utilities.MulT(xf.q, p - xf.p);
 
 			//for (int i = 0; i < m_count; ++i)
 			//{
-			//    float dot = Utilities.b2Dot(m_normals[i], pLocal - m_vertices[i]);
+			//    float dot = Utilities.Dot(m_normals[i], pLocal - m_vertices[i]);
 			//    if (dot > 0.0f)
 			//    {
 			//        return false;
@@ -241,14 +241,14 @@ namespace Box2D {
 			//return true;
 		}
 
-		/// Implement b2Shape.
-		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input, b2Transform transform, int childIndex) {
+		/// Implement Shape.
+		public override bool RayCast(out RayCastOutput output, RayCastInput input, Transform transform, int childIndex) {
 			throw new NotImplementedException();
 
 			//// Put the ray into the polygon's frame of reference.
-			//b2Vec2 p1 = Utilities.b2MulT(xf.q, input.p1 - xf.p);
-			//b2Vec2 p2 = Utilities.b2MulT(xf.q, input.p2 - xf.p);
-			//b2Vec2 d = p2 - p1;
+			//Vec2 p1 = Utilities.MulT(xf.q, input.p1 - xf.p);
+			//Vec2 p2 = Utilities.MulT(xf.q, input.p2 - xf.p);
+			//Vec2 d = p2 - p1;
 
 			//float lower = 0.0f, upper = input.maxFraction;
 
@@ -259,8 +259,8 @@ namespace Box2D {
 			//    // p = p1 + a * d
 			//    // dot(normal, p - v) = 0
 			//    // dot(normal, p1 - v) + a * dot(normal, d) = 0
-			//    float numerator = Utilities.b2Dot(m_normals[i], m_vertices[i] - p1);
-			//    float denominator = Utilities.b2Dot(m_normals[i], d);
+			//    float numerator = Utilities.Dot(m_normals[i], m_vertices[i] - p1);
+			//    float denominator = Utilities.Dot(m_normals[i], d);
 
 			//    if (denominator == 0.0f)
 			//    {	
@@ -305,32 +305,32 @@ namespace Box2D {
 			//if (index >= 0)
 			//{
 			//    output.fraction = lower;
-			//    output.normal = Utilities.b2Mul(xf.q, m_normals[index]);
+			//    output.normal = Utilities.Mul(xf.q, m_normals[index]);
 			//    return true;
 			//}
 
 			//return false;
 		}
 
-		/// @see b2Shape::ComputeAABB
-		public override void ComputeAABB(out b2AABB aabb, b2Transform xf, int childIndex) {
-			b2Vec2 lower = Utilities.b2Mul(xf, m_vertices[0]);
-			b2Vec2 upper = lower;
+		/// @see Shape::ComputeAABB
+		public override void ComputeAABB(out AABB aabb, Transform xf, int childIndex) {
+			Vec2 lower = Utilities.Mul(xf, m_vertices[0]);
+			Vec2 upper = lower;
 
 			for (int i = 1; i < m_count; ++i)
 			{
-			    b2Vec2 v = Utilities.b2Mul(xf, m_vertices[i]);
+			    Vec2 v = Utilities.Mul(xf, m_vertices[i]);
 			    lower = Utilities.Min(lower, v);
 			    upper = Utilities.Max(upper, v);
 			}
 
-			b2Vec2 r = new b2Vec2(m_radius, m_radius);
+			Vec2 r = new Vec2(m_radius, m_radius);
 			aabb.lowerBound = lower - r;
 			aabb.upperBound = upper + r;
 		}
 
-		/// @see b2Shape::ComputeMass
-		public override void ComputeMass(out b2MassData massData, float density) {
+		/// @see Shape::ComputeMass
+		public override void ComputeMass(out MassData massData, float density) {
 			// Polygon mass, centroid, and inertia.
 			// Let rho be the polygon density in mass per unit area.
 			// Then:
@@ -357,13 +357,13 @@ namespace Box2D {
 
 			Utilities.Assert(m_count >= 3);
 
-			b2Vec2 center = new b2Vec2(0.0f, 0.0f);
+			Vec2 center = new Vec2(0.0f, 0.0f);
 			float area = 0.0f;
 			float I = 0.0f;
 
 			// s is the reference point for forming triangles.
 			// It's location doesn't change the result (except for rounding error).
-			b2Vec2 s = new b2Vec2(0.0f, 0.0f);
+			Vec2 s = new Vec2(0.0f, 0.0f);
 
 			// This code would put the reference point inside the polygon.
 			for (int i = 0; i < m_count; ++i)
@@ -377,10 +377,10 @@ namespace Box2D {
 			for (int i = 0; i < m_count; ++i)
 			{
 			    // Triangle vertices.
-			    b2Vec2 e1 = m_vertices[i] - s;
-			    b2Vec2 e2 = i + 1 < m_count ? m_vertices[i+1] - s : m_vertices[0] - s;
+			    Vec2 e1 = m_vertices[i] - s;
+			    Vec2 e2 = i + 1 < m_count ? m_vertices[i+1] - s : m_vertices[0] - s;
 
-			    float D = Utilities.b2Cross(e1, e2);
+			    float D = Utilities.Cross(e1, e2);
 
 			    float triangleArea = 0.5f * D;
 			    area += triangleArea;
@@ -409,14 +409,14 @@ namespace Box2D {
 			massData.I = density * I;
 
 			// Shift to center of mass then to original body origin.
-			massData.I += massData.mass * (Utilities.b2Dot(massData.center, massData.center) - Utilities.b2Dot(center, center));
+			massData.I += massData.mass * (Utilities.Dot(massData.center, massData.center) - Utilities.Dot(center, center));
 		}
 
 		/// Get the vertex count.
 		public int GetVertexCount() { return m_count; }
 
 		/// Get a vertex by index.
-		public b2Vec2 GetVertex(int index){
+		public Vec2 GetVertex(int index){
 			throw new NotImplementedException();
 			//Utilities.Assert(0 <= index && index < m_count);
 			//return m_vertices[index];
@@ -428,16 +428,16 @@ namespace Box2D {
 			for (int i = 0; i < m_count; ++i) {
 				int i1 = i;
 				int i2 = i < m_count - 1 ? i1 + 1 : 0;
-				b2Vec2 p = m_vertices[i1];
-				b2Vec2 e = m_vertices[i2] - p;
+				Vec2 p = m_vertices[i1];
+				Vec2 e = m_vertices[i2] - p;
 
 				for (int j = 0; j < m_count; ++j) {
 					if (j == i1 || j == i2) {
 						continue;
 					}
 
-					b2Vec2 v = m_vertices[j] - p;
-					float c = Utilities.b2Cross(e, v);
+					Vec2 v = m_vertices[j] - p;
+					float c = Utilities.Cross(e, v);
 					if (c < 0.0f) {
 						return false;
 					}

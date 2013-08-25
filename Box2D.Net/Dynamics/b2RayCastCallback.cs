@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Box2D {
 	/// Callback class for ray casts.
-	/// See b2World::RayCast
-	public abstract class b2RayCastCallback
+	/// See World::RayCast
+	public abstract class RayCastCallback
 	{
-		~b2RayCastCallback() {}
+		~RayCastCallback() {}
 
 		/// Called for each fixture found in the query. You control how the ray cast
 		/// proceeds by returning a float:
@@ -21,7 +21,7 @@ namespace Box2D {
 		/// @param normal the normal vector at the point of intersection
 		/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 		/// closest hit, 1 to continue
-		public abstract float ReportFixture(b2Fixture fixture, b2Vec2 point,
-											b2Vec2 normal, float fraction);
+		public abstract float ReportFixture(Fixture fixture, Vec2 point,
+											Vec2 normal, float fraction);
 	}
 }

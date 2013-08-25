@@ -9,15 +9,15 @@ namespace Box2D {
 	/// is an edge. A joint edge belongs to a doubly linked list
 	/// maintained in each attached body. Each joint has two joint
 	/// nodes, one for each attached body.
-	public struct b2JointEdge {
-		public b2Body other; //pointer			///< provides quick access to the other body attached.
-		public b2Joint joint; //pointer			///< the joint
+	public struct JointEdge {
+		public Body other; //pointer			///< provides quick access to the other body attached.
+		public Joint joint; //pointer			///< the joint
 
-		public b2JointEdge(b2Joint j, b2Body body) {
+		public JointEdge(Joint j, Body body) {
 			this.joint = j;
 			this.other = body;
 		}
-		//public b2JointEdge prev; //pointer		///< the previous joint edge in the body's joint list
-		//public b2JointEdge next; //pointer		///< the next joint edge in the body's joint list
+		//public JointEdge prev; //pointer		///< the previous joint edge in the body's joint list
+		//public JointEdge next; //pointer		///< the next joint edge in the body's joint list
 	}
 }

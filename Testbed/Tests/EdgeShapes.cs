@@ -9,15 +9,15 @@ using GLImp;
 using OpenTK.Input;
 
 namespace Testbed.Tests {
-	class EdgeShapesCallback : b2RayCastCallback
+	class EdgeShapesCallback : RayCastCallback
 	{
 		public EdgeShapesCallback()
 		{
 			m_fixture = null;
 		}
 
-		public override float ReportFixture(b2Fixture fixture, b2Vec2 point,
-			b2Vec2 normal, float fraction)
+		public override float ReportFixture(Fixture fixture, Vec2 point,
+			Vec2 normal, float fraction)
 		{
 			m_fixture = fixture;
 			m_point = point;
@@ -26,9 +26,9 @@ namespace Testbed.Tests {
 			return fraction;
 		}
 
-		public b2Fixture m_fixture;
-		public b2Vec2 m_point;
-		public b2Vec2 m_normal;
+		public Fixture m_fixture;
+		public Vec2 m_point;
+		public Vec2 m_normal;
 	};
 
 	class EdgeShapes : Test
@@ -39,8 +39,8 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
 				float x1 = -20.0f;
 				float y1 = 2.0f * (float)Math.Cos(x1 / 10.0f * (float)Math.PI);
@@ -49,8 +49,8 @@ namespace Testbed.Tests {
 					float x2 = x1 + 0.5f;
 					float y2 = 2.0f * (float)Math.Cos(x2 / 10.0f * (float)Math.PI);
 
-					b2EdgeShape shape = new b2EdgeShape();
-					shape.Set(new b2Vec2(x1, y1), new b2Vec2(x2, y2));
+					EdgeShape shape = new EdgeShape();
+					shape.Set(new Vec2(x1, y1), new Vec2(x2, y2));
 					ground.CreateFixture(shape, 0.0f);
 
 					x1 = x2;
@@ -59,7 +59,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -67,7 +67,7 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 				vertices[0].Set(-0.1f, 0.0f);
 				vertices[1].Set(0.1f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
@@ -79,7 +79,7 @@ namespace Testbed.Tests {
 				float b = w / (2.0f + (float)Math.Sqrt(2.0f));
 				float s = (float)Math.Sqrt(2.0f) * b;
 
-				b2Vec2[] vertices = new b2Vec2[8];
+				Vec2[] vertices = new Vec2[8];
 				vertices[0].Set(0.5f * s, 0.0f);
 				vertices[1].Set(0.5f * w, b);
 				vertices[2].Set(0.5f * w, b + s);
@@ -114,13 +114,13 @@ namespace Testbed.Tests {
 				m_bodies[m_bodyIndex] = null;
 			}
 
-			b2BodyDef bd = new b2BodyDef();
+			BodyDef bd = new BodyDef();
 
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(10.0f, 20.0f);
 			bd.position.Set(x, y);
 			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
-			bd.type = b2BodyType.b2_dynamicBody;
+			bd.type = BodyType._dynamicBody;
 
 			if (index == 4)
 			{
@@ -131,7 +131,7 @@ namespace Testbed.Tests {
 
 			if (index < 4)
 			{
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = m_polygons[index];
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
@@ -139,7 +139,7 @@ namespace Testbed.Tests {
 			}
 			else
 			{
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = m_circle;
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
@@ -185,7 +185,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			bool advanceRay = settings.pause == false || settings.singleStep;
 
@@ -194,9 +194,9 @@ namespace Testbed.Tests {
 			
 
 			float L = 25.0f;
-			b2Vec2 point1 = new b2Vec2(0.0f, 10.0f);
-			b2Vec2 d = new b2Vec2(L * (float)Math.Cos(m_angle), -L * Math.Abs((float)Math.Sin(m_angle)));
-			b2Vec2 point2 = point1 + d;
+			Vec2 point1 = new Vec2(0.0f, 10.0f);
+			Vec2 d = new Vec2(L * (float)Math.Cos(m_angle), -L * Math.Abs((float)Math.Sin(m_angle)));
+			Vec2 point2 = point1 + d;
 
 			EdgeShapesCallback callback = new EdgeShapesCallback();
 
@@ -208,7 +208,7 @@ namespace Testbed.Tests {
 
 				m_debugDraw.DrawSegment(point1, callback.m_point, Color.FromArgb(200, 200, 200));
 
-				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
 				m_debugDraw.DrawSegment(callback.m_point, head, Color.FromArgb(225, 225, 100));
 			}
 			else
@@ -228,9 +228,9 @@ namespace Testbed.Tests {
 		}
 
 		int m_bodyIndex;
-		b2Body[] m_bodies = new b2Body[e_maxBodies];
-		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
-		b2CircleShape m_circle;
+		Body[] m_bodies = new Body[e_maxBodies];
+		PolygonShape[] m_polygons = new PolygonShape[4];
+		CircleShape m_circle;
 
 		float m_angle;
 	};

@@ -5,19 +5,19 @@ using System.Text;
 using Box2D;
 
 namespace Testbed.Framework {
-	class QueryCallback : b2QueryCallback
+	class TestQueryCallback : QueryCallback
 	{
-		public QueryCallback(b2Vec2 point)
+		public TestQueryCallback(Vec2 point)
 		{
 			m_point = point;
 			m_fixture = null;
 		}
 
-		public override bool ReportFixture(b2Fixture fixture)
+		public override bool ReportFixture(Fixture fixture)
 		{
 			throw new NotImplementedException();
-			//b2Body body = fixture.GetBody();
-			//if (body.GetType() == b2BodyType.b2_dynamicBody)
+			//Body body = fixture.GetBody();
+			//if (body.GetType() == BodyType._dynamicBody)
 			//{
 			//    bool inside = fixture.TestPoint(m_point);
 			//    if (inside)
@@ -33,7 +33,7 @@ namespace Testbed.Framework {
 			//return true;
 		}
 
-		public b2Vec2 m_point;
-		public b2Fixture m_fixture; //was pointer
+		public Vec2 m_point;
+		public Fixture m_fixture; //was pointer
 	}
 }

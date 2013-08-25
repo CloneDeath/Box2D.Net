@@ -11,13 +11,13 @@ namespace Testbed.Tests {
 		public EdgeTest()
 		{
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2Vec2 v1 = new b2Vec2(-10.0f, 0.0f), v2 = new b2Vec2(-7.0f, -2.0f), v3 = new b2Vec2(-4.0f, 0.0f);
-				b2Vec2 v4 = new b2Vec2(0.0f, 0.0f), v5 = new b2Vec2(4.0f, 0.0f), v6 = new b2Vec2(7.0f, 2.0f), v7 = new b2Vec2(10.0f, 0.0f);
+				Vec2 v1 = new Vec2(-10.0f, 0.0f), v2 = new Vec2(-7.0f, -2.0f), v3 = new Vec2(-4.0f, 0.0f);
+				Vec2 v4 = new Vec2(0.0f, 0.0f), v5 = new Vec2(4.0f, 0.0f), v6 = new Vec2(7.0f, 2.0f), v7 = new Vec2(10.0f, 0.0f);
 
-				b2EdgeShape shape = new b2EdgeShape();
+				EdgeShape shape = new EdgeShape();
 
 				shape.Set(v1, v2);
 				shape.m_hasVertex3 = true;
@@ -59,26 +59,26 @@ namespace Testbed.Tests {
 			}
 
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(-0.5f, 0.6f);
 				bd.allowSleep = false;
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_radius = 0.5f;
 
 				body.CreateFixture(shape, 1.0f);
 			}
 
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(1.0f, 0.6f);
 				bd.allowSleep = false;
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
 
 				body.CreateFixture(shape, 1.0f);

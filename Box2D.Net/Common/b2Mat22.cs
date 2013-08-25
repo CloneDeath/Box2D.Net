@@ -5,26 +5,26 @@ using System.Text;
 
 namespace Box2D {
 	/// A 2-by-2 matrix. Stored in column-major order.
-	public struct b2Mat22
+	public struct Mat22
 	{
-		public b2Vec2 ex, ey;
+		public Vec2 ex, ey;
 
 		/// Construct this matrix using columns.
-		public b2Mat22(b2Vec2 c1, b2Vec2 c2)
+		public Mat22(Vec2 c1, Vec2 c2)
 		{
 			ex = c1;
 			ey = c2;
 		}
 
 		/// Construct this matrix using scalars.
-		public b2Mat22(float a11, float a12, float a21, float a22)
+		public Mat22(float a11, float a12, float a21, float a22)
 		{
 			ex.x = a11; ex.y = a21;
 			ey.x = a12; ey.y = a22;
 		}
 
 		/// Initialize this matrix using columns.
-		public void Set(b2Vec2 c1, b2Vec2 c2)
+		public void Set(Vec2 c1, Vec2 c2)
 		{
 			ex = c1;
 			ey = c2;
@@ -44,10 +44,10 @@ namespace Box2D {
 			ex.y = 0.0f; ey.y = 0.0f;
 		}
 
-		public b2Mat22 GetInverse()
+		public Mat22 GetInverse()
 		{
 			float a = ex.x, b = ey.x, c = ex.y, d = ey.y;
-			b2Mat22 B = new b2Mat22();
+			Mat22 B = new Mat22();
 			float det = a * d - b * c;
 			if (det != 0.0f)
 			{
@@ -60,7 +60,7 @@ namespace Box2D {
 
 		/// Solve A * x = b, where b is a column vector. This is more efficient
 		/// than computing the inverse in one-shot cases.
-		public b2Vec2 Solve(b2Vec2 b)
+		public Vec2 Solve(Vec2 b)
 		{
 			float a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 			float det = a11 * a22 - a12 * a21;
@@ -68,15 +68,15 @@ namespace Box2D {
 			{
 				det = 1.0f / det;
 			}
-			b2Vec2 x;
+			Vec2 x;
 			x.x = det * (a22 * b.x - a12 * b.y);
 			x.y = det * (a11 * b.y - a21 * b.x);
 			return x;
 		}
 
-		public static b2Mat22 operator +(b2Mat22 A, b2Mat22 B)
+		public static Mat22 operator +(Mat22 A, Mat22 B)
 		{
-			return new b2Mat22(A.ex + B.ex, A.ey + B.ey);
+			return new Mat22(A.ex + B.ex, A.ey + B.ey);
 		}
 	}
 }

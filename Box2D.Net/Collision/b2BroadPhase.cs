@@ -7,9 +7,9 @@ namespace Box2D {
 	/// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 	/// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 	/// It is up to the client to consume the new pairs and to track subsequent overlap.
-	public class b2BroadPhase
+	public class BroadPhase
 	{
-		public static bool b2PairLessThan(b2Pair pair1, b2Pair pair2)
+		public static bool PairLessThan(Pair pair1, Pair pair2)
 		{
 			if (pair1.proxyIdA < pair2.proxyIdA)
 			{
@@ -29,16 +29,16 @@ namespace Box2D {
 			e_nullProxy = -1
 		}
 
-		public b2BroadPhase(){
-			m_tree = new b2DynamicTree();
+		public BroadPhase(){
+			m_tree = new DynamicTree();
 			m_proxyCount = 0;
-			m_pairBuffer = new List<b2Pair>();
+			m_pairBuffer = new List<Pair>();
 			m_moveBuffer = new List<int>();
 		}
 
 		/// Create a proxy with an initial AABB. Pairs are not reported until
 		/// UpdatePairs is called.
-		public int CreateProxy(b2AABB aabb, object userData){
+		public int CreateProxy(AABB aabb, object userData){
 			int proxyId = m_tree.CreateProxy(aabb, userData);
 			++m_proxyCount;
 			BufferMove(proxyId);
@@ -55,7 +55,7 @@ namespace Box2D {
 
 		/// Call MoveProxy as many times as you like, then when you are done
 		/// call UpdatePairs to finalized the proxy pairs (for your time step).
-		public void MoveProxy(int proxyId, b2AABB aabb, b2Vec2 displacement){
+		public void MoveProxy(int proxyId, AABB aabb, Vec2 displacement){
 			bool buffer = m_tree.MoveProxy(proxyId, aabb, displacement);
 			if (buffer) {
 				BufferMove(proxyId);
@@ -68,7 +68,7 @@ namespace Box2D {
 		}
 
 		/// Get the fat AABB for a proxy.
-		public b2AABB GetFatAABB(int proxyId){
+		public AABB GetFatAABB(int proxyId){
 			throw new NotImplementedException();
 			//return m_tree.GetFatAABB(proxyId);
 		}
@@ -81,9 +81,9 @@ namespace Box2D {
 
 		/// Test overlap of fat AABBs.
 		public bool TestOverlap(int proxyIdA, int proxyIdB){
-			b2AABB aabbA = m_tree.GetFatAABB(proxyIdA);
-			b2AABB aabbB = m_tree.GetFatAABB(proxyIdB);
-			return b2Collision.b2TestOverlap(aabbA, aabbB);
+			AABB aabbA = m_tree.GetFatAABB(proxyIdA);
+			AABB aabbB = m_tree.GetFatAABB(proxyIdB);
+			return Collision.TestOverlap(aabbA, aabbB);
 		}
 
 		/// Get the number of proxies.
@@ -92,7 +92,7 @@ namespace Box2D {
 		}
 
 		/// Update the pairs. This results in pair callbacks. This can only add pairs.
-		public void UpdatePairs(b2ContactManager callback){ //Was generic function, accepting any class
+		public void UpdatePairs(ContactManager callback){ //Was generic function, accepting any class
 			// Reset pair buffer
 			m_pairBuffer.Clear();
 
@@ -107,7 +107,7 @@ namespace Box2D {
 
 			    // We have to query the tree with the fat AABB so that
 			    // we don't fail to create a pair that may touch later.
-			    b2AABB fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+			    AABB fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
 			    // Query tree, create pairs and add them pair buffer.
 			    m_tree.Query(this.QueryCallback, fatAABB);
@@ -117,12 +117,12 @@ namespace Box2D {
 			m_moveBuffer.Clear();
 
 			// Sort the pair buffer to expose duplicates.
-			m_pairBuffer.Sort((l, r) => b2PairLessThan(l, r) ? -1 : 1);
+			m_pairBuffer.Sort((l, r) => PairLessThan(l, r) ? -1 : 1);
 
 			// Send the pairs back to the client.
 			int n = 0;
 			while (n < m_pairBuffer.Count()){
-				b2Pair primaryPair = m_pairBuffer[n];
+				Pair primaryPair = m_pairBuffer[n];
 			    object userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
 				object userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
 
@@ -133,7 +133,7 @@ namespace Box2D {
 				// Skip any duplicate pairs.
 			    while (n < m_pairBuffer.Count())
 			    {
-					b2Pair pair = m_pairBuffer[n];
+					Pair pair = m_pairBuffer[n];
 			        if (pair.proxyIdA != primaryPair.proxyIdA || pair.proxyIdB != primaryPair.proxyIdB)
 			        {
 			            break;
@@ -148,7 +148,7 @@ namespace Box2D {
 
 		/// Query an AABB for overlapping proxies. The callback class
 		/// is called for each proxy that overlaps the supplied AABB.
-		public void Query(Func<int, bool> callback, b2AABB aabb){
+		public void Query(Func<int, bool> callback, AABB aabb){
 			m_tree.Query(callback, aabb);
 		}
 
@@ -159,7 +159,7 @@ namespace Box2D {
 		/// number of proxies in the tree.
 		/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 		/// @param callback a callback class that is called for each proxy that is hit by the ray.
-		void RayCast<T>(T callback, b2RayCastInput input){
+		void RayCast<T>(T callback, RayCastInput input){
 			m_tree.RayCast(callback, input);
 		}
 
@@ -181,7 +181,7 @@ namespace Box2D {
 		/// Shift the world origin. Useful for large worlds.
 		/// The shift formula is: position -= newOrigin
 		/// @param newOrigin the new origin with respect to the old origin
-		public void ShiftOrigin(b2Vec2 newOrigin){
+		public void ShiftOrigin(Vec2 newOrigin){
 			m_tree.ShiftOrigin(newOrigin);
 		}
 
@@ -205,7 +205,7 @@ namespace Box2D {
 				return true;
 			}
 
-			b2Pair pair = new b2Pair();
+			Pair pair = new Pair();
 			pair.proxyIdA = Math.Min(proxyId, m_queryProxyId);
 			pair.proxyIdB = Math.Max(proxyId, m_queryProxyId);
 			m_pairBuffer.Add(pair);
@@ -214,12 +214,12 @@ namespace Box2D {
 		}
 
 
-		private b2DynamicTree m_tree;
+		private DynamicTree m_tree;
 
 		private int m_proxyCount;
 
 		private List<int> m_moveBuffer; //pointer
-		private List<b2Pair> m_pairBuffer; //pointer
+		private List<Pair> m_pairBuffer; //pointer
 
 		private int m_queryProxyId;
 	};

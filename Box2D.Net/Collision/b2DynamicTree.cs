@@ -7,16 +7,16 @@ namespace Box2D {
 	/// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 	/// A dynamic tree arranges data in a binary tree to accelerate
 	/// queries such as volume queries and ray casts. Leafs are proxies
-	/// with an AABB. In the tree we expand the proxy AABB by b2_fatAABBFactor
+	/// with an AABB. In the tree we expand the proxy AABB by _fatAABBFactor
 	/// so that the proxy AABB is bigger than the client object. This allows the client
 	/// object to move by small amounts without triggering a tree update.
 	///
 	/// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-	public class b2DynamicTree
+	public class DynamicTree
 	{
 		private int m_root;
 
-		private List<b2TreeNode> m_nodes; //pointer
+		private List<TreeNode> m_nodes; //pointer
 		private int m_nodeCount;
 		private int m_nodeCapacity;
 
@@ -28,22 +28,22 @@ namespace Box2D {
 		private int m_insertionCount;
 
 		/// Constructing the tree initializes the node pool.
-		public b2DynamicTree(){
-			m_root = b2TreeNode.b2_nullNode;
+		public DynamicTree(){
+			m_root = TreeNode._nullNode;
 
 			m_nodeCapacity = 16;
 			m_nodeCount = 0;
-			m_nodes = new List<b2TreeNode>();
+			m_nodes = new List<TreeNode>();
 
 			// Build a linked list for the free list.
 			for (int i = 0; i < m_nodeCapacity - 1; ++i) {
-				b2TreeNode node = new b2TreeNode();
+				TreeNode node = new TreeNode();
 				node.next = i + 1;
 				node.height = -1;
 				m_nodes.Add(node);
 			}
-			b2TreeNode node2 = new b2TreeNode();
-			node2.next = b2TreeNode.b2_nullNode;
+			TreeNode node2 = new TreeNode();
+			node2.next = TreeNode._nullNode;
 			node2.height = -1;
 			m_nodes.Add(node2);
 			m_freeList = 0;
@@ -54,11 +54,11 @@ namespace Box2D {
 		}
 
 		/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
-		public int CreateProxy(b2AABB aabb, object userData){
+		public int CreateProxy(AABB aabb, object userData){
 			int proxyId = AllocateNode();
 
 			// Fatten the aabb.
-			b2Vec2 r = new b2Vec2(b2Settings.b2_aabbExtension, b2Settings.b2_aabbExtension);
+			Vec2 r = new Vec2(Settings._aabbExtension, Settings._aabbExtension);
 			m_nodes[proxyId].aabb.lowerBound = aabb.lowerBound - r;
 			m_nodes[proxyId].aabb.upperBound = aabb.upperBound + r;
 			m_nodes[proxyId].userData = userData;
@@ -83,7 +83,7 @@ namespace Box2D {
 		/// then the proxy is removed from the tree and re-inserted. Otherwise
 		/// the function returns immediately.
 		/// @return true if the proxy was re-inserted.
-		public bool MoveProxy(int proxyId, b2AABB aabb, b2Vec2 displacement){
+		public bool MoveProxy(int proxyId, AABB aabb, Vec2 displacement){
 			Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 
 			Utilities.Assert(m_nodes[proxyId].IsLeaf());
@@ -96,13 +96,13 @@ namespace Box2D {
 			RemoveLeaf(proxyId);
 
 			// Extend AABB.
-			b2AABB b = aabb;
-			b2Vec2 r = new b2Vec2(b2Settings.b2_aabbExtension, b2Settings.b2_aabbExtension);
+			AABB b = aabb;
+			Vec2 r = new Vec2(Settings._aabbExtension, Settings._aabbExtension);
 			b.lowerBound = b.lowerBound - r;
 			b.upperBound = b.upperBound + r;
 
 			// Predict AABB displacement.
-			b2Vec2 d = b2Settings.b2_aabbMultiplier * displacement;
+			Vec2 d = Settings._aabbMultiplier * displacement;
 
 			if (d.x < 0.0f)
 			{
@@ -136,28 +136,28 @@ namespace Box2D {
 		}
 
 		/// Get the fat AABB for a proxy.
-		public b2AABB GetFatAABB(int proxyId){
+		public AABB GetFatAABB(int proxyId){
 			Utilities.Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 			return m_nodes[proxyId].aabb;
 		}
 
 		/// Query an AABB for overlapping proxies. The callback class
 		/// is called for each proxy that overlaps the supplied AABB.
-		public void Query(Func<int, bool> callback, b2AABB aabb) {
-			b2GrowableStack<int> stack = new b2GrowableStack<int>(256);
+		public void Query(Func<int, bool> callback, AABB aabb) {
+			GrowableStack<int> stack = new GrowableStack<int>(256);
 			stack.Push(m_root);
 
 			while (stack.GetCount() > 0)
 			{
 			    int nodeId = stack.Pop();
-			    if (nodeId == b2TreeNode.b2_nullNode)
+			    if (nodeId == TreeNode._nullNode)
 			    {
 			        continue;
 			    }
 
-			    b2TreeNode node = m_nodes[nodeId];
+			    TreeNode node = m_nodes[nodeId];
 
-				if (b2Collision.b2TestOverlap(node.aabb, aabb)) {
+				if (Collision.TestOverlap(node.aabb, aabb)) {
 					if (node.IsLeaf()) {
 						bool proceed = callback(nodeId);
 						if (proceed == false) {
@@ -178,17 +178,17 @@ namespace Box2D {
 		/// number of proxies in the tree.
 		/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 		/// @param callback a callback class that is called for each proxy that is hit by the ray.
-		public void RayCast<T>(T callback, b2RayCastInput input){
+		public void RayCast<T>(T callback, RayCastInput input){
 			throw new NotImplementedException();
-			//b2Vec2 p1 = input.p1;
-			//b2Vec2 p2 = input.p2;
-			//b2Vec2 r = p2 - p1;
+			//Vec2 p1 = input.p1;
+			//Vec2 p2 = input.p2;
+			//Vec2 r = p2 - p1;
 			//Utilities.Assert(r.LengthSquared() > 0.0f);
 			//r.Normalize();
 
 			//// v is perpendicular to the segment.
-			//b2Vec2 v = Utilities.b2Cross(1.0f, r);
-			//b2Vec2 abs_v = Math.Abs(v);
+			//Vec2 v = Utilities.Cross(1.0f, r);
+			//Vec2 abs_v = Math.Abs(v);
 
 			//// Separating axis for segment (Gino, p80).
 			//// |dot(v, p1 - c)| > dot(|v|, h)
@@ -196,36 +196,36 @@ namespace Box2D {
 			//float maxFraction = input.maxFraction;
 
 			//// Build a bounding box for the segment.
-			//b2AABB segmentAABB;
+			//AABB segmentAABB;
 			//{
-			//    b2Vec2 t = p1 + maxFraction * (p2 - p1);
+			//    Vec2 t = p1 + maxFraction * (p2 - p1);
 			//    segmentAABB.lowerBound = Math.Min(p1, t);
 			//    segmentAABB.upperBound = Math.Max(p1, t);
 			//}
 
-			//b2GrowableStack<int, 256> stack;
+			//GrowableStack<int, 256> stack;
 			//stack.Push(m_root);
 
 			//while (stack.GetCount() > 0)
 			//{
 			//    int nodeId = stack.Pop();
-			//    if (nodeId == b2_nullNode)
+			//    if (nodeId == _nullNode)
 			//    {
 			//        continue;
 			//    }
 
-			//    const b2TreeNode* node = m_nodes + nodeId;
+			//    const TreeNode* node = m_nodes + nodeId;
 
-			//    if (b2TestOverlap(node.aabb, segmentAABB) == false)
+			//    if (TestOverlap(node.aabb, segmentAABB) == false)
 			//    {
 			//        continue;
 			//    }
 
 			//    // Separating axis for segment (Gino, p80).
 			//    // |dot(v, p1 - c)| > dot(|v|, h)
-			//    b2Vec2 c = node.aabb.GetCenter();
-			//    b2Vec2 h = node.aabb.GetExtents();
-			//    float separation = Math.Abs(Utilities.b2Dot(v, p1 - c)) - Utilities.b2Dot(abs_v, h);
+			//    Vec2 c = node.aabb.GetCenter();
+			//    Vec2 h = node.aabb.GetExtents();
+			//    float separation = Math.Abs(Utilities.Dot(v, p1 - c)) - Utilities.Dot(abs_v, h);
 			//    if (separation > 0.0f)
 			//    {
 			//        continue;
@@ -233,7 +233,7 @@ namespace Box2D {
 
 			//    if (node.IsLeaf())
 			//    {
-			//        b2RayCastInput subInput;
+			//        RayCastInput subInput;
 			//        subInput.p1 = input.p1;
 			//        subInput.p2 = input.p2;
 			//        subInput.maxFraction = maxFraction;
@@ -250,7 +250,7 @@ namespace Box2D {
 			//        {
 			//            // Update segment bounding box.
 			//            maxFraction = value;
-			//            b2Vec2 t = p1 + maxFraction * (p2 - p1);
+			//            Vec2 t = p1 + maxFraction * (p2 - p1);
 			//            segmentAABB.lowerBound = Math.Min(p1, t);
 			//            segmentAABB.upperBound = Math.Max(p1, t);
 			//        }
@@ -271,7 +271,7 @@ namespace Box2D {
 
 			//int freeCount = 0;
 			//int freeIndex = m_freeList;
-			//while (freeIndex != b2_nullNode)
+			//while (freeIndex != _nullNode)
 			//{
 			//    Utilities.Assert(0 <= freeIndex && freeIndex < m_nodeCapacity);
 			//    freeIndex = m_nodes[freeIndex].next;
@@ -287,7 +287,7 @@ namespace Box2D {
 		/// called often.
 		public int GetHeight(){
 			throw new NotImplementedException();
-			//if (m_root == b2_nullNode)
+			//if (m_root == _nullNode)
 			//{
 			//    return 0;
 			//}
@@ -302,7 +302,7 @@ namespace Box2D {
 			//int maxBalance = 0;
 			//for (int i = 0; i < m_nodeCapacity; ++i)
 			//{
-			//    const b2TreeNode* node = m_nodes + i;
+			//    const TreeNode* node = m_nodes + i;
 			//    if (node.height <= 1)
 			//    {
 			//        continue;
@@ -322,18 +322,18 @@ namespace Box2D {
 		/// Get the ratio of the sum of the node areas to the root area.
 		public float GetAreaRatio(){
 			throw new NotImplementedException();
-			//if (m_root == b2_nullNode)
+			//if (m_root == _nullNode)
 			//{
 			//    return 0.0f;
 			//}
 
-			//const b2TreeNode* root = m_nodes + m_root;
+			//const TreeNode* root = m_nodes + m_root;
 			//float rootArea = root.aabb.GetPerimeter();
 
 			//float totalArea = 0.0f;
 			//for (int i = 0; i < m_nodeCapacity; ++i)
 			//{
-			//    const b2TreeNode* node = m_nodes + i;
+			//    const TreeNode* node = m_nodes + i;
 			//    if (node.height < 0)
 			//    {
 			//        // Free node in pool
@@ -349,7 +349,7 @@ namespace Box2D {
 		/// Build an optimal tree. Very expensive. For testing.
 		public void RebuildBottomUp(){
 			throw new NotImplementedException();
-			//int* nodes = (int*)b2Alloc(m_nodeCount * sizeof(int));
+			//int* nodes = (int*)Alloc(m_nodeCount * sizeof(int));
 			//int count = 0;
 
 			//// Build array of leaves. Free the rest.
@@ -363,7 +363,7 @@ namespace Box2D {
 
 			//    if (m_nodes[i].IsLeaf())
 			//    {
-			//        m_nodes[i].parent = b2_nullNode;
+			//        m_nodes[i].parent = _nullNode;
 			//        nodes[count] = i;
 			//        ++count;
 			//    }
@@ -379,12 +379,12 @@ namespace Box2D {
 			//    int iMin = -1, jMin = -1;
 			//    for (int i = 0; i < count; ++i)
 			//    {
-			//        b2AABB aabbi = m_nodes[nodes[i]].aabb;
+			//        AABB aabbi = m_nodes[nodes[i]].aabb;
 
 			//        for (int j = i + 1; j < count; ++j)
 			//        {
-			//            b2AABB aabbj = m_nodes[nodes[j]].aabb;
-			//            b2AABB b;
+			//            AABB aabbj = m_nodes[nodes[j]].aabb;
+			//            AABB b;
 			//            b.Combine(aabbi, aabbj);
 			//            float cost = b.GetPerimeter();
 			//            if (cost < minCost)
@@ -398,16 +398,16 @@ namespace Box2D {
 
 			//    int index1 = nodes[iMin];
 			//    int index2 = nodes[jMin];
-			//    b2TreeNode* child1 = m_nodes + index1;
-			//    b2TreeNode* child2 = m_nodes + index2;
+			//    TreeNode* child1 = m_nodes + index1;
+			//    TreeNode* child2 = m_nodes + index2;
 
 			//    int parentIndex = AllocateNode();
-			//    b2TreeNode* parent = m_nodes + parentIndex;
+			//    TreeNode* parent = m_nodes + parentIndex;
 			//    parent.child1 = index1;
 			//    parent.child2 = index2;
 			//    parent.height = 1 + Math.Max(child1.height, child2.height);
 			//    parent.aabb.Combine(child1.aabb, child2.aabb);
-			//    parent.parent = b2_nullNode;
+			//    parent.parent = _nullNode;
 
 			//    child1.parent = parentIndex;
 			//    child2.parent = parentIndex;
@@ -418,7 +418,7 @@ namespace Box2D {
 			//}
 
 			//m_root = nodes[0];
-			//b2Free(nodes);
+			//Free(nodes);
 
 			//Validate();
 		}
@@ -426,7 +426,7 @@ namespace Box2D {
 		/// Shift the world origin. Useful for large worlds.
 		/// The shift formula is: position -= newOrigin
 		/// @param newOrigin the new origin with respect to the old origin
-		public void ShiftOrigin(b2Vec2 newOrigin){
+		public void ShiftOrigin(Vec2 newOrigin){
 			throw new NotImplementedException();
 			//// Build array of leaves. Free the rest.
 			//for (int i = 0; i < m_nodeCapacity; ++i)
@@ -438,27 +438,27 @@ namespace Box2D {
 
 		private int AllocateNode(){
 			// Expand the node pool as needed.
-			if (m_freeList == b2TreeNode.b2_nullNode) {
+			if (m_freeList == TreeNode._nullNode) {
 				Utilities.Assert(m_nodeCount == m_nodeCapacity);
 
 				// The free list is empty. Rebuild a bigger pool.
-				List<b2TreeNode> oldNodes = m_nodes;
+				List<TreeNode> oldNodes = m_nodes;
 				m_nodeCapacity *= 2;
-				m_nodes = new List<b2TreeNode>(m_nodeCapacity);
-				foreach (b2TreeNode node in oldNodes) {
+				m_nodes = new List<TreeNode>(m_nodeCapacity);
+				foreach (TreeNode node in oldNodes) {
 					m_nodes.Add(node);
 				}
 
 				// Build a linked list for the free list. The parent
 				// pointer becomes the "next" pointer.
 				for (int i = m_nodeCount; i < m_nodeCapacity - 1; ++i) {
-					b2TreeNode node = new b2TreeNode();
+					TreeNode node = new TreeNode();
 					node.next = i + 1;
 					node.height = -1;
 					m_nodes.Add(node);
 				}
-				b2TreeNode node2 = new b2TreeNode();
-				node2.next = b2TreeNode.b2_nullNode;
+				TreeNode node2 = new TreeNode();
+				node2.next = TreeNode._nullNode;
 				node2.height = -1;
 				m_nodes.Add(node2);
 				m_freeList = m_nodeCount;
@@ -467,9 +467,9 @@ namespace Box2D {
 			// Peel a node off the free list.
 			int nodeId = m_freeList;
 			m_freeList = m_nodes[nodeId].next;
-			m_nodes[nodeId].parent = b2TreeNode.b2_nullNode;
-			m_nodes[nodeId].child1 = b2TreeNode.b2_nullNode;
-			m_nodes[nodeId].child2 = b2TreeNode.b2_nullNode;
+			m_nodes[nodeId].parent = TreeNode._nullNode;
+			m_nodes[nodeId].child1 = TreeNode._nullNode;
+			m_nodes[nodeId].child2 = TreeNode._nullNode;
 			m_nodes[nodeId].height = 0;
 			m_nodes[nodeId].userData = null;
 			++m_nodeCount;
@@ -487,14 +487,14 @@ namespace Box2D {
 		private void InsertLeaf(int leaf) {
 			++m_insertionCount;
 
-			if (m_root == b2TreeNode.b2_nullNode) {
+			if (m_root == TreeNode._nullNode) {
 				m_root = leaf;
-				m_nodes[m_root].parent = b2TreeNode.b2_nullNode;
+				m_nodes[m_root].parent = TreeNode._nullNode;
 				return;
 			}
 
 			// Find the best sibling for this node
-			b2AABB leafAABB = m_nodes[leaf].aabb;
+			AABB leafAABB = m_nodes[leaf].aabb;
 			int index = m_root;
 			while (m_nodes[index].IsLeaf() == false) {
 				int child1 = m_nodes[index].child1;
@@ -502,7 +502,7 @@ namespace Box2D {
 
 				float area = m_nodes[index].aabb.GetPerimeter();
 
-				b2AABB combinedAABB = new b2AABB();
+				AABB combinedAABB = new AABB();
 				combinedAABB.Combine(m_nodes[index].aabb, leafAABB);
 				float combinedArea = combinedAABB.GetPerimeter();
 
@@ -515,11 +515,11 @@ namespace Box2D {
 				// Cost of descending into child1
 				float cost1;
 				if (m_nodes[child1].IsLeaf()) {
-					b2AABB aabb = new b2AABB();
+					AABB aabb = new AABB();
 					aabb.Combine(leafAABB, m_nodes[child1].aabb);
 					cost1 = aabb.GetPerimeter() + inheritanceCost;
 				} else {
-					b2AABB aabb = new b2AABB();
+					AABB aabb = new AABB();
 					aabb.Combine(leafAABB, m_nodes[child1].aabb);
 					float oldArea = m_nodes[child1].aabb.GetPerimeter();
 					float newArea = aabb.GetPerimeter();
@@ -529,11 +529,11 @@ namespace Box2D {
 				// Cost of descending into child2
 				float cost2;
 				if (m_nodes[child2].IsLeaf()) {
-					b2AABB aabb = new b2AABB();
+					AABB aabb = new AABB();
 					aabb.Combine(leafAABB, m_nodes[child2].aabb);
 					cost2 = aabb.GetPerimeter() + inheritanceCost;
 				} else {
-					b2AABB aabb = new b2AABB();
+					AABB aabb = new AABB();
 					aabb.Combine(leafAABB, m_nodes[child2].aabb);
 					float oldArea = m_nodes[child2].aabb.GetPerimeter();
 					float newArea = aabb.GetPerimeter();
@@ -563,7 +563,7 @@ namespace Box2D {
 			m_nodes[newParent].aabb.Combine(leafAABB, m_nodes[sibling].aabb);
 			m_nodes[newParent].height = m_nodes[sibling].height + 1;
 
-			if (oldParent != b2TreeNode.b2_nullNode) {
+			if (oldParent != TreeNode._nullNode) {
 				// The sibling was not the root.
 				if (m_nodes[oldParent].child1 == sibling) {
 					m_nodes[oldParent].child1 = newParent;
@@ -586,14 +586,14 @@ namespace Box2D {
 
 			// Walk back up the tree fixing heights and AABBs
 			index = m_nodes[leaf].parent;
-			while (index != b2TreeNode.b2_nullNode) {
+			while (index != TreeNode._nullNode) {
 				index = Balance(index);
 
 				int child1 = m_nodes[index].child1;
 				int child2 = m_nodes[index].child2;
 
-				Utilities.Assert(child1 != b2TreeNode.b2_nullNode);
-				Utilities.Assert(child2 != b2TreeNode.b2_nullNode);
+				Utilities.Assert(child1 != TreeNode._nullNode);
+				Utilities.Assert(child2 != TreeNode._nullNode);
 
 				m_nodes[index].height = 1 + Math.Max(m_nodes[child1].height, m_nodes[child2].height);
 				m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
@@ -605,7 +605,7 @@ namespace Box2D {
 		}
 		private void RemoveLeaf(int leaf) {
 			if (leaf == m_root) {
-				m_root = b2TreeNode.b2_nullNode;
+				m_root = TreeNode._nullNode;
 				return;
 			}
 
@@ -618,7 +618,7 @@ namespace Box2D {
 				sibling = m_nodes[parent].child1;
 			}
 
-			if (grandParent != b2TreeNode.b2_nullNode) {
+			if (grandParent != TreeNode._nullNode) {
 				// Destroy parent and connect sibling to grandParent.
 				if (m_nodes[grandParent].child1 == parent) {
 					m_nodes[grandParent].child1 = sibling;
@@ -630,7 +630,7 @@ namespace Box2D {
 
 				// Adjust ancestor bounds.
 				int index = grandParent;
-				while (index != b2TreeNode.b2_nullNode) {
+				while (index != TreeNode._nullNode) {
 					index = Balance(index);
 
 					int child1 = m_nodes[index].child1;
@@ -643,7 +643,7 @@ namespace Box2D {
 				}
 			} else {
 				m_root = sibling;
-				m_nodes[sibling].parent = b2TreeNode.b2_nullNode;
+				m_nodes[sibling].parent = TreeNode._nullNode;
 				FreeNode(parent);
 			}
 
@@ -651,9 +651,9 @@ namespace Box2D {
 		}
 
 		private int Balance(int iA) {
-			Utilities.Assert(iA != b2TreeNode.b2_nullNode);
+			Utilities.Assert(iA != TreeNode._nullNode);
 
-			b2TreeNode A = m_nodes[iA];
+			TreeNode A = m_nodes[iA];
 			if (A.IsLeaf() || A.height < 2) {
 				return iA;
 			}
@@ -663,8 +663,8 @@ namespace Box2D {
 			Utilities.Assert(0 <= iB && iB < m_nodeCapacity);
 			Utilities.Assert(0 <= iC && iC < m_nodeCapacity);
 
-			b2TreeNode B = m_nodes[iB];
-			b2TreeNode C = m_nodes[iC];
+			TreeNode B = m_nodes[iB];
+			TreeNode C = m_nodes[iC];
 
 			int balance = C.height - B.height;
 
@@ -672,8 +672,8 @@ namespace Box2D {
 			if (balance > 1) {
 				int iF = C.child1;
 				int iG = C.child2;
-				b2TreeNode F = m_nodes[iF];
-				b2TreeNode G = m_nodes[iG];
+				TreeNode F = m_nodes[iF];
+				TreeNode G = m_nodes[iG];
 				Utilities.Assert(0 <= iF && iF < m_nodeCapacity);
 				Utilities.Assert(0 <= iG && iG < m_nodeCapacity);
 
@@ -683,7 +683,7 @@ namespace Box2D {
 				A.parent = iC;
 
 				// A's old parent should point to C
-				if (C.parent != b2TreeNode.b2_nullNode) {
+				if (C.parent != TreeNode._nullNode) {
 					if (m_nodes[C.parent].child1 == iA) {
 						m_nodes[C.parent].child1 = iC;
 					} else {
@@ -722,8 +722,8 @@ namespace Box2D {
 			if (balance < -1) {
 				int iD = B.child1;
 				int iE = B.child2;
-				b2TreeNode D = m_nodes[iD];
-				b2TreeNode E = m_nodes[iE];
+				TreeNode D = m_nodes[iD];
+				TreeNode E = m_nodes[iE];
 				Utilities.Assert(0 <= iD && iD < m_nodeCapacity);
 				Utilities.Assert(0 <= iE && iE < m_nodeCapacity);
 
@@ -733,7 +733,7 @@ namespace Box2D {
 				A.parent = iB;
 
 				// A's old parent should point to B
-				if (B.parent != b2TreeNode.b2_nullNode) {
+				if (B.parent != TreeNode._nullNode) {
 					if (m_nodes[B.parent].child1 == iA) {
 						m_nodes[B.parent].child1 = iB;
 					} else {
@@ -778,7 +778,7 @@ namespace Box2D {
 		private int ComputeHeight(int nodeId) {
 			throw new NotImplementedException();
 			//Utilities.Assert(0 <= nodeId && nodeId < m_nodeCapacity);
-			//b2TreeNode* node = m_nodes + nodeId;
+			//TreeNode* node = m_nodes + nodeId;
 
 			//if (node.IsLeaf())
 			//{
@@ -792,25 +792,25 @@ namespace Box2D {
 
 		private void ValidateStructure(int index){
 			throw new NotImplementedException();
-			//if (index == b2_nullNode)
+			//if (index == _nullNode)
 			//{
 			//    return;
 			//}
 
 			//if (index == m_root)
 			//{
-			//    Utilities.Assert(m_nodes[index].parent == b2_nullNode);
+			//    Utilities.Assert(m_nodes[index].parent == _nullNode);
 			//}
 
-			//const b2TreeNode* node = m_nodes + index;
+			//const TreeNode* node = m_nodes + index;
 
 			//int child1 = node.child1;
 			//int child2 = node.child2;
 
 			//if (node.IsLeaf())
 			//{
-			//    Utilities.Assert(child1 == b2_nullNode);
-			//    Utilities.Assert(child2 == b2_nullNode);
+			//    Utilities.Assert(child1 == _nullNode);
+			//    Utilities.Assert(child2 == _nullNode);
 			//    Utilities.Assert(node.height == 0);
 			//    return;
 			//}
@@ -826,20 +826,20 @@ namespace Box2D {
 		}
 		private void ValidateMetrics(int index){
 			throw new NotImplementedException();
-			//if (index == b2_nullNode)
+			//if (index == _nullNode)
 			//{
 			//    return;
 			//}
 
-			//const b2TreeNode* node = m_nodes + index;
+			//const TreeNode* node = m_nodes + index;
 
 			//int child1 = node.child1;
 			//int child2 = node.child2;
 
 			//if (node.IsLeaf())
 			//{
-			//    Utilities.Assert(child1 == b2_nullNode);
-			//    Utilities.Assert(child2 == b2_nullNode);
+			//    Utilities.Assert(child1 == _nullNode);
+			//    Utilities.Assert(child2 == _nullNode);
 			//    Utilities.Assert(node.height == 0);
 			//    return;
 			//}
@@ -853,7 +853,7 @@ namespace Box2D {
 			//height = 1 + Math.Max(height1, height2);
 			//Utilities.Assert(node.height == height);
 
-			//b2AABB aabb;
+			//AABB aabb;
 			//aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
 			//Utilities.Assert(aabb.lowerBound == node.aabb.lowerBound);

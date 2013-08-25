@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Box2D {
 	// This class collides and edge and a polygon, taking into account edge adjacency.
-	class b2EPCollider
+	class EPCollider
 	{
 		// Algorithm:
 		// 1. Classify v1 and v2
@@ -16,11 +16,11 @@ namespace Box2D {
 		// 6. Visit each separating axes, only accept axes within the range
 		// 7. Return if _any_ axis indicates separation
 		// 8. Clip
-		public void Collide(out b2Manifold manifold, b2EdgeShape edgeA, b2Transform xfA, b2PolygonShape polygonB, b2Transform xfB){
-			manifold = new b2Manifold();
-			m_xf = Utilities.b2MulT(xfA, xfB);
+		public void Collide(out Manifold manifold, EdgeShape edgeA, Transform xfA, PolygonShape polygonB, Transform xfB){
+			manifold = new Manifold();
+			m_xf = Utilities.MulT(xfA, xfB);
 	
-			m_centroidB = Utilities.b2Mul(m_xf, polygonB.m_centroid);
+			m_centroidB = Utilities.Mul(m_xf, polygonB.m_centroid);
 	
 			m_v0 = edgeA.m_vertex0;
 			m_v1 = edgeA.m_vertex1;
@@ -30,31 +30,31 @@ namespace Box2D {
 			bool hasVertex0 = edgeA.m_hasVertex0;
 			bool hasVertex3 = edgeA.m_hasVertex3;
 	
-			b2Vec2 edge1 = m_v2 - m_v1;
+			Vec2 edge1 = m_v2 - m_v1;
 			edge1.Normalize();
 			m_normal1.Set(edge1.y, -edge1.x);
-			float offset1 = Utilities.b2Dot(m_normal1, m_centroidB - m_v1);
+			float offset1 = Utilities.Dot(m_normal1, m_centroidB - m_v1);
 			float offset0 = 0.0f, offset2 = 0.0f;
 			bool convex1 = false, convex2 = false;
 	
 			// Is there a preceding edge?
 			if (hasVertex0)
 			{
-				b2Vec2 edge0 = m_v1 - m_v0;
+				Vec2 edge0 = m_v1 - m_v0;
 				edge0.Normalize();
 				m_normal0.Set(edge0.y, -edge0.x);
-				convex1 = Utilities.b2Cross(edge0, edge1) >= 0.0f;
-				offset0 = Utilities.b2Dot(m_normal0, m_centroidB - m_v0);
+				convex1 = Utilities.Cross(edge0, edge1) >= 0.0f;
+				offset0 = Utilities.Dot(m_normal0, m_centroidB - m_v0);
 			}
 	
 			// Is there a following edge?
 			if (hasVertex3)
 			{
-				b2Vec2 edge2 = m_v3 - m_v2;
+				Vec2 edge2 = m_v3 - m_v2;
 				edge2.Normalize();
 				m_normal2.Set(edge2.y, -edge2.x);
-				convex2 = Utilities.b2Cross(edge1, edge2) > 0.0f;
-				offset2 = Utilities.b2Dot(m_normal2, m_centroidB - m_v2);
+				convex2 = Utilities.Cross(edge1, edge2) > 0.0f;
+				offset2 = Utilities.Dot(m_normal2, m_centroidB - m_v2);
 			}
 	
 			// Determine front or back collision. Determine collision normal limits.
@@ -216,15 +216,15 @@ namespace Box2D {
 			m_polygonB.count = polygonB.m_count;
 			for (int i = 0; i < polygonB.m_count; ++i)
 			{
-				m_polygonB.vertices[i] = Utilities.b2Mul(m_xf, polygonB.m_vertices[i]);
-				m_polygonB.normals[i] = Utilities.b2Mul(m_xf.q, polygonB.m_normals[i]);
+				m_polygonB.vertices[i] = Utilities.Mul(m_xf, polygonB.m_vertices[i]);
+				m_polygonB.normals[i] = Utilities.Mul(m_xf.q, polygonB.m_normals[i]);
 			}
 	
-			m_radius = 2.0f * b2Settings.b2_polygonRadius;
+			m_radius = 2.0f * Settings._polygonRadius;
 
 			manifold.points.Clear();
 	
-			b2EPAxis edgeAxis = ComputeEdgeSeparation();
+			EPAxis edgeAxis = ComputeEdgeSeparation();
 	
 			// If no valid normal can be found than this edge should not collide.
 			if (edgeAxis.type == EPAxisType.e_unknown)
@@ -237,7 +237,7 @@ namespace Box2D {
 				return;
 			}
 	
-			b2EPAxis polygonAxis = ComputePolygonSeparation();
+			EPAxis polygonAxis = ComputePolygonSeparation();
 			if (polygonAxis.type != EPAxisType.e_unknown && polygonAxis.separation > m_radius)
 			{
 				return;
@@ -247,7 +247,7 @@ namespace Box2D {
 			const float k_relativeTol = 0.98f;
 			const float k_absoluteTol = 0.001f;
 	
-			b2EPAxis primaryAxis;
+			EPAxis primaryAxis;
 			if (polygonAxis.type == EPAxisType.e_unknown)
 			{
 				primaryAxis = edgeAxis;
@@ -261,18 +261,18 @@ namespace Box2D {
 				primaryAxis = edgeAxis;
 			}
 	
-			b2ClipVertex[] ie = new b2ClipVertex[2];
-			b2ReferenceFace rf = new b2ReferenceFace();
+			ClipVertex[] ie = new ClipVertex[2];
+			ReferenceFace rf = new ReferenceFace();
 			if (primaryAxis.type == EPAxisType.e_edgeA)
 			{
-				manifold.type = b2Manifold.ManifoldType.e_faceA;
+				manifold.type = Manifold.ManifoldType.e_faceA;
 		
 				// Search for the polygon normal that is most anti-parallel to the edge normal.
 				int bestIndex = 0;
-				float bestValue = Utilities.b2Dot(m_normal, m_polygonB.normals[0]);
+				float bestValue = Utilities.Dot(m_normal, m_polygonB.normals[0]);
 				for (int i = 1; i < m_polygonB.count; ++i)
 				{
-					float value = Utilities.b2Dot(m_normal, m_polygonB.normals[i]);
+					float value = Utilities.Dot(m_normal, m_polygonB.normals[i]);
 					if (value < bestValue)
 					{
 						bestValue = value;
@@ -286,14 +286,14 @@ namespace Box2D {
 				ie[0].v = m_polygonB.vertices[i1];
 				ie[0].id.cf.indexA = 0;
 				ie[0].id.cf.indexB = (byte)i1;
-				ie[0].id.cf.typeA = b2ContactFeature.FeatureType.e_face;
-				ie[0].id.cf.typeB = b2ContactFeature.FeatureType.e_vertex;
+				ie[0].id.cf.typeA = ContactFeature.FeatureType.e_face;
+				ie[0].id.cf.typeB = ContactFeature.FeatureType.e_vertex;
 		
 				ie[1].v = m_polygonB.vertices[i2];
 				ie[1].id.cf.indexA = 0;
 				ie[1].id.cf.indexB = (byte)i2;
-				ie[1].id.cf.typeA = b2ContactFeature.FeatureType.e_face;
-				ie[1].id.cf.typeB = b2ContactFeature.FeatureType.e_vertex;
+				ie[1].id.cf.typeA = ContactFeature.FeatureType.e_face;
+				ie[1].id.cf.typeB = ContactFeature.FeatureType.e_vertex;
 		
 				if (m_front)
 				{
@@ -314,19 +314,19 @@ namespace Box2D {
 			}
 			else
 			{
-				manifold.type = b2Manifold.ManifoldType.e_faceB;
+				manifold.type = Manifold.ManifoldType.e_faceB;
 		
 				ie[0].v = m_v1;
 				ie[0].id.cf.indexA = 0;
 				ie[0].id.cf.indexB = (byte)primaryAxis.index;
-				ie[0].id.cf.typeA = b2ContactFeature.FeatureType.e_vertex;
-				ie[0].id.cf.typeB = b2ContactFeature.FeatureType.e_face;
+				ie[0].id.cf.typeA = ContactFeature.FeatureType.e_vertex;
+				ie[0].id.cf.typeB = ContactFeature.FeatureType.e_face;
 		
 				ie[1].v = m_v2;
 				ie[1].id.cf.indexA = 0;
 				ie[1].id.cf.indexB = (byte)primaryAxis.index;		
-				ie[1].id.cf.typeA = b2ContactFeature.FeatureType.e_vertex;
-				ie[1].id.cf.typeB = b2ContactFeature.FeatureType.e_face;
+				ie[1].id.cf.typeA = ContactFeature.FeatureType.e_vertex;
+				ie[1].id.cf.typeB = ContactFeature.FeatureType.e_face;
 		
 				rf.i1 = primaryAxis.index;
 				rf.i2 = rf.i1 + 1 < m_polygonB.count ? rf.i1 + 1 : 0;
@@ -337,26 +337,26 @@ namespace Box2D {
 	
 			rf.sideNormal1.Set(rf.normal.y, -rf.normal.x);
 			rf.sideNormal2 = -rf.sideNormal1;
-			rf.sideOffset1 = Utilities.b2Dot(rf.sideNormal1, rf.v1);
-			rf.sideOffset2 = Utilities.b2Dot(rf.sideNormal2, rf.v2);
+			rf.sideOffset1 = Utilities.Dot(rf.sideNormal1, rf.v1);
+			rf.sideOffset2 = Utilities.Dot(rf.sideNormal2, rf.v2);
 	
 			// Clip incident edge against extruded edge1 side edges.
-			b2ClipVertex[] clipPoints1 = new b2ClipVertex[2];
-			b2ClipVertex[] clipPoints2 = new b2ClipVertex[2];
+			ClipVertex[] clipPoints1 = new ClipVertex[2];
+			ClipVertex[] clipPoints2 = new ClipVertex[2];
 			int np;
 	
 			// Clip to box side 1
-			np = b2Collision.b2ClipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1);
+			np = Collision.ClipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1);
 	
-			if (np < b2Settings.b2_maxManifoldPoints)
+			if (np < Settings._maxManifoldPoints)
 			{
 				return;
 			}
 	
 			// Clip to negative box side 1
-			np = b2Collision.b2ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2);
+			np = Collision.ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2);
 	
-			if (np < b2Settings.b2_maxManifoldPoints)
+			if (np < Settings._maxManifoldPoints)
 			{
 				return;
 			}
@@ -374,19 +374,19 @@ namespace Box2D {
 			}
 
 			manifold.points.Clear();
-			for (int i = 0; i < b2Settings.b2_maxManifoldPoints; ++i)
+			for (int i = 0; i < Settings._maxManifoldPoints; ++i)
 			{
 				float separation;
 		
-				separation = Utilities.b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+				separation = Utilities.Dot(rf.normal, clipPoints2[i].v - rf.v1);
 		
 				if (separation <= m_radius)
 				{
-					b2ManifoldPoint cp = new b2ManifoldPoint();
+					ManifoldPoint cp = new ManifoldPoint();
 			
 					if (primaryAxis.type == EPAxisType.e_edgeA)
 					{
-						cp.localPoint = Utilities.b2MulT(m_xf, clipPoints2[i].v);
+						cp.localPoint = Utilities.MulT(m_xf, clipPoints2[i].v);
 						cp.id = clipPoints2[i].id;
 					}
 					else
@@ -405,15 +405,15 @@ namespace Box2D {
 
 
 
-		b2EPAxis ComputeEdgeSeparation(){
-			b2EPAxis axis;
+		EPAxis ComputeEdgeSeparation(){
+			EPAxis axis;
 			axis.type = EPAxisType.e_edgeA;
 			axis.index = m_front ? 0 : 1;
 			axis.separation = Single.MaxValue;
 	
 			for (int i = 0; i < m_polygonB.count; ++i)
 			{
-				float s = Utilities.b2Dot(m_normal, m_polygonB.vertices[i] - m_v1);
+				float s = Utilities.Dot(m_normal, m_polygonB.vertices[i] - m_v1);
 				if (s < axis.separation)
 				{
 					axis.separation = s;
@@ -423,20 +423,20 @@ namespace Box2D {
 			return axis;
 		}
 
-		b2EPAxis ComputePolygonSeparation(){
-			b2EPAxis axis;
+		EPAxis ComputePolygonSeparation(){
+			EPAxis axis;
 			axis.type = EPAxisType.e_unknown;
 			axis.index = -1;
 			axis.separation = -Single.MaxValue;
 
-			b2Vec2 perp = new b2Vec2(-m_normal.y, m_normal.x);
+			Vec2 perp = new Vec2(-m_normal.y, m_normal.x);
 
 			for (int i = 0; i < m_polygonB.count; ++i)
 			{
-				b2Vec2 n = -m_polygonB.normals[i];
+				Vec2 n = -m_polygonB.normals[i];
 		
-				float s1 = Utilities.b2Dot(n, m_polygonB.vertices[i] - m_v1);
-				float s2 = Utilities.b2Dot(n, m_polygonB.vertices[i] - m_v2);
+				float s1 = Utilities.Dot(n, m_polygonB.vertices[i] - m_v1);
+				float s2 = Utilities.Dot(n, m_polygonB.vertices[i] - m_v2);
 				float s = Math.Min(s1, s2);
 		
 				if (s > m_radius)
@@ -449,16 +449,16 @@ namespace Box2D {
 				}
 		
 				// Adjacency
-				if (Utilities.b2Dot(n, perp) >= 0.0f)
+				if (Utilities.Dot(n, perp) >= 0.0f)
 				{
-					if (Utilities.b2Dot(n - m_upperLimit, m_normal) < -b2Settings.b2_angularSlop)
+					if (Utilities.Dot(n - m_upperLimit, m_normal) < -Settings._angularSlop)
 					{
 						continue;
 					}
 				}
 				else
 				{
-					if (Utilities.b2Dot(n - m_lowerLimit, m_normal) < -b2Settings.b2_angularSlop)
+					if (Utilities.Dot(n - m_lowerLimit, m_normal) < -Settings._angularSlop)
 					{
 						continue;
 					}
@@ -482,15 +482,15 @@ namespace Box2D {
 			e_convex
 		};
 	
-		b2TempPolygon m_polygonB = new b2TempPolygon();
+		TempPolygon m_polygonB = new TempPolygon();
 	
-		b2Transform m_xf;
-		b2Vec2 m_centroidB;
-		b2Vec2 m_v0, m_v1, m_v2, m_v3;
-		b2Vec2 m_normal0, m_normal1, m_normal2;
-		b2Vec2 m_normal;
+		Transform m_xf;
+		Vec2 m_centroidB;
+		Vec2 m_v0, m_v1, m_v2, m_v3;
+		Vec2 m_normal0, m_normal1, m_normal2;
+		Vec2 m_normal;
 		VertexType m_type1, m_type2;
-		b2Vec2 m_lowerLimit, m_upperLimit;
+		Vec2 m_lowerLimit, m_upperLimit;
 		float m_radius;
 		bool m_front;
 	}

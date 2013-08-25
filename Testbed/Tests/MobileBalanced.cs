@@ -12,21 +12,21 @@ namespace Testbed.Tests {
 
 		public MobileBalanced()
 		{
-			b2Body ground;
+			Body ground;
 
 			// Create ground body.
 			{
-				b2BodyDef bodyDef = new b2BodyDef();
+				BodyDef bodyDef = new BodyDef();
 				bodyDef.position.Set(0.0f, 20.0f);
 				ground = m_world.CreateBody(bodyDef);
 			}
 
 			float a = 0.5f;
-			b2Vec2 h = new b2Vec2(0.0f, a);
+			Vec2 h = new Vec2(0.0f, a);
 
-			b2Body root = AddNode(ground, new b2Vec2(0, 0), 0, 3.0f, a);
+			Body root = AddNode(ground, new Vec2(0, 0), 0, 3.0f, a);
 
-			b2RevoluteJointDef jointDef = new b2RevoluteJointDef();
+			RevoluteJointDef jointDef = new RevoluteJointDef();
 			jointDef.bodyA = ground;
 			jointDef.bodyB = root;
 			jointDef.localAnchorA.SetZero();
@@ -34,19 +34,19 @@ namespace Testbed.Tests {
 			m_world.CreateJoint(jointDef);
 		}
 
-		public b2Body AddNode(b2Body parent, b2Vec2 localAnchor, int depth, float offset, float a)
+		public Body AddNode(Body parent, Vec2 localAnchor, int depth, float offset, float a)
 		{
 			float density = 20.0f;
-			b2Vec2 h = new b2Vec2(0.0f, a);
+			Vec2 h = new Vec2(0.0f, a);
 
-			b2Vec2 p = parent.GetPosition() + localAnchor - h;
+			Vec2 p = parent.GetPosition() + localAnchor - h;
 
-			b2BodyDef bodyDef = new b2BodyDef();
-			bodyDef.type = b2BodyType.b2_dynamicBody;
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.type = BodyType._dynamicBody;
 			bodyDef.position = p;
-			b2Body body = m_world.CreateBody(bodyDef);
+			Body body = m_world.CreateBody(bodyDef);
 
-			b2PolygonShape shape = new b2PolygonShape();
+			PolygonShape shape = new PolygonShape();
 			shape.SetAsBox(0.25f * a, a);
 			body.CreateFixture(shape, density);
 
@@ -55,15 +55,15 @@ namespace Testbed.Tests {
 				return body;
 			}
 
-			shape.SetAsBox(offset, 0.25f * a, new b2Vec2(0, -a), 0.0f);
+			shape.SetAsBox(offset, 0.25f * a, new Vec2(0, -a), 0.0f);
 			body.CreateFixture(shape, density);
 
-			b2Vec2 a1 = new b2Vec2(offset, -a);
-			b2Vec2 a2 = new b2Vec2(-offset, -a);
-			b2Body body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
-			b2Body body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+			Vec2 a1 = new Vec2(offset, -a);
+			Vec2 a2 = new Vec2(-offset, -a);
+			Body body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
+			Body body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 
-			b2RevoluteJointDef jointDef = new b2RevoluteJointDef();
+			RevoluteJointDef jointDef = new RevoluteJointDef();
 			jointDef.bodyA = body;
 			jointDef.localAnchorB = h;
 

@@ -32,7 +32,7 @@ namespace Box2D {
 	re-computed too (otherwise the algorithm has horrible instability). The pseudo
 	velocity states are not needed because they are effectively zero at the beginning
 	of each iteration. Since we have the current position error, we allow the
-	iterations to terminate early if the error becomes smaller thanb2Settings.b2_linearSlop.
+	iterations to terminate early if the error becomes smaller thanSettings._linearSlop.
 
 	Full NGS or just NGS - Like Modified NGS except the effective mass are re-computed
 	each time a constraint is solved.
@@ -121,17 +121,17 @@ namespace Box2D {
 	This might be faster than computing sin+cos.
 	However, we can compute sin+cos of the same angle fast.
 	*/
-	internal class b2Island
+	internal class Island
 	{
-		public b2Island(b2ContactListener listener){
+		public Island(ContactListener listener){
 			m_listener = listener;
 
-			m_bodies = new List<b2Body>();
-			m_contacts = new List<b2Contact>();
-			m_joints = new List<b2Joint>();
+			m_bodies = new List<Body>();
+			m_contacts = new List<Contact>();
+			m_joints = new List<Joint>();
 
-			m_velocities = new List<b2Velocity>();
-			m_positions = new List<b2Position>();
+			m_velocities = new List<Velocity>();
+			m_positions = new List<Position>();
 		}
 
 
@@ -142,25 +142,25 @@ namespace Box2D {
 			m_joints.Clear();
 		}
 
-		public void Solve(b2Profile profile, b2TimeStep step, b2Vec2 gravity, bool allowSleep) {
-			b2Timer timer = new b2Timer();
+		public void Solve(Profile profile, TimeStep step, Vec2 gravity, bool allowSleep) {
+			Timer timer = new Timer();
 
 			float h = step.dt;
 
 			// Integrate velocities and apply damping. Initialize the body state.
 			for (int i = 0; i < m_bodies.Count(); i++)
 			{
-				b2Body b = m_bodies[i];
-			    b2Vec2 c = b.m_sweep.c;
+				Body b = m_bodies[i];
+			    Vec2 c = b.m_sweep.c;
 			    float a = b.m_sweep.a;
-			    b2Vec2 v = b.m_linearVelocity;
+			    Vec2 v = b.m_linearVelocity;
 			    float w = b.m_angularVelocity;
 
 			    // Store positions for continuous collision.
 			    b.m_sweep.c0 = b.m_sweep.c;
 			    b.m_sweep.a0 = b.m_sweep.a;
 
-			    if (b.m_type == b2BodyType.b2_dynamicBody)
+			    if (b.m_type == BodyType._dynamicBody)
 			    {
 			        // Integrate velocities.
 			        v += h * (b.m_gravityScale * gravity + b.m_invMass * b.m_force);
@@ -173,16 +173,16 @@ namespace Box2D {
 			        // v2 = exp(-c * dt) * v1
 			        // Taylor expansion:
 			        // v2 = (1.0f - c * dt) * v1
-			        v *= Utilities.b2Clamp(1.0f - h * b.m_linearDamping, 0.0f, 1.0f);
-					w *= Utilities.b2Clamp(1.0f - h * b.m_angularDamping, 0.0f, 1.0f);
+			        v *= Utilities.Clamp(1.0f - h * b.m_linearDamping, 0.0f, 1.0f);
+					w *= Utilities.Clamp(1.0f - h * b.m_angularDamping, 0.0f, 1.0f);
 			    }
 
-				b2Position pos = new b2Position();
+				Position pos = new Position();
 				pos.c = c;
 				pos.a = a;
 				m_positions.Add(pos);
 
-				b2Velocity vel = new b2Velocity();
+				Velocity vel = new Velocity();
 				vel.v = v;
 				vel.w = w;
 				m_velocities.Add(vel);
@@ -191,19 +191,19 @@ namespace Box2D {
 			timer.Reset();
 
 			// Solver data
-			b2SolverData solverData;
+			SolverData solverData;
 			solverData.step = step;
 			solverData.positions = m_positions;
 			solverData.velocities = m_velocities;
 
 			// Initialize velocity constraints.
-			b2ContactSolverDef contactSolverDef;
+			ContactSolverDef contactSolverDef;
 			contactSolverDef.step = step;
 			contactSolverDef.contacts = m_contacts;
 			contactSolverDef.positions = m_positions;
 			contactSolverDef.velocities = m_velocities;
 
-			b2ContactSolver contactSolver = new b2ContactSolver(contactSolverDef);
+			ContactSolver contactSolver = new ContactSolver(contactSolverDef);
 			contactSolver.InitializeVelocityConstraints();
 
 			if (step.warmStarting)
@@ -237,23 +237,23 @@ namespace Box2D {
 			// Integrate positions
 			for (int i = 0; i < m_bodies.Count(); ++i)
 			{
-			    b2Vec2 c = m_positions[i].c;
+			    Vec2 c = m_positions[i].c;
 			    float a = m_positions[i].a;
-			    b2Vec2 v = m_velocities[i].v;
+			    Vec2 v = m_velocities[i].v;
 			    float w = m_velocities[i].w;
 
 			    // Check for large velocities
-			    b2Vec2 translation = h * v;
-			    if (Utilities.b2Dot(translation, translation) > b2Settings.b2_maxTranslationSquared)
+			    Vec2 translation = h * v;
+			    if (Utilities.Dot(translation, translation) > Settings._maxTranslationSquared)
 			    {
-					float ratio = b2Settings.b2_maxTranslation / translation.Length();
+					float ratio = Settings._maxTranslation / translation.Length();
 			        v *= ratio;
 			    }
 
 			    float rotation = h * w;
-				if (rotation * rotation > b2Settings.b2_maxRotationSquared)
+				if (rotation * rotation > Settings._maxRotationSquared)
 			    {
-					float ratio = b2Settings.b2_maxRotation / Math.Abs(rotation);
+					float ratio = Settings._maxRotation / Math.Abs(rotation);
 			        w *= ratio;
 			    }
 
@@ -292,7 +292,7 @@ namespace Box2D {
 			// Copy state buffers back to the bodies
 			for (int i = 0; i < m_bodies.Count(); ++i)
 			{
-			    b2Body body = m_bodies[i];
+			    Body body = m_bodies[i];
 			    body.m_sweep.c = m_positions[i].c;
 			    body.m_sweep.a = m_positions[i].a;
 			    body.m_linearVelocity = m_velocities[i].v;
@@ -308,20 +308,20 @@ namespace Box2D {
 			{
 			    float minSleepTime = Single.MaxValue;
 
-				const float linTolSqr = b2Settings.b2_linearSleepTolerance * b2Settings.b2_linearSleepTolerance;
-				const float angTolSqr = b2Settings.b2_angularSleepTolerance * b2Settings.b2_angularSleepTolerance;
+				const float linTolSqr = Settings._linearSleepTolerance * Settings._linearSleepTolerance;
+				const float angTolSqr = Settings._angularSleepTolerance * Settings._angularSleepTolerance;
 
 			    for (int i = 0; i < m_bodies.Count(); ++i)
 			    {
-			        b2Body b = m_bodies[i];
-			        if (b.GetBodyType() == b2BodyType.b2_staticBody)
+			        Body b = m_bodies[i];
+			        if (b.GetBodyType() == BodyType._staticBody)
 			        {
 			            continue;
 			        }
 
-			        if ((b.m_flags & b2Body.BodyFlags.e_autoSleepFlag) == 0 ||
+			        if ((b.m_flags & Body.BodyFlags.e_autoSleepFlag) == 0 ||
 			            b.m_angularVelocity * b.m_angularVelocity > angTolSqr ||
-			            Utilities.b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr)
+			            Utilities.Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr)
 			        {
 			            b.m_sleepTime = 0.0f;
 			            minSleepTime = 0.0f;
@@ -333,18 +333,18 @@ namespace Box2D {
 			        }
 			    }
 
-				if (minSleepTime >= b2Settings.b2_timeToSleep && positionSolved)
+				if (minSleepTime >= Settings._timeToSleep && positionSolved)
 			    {
 			        for (int i = 0; i < m_bodies.Count(); ++i)
 			        {
-			            b2Body b = m_bodies[i];
+			            Body b = m_bodies[i];
 			            b.SetAwake(false);
 			        }
 			    }
 			}
 		}
 
-		public void SolveTOI(b2TimeStep subStep, int toiIndexA, int toiIndexB) {
+		public void SolveTOI(TimeStep subStep, int toiIndexA, int toiIndexB) {
 			throw new NotImplementedException();
 		//    Utilities.Assert(toiIndexA < m_bodies.Count());
 		//    Utilities.Assert(toiIndexB < m_bodies.Count());
@@ -352,21 +352,21 @@ namespace Box2D {
 		//    // Initialize the body state.
 		//    for (int i = 0; i < m_bodies.Count(); ++i)
 		//    {
-		//        b2Body* b = m_bodies[i];
+		//        Body* b = m_bodies[i];
 		//        m_positions[i].c = b.m_sweep.c;
 		//        m_positions[i].a = b.m_sweep.a;
 		//        m_velocities[i].v = b.m_linearVelocity;
 		//        m_velocities[i].w = b.m_angularVelocity;
 		//    }
 
-		//    b2ContactSolverDef contactSolverDef;
+		//    ContactSolverDef contactSolverDef;
 		//    contactSolverDef.contacts = m_contacts;
 		//    contactSolverDef.count = m_contactCount;
 		//    contactSolverDef.allocator = m_allocator;
 		//    contactSolverDef.step = subStep;
 		//    contactSolverDef.positions = m_positions;
 		//    contactSolverDef.velocities = m_velocities;
-		//    b2ContactSolver contactSolver(&contactSolverDef);
+		//    ContactSolver contactSolver(&contactSolverDef);
 
 		//    // Solve position constraints.
 		//    for (int i = 0; i < subStep.positionIterations; ++i)
@@ -382,27 +382,27 @@ namespace Box2D {
 		//    // Is the new position really safe?
 		//    for (int i = 0; i < m_contactCount; ++i)
 		//    {
-		//        b2Contact* c = m_contacts[i];
-		//        b2Fixture fA = c.GetFixtureA();
-		//        b2Fixture fB = c.GetFixtureB();
+		//        Contact* c = m_contacts[i];
+		//        Fixture fA = c.GetFixtureA();
+		//        Fixture fB = c.GetFixtureB();
 
-		//        b2Body* bA = fA.GetBody();
-		//        b2Body* bB = fB.GetBody();
+		//        Body* bA = fA.GetBody();
+		//        Body* bB = fB.GetBody();
 
 		//        int indexA = c.GetChildIndexA();
 		//        int indexB = c.GetChildIndexB();
 
-		//        b2DistanceInput input;
+		//        DistanceInput input;
 		//        input.proxyA.Set(fA.GetShape(), indexA);
 		//        input.proxyB.Set(fB.GetShape(), indexB);
 		//        input.transformA = bA.GetTransform();
 		//        input.transformB = bB.GetTransform();
 		//        input.useRadii = false;
 
-		//        b2DistanceOutput output;
-		//        b2SimplexCache cache;
+		//        DistanceOutput output;
+		//        SimplexCache cache;
 		//        cache.count = 0;
-		//        b2Distance.Distance(out output, cache, input);
+		//        Utilities.Distance(out output, cache, input);
 
 		//        if (output.distance == 0 || cache.count == 3)
 		//        {
@@ -435,23 +435,23 @@ namespace Box2D {
 		//    // Integrate positions
 		//    for (int i = 0; i < m_bodies.Count(); ++i)
 		//    {
-		//        b2Vec2 c = m_positions[i].c;
+		//        Vec2 c = m_positions[i].c;
 		//        float a = m_positions[i].a;
-		//        b2Vec2 v = m_velocities[i].v;
+		//        Vec2 v = m_velocities[i].v;
 		//        float w = m_velocities[i].w;
 
 		//        // Check for large velocities
-		//        b2Vec2 translation = h * v;
-		//        if (Utilities.b2Dot(translation, translation) > b2_maxTranslationSquared)
+		//        Vec2 translation = h * v;
+		//        if (Utilities.Dot(translation, translation) > _maxTranslationSquared)
 		//        {
-		//            float ratio = b2_maxTranslation / translation.Length();
+		//            float ratio = _maxTranslation / translation.Length();
 		//            v *= ratio;
 		//        }
 
 		//        float rotation = h * w;
-		//        if (rotation * rotation > b2_maxRotationSquared)
+		//        if (rotation * rotation > _maxRotationSquared)
 		//        {
-		//            float ratio = b2_maxRotation / Math.Abs(rotation);
+		//            float ratio = _maxRotation / Math.Abs(rotation);
 		//            w *= ratio;
 		//        }
 
@@ -465,7 +465,7 @@ namespace Box2D {
 		//        m_velocities[i].w = w;
 
 		//        // Sync bodies
-		//        b2Body* body = m_bodies[i];
+		//        Body* body = m_bodies[i];
 		//        body.m_sweep.c = c;
 		//        body.m_sweep.a = a;
 		//        body.m_linearVelocity = v;
@@ -476,33 +476,33 @@ namespace Box2D {
 		//    Report(contactSolver.m_velocityConstraints);
 		}
 
-		public void Add(b2Body body)
+		public void Add(Body body)
 		{
 			body.m_islandIndex = m_bodies.Count();
 			m_bodies.Add(body);
 		}
 
-		public void Add(b2Contact contact)
+		public void Add(Contact contact)
 		{
 			m_contacts.Add(contact);
 		}
 
-		public void Add(b2Joint joint)
+		public void Add(Joint joint)
 		{
 			m_joints.Add(joint);
 		}
 
-		public void Report(List<b2ContactVelocityConstraint> constraints) {
+		public void Report(List<ContactVelocityConstraint> constraints) {
 			if (m_listener == null) {
 				return;
 			}
 
 			for (int i = 0; i < m_contacts.Count(); ++i) {
-				b2Contact c = m_contacts[i];
+				Contact c = m_contacts[i];
 
-				b2ContactVelocityConstraint vc = constraints[i];
+				ContactVelocityConstraint vc = constraints[i];
 
-				b2ContactImpulse impulse = new b2ContactImpulse();
+				ContactImpulse impulse = new ContactImpulse();
 				impulse.count = vc.points.Count();
 				impulse.normalImpulses.Clear();
 				impulse.tangentImpulses.Clear();
@@ -515,14 +515,14 @@ namespace Box2D {
 			}
 		}
 
-		public b2ContactListener m_listener; //pointer
+		public ContactListener m_listener; //pointer
 
-		public List<b2Body> m_bodies; //pointer to a pointer
-		public List<b2Contact> m_contacts; //pointer to a pointer
-		public List<b2Joint> m_joints; //pointer to a pointer
+		public List<Body> m_bodies; //pointer to a pointer
+		public List<Contact> m_contacts; //pointer to a pointer
+		public List<Joint> m_joints; //pointer to a pointer
 
-		public List<b2Position> m_positions; //pointer
-		public List<b2Velocity> m_velocities; //pointer
+		public List<Position> m_positions; //pointer
+		public List<Velocity> m_velocities; //pointer
 		
 	}
 }

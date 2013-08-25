@@ -9,12 +9,12 @@ using OpenTK.Input;
 
 namespace Testbed.Tests {
 	///
-	class Rope : Test
+	class RopeTest : Test
 	{
-		public Rope()
+		public RopeTest()
 		{
 			const int N = 40;
-			b2Vec2[] vertices = new b2Vec2[N];
+			Vec2[] vertices = new Vec2[N];
 			float [] masses = new float [N];
 
 			for (int i = 0; i < N; ++i)
@@ -25,8 +25,8 @@ namespace Testbed.Tests {
 			masses[0] = 0.0f;
 			masses[1] = 0.0f;
 
-			b2RopeDef def = new b2RopeDef();
-			def.vertices = new List<b2Vec2>(vertices);
+			RopeDef def = new RopeDef();
+			def.vertices = new List<Vec2>(vertices);
 			def.count = N;
 			def.gravity.Set(0.0f, -10.0f);
 			def.masses = new List<float>(masses);
@@ -52,7 +52,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			float dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
 
@@ -75,10 +75,10 @@ namespace Testbed.Tests {
 
 		public static Test Create()
 		{
-			return new Rope();
+			return new RopeTest();
 		}
 
-		b2Rope m_rope;
+		Rope m_rope;
 		float m_angle;
 	};
 }

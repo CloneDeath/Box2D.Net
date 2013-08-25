@@ -74,7 +74,7 @@
     <Compile Include="Framework\DestructionListener.cs" />
     <Compile Include="Framework\DebugDraw.cs" />
     <Compile Include="Framework\QueryCallback.cs" />
-    <Compile Include="Framework\Settings.cs" />
+    <Compile Include="Framework\TestSettings.cs" />
     <Compile Include="Framework\Test.cs" />
     <Compile Include="Framework\TestEntry.cs" />
     <Compile Include="MainCanvas.cs" />

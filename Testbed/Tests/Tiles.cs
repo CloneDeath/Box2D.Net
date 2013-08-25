@@ -15,25 +15,25 @@ namespace Testbed.Tests {
 		public Tiles()
 		{
 			m_fixtureCount = 0;
-			b2Timer timer = new b2Timer();
+			Timer timer = new Timer();
 
 			{
 				float a = 0.5f;
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				bd.position.y = -a;
-				b2Body ground = m_world.CreateBody(bd);
+				Body ground = m_world.CreateBody(bd);
 
 	#if true
 				int N = 200;
 				int M = 10;
-				b2Vec2 position;
+				Vec2 position;
 				position.y = 0.0f;
 				for (int j = 0; j < M; ++j)
 				{
 					position.x = -N * a;
 					for (int i = 0; i < N; ++i)
 					{
-						b2PolygonShape shape = new b2PolygonShape();
+						PolygonShape shape = new PolygonShape();
 						shape.SetAsBox(a, a, position, 0.0f);
 						ground.CreateFixture(shape, 0.0f);
 						++m_fixtureCount;
@@ -44,14 +44,14 @@ namespace Testbed.Tests {
 	#else
 				int N = 200;
 				int M = 10;
-				b2Vec2 position;
+				Vec2 position;
 				position.x = -N * a;
 				for (int i = 0; i < N; ++i)
 				{
 					position.y = 0.0f;
 					for (int j = 0; j < M; ++j)
 					{
-						b2PolygonShape shape = new b2PolygonShape();
+						PolygonShape shape = new PolygonShape();
 						shape.SetAsBox(a, a, position, 0.0f);
 						ground.CreateFixture(shape, 0.0f);
 						position.y -= 2.0f * a;
@@ -63,13 +63,13 @@ namespace Testbed.Tests {
 
 			{
 				float a = 0.5f;
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(a, a);
 
-				b2Vec2 x = new b2Vec2(-7.0f, 0.75f);
-				b2Vec2 y;
-				b2Vec2 deltaX = new b2Vec2(0.5625f, 1.25f);
-				b2Vec2 deltaY = new b2Vec2(1.125f, 0.0f);
+				Vec2 x = new Vec2(-7.0f, 0.75f);
+				Vec2 y;
+				Vec2 deltaX = new Vec2(0.5625f, 1.25f);
+				Vec2 deltaY = new Vec2(1.125f, 0.0f);
 
 				for (int i = 0; i < e_count; ++i)
 				{
@@ -77,8 +77,8 @@ namespace Testbed.Tests {
 
 					for (int j = i; j < e_count; ++j)
 					{
-						b2BodyDef bd = new b2BodyDef();
-						bd.type = b2BodyType.b2_dynamicBody;
+						BodyDef bd = new BodyDef();
+						bd.type = BodyType._dynamicBody;
 						bd.position = y;
 
 						//if (i == 0 && j == 0)
@@ -90,7 +90,7 @@ namespace Testbed.Tests {
 						//	bd.allowSleep = true;
 						//}
 
-						b2Body body = m_world.CreateBody(bd);
+						Body body = m_world.CreateBody(bd);
 						body.CreateFixture(shape, 5.0f);
 						++m_fixtureCount;
 						y += deltaY;
@@ -103,9 +103,9 @@ namespace Testbed.Tests {
 			m_createTime = timer.GetMilliseconds();
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
-			b2ContactManager cm = m_world.GetContactManager();
+			ContactManager cm = m_world.GetContactManager();
 			int height = cm.m_broadPhase.GetTreeHeight();
 			int leafCount = cm.m_broadPhase.GetProxyCount();
 			int minimumNodeCount = 2 * leafCount - 1;
@@ -119,7 +119,7 @@ namespace Testbed.Tests {
 				m_createTime, m_fixtureCount);
 			
 
-			//b2DynamicTree tree = m_world.m_contactManager.m_broadPhase.m_tree;
+			//DynamicTree tree = m_world.m_contactManager.m_broadPhase.m_tree;
 
 			//if (m_stepCount == 400)
 			//{

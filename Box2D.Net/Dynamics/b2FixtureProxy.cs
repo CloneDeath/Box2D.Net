@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Box2D {
 	/// This proxy is used internally to connect fixtures to the broad-phase.
-	public class b2FixtureProxy {
-		public b2AABB aabb;
-		public b2Fixture fixture; //was pointer
+	public class FixtureProxy {
+		public AABB aabb;
+		public Fixture fixture; //was pointer
 		public int childIndex;
 		public int proxyId;
 	}

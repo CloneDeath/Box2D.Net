@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Box2D {
 	/// Motor joint definition.
-	public class b2MotorJointDef : b2JointDef
+	public class MotorJointDef : JointDef
 	{
-		public b2MotorJointDef()
+		public MotorJointDef()
 		{
-			type = b2JointType.e_motorJoint;
+			type = JointType.e_motorJoint;
 			linearOffset.SetZero();
 			angularOffset = 0.0f;
 			maxForce = 1.0f;
@@ -29,10 +29,10 @@ namespace Box2D {
 		// Cdot = w2 - w1
 		// J = [0 0 -1 0 0 1]
 		// K = invI1 + invI2
-		public void Initialize(b2Body bA, b2Body bB) {
+		public void Initialize(Body bA, Body bB) {
 			bodyA = bA;
 			bodyB = bB;
-			b2Vec2 xB = bodyB.GetPosition();
+			Vec2 xB = bodyB.GetPosition();
 			linearOffset = bodyA.GetLocalPoint(xB);
 
 			float angleA = bodyA.GetAngle();
@@ -42,7 +42,7 @@ namespace Box2D {
 
 
 		/// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
-		public b2Vec2 linearOffset;
+		public Vec2 linearOffset;
 
 		/// The bodyB angle minus bodyA angle in radians.
 		public float angularOffset;

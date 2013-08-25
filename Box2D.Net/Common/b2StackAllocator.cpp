@@ -16,10 +16,10 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Common/b2StackAllocator.h>
-#include <Box2D/Common/b2Math.h>
+#include <Box2D/Common/StackAllocator.h>
+#include <Box2D/Common/Math.h>
 
-b2StackAllocator::b2StackAllocator()
+StackAllocator::StackAllocator()
 {
 	m_index = 0;
 	m_allocation = 0;
@@ -27,21 +27,21 @@ b2StackAllocator::b2StackAllocator()
 	m_entryCount = 0;
 }
 
-b2StackAllocator::~b2StackAllocator()
+StackAllocator::~StackAllocator()
 {
 	Utilities.Assert(m_index == 0);
 	Utilities.Assert(m_entryCount == 0);
 }
 
-void* b2StackAllocator::Allocate(int size)
+void* StackAllocator::Allocate(int size)
 {
-	Utilities.Assert(m_entryCount < b2_maxStackEntries);
+	Utilities.Assert(m_entryCount < _maxStackEntries);
 
-	b2StackEntry* entry = m_entries + m_entryCount;
+	StackEntry* entry = m_entries + m_entryCount;
 	entry.size = size;
-	if (m_index + size > b2_stackSize)
+	if (m_index + size > _stackSize)
 	{
-		entry.data = (char*)b2Alloc(size);
+		entry.data = (char*)Alloc(size);
 		entry.usedMalloc = true;
 	}
 	else
@@ -58,14 +58,14 @@ void* b2StackAllocator::Allocate(int size)
 	return entry.data;
 }
 
-void b2StackAllocator::Free(void* p)
+void StackAllocator::Free(void* p)
 {
 	Utilities.Assert(m_entryCount > 0);
-	b2StackEntry* entry = m_entries + m_entryCount - 1;
+	StackEntry* entry = m_entries + m_entryCount - 1;
 	Utilities.Assert(p == entry.data);
 	if (entry.usedMalloc)
 	{
-		b2Free(p);
+		Free(p);
 	}
 	else
 	{
@@ -77,7 +77,7 @@ void b2StackAllocator::Free(void* p)
 	p = null;
 }
 
-int b2StackAllocator::GetMaxAllocation()
+int StackAllocator::GetMaxAllocation()
 {
 	return m_maxAllocation;
 }

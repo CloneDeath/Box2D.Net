@@ -13,16 +13,16 @@ namespace Box2D {
 	/// You should strive to make your callbacks efficient because there may be
 	/// many callbacks per time step.
 	/// @warning You cannot create/destroy Box2D entities inside these callbacks.
-	public abstract class b2ContactListener
+	public abstract class ContactListener
 	{
-		~b2ContactListener() {}
+		~ContactListener() {}
 
 		/// Called when two fixtures begin to touch.
-		public virtual void BeginContact(b2Contact contact) { 
+		public virtual void BeginContact(Contact contact) { 
 		}
 
 		/// Called when two fixtures cease to touch.
-		public virtual void EndContact(b2Contact contact) { 
+		public virtual void EndContact(Contact contact) { 
 		}
 
 		/// This is called after a contact is updated. This allows you to inspect a
@@ -35,7 +35,7 @@ namespace Box2D {
 		/// Note: if you set the number of contact points to zero, you will not
 		/// get an EndContact callback. However, you may get a BeginContact callback
 		/// the next step.
-		public virtual void PreSolve(b2Contact contact, b2Manifold oldManifold)
+		public virtual void PreSolve(Contact contact, Manifold oldManifold)
 		{
 		}
 
@@ -45,7 +45,7 @@ namespace Box2D {
 		/// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
 		/// in a separate data structure.
 		/// Note: this is only called for contacts that are touching, solid, and awake.
-		public virtual void PostSolve(b2Contact contact, b2ContactImpulse impulse)
+		public virtual void PostSolve(Contact contact, ContactImpulse impulse)
 		{
 		}
 	};

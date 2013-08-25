@@ -15,7 +15,7 @@ namespace Testbed.Tests {
 		{
 			{
 				m_polygonA.SetAsBox(0.2f, 0.4f);
-				m_transformA.Set(new b2Vec2(0.0f, 0.0f), 0.0f);
+				m_transformA.Set(new Vec2(0.0f, 0.0f), 0.0f);
 			}
 
 			{
@@ -31,12 +31,12 @@ namespace Testbed.Tests {
 			return new PolyCollision();
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
-			b2Manifold manifold;
-			b2Collision.b2CollidePolygons(out manifold, m_polygonA, m_transformA, m_polygonB, m_transformB);
+			Manifold manifold;
+			Collision.CollidePolygons(out manifold, m_polygonA, m_transformA, m_polygonB, m_transformB);
 
-			b2WorldManifold worldManifold = new b2WorldManifold();
+			WorldManifold worldManifold = new WorldManifold();
 			worldManifold.Initialize(manifold, m_transformA, m_polygonA.m_radius, m_transformB, m_polygonB.m_radius);
 
 			m_debugDraw.DrawString("point count = {0}", manifold.points.Count());
@@ -44,16 +44,16 @@ namespace Testbed.Tests {
 
 			{
 				Color color = Color.FromArgb(225, 225, 225);
-				b2Vec2[] v = new b2Vec2[b2Settings.b2_maxPolygonVertices];
+				Vec2[] v = new Vec2[Settings._maxPolygonVertices];
 				for (int i = 0; i < m_polygonA.m_count; ++i)
 				{
-					v[i] = Utilities.b2Mul(m_transformA, m_polygonA.m_vertices[i]);
+					v[i] = Utilities.Mul(m_transformA, m_polygonA.m_vertices[i]);
 				}
 				m_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
 
 				for (int i = 0; i < m_polygonB.m_count; ++i)
 				{
-					v[i] = Utilities.b2Mul(m_transformB, m_polygonB.m_vertices[i]);
+					v[i] = Utilities.Mul(m_transformB, m_polygonB.m_vertices[i]);
 				}
 				m_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
 			}
@@ -93,13 +93,13 @@ namespace Testbed.Tests {
 			m_transformB.Set(m_positionB, m_angleB);
 		}
 
-		b2PolygonShape m_polygonA;
-		b2PolygonShape m_polygonB;
+		PolygonShape m_polygonA;
+		PolygonShape m_polygonB;
 
-		b2Transform m_transformA;
-		b2Transform m_transformB;
+		Transform m_transformA;
+		Transform m_transformB;
 
-		b2Vec2 m_positionB;
+		Vec2 m_positionB;
 		float m_angleB;
 	};
 }

@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	class b2EdgeAndCircleContact : b2Contact
+	class EdgeAndCircleContact : Contact
 	{
-		public static b2Contact Create(b2Fixture fixtureA, int indexA, b2Fixture fixtureB, int indexB){
-			return new b2EdgeAndCircleContact(fixtureA, fixtureB);
+		public static Contact Create(Fixture fixtureA, int indexA, Fixture fixtureB, int indexB){
+			return new EdgeAndCircleContact(fixtureA, fixtureB);
 		}
 
-		public static void Destroy(b2Contact contact){}
+		public static void Destroy(Contact contact){}
 
-		public b2EdgeAndCircleContact(b2Fixture fixtureA, b2Fixture fixtureB) : base(fixtureA, 0, fixtureB, 0)
+		public EdgeAndCircleContact(Fixture fixtureA, Fixture fixtureB) : base(fixtureA, 0, fixtureB, 0)
 		{
 			Utilities.Assert(m_fixtureA.GetShapeType() == ShapeType.Edge);
 			Utilities.Assert(m_fixtureB.GetShapeType() == ShapeType.Circle);
 		}
 
-		public override void Evaluate(out b2Manifold manifold, b2Transform xfA, b2Transform xfB) {
-			b2Collision.b2CollideEdgeAndCircle(out manifold,
-										(b2EdgeShape)m_fixtureA.GetShape(), xfA,
-										(b2CircleShape)m_fixtureB.GetShape(), xfB);
+		public override void Evaluate(out Manifold manifold, Transform xfA, Transform xfB) {
+			Collision.CollideEdgeAndCircle(out manifold,
+										(EdgeShape)m_fixtureA.GetShape(), xfA,
+										(CircleShape)m_fixtureB.GetShape(), xfB);
 		}
 	}
 }

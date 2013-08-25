@@ -5,17 +5,17 @@ using System.Text;
 
 namespace Box2D {
 	/// A node in the dynamic tree. The client does not interact with this directly.
-	public class b2TreeNode
+	public class TreeNode
 	{
-		public const int b2_nullNode = -1;
+		public const int _nullNode = -1;
 
 		public bool IsLeaf()
 		{
-			return child1 == b2_nullNode;
+			return child1 == _nullNode;
 		}
 
 		/// Enlarged AABB
-		public b2AABB aabb;
+		public AABB aabb;
 
 		public object userData;
 

@@ -7,10 +7,10 @@ namespace Box2D {
 	/// This is a growable LIFO stack with an initial capacity of N.
 	/// If the stack size exceeds the initial capacity, the heap is used
 	/// to increase the size of the stack.
-	class b2GrowableStack <T>
+	class GrowableStack <T>
 	{
 		List<T> Stack;
-		public b2GrowableStack(int Capacity)
+		public GrowableStack(int Capacity)
 		{
 			Stack = new List<T>(Capacity);
 		}

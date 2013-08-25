@@ -15,26 +15,26 @@ namespace Testbed.Tests {
 		{
 			// Ground body
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			// Breakable dynamic body
 			{
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 40.0f);
 				bd.angle = 0.25f * (float)Math.PI;
 				m_body1 = m_world.CreateBody(bd);
 
-				m_shape1.SetAsBox(0.5f, 0.5f, new b2Vec2(-0.5f, 0.0f), 0.0f);
+				m_shape1.SetAsBox(0.5f, 0.5f, new Vec2(-0.5f, 0.0f), 0.0f);
 				m_piece1 = m_body1.CreateFixture(m_shape1, 1.0f);
 
-				m_shape2.SetAsBox(0.5f, 0.5f, new b2Vec2(0.5f, 0.0f), 0.0f);
+				m_shape2.SetAsBox(0.5f, 0.5f, new Vec2(0.5f, 0.0f), 0.0f);
 				m_piece2 = m_body1.CreateFixture(m_shape2, 1.0f);
 			}
 
@@ -42,7 +42,7 @@ namespace Testbed.Tests {
 			m_broke = false;
 		}
 
-		void PostSolve(b2Contact contact, b2ContactImpulse impulse)
+		void PostSolve(Contact contact, ContactImpulse impulse)
 		{
 			if (m_broke)
 			{
@@ -69,27 +69,27 @@ namespace Testbed.Tests {
 		void Break()
 		{
 			// Create two bodies from one.
-			b2Body body1 = m_piece1.GetBody();
-			b2Vec2 center = body1.GetWorldCenter();
+			Body body1 = m_piece1.GetBody();
+			Vec2 center = body1.GetWorldCenter();
 
 			body1.DestroyFixture(m_piece2);
 			m_piece2 = null;
 
-			b2BodyDef bd = new b2BodyDef();
-			bd.type = b2BodyType.b2_dynamicBody;
+			BodyDef bd = new BodyDef();
+			bd.type = BodyType._dynamicBody;
 			bd.position = body1.GetPosition();
 			bd.angle = body1.GetAngle();
 
-			b2Body body2 = m_world.CreateBody(bd);
+			Body body2 = m_world.CreateBody(bd);
 			m_piece2 = body2.CreateFixture(m_shape2, 1.0f);
 
 			// Compute consistent velocities for new bodies based on
 			// cached velocity.
-			b2Vec2 center1 = body1.GetWorldCenter();
-			b2Vec2 center2 = body2.GetWorldCenter();
+			Vec2 center1 = body1.GetWorldCenter();
+			Vec2 center2 = body2.GetWorldCenter();
 		
-			b2Vec2 velocity1 = m_velocity + Utilities.b2Cross(m_angularVelocity, center1 - center);
-			b2Vec2 velocity2 = m_velocity + Utilities.b2Cross(m_angularVelocity, center2 - center);
+			Vec2 velocity1 = m_velocity + Utilities.Cross(m_angularVelocity, center1 - center);
+			Vec2 velocity2 = m_velocity + Utilities.Cross(m_angularVelocity, center2 - center);
 
 			body1.SetAngularVelocity(m_angularVelocity);
 			body1.SetLinearVelocity(velocity1);
@@ -98,7 +98,7 @@ namespace Testbed.Tests {
 			body2.SetLinearVelocity(velocity2);
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			if (m_break)
 			{
@@ -122,13 +122,13 @@ namespace Testbed.Tests {
 			return new Breakable();
 		}
 
-		b2Body m_body1;
-		b2Vec2 m_velocity;
+		Body m_body1;
+		Vec2 m_velocity;
 		float m_angularVelocity;
-		b2PolygonShape m_shape1;
-		b2PolygonShape m_shape2;
-		b2Fixture m_piece1;
-		b2Fixture m_piece2;
+		PolygonShape m_shape1;
+		PolygonShape m_shape2;
+		Fixture m_piece1;
+		Fixture m_piece2;
 
 		bool m_broke;
 		bool m_break;

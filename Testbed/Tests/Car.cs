@@ -17,19 +17,19 @@ namespace Testbed.Tests {
 			m_zeta = 0.7f;
 			m_speed = 50.0f;
 
-			b2Body ground = null;
+			Body ground = null;
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
+				EdgeShape shape = new EdgeShape();
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.density = 0.0f;
 				fd.friction = 0.6f;
 
-				shape.Set(new b2Vec2(-20.0f, 0.0f), new b2Vec2(20.0f, 0.0f));
+				shape.Set(new Vec2(-20.0f, 0.0f), new Vec2(20.0f, 0.0f));
 				ground.CreateFixture(fd);
 
 				float[] hs = new float[]{0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
@@ -39,7 +39,7 @@ namespace Testbed.Tests {
 				for (int i = 0; i < 10; ++i)
 				{
 					float y2 = hs[i];
-					shape.Set(new b2Vec2(x, y1), new b2Vec2(x + dx, y2));
+					shape.Set(new Vec2(x, y1), new Vec2(x + dx, y2));
 					ground.CreateFixture(fd);
 					y1 = y2;
 					x += dx;
@@ -48,44 +48,44 @@ namespace Testbed.Tests {
 				for (int i = 0; i < 10; ++i)
 				{
 					float y2 = hs[i];
-					shape.Set(new b2Vec2(x, y1), new b2Vec2(x + dx, y2));
+					shape.Set(new Vec2(x, y1), new Vec2(x + dx, y2));
 					ground.CreateFixture(fd);
 					y1 = y2;
 					x += dx;
 				}
 
-				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 40.0f, 0.0f));
+				shape.Set(new Vec2(x, 0.0f), new Vec2(x + 40.0f, 0.0f));
 				ground.CreateFixture(fd);
 
 				x += 80.0f;
-				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 40.0f, 0.0f));
+				shape.Set(new Vec2(x, 0.0f), new Vec2(x + 40.0f, 0.0f));
 				ground.CreateFixture(fd);
 
 				x += 40.0f;
-				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 10.0f, 5.0f));
+				shape.Set(new Vec2(x, 0.0f), new Vec2(x + 10.0f, 5.0f));
 				ground.CreateFixture(fd);
 
 				x += 20.0f;
-				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x + 40.0f, 0.0f));
+				shape.Set(new Vec2(x, 0.0f), new Vec2(x + 40.0f, 0.0f));
 				ground.CreateFixture(fd);
 
 				x += 40.0f;
-				shape.Set(new b2Vec2(x, 0.0f), new b2Vec2(x, 20.0f));
+				shape.Set(new Vec2(x, 0.0f), new Vec2(x, 20.0f));
 				ground.CreateFixture(fd);
 			}
 
 			// Teeter
 			{
-				b2BodyDef bd = new b2BodyDef();
+				BodyDef bd = new BodyDef();
 				bd.position.Set(140.0f, 1.0f);
-				bd.type = b2BodyType.b2_dynamicBody;
-				b2Body body = m_world.CreateBody(bd);
+				bd.type = BodyType._dynamicBody;
+				Body body = m_world.CreateBody(bd);
 
-				b2PolygonShape box = new b2PolygonShape();
+				PolygonShape box = new PolygonShape();
 				box.SetAsBox(10.0f, 0.25f);
 				body.CreateFixture(box, 1.0f);
 
-				b2RevoluteJointDef jd = new b2RevoluteJointDef();
+				RevoluteJointDef jd = new RevoluteJointDef();
 				jd.Initialize(ground, body, body.GetPosition());
 				jd.lowerAngle = -8.0f * (float)Math.PI / 180.0f;
 				jd.upperAngle = 8.0f * (float)Math.PI / 180.0f;
@@ -98,45 +98,45 @@ namespace Testbed.Tests {
 			// Bridge
 			{
 				int N = 20;
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(1.0f, 0.125f);
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.density = 1.0f;
 				fd.friction = 0.6f;
 
-				b2RevoluteJointDef jd = new b2RevoluteJointDef();
+				RevoluteJointDef jd = new RevoluteJointDef();
 
-				b2Body prevBody = ground;
+				Body prevBody = ground;
 				for (int i = 0; i < N; ++i)
 				{
-					b2BodyDef bd = new b2BodyDef();
-					bd.type = b2BodyType.b2_dynamicBody;
+					BodyDef bd = new BodyDef();
+					bd.type = BodyType._dynamicBody;
 					bd.position.Set(161.0f + 2.0f * i, -0.125f);
-					b2Body body = m_world.CreateBody(bd);
+					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
-					b2Vec2 anchor = new b2Vec2(160.0f + 2.0f * i, -0.125f);
+					Vec2 anchor = new Vec2(160.0f + 2.0f * i, -0.125f);
 					jd.Initialize(prevBody, body, anchor);
 					m_world.CreateJoint(jd);
 
 					prevBody = body;
 				}
 
-				b2Vec2 anchor2 = new b2Vec2(160.0f + 2.0f * N, -0.125f);
+				Vec2 anchor2 = new Vec2(160.0f + 2.0f * N, -0.125f);
 				jd.Initialize(prevBody, ground, anchor2);
 				m_world.CreateJoint(jd);
 			}
 
 			// Boxes
 			{
-				b2PolygonShape box = new b2PolygonShape();
+				PolygonShape box = new PolygonShape();
 				box.SetAsBox(0.5f, 0.5f);
 
-				b2Body body = null;
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				Body body = null;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 
 				bd.position.Set(230.0f, 0.5f);
 				body = m_world.CreateBody(bd);
@@ -161,8 +161,8 @@ namespace Testbed.Tests {
 
 			// Car
 			{
-				b2PolygonShape chassis = new b2PolygonShape();
-				b2Vec2[] vertices = new b2Vec2[8];
+				PolygonShape chassis = new PolygonShape();
+				Vec2[] vertices = new Vec2[8];
 				vertices[0].Set(-1.5f, -0.5f);
 				vertices[1].Set(1.5f, -0.5f);
 				vertices[2].Set(1.5f, 0.0f);
@@ -171,16 +171,16 @@ namespace Testbed.Tests {
 				vertices[5].Set(-1.5f, 0.2f);
 				chassis.Set(vertices, 6);
 
-				b2CircleShape circle = new b2CircleShape();
+				CircleShape circle = new CircleShape();
 				circle.m_radius = 0.4f;
 
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(0.0f, 1.0f);
 				m_car = m_world.CreateBody(bd);
 				m_car.CreateFixture(chassis, 1.0f);
 
-				b2FixtureDef fd = new b2FixtureDef();
+				FixtureDef fd = new FixtureDef();
 				fd.shape = circle;
 				fd.density = 1.0f;
 				fd.friction = 0.9f;
@@ -193,8 +193,8 @@ namespace Testbed.Tests {
 				m_wheel2 = m_world.CreateBody(bd);
 				m_wheel2.CreateFixture(fd);
 
-				b2WheelJointDef jd = new b2WheelJointDef();
-				b2Vec2 axis = new b2Vec2(0.0f, 1.0f);
+				WheelJointDef jd = new WheelJointDef();
+				Vec2 axis = new Vec2(0.0f, 1.0f);
 
 				jd.Initialize(m_car, m_wheel1, m_wheel1.GetPosition(), axis);
 				jd.motorSpeed = 0.0f;
@@ -202,7 +202,7 @@ namespace Testbed.Tests {
 				jd.enableMotor = true;
 				jd.frequencyHz = m_hz;
 				jd.dampingRatio = m_zeta;
-				m_spring1 = (b2WheelJoint)m_world.CreateJoint(jd);
+				m_spring1 = (WheelJoint)m_world.CreateJoint(jd);
 
 				jd.Initialize(m_car, m_wheel2, m_wheel2.GetPosition(), axis);
 				jd.motorSpeed = 0.0f;
@@ -210,7 +210,7 @@ namespace Testbed.Tests {
 				jd.enableMotor = false;
 				jd.frequencyHz = m_hz;
 				jd.dampingRatio = m_zeta;
-				m_spring2 = (b2WheelJoint)m_world.CreateJoint(jd);
+				m_spring2 = (WheelJoint)m_world.CreateJoint(jd);
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			m_debugDraw.DrawString("Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
 			
@@ -257,14 +257,14 @@ namespace Testbed.Tests {
 			return new Car();
 		}
 
-		b2Body m_car;
-		b2Body m_wheel1;
-		b2Body m_wheel2;
+		Body m_car;
+		Body m_wheel1;
+		Body m_wheel2;
 
 		float m_hz;
 		float m_zeta;
 		float m_speed;
-		b2WheelJoint m_spring1;
-		b2WheelJoint m_spring2;
+		WheelJoint m_spring1;
+		WheelJoint m_spring2;
 	};
 }

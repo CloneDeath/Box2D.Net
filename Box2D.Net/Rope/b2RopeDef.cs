@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 
 namespace Box2D {
-	public class b2RopeDef { //was struct
-		public b2RopeDef() {
-			vertices = new List<b2Vec2>();
+	public class RopeDef { //was struct
+		public RopeDef() {
+			vertices = new List<Vec2>();
 			count = 0;
 			masses = new List<float>();
-			gravity = new b2Vec2(0, 0);
+			gravity = new Vec2(0, 0);
 			damping = 0.1f;
 			k2 = 0.9f;
 			k3 = 0.1f;
 		}
 
 		///
-		public List<b2Vec2> vertices; //was pointer
+		public List<Vec2> vertices; //was pointer
 
 		///
 		public int count;
@@ -25,7 +25,7 @@ namespace Box2D {
 		public List<float> masses;//was pointer
 
 		///
-		public b2Vec2 gravity;
+		public Vec2 gravity;
 
 		///
 		public float damping;

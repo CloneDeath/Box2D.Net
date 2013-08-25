@@ -11,7 +11,7 @@ namespace Box2D {
 	};
 
 	// This structure is used to keep track of the best separating axis.
-	struct b2EPAxis {
+	struct EPAxis {
 		public EPAxisType type;
 		public int index;
 		public float separation;

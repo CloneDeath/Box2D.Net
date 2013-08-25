@@ -13,23 +13,23 @@ namespace Testbed.Tests {
 		public Pyramid()
 		{
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-40.0f, 0.0f), new b2Vec2(40.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			{
 				float a = 0.5f;
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(a, a);
 
-				b2Vec2 x = new b2Vec2(-7.0f, 0.75f);
-				b2Vec2 y;
-				b2Vec2 deltaX = new b2Vec2(0.5625f, 1.25f);
-				b2Vec2 deltaY = new b2Vec2(1.125f, 0.0f);
+				Vec2 x = new Vec2(-7.0f, 0.75f);
+				Vec2 y;
+				Vec2 deltaX = new Vec2(0.5625f, 1.25f);
+				Vec2 deltaY = new Vec2(1.125f, 0.0f);
 
 				for (int i = 0; i < e_count; ++i)
 				{
@@ -37,10 +37,10 @@ namespace Testbed.Tests {
 
 					for (int j = i; j < e_count; ++j)
 					{
-						b2BodyDef bd = new b2BodyDef();
-						bd.type = b2BodyType.b2_dynamicBody;
+						BodyDef bd = new BodyDef();
+						bd.type = BodyType._dynamicBody;
 						bd.position = y;
-						b2Body body = m_world.CreateBody(bd);
+						Body body = m_world.CreateBody(bd);
 						body.CreateFixture(shape, 5.0f);
 
 						y += deltaY;
@@ -51,11 +51,11 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			base.Step(settings);
 
-			//b2DynamicTree tree = m_world.m_contactManager.m_broadPhase.m_tree;
+			//DynamicTree tree = m_world.m_contactManager.m_broadPhase.m_tree;
 
 			//if (m_stepCount == 400)
 			//{

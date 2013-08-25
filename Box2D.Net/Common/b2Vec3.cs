@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Box2D {
 	/// A 2D column vector with 3 elements.
-	public struct b2Vec3
+	public struct Vec3
 	{
 		/// Construct using coordinates.
-		public b2Vec3(float x, float y, float z) {
+		public Vec3(float x, float y, float z) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
@@ -22,33 +22,33 @@ namespace Box2D {
 		public void Set(float x_, float y_, float z_) { x = x_; y = y_; z = z_; }
 
 		/// Negate this vector.
-		public static b2Vec3 operator -(b2Vec3 other) { 
-			b2Vec3 v = new b2Vec3(); 
+		public static Vec3 operator -(Vec3 other) { 
+			Vec3 v = new Vec3(); 
 			v.Set(-other.x, -other.y, -other.z); 
 			return v; 
 		}
 
 		public float x, y, z;
 
-		public static b2Vec3 operator * (float s, b2Vec3 a)
+		public static Vec3 operator * (float s, Vec3 a)
 		{
-			return new b2Vec3(s * a.x, s * a.y, s * a.z);
+			return new Vec3(s * a.x, s * a.y, s * a.z);
 		}
 
-		public static b2Vec3 operator *(b2Vec3 lhs, float rhs) {
-			return new b2Vec3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
+		public static Vec3 operator *(Vec3 lhs, float rhs) {
+			return new Vec3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
 		}
 
 		/// Add two vectors component-wise.
-		public static b2Vec3 operator + (b2Vec3 a, b2Vec3 b)
+		public static Vec3 operator + (Vec3 a, Vec3 b)
 		{
-			return new b2Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
+			return new Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
 		}
 
 		/// Subtract two vectors component-wise.
-		public static b2Vec3 operator - (b2Vec3 a, b2Vec3 b)
+		public static Vec3 operator - (Vec3 a, Vec3 b)
 		{
-			return new b2Vec3(a.x - b.x, a.y - b.y, a.z - b.z);
+			return new Vec3(a.x - b.x, a.y - b.y, a.z - b.z);
 		}
 	}
 }

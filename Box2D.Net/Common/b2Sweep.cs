@@ -8,18 +8,18 @@ namespace Box2D {
 	/// Shapes are defined with respect to the body origin, which may
 	/// no coincide with the center of mass. However, to support dynamics
 	/// we must interpolate the center of mass position.
-	public struct b2Sweep
+	public struct Sweep
 	{
 		/// Get the interpolated transform at a specific time.
 		/// @param beta is a factor in [0,1], where 0 indicates alpha0.
-		public void GetTransform(out b2Transform xf, float beta) {
-			xf = new b2Transform();
+		public void GetTransform(out Transform xf, float beta) {
+			xf = new Transform();
 			xf.p = (1.0f - beta) * c0 + beta * c;
 			float angle = (1.0f - beta) * a0 + beta * a;
 			xf.q.Set(angle);
 
 			// Shift to origin
-			xf.p -= Utilities.b2Mul(xf.q, localCenter);
+			xf.p -= Utilities.Mul(xf.q, localCenter);
 		}
 
 		/// Advance the sweep forward, yielding a new initial state.
@@ -42,8 +42,8 @@ namespace Box2D {
 			a -= d;
 		}
 
-		public b2Vec2 localCenter;	///< local center of mass position
-		public b2Vec2 c0, c;		///< center world positions
+		public Vec2 localCenter;	///< local center of mass position
+		public Vec2 c0, c;		///< center world positions
 		public float a0, a;		///< world angles
 
 		/// Fraction of the current time step in the range [0,1]

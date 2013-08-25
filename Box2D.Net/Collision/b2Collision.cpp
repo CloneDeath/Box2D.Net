@@ -16,20 +16,20 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/b2Collision.h>
-#include <Box2D/Collision/b2Distance.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Distance.h>
 
 // From Real-time Collision Detection, p179.
-bool b2AABB::RayCast(out b2RayCastOutput output, b2RayCastInput input)
+bool AABB::RayCast(out RayCastOutput output, RayCastInput input)
 {
 	float tmin = -Single.MaxValue;
 	float tmax = Single.MaxValue;
 
-	b2Vec2 p = input.p1;
-	b2Vec2 d = input.p2 - input.p1;
-	b2Vec2 absD = Math.Abs(d);
+	Vec2 p = input.p1;
+	Vec2 d = input.p2 - input.p1;
+	Vec2 absD = Math.Abs(d);
 
-	b2Vec2 normal;
+	Vec2 normal;
 
 	for (int i = 0; i < 2; ++i)
 	{
@@ -52,7 +52,7 @@ bool b2AABB::RayCast(out b2RayCastOutput output, b2RayCastInput input)
 
 			if (t1 > t2)
 			{
-				b2Swap(t1, t2);
+				Swap(t1, t2);
 				s = 1.0f;
 			}
 

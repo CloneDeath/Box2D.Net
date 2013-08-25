@@ -12,49 +12,49 @@ namespace Testbed.Tests {
 	// Dimensions scooped from APE (http://www.cove.org/ape/index.htm)
 	class TheoJansen : Test
 	{
-		public void CreateLeg(float s, b2Vec2 wheelAnchor)
+		public void CreateLeg(float s, Vec2 wheelAnchor)
 		{
-			b2Vec2 p1 = new b2Vec2(5.4f * s, -6.1f);
-			b2Vec2 p2 = new b2Vec2(7.2f * s, -1.2f);
-			b2Vec2 p3 = new b2Vec2(4.3f * s, -1.9f);
-			b2Vec2 p4 = new b2Vec2(3.1f * s, 0.8f);
-			b2Vec2 p5 = new b2Vec2(6.0f * s, 1.5f);
-			b2Vec2 p6 = new b2Vec2(2.5f * s, 3.7f);
+			Vec2 p1 = new Vec2(5.4f * s, -6.1f);
+			Vec2 p2 = new Vec2(7.2f * s, -1.2f);
+			Vec2 p3 = new Vec2(4.3f * s, -1.9f);
+			Vec2 p4 = new Vec2(3.1f * s, 0.8f);
+			Vec2 p5 = new Vec2(6.0f * s, 1.5f);
+			Vec2 p6 = new Vec2(2.5f * s, 3.7f);
 
-			b2FixtureDef fd1 = new b2FixtureDef();
-			b2FixtureDef fd2 = new b2FixtureDef();
+			FixtureDef fd1 = new FixtureDef();
+			FixtureDef fd2 = new FixtureDef();
 			fd1.filter.groupIndex = -1;
 			fd2.filter.groupIndex = -1;
 			fd1.density = 1.0f;
 			fd2.density = 1.0f;
 
-			b2PolygonShape poly1 = new b2PolygonShape();
-			b2PolygonShape poly2 = new b2PolygonShape();
+			PolygonShape poly1 = new PolygonShape();
+			PolygonShape poly2 = new PolygonShape();
 
 			if (s > 0.0f)
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 
 				vertices[0] = p1;
 				vertices[1] = p2;
 				vertices[2] = p3;
 				poly1.Set(vertices, 3);
 
-				vertices[0] = new b2Vec2(0, 0);
+				vertices[0] = new Vec2(0, 0);
 				vertices[1] = p5 - p4;
 				vertices[2] = p6 - p4;
 				poly2.Set(vertices, 3);
 			}
 			else
 			{
-				b2Vec2[] vertices = new b2Vec2[3];
+				Vec2[] vertices = new Vec2[3];
 
 				vertices[0] = p1;
 				vertices[1] = p3;
 				vertices[2] = p2;
 				poly1.Set(vertices, 3);
 
-				vertices[0] = new b2Vec2(0, 0);
+				vertices[0] = new Vec2(0, 0);
 				vertices[1] = p6 - p4;
 				vertices[2] = p5 - p4;
 				poly2.Set(vertices, 3);
@@ -63,23 +63,23 @@ namespace Testbed.Tests {
 			fd1.shape = poly1;
 			fd2.shape = poly2;
 
-			b2BodyDef bd1 = new b2BodyDef();
-			b2BodyDef bd2 = new b2BodyDef();
-			bd1.type = b2BodyType.b2_dynamicBody;
-			bd2.type = b2BodyType.b2_dynamicBody;
+			BodyDef bd1 = new BodyDef();
+			BodyDef bd2 = new BodyDef();
+			bd1.type = BodyType._dynamicBody;
+			bd2.type = BodyType._dynamicBody;
 			bd1.position = m_offset;
 			bd2.position = p4 + m_offset;
 
 			bd1.angularDamping = 10.0f;
 			bd2.angularDamping = 10.0f;
 
-			b2Body body1 = m_world.CreateBody(bd1);
-			b2Body body2 = m_world.CreateBody(bd2);
+			Body body1 = m_world.CreateBody(bd1);
+			Body body2 = m_world.CreateBody(bd2);
 
 			body1.CreateFixture(fd1);
 			body2.CreateFixture(fd2);
 
-			b2DistanceJointDef djd = new b2DistanceJointDef();
+			DistanceJointDef djd = new DistanceJointDef();
 
 			// Using a soft distance constraint can reduce some jitter.
 			// It also makes the structure seem a bit more fluid by
@@ -99,7 +99,7 @@ namespace Testbed.Tests {
 			djd.Initialize(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset);
 			m_world.CreateJoint(djd);
 
-			b2RevoluteJointDef rjd = new b2RevoluteJointDef();
+			RevoluteJointDef rjd = new RevoluteJointDef();
 
 			rjd.Initialize(body2, m_chassis, p4 + m_offset);
 			m_world.CreateJoint(rjd);
@@ -110,82 +110,82 @@ namespace Testbed.Tests {
 			m_offset.Set(0.0f, 8.0f);
 			m_motorSpeed = 2.0f;
 			m_motorOn = true;
-			b2Vec2 pivot = new b2Vec2(0.0f, 0.8f);
+			Vec2 pivot = new Vec2(0.0f, 0.8f);
 
 			// Ground
 			{
-				b2BodyDef bd = new b2BodyDef();
-				b2Body ground = m_world.CreateBody(bd);
+				BodyDef bd = new BodyDef();
+				Body ground = m_world.CreateBody(bd);
 
-				b2EdgeShape shape = new b2EdgeShape();
-				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(50.0f, 0.0f));
+				EdgeShape shape = new EdgeShape();
+				shape.Set(new Vec2(-50.0f, 0.0f), new Vec2(50.0f, 0.0f));
 				ground.CreateFixture(shape, 0.0f);
 
-				shape.Set(new b2Vec2(-50.0f, 0.0f), new b2Vec2(-50.0f, 10.0f));
+				shape.Set(new Vec2(-50.0f, 0.0f), new Vec2(-50.0f, 10.0f));
 				ground.CreateFixture(shape, 0.0f);
 
-				shape.Set(new b2Vec2(50.0f, 0.0f), new b2Vec2(50.0f, 10.0f));
+				shape.Set(new Vec2(50.0f, 0.0f), new Vec2(50.0f, 10.0f));
 				ground.CreateFixture(shape, 0.0f);
 			}
 
 			// Balls
 			for (int i = 0; i < 40; ++i)
 			{
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_radius = 0.25f;
 
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position.Set(-40.0f + 2.0f * i, 0.5f);
 
-				b2Body body = m_world.CreateBody(bd);
+				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(shape, 1.0f);
 			}
 
 			// Chassis
 			{
-				b2PolygonShape shape = new b2PolygonShape();
+				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(2.5f, 1.0f);
 
-				b2FixtureDef sd = new b2FixtureDef();
+				FixtureDef sd = new FixtureDef();
 				sd.density = 1.0f;
 				sd.shape = shape;
 				sd.filter.groupIndex = -1;
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position = pivot + m_offset;
 				m_chassis = m_world.CreateBody(bd);
 				m_chassis.CreateFixture(sd);
 			}
 
 			{
-				b2CircleShape shape = new b2CircleShape();
+				CircleShape shape = new CircleShape();
 				shape.m_radius = 1.6f;
 
-				b2FixtureDef sd = new b2FixtureDef();
+				FixtureDef sd = new FixtureDef();
 				sd.density = 1.0f;
 				sd.shape = shape;
 				sd.filter.groupIndex = -1;
-				b2BodyDef bd = new b2BodyDef();
-				bd.type = b2BodyType.b2_dynamicBody;
+				BodyDef bd = new BodyDef();
+				bd.type = BodyType._dynamicBody;
 				bd.position = pivot + m_offset;
 				m_wheel = m_world.CreateBody(bd);
 				m_wheel.CreateFixture(sd);
 			}
 
 			{
-				b2RevoluteJointDef jd = new b2RevoluteJointDef();
+				RevoluteJointDef jd = new RevoluteJointDef();
 				jd.Initialize(m_wheel, m_chassis, pivot + m_offset);
 				jd.collideConnected = false;
 				jd.motorSpeed = m_motorSpeed;
 				jd.maxMotorTorque = 400.0f;
 				jd.enableMotor = m_motorOn;
-				m_motorJoint = (b2RevoluteJoint)m_world.CreateJoint(jd);
+				m_motorJoint = (RevoluteJoint)m_world.CreateJoint(jd);
 			}
 
-			b2Vec2 wheelAnchor;
+			Vec2 wheelAnchor;
 		
-			wheelAnchor = pivot + new b2Vec2(0.0f, -0.8f);
+			wheelAnchor = pivot + new Vec2(0.0f, -0.8f);
 
 			CreateLeg(-1.0f, wheelAnchor);
 			CreateLeg(1.0f, wheelAnchor);
@@ -199,7 +199,7 @@ namespace Testbed.Tests {
 			CreateLeg(1.0f, wheelAnchor);
 		}
 
-		public override void Step(Settings settings)
+		public override void Step(TestSettings settings)
 		{
 			m_debugDraw.DrawString("Keys: left = a, brake = s, right = d, toggle motor = m");
 			
@@ -231,10 +231,10 @@ namespace Testbed.Tests {
 			return new TheoJansen();
 		}
 
-		b2Vec2 m_offset;
-		b2Body m_chassis;
-		b2Body m_wheel;
-		b2RevoluteJoint m_motorJoint;
+		Vec2 m_offset;
+		Body m_chassis;
+		Body m_wheel;
+		RevoluteJoint m_motorJoint;
 		bool m_motorOn;
 		float m_motorSpeed;
 	};
