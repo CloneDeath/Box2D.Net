@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	// This tests distance joints, body destruction, and joint destruction.
@@ -134,31 +136,28 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'b':
+			if (KeyboardManager.IsPressed(Key.B)){
 				for (int i = 0; i < 4; ++i)
 				{
-					if (m_bodies[i])
+					if (m_bodies[i] != null)
 					{
 						m_world.DestroyBody(m_bodies[i]);
 						m_bodies[i] = null;
 						break;
 					}
 				}
-				break;
+			}
 
-			case 'j':
+			if (KeyboardManager.IsPressed(Key.J)){
 				for (int i = 0; i < 8; ++i)
 				{
-					if (m_joints[i])
+					if (m_joints[i] != null)
 					{
 						m_world.DestroyJoint(m_joints[i]);
 						m_joints[i] = null;
 						break;
 					}
 				}
-				break;
 			}
 		}
 

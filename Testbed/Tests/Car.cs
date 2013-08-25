@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	// This is a fun demo that shows off the wheel joint
@@ -214,31 +216,28 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'a':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_spring1.SetMotorSpeed(m_speed);
-				break;
+			}
 
-			case 's':
+			if (KeyboardManager.IsPressed(Key.S)){
 				m_spring1.SetMotorSpeed(0.0f);
-				break;
+			}
 
-			case 'd':
+			if (KeyboardManager.IsPressed(Key.D)){
 				m_spring1.SetMotorSpeed(-m_speed);
-				break;
+			}
 
-			case 'q':
+			if (KeyboardManager.IsPressed(Key.Q)){
 				m_hz = Math.Max(0.0f, m_hz - 1.0f);
 				m_spring1.SetSpringFrequencyHz(m_hz);
 				m_spring2.SetSpringFrequencyHz(m_hz);
-				break;
+			}
 
-			case 'e':
+			if (KeyboardManager.IsPressed(Key.E)) {
 				m_hz += 1.0f;
 				m_spring1.SetSpringFrequencyHz(m_hz);
 				m_spring2.SetSpringFrequencyHz(m_hz);
-				break;
 			}
 		}
 

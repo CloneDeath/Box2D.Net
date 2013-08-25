@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class Confined : Test
@@ -86,11 +88,8 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'c':
+			if (KeyboardManager.IsPressed(Key.C)) {
 				CreateCircle();
-				break;
 			}
 		}
 

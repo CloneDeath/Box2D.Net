@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	// Inspired by a contribution by roman_m
@@ -207,23 +209,20 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'a':
+			if (KeyboardManager.IsPressed(Key.A)) {
 				m_motorJoint.SetMotorSpeed(-m_motorSpeed);
-				break;
+			}
 
-			case 's':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_motorJoint.SetMotorSpeed(0.0f);
-				break;
+			}
 
-			case 'd':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_motorJoint.SetMotorSpeed(m_motorSpeed);
-				break;
+			}
 
-			case 'm':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_motorJoint.EnableMotor(!m_motorJoint.IsMotorEnabled());
-				break;
 			}
 		}
 

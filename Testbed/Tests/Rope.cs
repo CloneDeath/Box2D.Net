@@ -43,11 +43,11 @@ namespace Testbed.Tests {
 		public override void Keyboard()
 		{
 			if (KeyboardManager.IsPressed(Key.Q)){
-				m_angle = Math.Max(-(float)Math.PI, m_angle - 0.05f * (float)Math.PI);
+				m_angle = (float)Math.Max(-(float)Math.PI, m_angle - 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
 			}
 			if (KeyboardManager.IsPressed(Key.E)) {
-				m_angle = Math.Min(Math.PI, m_angle + 0.05f * (float)Math.PI);
+				m_angle = (float)Math.Min(Math.PI, m_angle + 0.05f * (float)Math.PI);
 				m_rope.SetAngle(m_angle);
 			}
 		}

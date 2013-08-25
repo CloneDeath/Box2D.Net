@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	/// This test shows how a rope joint can be used to stabilize a chain of
@@ -87,10 +89,8 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'j':
-				if (m_rope)
+			if (KeyboardManager.IsPressed(Key.J)) {
+				if (m_rope != null)
 				{
 					m_world.DestroyJoint(m_rope);
 					m_rope = null;
@@ -99,7 +99,6 @@ namespace Testbed.Tests {
 				{
 					m_rope = m_world.CreateJoint(m_ropeDef);
 				}
-				break;
 			}
 		}
 

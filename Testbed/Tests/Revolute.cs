@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class Revolute : Test
@@ -112,15 +114,12 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'l':
+			if (KeyboardManager.IsPressed(Key.L)){
 				m_joint.EnableLimit(!m_joint.IsLimitEnabled());
-				break;
+			}
 
-			case 'm':
+			if (KeyboardManager.IsPressed(Key.M)) {
 				m_joint.EnableMotor(!m_joint.IsMotorEnabled());
-				break;
 			}
 		}
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	
@@ -123,23 +125,10 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'a':
-			case 'A':
+			if (KeyboardManager.IsPressed(Key.A)) {
 				m_button = true;
-				break;
-			}
-		}
-
-		public void KeyboardUp()
-		{
-			switch (key)
-			{
-			case 'a':
-			case 'A':
+			} else if (KeyboardManager.IsReleased(Key.A)) {
 				m_button = false;
-				break;
 			}
 		}
 

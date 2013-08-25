@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class VerticalStack : Test
@@ -66,9 +68,7 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case ',':
+			if (KeyboardManager.IsPressed(Key.Comma)) {
 				if (m_bullet != null)
 				{
 					m_world.DestroyBody(m_bullet);
@@ -94,7 +94,6 @@ namespace Testbed.Tests {
 
 					m_bullet.SetLinearVelocity(new b2Vec2(400.0f, 0.0f));
 				}
-				break;
 			}
 		}
 

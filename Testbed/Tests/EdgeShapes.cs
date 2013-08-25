@@ -5,6 +5,8 @@ using System.Text;
 using Testbed.Framework;
 using Box2D;
 using System.Drawing;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class EdgeShapesCallback : b2RayCastCallback
@@ -162,19 +164,24 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-				Create(key - '1');
-				break;
+			if (KeyboardManager.IsPressed(Key.Number1)){
+				Create(0);
+			}
+			if (KeyboardManager.IsPressed(Key.Number2)) {
+				Create(1);
+			}
+			if (KeyboardManager.IsPressed(Key.Number3)) {
+				Create(2);
+			}
+			if (KeyboardManager.IsPressed(Key.Number4)) {
+				Create(3);
+			}
+			if (KeyboardManager.IsPressed(Key.Number5)) {
+				Create(4);
+			}
 
-			case 'd':
+			if (KeyboardManager.IsPressed(Key.D)){
 				DestroyBody();
-				break;
 			}
 		}
 

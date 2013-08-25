@@ -64,11 +64,6 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 0:
-				break;
-			}
 		}
 
 		public override void Step(Settings settings)

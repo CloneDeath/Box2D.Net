@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using Testbed.Framework;
 using Box2D;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	// A motor driven slider crank with joint friction.
@@ -106,17 +108,13 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'f':
+			if (KeyboardManager.IsPressed(Key.F)){
 				m_joint2.EnableMotor(!m_joint2.IsMotorEnabled());
 				m_joint2.GetBodyB().SetAwake(true);
-				break;
-
-			case 'm':
+			}
+			if (KeyboardManager.IsPressed(Key.M)) {
 				m_joint1.EnableMotor(!m_joint1.IsMotorEnabled());
 				m_joint1.GetBodyB().SetAwake(true);
-				break;
 			}
 		}
 

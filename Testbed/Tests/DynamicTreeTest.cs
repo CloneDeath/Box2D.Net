@@ -5,6 +5,8 @@ using System.Text;
 using Testbed.Framework;
 using Box2D;
 using System.Drawing;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class DynamicTreeTest : Test
@@ -119,23 +121,20 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'a':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_automated = !m_automated;
-				break;
+			}
 
-			case 'c':
+			if (KeyboardManager.IsPressed(Key.C)){
 				CreateProxy();
-				break;
+			}
 
-			case 'd':
+			if (KeyboardManager.IsPressed(Key.D)){
 				DestroyProxy();
-				break;
+			}
 
-			case 'm':
+			if (KeyboardManager.IsPressed(Key.M)) {
 				MoveProxy();
-				break;
 			}
 		}
 

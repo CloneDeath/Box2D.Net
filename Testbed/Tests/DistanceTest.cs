@@ -5,6 +5,8 @@ using System.Text;
 using Testbed.Framework;
 using Box2D;
 using System.Drawing;
+using GLImp;
+using OpenTK.Input;
 
 namespace Testbed.Tests {
 	class DistanceTest : Test
@@ -80,31 +82,28 @@ namespace Testbed.Tests {
 
 		public override void Keyboard()
 		{
-			switch (key)
-			{
-			case 'a':
+			if (KeyboardManager.IsPressed(Key.A)){
 				m_positionB.x -= 0.1f;
-				break;
+			}
 
-			case 'd':
+			if (KeyboardManager.IsPressed(Key.D)){
 				m_positionB.x += 0.1f;
-				break;
+			}
 
-			case 's':
+			if (KeyboardManager.IsPressed(Key.S)){
 				m_positionB.y -= 0.1f;
-				break;
+			}
 
-			case 'w':
+			if (KeyboardManager.IsPressed(Key.W)){
 				m_positionB.y += 0.1f;
-				break;
+			}
 
-			case 'q':
+			if (KeyboardManager.IsPressed(Key.Q)){
 				m_angleB += 0.1f * (float)Math.PI;
-				break;
+			}
 
-			case 'e':
+			if (KeyboardManager.IsPressed(Key.E)) {
 				m_angleB -= 0.1f * (float)Math.PI;
-				break;
 			}
 
 			m_transformB.Set(m_positionB, m_angleB);
