@@ -227,7 +227,7 @@ namespace Testbed.Tests {
 			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 
 			m_userData[m_bodyIndex] = index;
-			bd.userData = m_userData[m_bodyIndex];
+			bd.UserData = m_userData[m_bodyIndex];
 
 			if (index == 4)
 			{

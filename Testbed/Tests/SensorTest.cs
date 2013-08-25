@@ -54,7 +54,7 @@ namespace Testbed.Tests {
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
 					bd.Position.Set(-10.0f + 3.0f * i, 20.0f);
-					bd.userData = m_touching[i];
+					bd.UserData = m_touching[i];
 
 					m_touching[i] = false;
 					m_bodies[i] = m_world.CreateBody(bd);

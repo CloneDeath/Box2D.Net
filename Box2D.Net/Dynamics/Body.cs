@@ -927,7 +927,7 @@ namespace Box2D {
 			m_I = 0.0f;
 			m_invI = 0.0f;
 
-			m_userData = bd.userData;
+			m_userData = bd.UserData;
 
 			m_fixtureList = new List<Fixture>();
 		}

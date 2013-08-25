@@ -51,7 +51,7 @@ namespace Testbed.Tests {
 					int n = j * e_rowCount + i;
 					Utilities.Assert(n < e_rowCount * e_columnCount);
 					m_indices[n] = n;
-					bd.userData = m_indices[n];
+					bd.UserData = m_indices[n];
 
 					float x = 0.0f;
 					//float x = RandomFloat(-0.02f, 0.02f);
