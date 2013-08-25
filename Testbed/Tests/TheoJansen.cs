@@ -23,10 +23,10 @@ namespace Testbed.Tests {
 
 			FixtureDef fd1 = new FixtureDef();
 			FixtureDef fd2 = new FixtureDef();
-			fd1.filter.groupIndex = -1;
-			fd2.filter.groupIndex = -1;
-			fd1.density = 1.0f;
-			fd2.density = 1.0f;
+			fd1.Filter.GroupIndex = -1;
+			fd2.Filter.GroupIndex = -1;
+			fd1.Density = 1.0f;
+			fd2.Density = 1.0f;
 
 			PolygonShape poly1 = new PolygonShape();
 			PolygonShape poly2 = new PolygonShape();
@@ -67,8 +67,8 @@ namespace Testbed.Tests {
 			BodyDef bd2 = new BodyDef();
 			bd1.type = BodyType._dynamicBody;
 			bd2.type = BodyType._dynamicBody;
-			bd1.position = m_offset;
-			bd2.position = p4 + m_offset;
+			bd1.Position = m_offset;
+			bd2.Position = p4 + m_offset;
 
 			bd1.angularDamping = 10.0f;
 			bd2.angularDamping = 10.0f;
@@ -118,14 +118,15 @@ namespace Testbed.Tests {
 				Body ground = m_world.CreateBody(bd);
 
 				EdgeShape shape = new EdgeShape();
+				shape.Density = 0;
 				shape.Set(new Vec2(-50.0f, 0.0f), new Vec2(50.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 
 				shape.Set(new Vec2(-50.0f, 0.0f), new Vec2(-50.0f, 10.0f));
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 
 				shape.Set(new Vec2(50.0f, 0.0f), new Vec2(50.0f, 10.0f));
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			// Balls
@@ -136,10 +137,10 @@ namespace Testbed.Tests {
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-40.0f + 2.0f * i, 0.5f);
+				bd.Position.Set(-40.0f + 2.0f * i, 0.5f);
 
 				Body body = m_world.CreateBody(bd);
-				body.CreateFixture(shape, 1.0f);
+				body.CreateFixture(shape);
 			}
 
 			// Chassis
@@ -148,12 +149,12 @@ namespace Testbed.Tests {
 				shape.SetAsBox(2.5f, 1.0f);
 
 				FixtureDef sd = new FixtureDef();
-				sd.density = 1.0f;
+				sd.Density = 1.0f;
 				sd.shape = shape;
-				sd.filter.groupIndex = -1;
+				sd.Filter.GroupIndex = -1;
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position = pivot + m_offset;
+				bd.Position = pivot + m_offset;
 				m_chassis = m_world.CreateBody(bd);
 				m_chassis.CreateFixture(sd);
 			}
@@ -163,12 +164,12 @@ namespace Testbed.Tests {
 				shape.m_radius = 1.6f;
 
 				FixtureDef sd = new FixtureDef();
-				sd.density = 1.0f;
+				sd.Density = 1.0f;
 				sd.shape = shape;
-				sd.filter.groupIndex = -1;
+				sd.Filter.GroupIndex = -1;
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position = pivot + m_offset;
+				bd.Position = pivot + m_offset;
 				m_wheel = m_world.CreateBody(bd);
 				m_wheel.CreateFixture(sd);
 			}

@@ -18,6 +18,8 @@ namespace Box2D {
 	public abstract class Shape {
 		public ShapeType m_type;
 		public float m_radius;
+		public float Density = 1.0f;
+		public Filter Filter = new Filter();
 
 		~Shape() {}
 
@@ -52,10 +54,10 @@ namespace Box2D {
 		/// @param childIndex the child shape
 		public abstract void ComputeAABB(out AABB aabb, Transform xf, int childIndex);
 
-		/// Compute the mass properties of this shape using its dimensions and density.
+		/// Compute the mass properties of this shape using its dimensions and Density.
 		/// The inertia tensor is computed about the local origin.
 		/// @param massData returns the mass data for this shape.
-		/// @param density the density in kilograms per meter squared.
-		public abstract void ComputeMass(out MassData massData, float density);
+		/// @param Density the Density in kilograms per meter squared.
+		public abstract void ComputeMass(out MassData massData, float Density);
 	}
 }

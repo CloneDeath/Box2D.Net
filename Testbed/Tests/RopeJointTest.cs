@@ -27,7 +27,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -36,10 +37,10 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				fd.friction = 0.2f;
-				fd.filter.categoryBits = 0x0001;
-				fd.filter.maskBits = 0xFFFF & ~0x0002;
+				fd.Filter.CategoryBits = 0x0001;
+				fd.Filter.MaskBits = 0xFFFF & ~0x0002;
 
 				RevoluteJointDef jd = new RevoluteJointDef();
 				jd.collideConnected = false;
@@ -53,13 +54,13 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(0.5f + 1.0f * i, y);
+					bd.Position.Set(0.5f + 1.0f * i, y);
 					if (i == N - 1)
 					{
 						shape.SetAsBox(1.5f, 1.5f);
-						fd.density = 100.0f;
-						fd.filter.categoryBits = 0x0002;
-						bd.position.Set(1.0f * i, y);
+						fd.Density = 100.0f;
+						fd.Filter.CategoryBits = 0x0002;
+						bd.Position.Set(1.0f * i, y);
 						bd.angularDamping = 0.4f;
 					}
 

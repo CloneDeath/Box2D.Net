@@ -28,28 +28,30 @@ namespace Testbed.Tests {
 				circle.m_radius = 2.0f;
 
 				circle.m_p.Set(-10.0f, y + b + L);
-				ground.CreateFixture(circle, 0.0f);
+				circle.Density = 0;
+				ground.CreateFixture(circle);
 
 				circle.m_p.Set(10.0f, y + b + L);
-				ground.CreateFixture(circle, 0.0f);
+				ground.CreateFixture(circle);
 			}
 
 			{
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(a, b);
+				shape.Density = 5;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
 
 				//bd.fixedRotation = true;
-				bd.position.Set(-10.0f, y);
+				bd.Position.Set(-10.0f, y);
 				Body body1 = m_world.CreateBody(bd);
-				body1.CreateFixture(shape, 5.0f);
+				body1.CreateFixture(shape);
 
-				bd.position.Set(10.0f, y);
+				bd.Position.Set(10.0f, y);
 				Body body2 = m_world.CreateBody(bd);
-				body2.CreateFixture(shape, 5.0f);
+				body2.CreateFixture(shape);
 
 				PulleyJointDef pulleyDef = new PulleyJointDef();
 				Vec2 anchor1 = new Vec2(-10.0f, y + b);

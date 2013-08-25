@@ -18,20 +18,22 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(2.0f, 0.5f);
+				shape.Density = 5;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-10.0f, 10.0f);
+				bd.Position.Set(-10.0f, 10.0f);
 				bd.angle = 0.5f * (float)Math.PI;
 				bd.allowSleep = false;
 				Body body = m_world.CreateBody(bd);
-				body.CreateFixture(shape, 5.0f);
+				body.CreateFixture(shape);
 
 				PrismaticJointDef pjd = new PrismaticJointDef();
 

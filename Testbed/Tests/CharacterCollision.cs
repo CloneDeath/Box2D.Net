@@ -20,7 +20,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-20.0f, 0.0f), new Vec2(20.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Collinear edges with no adjacency information.
@@ -31,12 +32,13 @@ namespace Testbed.Tests {
 				Body ground = m_world.CreateBody(bd);
 
 				EdgeShape shape = new EdgeShape();
+				shape.Density = 0;
 				shape.Set(new Vec2(-8.0f, 1.0f), new Vec2(-6.0f, 1.0f));
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 				shape.Set(new Vec2(-6.0f, 1.0f), new Vec2(-4.0f, 1.0f));
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 				shape.Set(new Vec2(-4.0f, 1.0f), new Vec2(-2.0f, 1.0f));
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			// Chain shape
@@ -52,7 +54,8 @@ namespace Testbed.Tests {
 				vs[3].Set(8.0f, 7.0f);
 				ChainShape shape = new ChainShape();
 				shape.CreateChain(vs, 4);
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Square tiles. This shows that adjacency shapes may
@@ -63,12 +66,14 @@ namespace Testbed.Tests {
 				Body ground = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
+				shape.Density = 0;
+
 				shape.SetAsBox(1.0f, 1.0f, new Vec2(4.0f, 3.0f), 0.0f);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 				shape.SetAsBox(1.0f, 1.0f, new Vec2(6.0f, 3.0f), 0.0f);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 				shape.SetAsBox(1.0f, 1.0f, new Vec2(8.0f, 3.0f), 0.0f);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			// Square made from an edge loop. Collision should be smooth.
@@ -83,13 +88,14 @@ namespace Testbed.Tests {
 				vs[3].Set(-1.0f, 5.0f);
 				ChainShape shape = new ChainShape();
 				shape.CreateLoop(vs, 4);
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Edge loop. Collision should be smooth.
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-10.0f, 4.0f);
+				bd.Position.Set(-10.0f, 4.0f);
 				Body ground = m_world.CreateBody(bd);
 
 				Vec2[] vs = new Vec2[10];
@@ -105,13 +111,14 @@ namespace Testbed.Tests {
 				vs[9].Set(-6.0f, 0.0f);
 				ChainShape shape = new ChainShape();
 				shape.CreateLoop(vs, 10);
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Square character 1
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-3.0f, 8.0f);
+				bd.Position.Set(-3.0f, 8.0f);
 				bd.type = BodyType._dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
@@ -123,14 +130,14 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				body.CreateFixture(fd);
 			}
 
 			// Square character 2
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-5.0f, 5.0f);
+				bd.Position.Set(-5.0f, 5.0f);
 				bd.type = BodyType._dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
@@ -142,14 +149,14 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				body.CreateFixture(fd);
 			}
 
 			// Hexagon character
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-5.0f, 8.0f);
+				bd.Position.Set(-5.0f, 8.0f);
 				bd.type = BodyType._dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
@@ -170,14 +177,14 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				body.CreateFixture(fd);
 			}
 
 			// Circle character
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(3.0f, 5.0f);
+				bd.Position.Set(3.0f, 5.0f);
 				bd.type = BodyType._dynamicBody;
 				bd.fixedRotation = true;
 				bd.allowSleep = false;
@@ -189,14 +196,14 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				body.CreateFixture(fd);
 			}
 
 			// Circle character
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-7.0f, 6.0f);
+				bd.Position.Set(-7.0f, 6.0f);
 				bd.type = BodyType._dynamicBody;
 				bd.allowSleep = false;
 
@@ -207,7 +214,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				fd.friction = 1.0f;
 				m_character.CreateFixture(fd);
 			}
@@ -216,7 +223,7 @@ namespace Testbed.Tests {
 		public override void Step(TestSettings settings)
 		{
 			Vec2 v = m_character.GetLinearVelocity();
-			v.x = -5.0f;
+			v.X = -5.0f;
 			m_character.SetLinearVelocity(v);
 
 			base.Step(settings);

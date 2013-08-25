@@ -450,8 +450,8 @@ namespace Box2D {
 			    Color color = Color.FromArgb(75, 225, 225);
 				foreach (Contact c in m_contactManager.m_contactList)
 			    {
-			        //Fixture fixtureA = c.GetFixtureA();
-			        //Fixture fixtureB = c.GetFixtureB();
+			        //Fixture fixtureA = c.FixtureA;
+			        //Fixture fixtureB = c.FixtureB;
 
 			        //Vec2 cA = fixtureA.GetAABB().GetCenter();
 			        //Vec2 cB = fixtureB.GetAABB().GetCenter();
@@ -479,10 +479,10 @@ namespace Box2D {
 			                FixtureProxy proxy = f.m_proxies[i];
 			                AABB aabb = bp.GetFatAABB(proxy.proxyId);
 			                Vec2[] vs = new Vec2[4];
-			                vs[0].Set(aabb.lowerBound.x, aabb.lowerBound.y);
-			                vs[1].Set(aabb.upperBound.x, aabb.lowerBound.y);
-			                vs[2].Set(aabb.upperBound.x, aabb.upperBound.y);
-			                vs[3].Set(aabb.lowerBound.x, aabb.upperBound.y);
+			                vs[0].Set(aabb.lowerBound.X, aabb.lowerBound.Y);
+			                vs[1].Set(aabb.upperBound.X, aabb.lowerBound.Y);
+			                vs[2].Set(aabb.upperBound.X, aabb.upperBound.Y);
+			                vs[3].Set(aabb.lowerBound.X, aabb.upperBound.Y);
 
 			                m_debugDraw.DrawPolygon(vs, 4, color);
 			            }
@@ -697,7 +697,7 @@ namespace Box2D {
 			//    return;
 			//}
 
-			//Settings.Log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
+			//Settings.Log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.X, m_gravity.Y);
 			//Settings.Log("m_world.SetGravity(g);\n");
 
 			//Settings.Log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", m_bodyList.Count());
@@ -981,11 +981,11 @@ namespace Box2D {
 			        }
 			        else
 			        {
-			            fA = c.GetFixtureA();
-			            fB = c.GetFixtureB();
+			            fA = c.FixtureA;
+			            fB = c.FixtureB;
 
 			            // Is there a sensor?
-			            if (fA.IsSensor() || fB.IsSensor())
+			            if (fA.IsSensor || fB.IsSensor)
 			            {
 			                continue;
 			            }
@@ -1077,8 +1077,8 @@ namespace Box2D {
 			    }
 
 			    // Advance the bodies to the TOI.
-			    fA = minContact.GetFixtureA();
-			    fB = minContact.GetFixtureB();
+			    fA = minContact.FixtureA;
+			    fB = minContact.FixtureB;
 			    bA = fA.GetBody();
 			    bB = fB.GetBody();
 

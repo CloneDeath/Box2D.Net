@@ -16,7 +16,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -24,57 +25,62 @@ namespace Testbed.Tests {
 				shape.SetAsBox(13.0f, 0.25f);
 
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-4.0f, 22.0f);
+				bd.Position.Set(-4.0f, 22.0f);
 				bd.angle = -0.25f;
 
 				Body ground = m_world.CreateBody(bd);
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.25f, 1.0f);
+				shape.Density = 0;
 
 				BodyDef bd = new BodyDef();
-				bd.position.Set(10.5f, 19.0f);
+				bd.Position.Set(10.5f, 19.0f);
 
 				Body ground = m_world.CreateBody(bd);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			{
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(13.0f, 0.25f);
+				shape.Density = 0;
 
 				BodyDef bd = new BodyDef();
-				bd.position.Set(4.0f, 14.0f);
+				bd.Position.Set(4.0f, 14.0f);
 				bd.angle = 0.25f;
 
 				Body ground = m_world.CreateBody(bd);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			{
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.25f, 1.0f);
+				shape.Density = 0;
 
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-10.5f, 11.0f);
+				bd.Position.Set(-10.5f, 11.0f);
 
 				Body ground = m_world.CreateBody(bd);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			{
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(13.0f, 0.25f);
+				shape.Density = 0;
 
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-4.0f, 6.0f);
+				bd.Position.Set(-4.0f, 6.0f);
 				bd.angle = -0.25f;
 
 				Body ground = m_world.CreateBody(bd);
-				ground.CreateFixture(shape, 0.0f);
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -83,7 +89,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 25.0f;
+				fd.Density = 25.0f;
 
 				float[] friction = new float[]{ 0.75f, 0.5f, 0.35f, 0.1f, 0.0f };
 
@@ -91,7 +97,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(-15.0f + 4.0f * i, 28.0f);
+					bd.Position.Set(-15.0f + 4.0f * i, 28.0f);
 					Body body = m_world.CreateBody(bd);
 
 					fd.friction = friction[i];

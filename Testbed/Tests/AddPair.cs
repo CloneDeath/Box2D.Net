@@ -25,9 +25,10 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position = new Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
+					bd.Position = new Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(shape, 0.01f);
+					shape.Density = 0.01f;
+					body.CreateFixture(shape);
 				}
 			}
 		
@@ -36,10 +37,10 @@ namespace Testbed.Tests {
 				shape.SetAsBox(1.5f, 1.5f);
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-40.0f,5.0f);
+				bd.Position.Set(-40.0f,5.0f);
 				bd.bullet = true;
 				Body body = m_world.CreateBody(bd);
-				body.CreateFixture(shape, 1.0f);
+				body.CreateFixture(shape);
 				body.SetLinearVelocity(new Vec2(150.0f, 0.0f));
 			}
 		}

@@ -83,19 +83,19 @@ namespace Testbed.Tests {
 		public override void Keyboard()
 		{
 			if (KeyboardManager.IsPressed(Key.A)){
-				m_positionB.x -= 0.1f;
+				m_positionB.X -= 0.1f;
 			}
 
 			if (KeyboardManager.IsPressed(Key.D)){
-				m_positionB.x += 0.1f;
+				m_positionB.X += 0.1f;
 			}
 
 			if (KeyboardManager.IsPressed(Key.S)){
-				m_positionB.y -= 0.1f;
+				m_positionB.Y -= 0.1f;
 			}
 
 			if (KeyboardManager.IsPressed(Key.W)){
-				m_positionB.y += 0.1f;
+				m_positionB.Y += 0.1f;
 			}
 
 			if (KeyboardManager.IsPressed(Key.Q)){

@@ -19,14 +19,14 @@ namespace Testbed.Tests {
 			Body ground;
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(0.0f, 20.0f);
+				bd.Position.Set(0.0f, 20.0f);
 				ground = m_world.CreateBody(bd);
 
 				EdgeShape shape = new EdgeShape();
 
 				FixtureDef sd = new FixtureDef();
 				sd.shape = shape;
-				sd.density = 0.0f;
+				sd.Density = 0.0f;
 				sd.restitution = k_restitution;
 
 				// Left vertical
@@ -61,7 +61,7 @@ namespace Testbed.Tests {
 
 				FixtureDef sd1 = new FixtureDef();
 				sd1.shape = poly1;
-				sd1.density = 4.0f;
+				sd1.Density = 4.0f;
 
 				Transform xf2 = new Transform();
 				xf2.q.Set(-0.3524f * (float)Math.PI);
@@ -76,14 +76,14 @@ namespace Testbed.Tests {
 
 				FixtureDef sd2 = new FixtureDef();
 				sd2.shape = poly2;
-				sd2.density = 2.0f;
+				sd2.Density = 2.0f;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
 				bd.angularDamping = 5.0f;
 				bd.linearDamping = 0.1f;
 
-				bd.position.Set(0.0f, 2.0f);
+				bd.Position.Set(0.0f, 2.0f);
 				bd.angle = (float)Math.PI;
 				bd.allowSleep = false;
 				m_body = m_world.CreateBody(bd);
@@ -97,14 +97,14 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 				fd.friction = 0.3f;
 
 				for (int i = 0; i < 10; ++i) {
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
 
-					bd.position.Set(0.0f, 5.0f + 1.54f * i);
+					bd.Position.Set(0.0f, 5.0f + 1.54f * i);
 					Body body = m_world.CreateBody(bd);
 
 					body.CreateFixture(fd);

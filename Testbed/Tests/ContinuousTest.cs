@@ -12,31 +12,33 @@ namespace Testbed.Tests {
 		{
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(0.0f, 0.0f);
+				bd.Position.Set(0.0f, 0.0f);
 				Body body = m_world.CreateBody(bd);
 
 				EdgeShape edge = new EdgeShape();
 
 				edge.Set(new Vec2(-10.0f, 0.0f), new Vec2(10.0f, 0.0f));
-				body.CreateFixture(edge, 0.0f);
+				edge.Density = 0;
+				body.CreateFixture(edge);
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.2f, 1.0f, new Vec2(0.5f, 1.0f), 0.0f);
-				body.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				body.CreateFixture(shape);
 			}
 
 	#if true
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 20.0f);
+				bd.Position.Set(0.0f, 20.0f);
 				//bd.angle = 0.1f;
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(2.0f, 0.1f);
 
 				m_body = m_world.CreateBody(bd);
-				m_body.CreateFixture(shape, 1.0f);
+				m_body.CreateFixture(shape);
 
 				m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 				//m_angularVelocity = 46.661274f;
@@ -53,7 +55,7 @@ namespace Testbed.Tests {
 				CircleShape shape = new CircleShape();
 				shape.m_p.SetZero();
 				shape.m_radius = 0.5f;
-				body.CreateFixture(shape, 1.0f);
+				body.CreateFixture(shape);
 
 				bd.bullet = true;
 				bd.position.Set(0.0f, 10.0f);

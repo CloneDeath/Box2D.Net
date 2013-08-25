@@ -23,7 +23,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -32,7 +33,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 
 				WeldJointDef jd = new WeldJointDef();
 
@@ -41,7 +42,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(-14.5f + 1.0f * i, 5.0f);
+					bd.Position.Set(-14.5f + 1.0f * i, 5.0f);
 					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
@@ -59,7 +60,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 
 				WeldJointDef jd = new WeldJointDef();
 				jd.frequencyHz = 5.0f;
@@ -70,7 +71,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(-14.0f + 2.0f * i, 15.0f);
+					bd.Position.Set(-14.0f + 2.0f * i, 15.0f);
 					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
@@ -88,7 +89,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 
 				WeldJointDef jd = new WeldJointDef();
 
@@ -97,7 +98,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(-4.5f + 1.0f * i, 5.0f);
+					bd.Position.Set(-4.5f + 1.0f * i, 5.0f);
 					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
@@ -118,7 +119,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 
 				WeldJointDef jd = new WeldJointDef();
 				jd.frequencyHz = 8.0f;
@@ -129,7 +130,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(5.5f + 1.0f * i, 10.0f);
+					bd.Position.Set(5.5f + 1.0f * i, 10.0f);
 					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
@@ -156,11 +157,11 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-8.0f + 8.0f * i, 12.0f);
+				bd.Position.Set(-8.0f + 8.0f * i, 12.0f);
 				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(fd);
 			}
@@ -172,11 +173,11 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-6.0f + 6.0f * i, 10.0f);
+				bd.Position.Set(-6.0f + 6.0f * i, 10.0f);
 				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(fd);
 			}

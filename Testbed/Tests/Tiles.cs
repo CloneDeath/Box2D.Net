@@ -20,43 +20,44 @@ namespace Testbed.Tests {
 			{
 				float a = 0.5f;
 				BodyDef bd = new BodyDef();
-				bd.position.y = -a;
+				bd.Position.Y = -a;
 				Body ground = m_world.CreateBody(bd);
 
 	#if true
 				int N = 200;
 				int M = 10;
 				Vec2 position;
-				position.y = 0.0f;
+				position.Y = 0.0f;
 				for (int j = 0; j < M; ++j)
 				{
-					position.x = -N * a;
+					position.X = -N * a;
 					for (int i = 0; i < N; ++i)
 					{
 						PolygonShape shape = new PolygonShape();
 						shape.SetAsBox(a, a, position, 0.0f);
-						ground.CreateFixture(shape, 0.0f);
+						shape.Density = 0;
+						ground.CreateFixture(shape);
 						++m_fixtureCount;
-						position.x += 2.0f * a;
+						position.X += 2.0f * a;
 					}
-					position.y -= 2.0f * a;
+					position.Y -= 2.0f * a;
 				}
 	#else
 				int N = 200;
 				int M = 10;
 				Vec2 position;
-				position.x = -N * a;
+				position.X = -N * a;
 				for (int i = 0; i < N; ++i)
 				{
-					position.y = 0.0f;
+					position.Y = 0.0f;
 					for (int j = 0; j < M; ++j)
 					{
 						PolygonShape shape = new PolygonShape();
 						shape.SetAsBox(a, a, position, 0.0f);
 						ground.CreateFixture(shape, 0.0f);
-						position.y -= 2.0f * a;
+						position.Y -= 2.0f * a;
 					}
-					position.x += 2.0f * a;
+					position.X += 2.0f * a;
 				}
 	#endif
 			}
@@ -79,7 +80,7 @@ namespace Testbed.Tests {
 					{
 						BodyDef bd = new BodyDef();
 						bd.type = BodyType._dynamicBody;
-						bd.position = y;
+						bd.Position = y;
 
 						//if (i == 0 && j == 0)
 						//{
@@ -91,7 +92,8 @@ namespace Testbed.Tests {
 						//}
 
 						Body body = m_world.CreateBody(bd);
-						body.CreateFixture(shape, 5.0f);
+						shape.Density = 5;
+						body.CreateFixture(shape);
 						++m_fixtureCount;
 						y += deltaY;
 					}

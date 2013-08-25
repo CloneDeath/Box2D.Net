@@ -13,54 +13,58 @@ namespace Testbed.Tests {
 		{
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(0.0f, 0.0f);
+				bd.Position.Set(0.0f, 0.0f);
 				Body body = m_world.CreateBody(bd);
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(50.0f, 0.0f), new Vec2(-50.0f, 0.0f));
-
-				body.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				body.CreateFixture(shape);
 			}
 
 			{
 				CircleShape circle1 = new CircleShape();
 				circle1.m_radius = 0.5f;
 				circle1.m_p.Set(-0.5f, 0.5f);
+				circle1.Density = 2;
 
 				CircleShape circle2 = new CircleShape();
 				circle2.m_radius = 0.5f;
 				circle2.m_p.Set(0.5f, 0.5f);
+				circle2.Density = 0;
 
 				for (int i = 0; i < 10; ++i)
 				{
 					float x = RandomFloat(-0.1f, 0.1f);
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(x + 5.0f, 1.05f + 2.5f * i);
+					bd.Position.Set(x + 5.0f, 1.05f + 2.5f * i);
 					bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(circle1, 2.0f);
-					body.CreateFixture(circle2, 0.0f);
+					body.CreateFixture(circle1);
+					body.CreateFixture(circle2);
 				}
 			}
 
 			{
 				PolygonShape polygon1 = new PolygonShape();
 				polygon1.SetAsBox(0.25f, 0.5f);
+				polygon1.Density = 2;
 
 				PolygonShape polygon2 = new PolygonShape();
 				polygon2.SetAsBox(0.25f, 0.5f, new Vec2(0.0f, -0.5f), 0.5f * (float)Math.PI);
+				polygon2.Density = 2;
 
 				for (int i = 0; i < 10; ++i)
 				{
 					float x = RandomFloat(-0.1f, 0.1f);
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(x - 5.0f, 1.05f + 2.5f * i);
+					bd.Position.Set(x - 5.0f, 1.05f + 2.5f * i);
 					bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(polygon1, 2.0f);
-					body.CreateFixture(polygon2, 2.0f);
+					body.CreateFixture(polygon1);
+					body.CreateFixture(polygon2);
 				}
 			}
 
@@ -92,11 +96,13 @@ namespace Testbed.Tests {
 					float x = RandomFloat(-0.1f, 0.1f);
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(x, 2.05f + 2.5f * i);
+					bd.Position.Set(x, 2.05f + 2.5f * i);
 					bd.angle = 0.0f;
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(triangle1, 2.0f);
-					body.CreateFixture(triangle2, 2.0f);
+					triangle1.Density = 2;
+					triangle2.Density = 2;
+					body.CreateFixture(triangle1);
+					body.CreateFixture(triangle2);
 				}
 			}
 
@@ -112,11 +118,14 @@ namespace Testbed.Tests {
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set( 0.0f, 2.0f );
+				bd.Position.Set( 0.0f, 2.0f );
 				Body body = m_world.CreateBody(bd);
-				body.CreateFixture(bottom, 4.0f);
-				body.CreateFixture(left, 4.0f);
-				body.CreateFixture(right, 4.0f);
+				bottom.Density = 4;
+				left.Density = 4;
+				right.Density = 4;
+				body.CreateFixture(bottom);
+				body.CreateFixture(left);
+				body.CreateFixture(right);
 			}
 		}
 

@@ -21,7 +21,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -31,12 +32,13 @@ namespace Testbed.Tests {
 				{
 					PolygonShape shape = new PolygonShape();
 					shape.SetAsBox(0.5f, 2.0f);
+					shape.Density = 2;
 
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(0.0f, 7.0f);
+					bd.Position.Set(0.0f, 7.0f);
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(shape, 2.0f);
+					body.CreateFixture(shape);
 
 					RevoluteJointDef rjd = new RevoluteJointDef();
 					rjd.Initialize(prevBody, body, new Vec2(0.0f, 5.0f));
@@ -52,12 +54,13 @@ namespace Testbed.Tests {
 				{
 					PolygonShape shape = new PolygonShape();
 					shape.SetAsBox(0.5f, 4.0f);
+					shape.Density = 2;
 
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(0.0f, 13.0f);
+					bd.Position.Set(0.0f, 13.0f);
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(shape, 2.0f);
+					body.CreateFixture(shape);
 
 					RevoluteJointDef rjd = new RevoluteJointDef();
 					rjd.Initialize(prevBody, body, new Vec2(0.0f, 9.0f));
@@ -71,13 +74,14 @@ namespace Testbed.Tests {
 				{
 					PolygonShape shape = new PolygonShape();
 					shape.SetAsBox(1.5f, 1.5f);
+					shape.Density = 2;
 
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
 					bd.fixedRotation = true;
-					bd.position.Set(0.0f, 17.0f);
+					bd.Position.Set(0.0f, 17.0f);
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(shape, 2.0f);
+					body.CreateFixture(shape);
 
 					RevoluteJointDef rjd = new RevoluteJointDef();
 					rjd.Initialize(prevBody, body, new Vec2(0.0f, 17.0f));
@@ -99,9 +103,10 @@ namespace Testbed.Tests {
 
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(0.0f, 23.0f);
+					bd.Position.Set(0.0f, 23.0f);
 					Body body = m_world.CreateBody(bd);
-					body.CreateFixture(shape, 2.0f);
+					shape.Density = 2;
+					body.CreateFixture(shape);
 				}
 			}
 		}

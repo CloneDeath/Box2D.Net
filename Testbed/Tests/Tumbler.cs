@@ -22,18 +22,19 @@ namespace Testbed.Tests {
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
 				bd.allowSleep = false;
-				bd.position.Set(0.0f, 10.0f);
+				bd.Position.Set(0.0f, 10.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
+				shape.Density = 5;
 				shape.SetAsBox(0.5f, 10.0f, new Vec2( 10.0f, 0.0f), 0.0f);
-				body.CreateFixture(shape, 5.0f);
+				body.CreateFixture(shape);
 				shape.SetAsBox(0.5f, 10.0f, new Vec2(-10.0f, 0.0f), 0.0f);
-				body.CreateFixture(shape, 5.0f);
+				body.CreateFixture(shape);
 				shape.SetAsBox(10.0f, 0.5f, new Vec2(0.0f, 10.0f), 0.0f);
-				body.CreateFixture(shape, 5.0f);
+				body.CreateFixture(shape);
 				shape.SetAsBox(10.0f, 0.5f, new Vec2(0.0f, -10.0f), 0.0f);
-				body.CreateFixture(shape, 5.0f);
+				body.CreateFixture(shape);
 
 				RevoluteJointDef jd = new RevoluteJointDef();
 				jd.bodyA = ground;
@@ -58,12 +59,12 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 10.0f);
+				bd.Position.Set(0.0f, 10.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.125f, 0.125f);
-				body.CreateFixture(shape, 1.0f);
+				body.CreateFixture(shape);
 
 				++m_count;
 			}

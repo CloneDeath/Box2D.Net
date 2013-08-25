@@ -223,7 +223,7 @@ namespace Testbed {
 		static void GraphicsManager_Update() {
 			Keyboard();
 
-			camera.SetLocation(settings.viewCenter.x, settings.viewCenter.y);
+			camera.SetLocation(settings.viewCenter.X, settings.viewCenter.Y);
 			camera.SetZoom(viewZoom);
 		}
 
@@ -240,8 +240,8 @@ namespace Testbed {
 			Vec2 upper = settings.viewCenter + extents;
 
 			Vec2 p;
-			p.x = (1.0f - u) * lower.x + u * upper.x;
-			p.y = (1.0f - v) * lower.y + v * upper.y;
+			p.X = (1.0f - u) * lower.X + u * upper.X;
+			p.Y = (1.0f - v) * lower.Y + v * upper.Y;
 			return p;
 		}
 
@@ -323,7 +323,7 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.x += 0.5f;
+			        settings.viewCenter.X += 0.5f;
 			    }
 			}
 
@@ -336,7 +336,7 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.x -= 0.5f;
+			        settings.viewCenter.X -= 0.5f;
 			    }
 			}
 
@@ -349,7 +349,7 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.y += 0.5f;
+			        settings.viewCenter.Y += 0.5f;
 			    }
 			}
 
@@ -362,7 +362,7 @@ namespace Testbed {
 			    }
 			    else
 			    {
-			        settings.viewCenter.y -= 0.5f;
+			        settings.viewCenter.Y -= 0.5f;
 			    }
 			}
 
@@ -426,8 +426,8 @@ namespace Testbed {
 			//if (rMouseDown)
 			//{
 			//    Vec2 diff = p - lastp;
-			//    settings.viewCenter.x -= diff.x;
-			//    settings.viewCenter.y -= diff.y;
+			//    settings.viewCenter.X -= diff.X;
+			//    settings.viewCenter.Y -= diff.Y;
 			//    Resize(width, height);
 			//    lastp = ConvertScreenToWorld(x, y);
 			//}

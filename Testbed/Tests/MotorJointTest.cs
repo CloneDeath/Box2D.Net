@@ -34,7 +34,7 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 8.0f);
+				bd.Position.Set(0.0f, 8.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
@@ -43,7 +43,7 @@ namespace Testbed.Tests {
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
-				fd.density = 2.0f;
+				fd.Density = 2.0f;
 				body.CreateFixture(fd);
 
 				MotorJointDef mjd = new MotorJointDef();
@@ -72,8 +72,8 @@ namespace Testbed.Tests {
 			}
 
 			Vec2 linearOffset;
-			linearOffset.x = 6.0f * (float)Math.Sin(2.0f * m_time);
-			linearOffset.y = 8.0f + 4.0f * (float)Math.Sin(1.0f * m_time);
+			linearOffset.X = 6.0f * (float)Math.Sin(2.0f * m_time);
+			linearOffset.Y = 8.0f + 4.0f * (float)Math.Sin(1.0f * m_time);
 		
 			float angularOffset = 4.0f * m_time;
 

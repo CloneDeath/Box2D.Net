@@ -18,89 +18,13 @@ namespace Box2D {
 		//_bulletBody,
 	};
 
-	/// A body definition holds all the data needed to construct a rigid body.
-	/// You can safely re-use body definitions. Shapes are added to a body after construction.
-	public class BodyDef
-	{
-		/// This constructor sets the body definition default values.
-		public BodyDef()
-		{
-			userData = null;
-			position = new Vec2(0.0f, 0.0f);
-			angle = 0.0f;
-			linearVelocity = new Vec2(0.0f, 0.0f);
-			angularVelocity = 0.0f;
-			linearDamping = 0.0f;
-			angularDamping = 0.0f;
-			allowSleep = true;
-			awake = true;
-			fixedRotation = false;
-			bullet = false;
-			type = BodyType._staticBody;
-			active = true;
-			gravityScale = 1.0f;
-		}
-
-		/// The body type: static, kinematic, or dynamic.
-		/// Note: if a dynamic body would have zero mass, the mass is set to one.
-		public BodyType type;
-
-		/// The world position of the body. Avoid creating bodies at the origin
-		/// since this can lead to many overlapping shapes.
-		public Vec2 position;
-
-		/// The world angle of the body in radians.
-		public float angle;
-
-		/// The linear velocity of the body's origin in world co-ordinates.
-		public Vec2 linearVelocity;
-
-		/// The angular velocity of the body.
-		public float angularVelocity;
-
-		/// Linear damping is use to reduce the linear velocity. The damping parameter
-		/// can be larger than 1.0f but the damping effect becomes sensitive to the
-		/// time step when the damping parameter is large.
-		public float linearDamping;
-
-		/// Angular damping is use to reduce the angular velocity. The damping parameter
-		/// can be larger than 1.0f but the damping effect becomes sensitive to the
-		/// time step when the damping parameter is large.
-		public float angularDamping;
-
-		/// Set this flag to false if this body should never fall asleep. Note that
-		/// this increases CPU usage.
-		public bool allowSleep;
-
-		/// Is this body initially awake or sleeping?
-		public bool awake;
-
-		/// Should this body be prevented from rotating? Useful for characters.
-		public bool fixedRotation;
-
-		/// Is this a fast moving body that should be prevented from tunneling through
-		/// other moving bodies? Note that all bodies are prevented from tunneling through
-		/// kinematic and static bodies. This setting is only considered on dynamic bodies.
-		/// @warning You should use this flag sparingly since it increases processing time.
-		public bool bullet;
-
-		/// Does this body start out active?
-		public bool active;
-
-		/// Use this to store application specific body data.
-		public object userData;
-
-		/// Scale the gravity applied to this body.
-		public float gravityScale;
-	}
-
 	/// A rigid body. These are created via World::CreateBody.
 	public class Body
 	{
 		/// Creates a fixture and attach it to this body. Use this function if you need
 		/// to set some fixture parameters, like friction. Otherwise you can create the
 		/// fixture directly from a shape.
-		/// If the density is non-zero, this function automatically updates the mass of the body.
+		/// If the Density is non-zero, this function automatically updates the mass of the body.
 		/// Contacts are not created until the next time step.
 		/// @param def the fixture definition.
 		/// @warning This function is locked during callbacks.
@@ -125,7 +49,7 @@ namespace Box2D {
 			fixture.m_body = this;
 
 			// Adjust mass properties if needed.
-			if (fixture.m_density > 0.0f)
+			if (fixture.m_Density > 0.0f)
 			{
 			    ResetMassData();
 			}
@@ -140,14 +64,15 @@ namespace Box2D {
 		/// Creates a fixture from a shape and attach it to this body.
 		/// This is a convenience function. Use FixtureDef if you need to set parameters
 		/// like friction, restitution, user data, or filtering.
-		/// If the density is non-zero, this function automatically updates the mass of the body.
+		/// If the Density is non-zero, this function automatically updates the mass of the body.
 		/// @param shape the shape to be cloned.
-		/// @param density the shape density (set to zero for static bodies).
+		/// @param Density the shape Density (set to zero for static bodies).
 		/// @warning This function is locked during callbacks.
-		public Fixture CreateFixture(Shape shape, float density){
+		public Fixture CreateFixture(Shape shape){
 			FixtureDef def = new FixtureDef();
-			def.shape = shape;
-			def.density = density;
+			def.shape = shape.Clone();
+			def.Density = shape.Density;
+			def.Filter = shape.Filter;
 
 			return CreateFixture(def);
 		}
@@ -155,7 +80,7 @@ namespace Box2D {
 		/// Destroy a fixture. This removes the fixture from the broad-phase and
 		/// destroys all contacts associated with this fixture. This will
 		/// automatically adjust the mass of the body if the body is dynamic and the
-		/// fixture has positive density.
+		/// fixture has positive Density.
 		/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
 		/// @param fixture the fixture to be removed.
 		/// @warning This function is locked during callbacks.
@@ -195,8 +120,8 @@ namespace Box2D {
 			//    Contact* c = edge.contact;
 			//    edge = edge.next;
 
-			//    Fixture fixtureA = c.GetFixtureA();
-			//    Fixture fixtureB = c.GetFixtureB();
+			//    Fixture fixtureA = c.FixtureA;
+			//    Fixture fixtureB = c.FixtureB;
 
 			//    if (fixture == fixtureA || fixture == fixtureB)
 			//    {
@@ -456,11 +381,12 @@ namespace Box2D {
 
 		/// Get the mass data of the body.
 		/// @return a struct containing the mass, inertia and center of the body.
-		public void GetMassData(out MassData data){
-			throw new NotImplementedException();
-			//data.mass = m_mass;
-			//data.I = m_I + m_mass * Utilities.Dot(m_sweep.localCenter, m_sweep.localCenter);
-			//data.center = m_sweep.localCenter;
+		public MassData GetMassData() {
+			MassData data = new MassData();
+			data.mass = m_mass;
+			data.I = m_I + m_mass * Utilities.Dot(m_sweep.localCenter, m_sweep.localCenter);
+			data.center = m_sweep.localCenter;
+			return data;
 		}
 
 		/// Set the mass properties to override the mass properties of the fixtures.
@@ -469,51 +395,46 @@ namespace Box2D {
 		/// This function has no effect if the body isn't dynamic.
 		/// @param massData the mass properties.
 		public void SetMassData(MassData data){
-			throw new NotImplementedException();
-			//Utilities.Assert(m_world.IsLocked() == false);
-			//if (m_world.IsLocked() == true)
-			//{
-			//    return;
-			//}
+			Utilities.Assert(m_world.IsLocked() == false);
+			if (m_world.IsLocked() == true) {
+				return;
+			}
 
-			//if (m_type != _dynamicBody)
-			//{
-			//    return;
-			//}
+			if (m_type != BodyType._dynamicBody) {
+				return;
+			}
 
-			//m_invMass = 0.0f;
-			//m_I = 0.0f;
-			//m_invI = 0.0f;
+			m_invMass = 0.0f;
+			m_I = 0.0f;
+			m_invI = 0.0f;
 
-			//m_mass = massData.mass;
-			//if (m_mass <= 0.0f)
-			//{
-			//    m_mass = 1.0f;
-			//}
+			m_mass = data.mass;
+			if (m_mass <= 0.0f) {
+				m_mass = 1.0f;
+			}
 
-			//m_invMass = 1.0f / m_mass;
+			m_invMass = 1.0f / m_mass;
 
-			//if (massData.I > 0.0f && (m_flags & Body.BodyFlags.e_fixedRotationFlag) == 0)
-			//{
-			//    m_I = massData.I - m_mass * Utilities.Dot(massData.center, massData.center);
-			//    Utilities.Assert(m_I > 0.0f);
-			//    m_invI = 1.0f / m_I;
-			//}
+			if (data.I > 0.0f && (m_flags & Body.BodyFlags.e_fixedRotationFlag) == 0) {
+				m_I = data.I - m_mass * Utilities.Dot(data.center, data.center);
+				Utilities.Assert(m_I > 0.0f);
+				m_invI = 1.0f / m_I;
+			}
 
-			//// Move center of mass.
-			//Vec2 oldCenter = m_sweep.c;
-			//m_sweep.localCenter =  massData.center;
-			//m_sweep.c0 = m_sweep.c = Utilities.Mul(m_xf, m_sweep.localCenter);
+			// Move center of mass.
+			Vec2 oldCenter = m_sweep.c;
+			m_sweep.localCenter = data.center;
+			m_sweep.c0 = m_sweep.c = Utilities.Mul(m_xf, m_sweep.localCenter);
 
-			//// Update center of mass velocity.
-			//m_linearVelocity += Utilities.Cross(m_angularVelocity, m_sweep.c - oldCenter);
+			// Update center of mass velocity.
+			m_linearVelocity += Utilities.Cross(m_angularVelocity, m_sweep.c - oldCenter);
 		}
 
 		/// This resets the mass properties to the sum of the mass properties of the fixtures.
 		/// This normally does not need to be called unless you called SetMassData to override
 		/// the mass and you later want to reset the mass.
 		public void ResetMassData(){
-			// Compute mass data from shapes. Each shape has its own density.
+			// Compute mass data from shapes. Each shape has its own Density.
 			m_mass = 0.0f;
 			m_invMass = 0.0f;
 			m_I = 0.0f;
@@ -533,7 +454,7 @@ namespace Box2D {
 			// Accumulate mass over all fixtures.
 			Vec2 localCenter = new Vec2(0, 0);
 			foreach (Fixture f in m_fixtureList){
-				if (f.m_density == 0.0f) {
+				if (f.m_Density == 0.0f) {
 					continue;
 				}
 
@@ -837,25 +758,20 @@ namespace Box2D {
 		/// Set this body to have fixed rotation. This causes the mass
 		/// to be reset.
 		public void SetFixedRotation(bool flag){
-			throw new NotImplementedException();
-			//bool status = (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
-			//if (status == flag)
-			//{
-			//    return;
-			//}
+			bool status = (m_flags & BodyFlags.e_fixedRotationFlag) == BodyFlags.e_fixedRotationFlag;
+			if (status == flag) {
+				return;
+			}
 
-			//if (flag)
-			//{
-			//    m_flags |= e_fixedRotationFlag;
-			//}
-			//else
-			//{
-			//    m_flags &= ~e_fixedRotationFlag;
-			//}
+			if (flag) {
+				m_flags |= BodyFlags.e_fixedRotationFlag;
+			} else {
+				m_flags &= ~BodyFlags.e_fixedRotationFlag;
+			}
 
-			//m_angularVelocity = 0.0f;
+			m_angularVelocity = 0.0f;
 
-			//ResetMassData();
+			ResetMassData();
 		}
 		/// Does this body have fixed rotation?
 		public bool IsFixedRotation() {
@@ -908,9 +824,9 @@ namespace Box2D {
 			//Settings.Log("{\n");
 			//Settings.Log("  BodyDef bd;\n");
 			//Settings.Log("  bd.type = BodyType(%d);\n", m_type);
-			//Settings.Log("  bd.position.Set(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
+			//Settings.Log("  bd.position.Set(%.15lef, %.15lef);\n", m_xf.p.X, m_xf.p.Y);
 			//Settings.Log("  bd.angle = %.15lef;\n", m_sweep.a);
-			//Settings.Log("  bd.linearVelocity.Set(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
+			//Settings.Log("  bd.linearVelocity.Set(%.15lef, %.15lef);\n", m_linearVelocity.X, m_linearVelocity.Y);
 			//Settings.Log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
 			//Settings.Log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
 			//Settings.Log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
@@ -944,7 +860,7 @@ namespace Box2D {
 		};
 
 		internal Body(BodyDef bd, World world){
-			Utilities.Assert(bd.position.IsValid());
+			Utilities.Assert(bd.Position.IsValid());
 			Utilities.Assert(bd.linearVelocity.IsValid());
 			Utilities.Assert(Utilities.IsValid(bd.angle));
 			Utilities.Assert(Utilities.IsValid(bd.angularVelocity));
@@ -971,7 +887,7 @@ namespace Box2D {
 
 			m_world = world;
 
-			m_xf.p = bd.position;
+			m_xf.p = bd.Position;
 			m_xf.q.Set(bd.angle);
 
 			m_sweep.localCenter.SetZero();

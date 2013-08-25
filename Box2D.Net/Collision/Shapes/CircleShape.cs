@@ -75,14 +75,14 @@ namespace Box2D {
 		public override void ComputeAABB(out AABB aabb, Transform transform, int childIndex) {
 			aabb = new AABB();
 			Vec2 p = transform.p + Utilities.Mul(transform.q, m_p);
-			aabb.lowerBound.Set(p.x - m_radius, p.y - m_radius);
-			aabb.upperBound.Set(p.x + m_radius, p.y + m_radius);
+			aabb.lowerBound.Set(p.X - m_radius, p.Y - m_radius);
+			aabb.upperBound.Set(p.X + m_radius, p.Y + m_radius);
 		}
 
 		/// @see Shape::ComputeMass
-		public override void ComputeMass(out MassData massData, float density) {
+		public override void ComputeMass(out MassData massData, float Density) {
 			massData = new MassData();
-			massData.mass = density * (float)Math.PI * m_radius * m_radius;
+			massData.mass = Density * (float)Math.PI * m_radius * m_radius;
 			massData.center = m_p;
 
 			// inertia about the local origin

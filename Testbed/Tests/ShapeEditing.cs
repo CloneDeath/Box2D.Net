@@ -18,17 +18,19 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType._dynamicBody;
-			bd.position.Set(0.0f, 10.0f);
+			bd.Position.Set(0.0f, 10.0f);
 			m_body = m_world.CreateBody(bd);
 
 			PolygonShape shape2 = new PolygonShape();
 			shape2.SetAsBox(4.0f, 4.0f, new Vec2(0.0f, 0.0f), 0.0f);
-			m_fixture1 = m_body.CreateFixture(shape2, 10.0f);
+			shape2.Density = 10;
+			m_fixture1 = m_body.CreateFixture(shape2);
 
 			m_fixture2 = null;
 
@@ -42,7 +44,8 @@ namespace Testbed.Tests {
 					CircleShape shape = new CircleShape();
 					shape.m_radius = 3.0f;
 					shape.m_p.Set(0.5f, -4.0f);
-					m_fixture2 = m_body.CreateFixture(shape, 10.0f);
+					shape.Density = 10;
+					m_fixture2 = m_body.CreateFixture(shape);
 					m_body.SetAwake(true);
 				}
 			}
@@ -60,7 +63,7 @@ namespace Testbed.Tests {
 				if (m_fixture2 != null)
 				{
 					m_sensor = !m_sensor;
-					m_fixture2.SetSensor(m_sensor);
+					m_fixture2.IsSensor = m_sensor;
 				}
 			}
 		}

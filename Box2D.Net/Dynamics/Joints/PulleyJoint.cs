@@ -83,10 +83,10 @@ namespace Box2D {
 			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
 			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
 			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			Settings.Log("  jd.groundAnchorA.Set(%.15lef, %.15lef);\n", m_groundAnchorA.x, m_groundAnchorA.y);
-			Settings.Log("  jd.groundAnchorB.Set(%.15lef, %.15lef);\n", m_groundAnchorB.x, m_groundAnchorB.y);
-			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+			Settings.Log("  jd.groundAnchorA.Set(%.15lef, %.15lef);\n", m_groundAnchorA.X, m_groundAnchorA.Y);
+			Settings.Log("  jd.groundAnchorB.Set(%.15lef, %.15lef);\n", m_groundAnchorB.X, m_groundAnchorB.Y);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.X, m_localAnchorA.Y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.X, m_localAnchorB.Y);
 			Settings.Log("  jd.lengthA = %.15lef;\n", m_lengthA);
 			Settings.Log("  jd.lengthB = %.15lef;\n", m_lengthB);
 			Settings.Log("  jd.ratio = %.15lef;\n", m_ratio);

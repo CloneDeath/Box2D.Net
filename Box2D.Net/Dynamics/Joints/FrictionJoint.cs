@@ -59,8 +59,8 @@ namespace Box2D {
 			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
 			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
 			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.X, m_localAnchorA.Y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.X, m_localAnchorB.Y);
 			Settings.Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 			Settings.Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
 			Settings.Log("  joints[%d] = m_world.CreateJoint(jd);\n", m_index);
@@ -115,10 +115,10 @@ namespace Box2D {
 			float iA = m_invIA, iB = m_invIB;
 
 			Mat22 K;
-			K.ex.x = mA + mB + iA * m_rA.y * m_rA.y + iB * m_rB.y * m_rB.y;
-			K.ex.y = -iA * m_rA.x * m_rA.y - iB * m_rB.x * m_rB.y;
-			K.ey.x = K.ex.y;
-			K.ey.y = mA + mB + iA * m_rA.x * m_rA.x + iB * m_rB.x * m_rB.x;
+			K.ex.X = mA + mB + iA * m_rA.Y * m_rA.Y + iB * m_rB.Y * m_rB.Y;
+			K.ex.Y = -iA * m_rA.X * m_rA.Y - iB * m_rB.X * m_rB.Y;
+			K.ey.X = K.ex.Y;
+			K.ey.Y = mA + mB + iA * m_rA.X * m_rA.X + iB * m_rB.X * m_rB.X;
 
 			m_linearMass = K.GetInverse();
 
@@ -134,7 +134,7 @@ namespace Box2D {
 				m_linearImpulse *= data.step.dtRatio;
 				m_angularImpulse *= data.step.dtRatio;
 
-				Vec2 P = new Vec2(m_linearImpulse.x, m_linearImpulse.y);
+				Vec2 P = new Vec2(m_linearImpulse.X, m_linearImpulse.Y);
 				vA -= mA * P;
 				wA -= iA * (Utilities.Cross(m_rA, P) + m_angularImpulse);
 				vB += mB * P;

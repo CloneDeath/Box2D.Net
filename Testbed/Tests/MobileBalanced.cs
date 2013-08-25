@@ -17,7 +17,7 @@ namespace Testbed.Tests {
 			// Create ground body.
 			{
 				BodyDef bodyDef = new BodyDef();
-				bodyDef.position.Set(0.0f, 20.0f);
+				bodyDef.Position.Set(0.0f, 20.0f);
 				ground = m_world.CreateBody(bodyDef);
 			}
 
@@ -36,19 +36,19 @@ namespace Testbed.Tests {
 
 		public Body AddNode(Body parent, Vec2 localAnchor, int depth, float offset, float a)
 		{
-			float density = 20.0f;
 			Vec2 h = new Vec2(0.0f, a);
 
 			Vec2 p = parent.GetPosition() + localAnchor - h;
 
 			BodyDef bodyDef = new BodyDef();
 			bodyDef.type = BodyType._dynamicBody;
-			bodyDef.position = p;
+			bodyDef.Position = p;
 			Body body = m_world.CreateBody(bodyDef);
 
 			PolygonShape shape = new PolygonShape();
 			shape.SetAsBox(0.25f * a, a);
-			body.CreateFixture(shape, density);
+			shape.Density = 20;
+			body.CreateFixture(shape);
 
 			if (depth == e_depth)
 			{
@@ -56,7 +56,7 @@ namespace Testbed.Tests {
 			}
 
 			shape.SetAsBox(offset, 0.25f * a, new Vec2(0, -a), 0.0f);
-			body.CreateFixture(shape, density);
+			body.CreateFixture(shape);
 
 			Vec2 a1 = new Vec2(offset, -a);
 			Vec2 a2 = new Vec2(-offset, -a);

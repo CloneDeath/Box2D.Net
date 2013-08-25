@@ -14,12 +14,12 @@ namespace Box2D {
 			Filter filterA = fixtureA.Filter;
 			Filter filterB = fixtureB.Filter;
 
-			if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0)
+			if (filterA.GroupIndex == filterB.GroupIndex && filterA.GroupIndex != 0)
 			{
-				return filterA.groupIndex > 0;
+				return filterA.GroupIndex > 0;
 			}
 
-			bool collide = (filterA.maskBits & filterB.categoryBits) != 0 && (filterA.categoryBits & filterB.maskBits) != 0;
+			bool collide = (filterA.MaskBits & filterB.CategoryBits) != 0 && (filterA.CategoryBits & filterB.MaskBits) != 0;
 			return collide;
 		}
 	}

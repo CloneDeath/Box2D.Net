@@ -6,45 +6,39 @@ using System.Text;
 namespace Box2D {
 	/// A 2D column vector.
 	public struct Vec2 {
-		public float x, y;
-
-		/// Default constructor does nothing (for performance).
-		public Vec2(object ignore) {
-			x = 0;
-			y = 0;
-		}
+		public float X, Y;
 
 		/// Construct using coordinates.
 		public Vec2(float x, float y){
-			this.x = x;
-			this.y = y;
+			this.X = x;
+			this.Y = y;
 		}
 
 		/// Set this vector to all zeros.
-		public void SetZero() { x = 0.0f; y = 0.0f; }
+		public void SetZero() { X = 0.0f; Y = 0.0f; }
 
 		/// Set this vector to some specified coordinates.
-		public void Set(float x_, float y_) { x = x_; y = y_; }
+		public void Set(float x_, float y_) { X = x_; Y = y_; }
 
 		/// Negate this vector.
 		public static Vec2 operator-(Vec2 self){
-			return new Vec2(-self.x, -self.y);
+			return new Vec2(-self.X, -self.Y);
 		}
 
 		public static Vec2 operator +(Vec2 lhs, Vec2 rhs) {
-			return new Vec2(lhs.x + rhs.x, lhs.y + rhs.y);
+			return new Vec2(lhs.X + rhs.X, lhs.Y + rhs.Y);
 		}
 
 		public static Vec2 operator -(Vec2 lhs, Vec2 rhs) {
-			return new Vec2(lhs.x - rhs.x, lhs.y - rhs.y);
+			return new Vec2(lhs.X - rhs.X, lhs.Y - rhs.Y);
 		}
 
 		public static Vec2 operator *(float lhs, Vec2 rhs) {
-			return new Vec2(rhs.x * lhs, rhs.y * lhs);
+			return new Vec2(rhs.X * lhs, rhs.Y * lhs);
 		}
 
 		public static Vec2 operator *(Vec2 lhs, float rhs) {
-			return new Vec2(rhs * lhs.x, rhs * lhs.y);
+			return new Vec2(rhs * lhs.X, rhs * lhs.Y);
 		}
 	
 		/// Read from and indexed element.
@@ -52,13 +46,13 @@ namespace Box2D {
 		{
 			get {
 				if (i > 1) throw new IndexOutOfRangeException();
-				return (i == 0)? x: y;
+				return (i == 0)? X: Y;
 			}
 			set {
 				if (i == 0){
-					x = value;
+					X = value;
 				} else {
-					y = value;
+					Y = value;
 				}
 			}
 		}
@@ -66,14 +60,14 @@ namespace Box2D {
 		/// Get the length of this vector (the norm).
 		public float Length()
 		{
-			return (float)Math.Sqrt((x * x) + (y * y));
+			return (float)Math.Sqrt((X * X) + (Y * Y));
 		}
 
 		/// Get the length squared. For performance, use this instead of
 		/// Vec2::Length (if possible).
 		public float LengthSquared()
 		{
-			return (x * x) + (y * y);
+			return (X * X) + (Y * Y);
 		}
 
 		/// Convert this vector into a unit vector. Returns the length.
@@ -85,8 +79,8 @@ namespace Box2D {
 				return 0.0f;
 			}
 			float invLength = 1.0f / length;
-			x *= invLength;
-			y *= invLength;
+			X *= invLength;
+			Y *= invLength;
 
 			return length;
 		}
@@ -94,21 +88,21 @@ namespace Box2D {
 		/// Does this vector contain finite coordinates?
 		public bool IsValid()
 		{
-			return Utilities.IsValid(x) && Utilities.IsValid(y);
+			return Utilities.IsValid(X) && Utilities.IsValid(Y);
 		}
 
 		/// Get the skew vector such that dot(skew_vec, other) == cross(vec, other)
 		public Vec2 Skew()
 		{
-			return new Vec2(-y, x);
+			return new Vec2(-Y, X);
 		}
 
 		public static bool operator ==(Vec2 a, Vec2 b) {
-			return a.x == b.x && a.y == b.y;
+			return a.X == b.X && a.Y == b.Y;
 		}
 
 		public static bool operator !=(Vec2 lhs, Vec2 rhs) {
-			return lhs.x != rhs.x || lhs.y != rhs.y;
+			return lhs.X != rhs.X || lhs.Y != rhs.Y;
 		}
 	}
 }

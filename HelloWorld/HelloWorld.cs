@@ -21,7 +21,7 @@ namespace HelloWorld {
 
 			// Define the ground body.
 			BodyDef groundBodyDef = new BodyDef();
-			groundBodyDef.position.Set(0.0f, -10.0f);
+			groundBodyDef.Position.Set(0.0f, -10.0f);
 
 			// Call the body factory which allocates memory for the ground body
 			// from a pool and creates the ground box shape (also from a pool).
@@ -33,14 +33,15 @@ namespace HelloWorld {
 
 			// The extents are the half-widths of the box.
 			groundBox.SetAsBox(50.0f, 10.0f);
+			groundBox.Density = 0;
 
 			// Add the ground fixture to the ground body.
-			groundBody.CreateFixture(groundBox, 0.0f);
+			groundBody.CreateFixture(groundBox);
 
 			// Define the dynamic body. We set its position and call the body factory.
 			BodyDef bodyDef = new BodyDef();
 			bodyDef.type = BodyType._dynamicBody;
-			bodyDef.position = new Vec2(0.0f, 4.0f);
+			bodyDef.Position = new Vec2(0.0f, 4.0f);
 			Body body = world.CreateBody(bodyDef);
 
 			// Define another box shape for our dynamic body.
@@ -51,8 +52,8 @@ namespace HelloWorld {
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = dynamicBox;
 
-			// Set the box density to be non-zero, so it will be dynamic.
-			fixtureDef.density = 1.0f;
+			// Set the box Density to be non-zero, so it will be dynamic.
+			fixtureDef.Density = 1.0f;
 
 			// Override the default friction.
 			fixtureDef.friction = 0.3f;
@@ -78,7 +79,7 @@ namespace HelloWorld {
 				Vec2 position = body.GetPosition();
 				float angle = body.GetAngle();
 
-				Console.WriteLine("{0} {1} {2}", position.x.ToString("0000.00"), position.y.ToString("0000.00"), angle.ToString("0000.00"));
+				Console.WriteLine("{0} {1} {2}", position.X.ToString("0000.00"), position.Y.ToString("0000.00"), angle.ToString("0000.00"));
 			}
 
 			// When the world destructor is called, all bodies and joints are freed. This can

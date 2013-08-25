@@ -165,13 +165,13 @@ namespace Box2D {
 			//m_rB = Utilities.Mul(qB, m_localAnchorB - m_localCenterB);
 
 			//// K    = [(1/m1 + 1/m2) * eye(2) - skew(r1) * invI1 * skew(r1) - skew(r2) * invI2 * skew(r2)]
-			////      = [1/m1+1/m2     0    ] + invI1 * [r1.y*r1.y -r1.x*r1.y] + invI2 * [r1.y*r1.y -r1.x*r1.y]
-			////        [    0     1/m1+1/m2]           [-r1.x*r1.y r1.x*r1.x]           [-r1.x*r1.y r1.x*r1.x]
+			////      = [1/m1+1/m2     0    ] + invI1 * [r1.Y*r1.Y -r1.X*r1.Y] + invI2 * [r1.Y*r1.Y -r1.X*r1.Y]
+			////        [    0     1/m1+1/m2]           [-r1.X*r1.Y r1.X*r1.X]           [-r1.X*r1.Y r1.X*r1.X]
 			//Mat22 K;
-			//K.ex.x = m_invMassB + m_invIB * m_rB.y * m_rB.y + m_gamma;
-			//K.ex.y = -m_invIB * m_rB.x * m_rB.y;
-			//K.ey.x = K.ex.y;
-			//K.ey.y = m_invMassB + m_invIB * m_rB.x * m_rB.x + m_gamma;
+			//K.ex.X = m_invMassB + m_invIB * m_rB.Y * m_rB.Y + m_gamma;
+			//K.ex.Y = -m_invIB * m_rB.X * m_rB.Y;
+			//K.ey.X = K.ex.Y;
+			//K.ey.Y = m_invMassB + m_invIB * m_rB.X * m_rB.X + m_gamma;
 
 			//m_mass = K.GetInverse();
 

@@ -123,8 +123,10 @@ namespace Box2D {
 		//}
 
 		/// Get fixture A in this contact.
-		public Fixture GetFixtureA(){
-			return m_fixtureA;
+		public Fixture FixtureA {
+			get {
+				return m_fixtureA;
+			}
 		}
 
 		/// Get the child primitive index for fixture A.
@@ -133,8 +135,10 @@ namespace Box2D {
 		}
 
 		/// Get fixture B in this contact.
-		public Fixture GetFixtureB(){
-			return m_fixtureB;
+		public Fixture FixtureB {
+			get {
+				return m_fixtureB;
+			}
 		}
 
 		/// Get the child primitive index for fixture B.
@@ -320,8 +324,8 @@ namespace Box2D {
 			bool touching = false;
 			bool wasTouching = (m_flags & ContactFlags.e_touchingFlag) == ContactFlags.e_touchingFlag;
 
-			bool sensorA = m_fixtureA.IsSensor();
-			bool sensorB = m_fixtureB.IsSensor();
+			bool sensorA = m_fixtureA.IsSensor;
+			bool sensorB = m_fixtureB.IsSensor;
 			bool sensor = sensorA || sensorB;
 
 			Body bodyA = m_fixtureA.GetBody();

@@ -17,43 +17,47 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(50.0f, 0.0f), new Vec2(-50.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
 				CircleShape circle1 = new CircleShape();
 				circle1.m_radius = 1.0f;
+				circle1.Density = 5;
 
 				PolygonShape box = new PolygonShape();
 				box.SetAsBox(0.5f, 5.0f);
+				box.Density = 5;
 
 				CircleShape circle2 = new CircleShape();
 				circle2.m_radius = 2.0f;
+				circle2.Density = 5;
 			
 				BodyDef bd1 = new BodyDef();
 				bd1.type = BodyType._staticBody;
-				bd1.position.Set(10.0f, 9.0f);
+				bd1.Position.Set(10.0f, 9.0f);
 				Body body1 = m_world.CreateBody(bd1);
-				body1.CreateFixture(circle1, 5.0f);
+				body1.CreateFixture(circle1);
 
 				BodyDef bd2 = new BodyDef();
 				bd2.type = BodyType._dynamicBody;
-				bd2.position.Set(10.0f, 8.0f);
+				bd2.Position.Set(10.0f, 8.0f);
 				Body body2 = m_world.CreateBody(bd2);
-				body2.CreateFixture(box, 5.0f);
+				body2.CreateFixture(box);
 
 				BodyDef bd3 = new BodyDef();
 				bd3.type = BodyType._dynamicBody;
-				bd3.position.Set(10.0f, 6.0f);
+				bd3.Position.Set(10.0f, 6.0f);
 				Body body3 = m_world.CreateBody(bd3);
-				body3.CreateFixture(circle2, 5.0f);
+				body3.CreateFixture(circle2);
 
 				RevoluteJointDef jd1 = new RevoluteJointDef();
-				jd1.Initialize(body2, body1, bd1.position);
+				jd1.Initialize(body2, body1, bd1.Position);
 				Joint joint1 = m_world.CreateJoint(jd1);
 
 				RevoluteJointDef jd2 = new RevoluteJointDef();
-				jd2.Initialize(body2, body3, bd3.position);
+				jd2.Initialize(body2, body3, bd3.Position);
 				Joint joint2 = m_world.CreateJoint(jd2);
 
 				GearJointDef jd4 = new GearJointDef();
@@ -68,45 +72,48 @@ namespace Testbed.Tests {
 			{
 				CircleShape circle1 = new CircleShape();
 				circle1.m_radius = 1.0f;
+				circle1.Density = 5;
 
 				CircleShape circle2 = new CircleShape();
 				circle2.m_radius = 2.0f;
+				circle2.Density = 5;
 			
 				PolygonShape box = new PolygonShape();
 				box.SetAsBox(0.5f, 5.0f);
 
 				BodyDef bd1 = new BodyDef();
 				bd1.type = BodyType._dynamicBody;
-				bd1.position.Set(-3.0f, 12.0f);
+				bd1.Position.Set(-3.0f, 12.0f);
 				Body body1 = m_world.CreateBody(bd1);
-				body1.CreateFixture(circle1, 5.0f);
+				body1.CreateFixture(circle1);
 
 				RevoluteJointDef jd1 = new RevoluteJointDef();
 				jd1.bodyA = ground;
 				jd1.bodyB = body1;
-				jd1.localAnchorA = ground.GetLocalPoint(bd1.position);
-				jd1.localAnchorB = body1.GetLocalPoint(bd1.position);
+				jd1.localAnchorA = ground.GetLocalPoint(bd1.Position);
+				jd1.localAnchorB = body1.GetLocalPoint(bd1.Position);
 				jd1.referenceAngle = body1.GetAngle() - ground.GetAngle();
 				m_joint1 = (RevoluteJoint)m_world.CreateJoint(jd1);
 
 				BodyDef bd2 = new BodyDef();
 				bd2.type = BodyType._dynamicBody;
-				bd2.position.Set(0.0f, 12.0f);
+				bd2.Position.Set(0.0f, 12.0f);
 				Body body2 = m_world.CreateBody(bd2);
-				body2.CreateFixture(circle2, 5.0f);
+				body2.CreateFixture(circle2);
 
 				RevoluteJointDef jd2 = new RevoluteJointDef();
-				jd2.Initialize(ground, body2, bd2.position);
+				jd2.Initialize(ground, body2, bd2.Position);
 				m_joint2 = (RevoluteJoint)m_world.CreateJoint(jd2);
 
 				BodyDef bd3 = new BodyDef();
 				bd3.type = BodyType._dynamicBody;
-				bd3.position.Set(2.5f, 12.0f);
+				bd3.Position.Set(2.5f, 12.0f);
 				Body body3 = m_world.CreateBody(bd3);
-				body3.CreateFixture(box, 5.0f);
+				box.Density = 5;
+				body3.CreateFixture(box);
 
 				PrismaticJointDef jd3 = new PrismaticJointDef();
-				jd3.Initialize(ground, body3, bd3.position, new Vec2(0.0f, 1.0f));
+				jd3.Initialize(ground, body3, bd3.Position, new Vec2(0.0f, 1.0f));
 				jd3.lowerTranslation = -5.0f;
 				jd3.upperTranslation = 5.0f;
 				jd3.enableLimit = true;

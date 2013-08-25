@@ -17,7 +17,7 @@ namespace Testbed.Framework {
 			GL.Begin(BeginMode.LineLoop);
 			for (int i = 0; i < k_segments; ++i) {
 				Vec2 v = center + radius * new Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
-				GL.Vertex2(v.x, v.y);
+				GL.Vertex2(v.X, v.Y);
 				theta += k_increment;
 			}
 			GL.End();
@@ -29,7 +29,7 @@ namespace Testbed.Framework {
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.LineLoop);
 			for (int i = 0; i < vertexCount; ++i) {
-				GL.Vertex2(vertices[i].x, vertices[i].y);
+				GL.Vertex2(vertices[i].X, vertices[i].Y);
 			}
 			GL.End();
 			GL.Enable(EnableCap.Texture2D);
@@ -40,8 +40,8 @@ namespace Testbed.Framework {
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.Lines);
 			{
-				GL.Vertex2(p1.x, p1.y);
-				GL.Vertex2(p2.x, p2.y);
+				GL.Vertex2(p1.X, p1.Y);
+				GL.Vertex2(p2.X, p2.Y);
 			}
 			GL.End();
 			GL.Enable(EnableCap.Texture2D);
@@ -56,7 +56,7 @@ namespace Testbed.Framework {
 			GL.Begin(BeginMode.TriangleFan);
 			for (int i = 0; i < k_segments; ++i) {
 				Vec2 v = center + radius * new Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
-				GL.Vertex2(v.x, v.y);
+				GL.Vertex2(v.X, v.Y);
 				theta += k_increment;
 			}
 			GL.End();
@@ -66,15 +66,15 @@ namespace Testbed.Framework {
 			GL.Begin(BeginMode.LineLoop);
 			for (int i = 0; i < k_segments; ++i) {
 				Vec2 v = center + radius * new Vec2((float)System.Math.Cos(theta), (float)System.Math.Sin(theta));
-				GL.Vertex2(v.x, v.y);
+				GL.Vertex2(v.X, v.Y);
 				theta += k_increment;
 			}
 			GL.End();
 
 			Vec2 p = center + radius * axis;
 			GL.Begin(BeginMode.Lines);
-			GL.Vertex2(center.x, center.y);
-			GL.Vertex2(p.x, p.y);
+			GL.Vertex2(center.X, center.Y);
+			GL.Vertex2(p.X, p.Y);
 			GL.End();
 			GL.Enable(EnableCap.Texture2D);
 		}
@@ -84,14 +84,14 @@ namespace Testbed.Framework {
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.TriangleFan);
 			for (int i = 0; i < vertexCount; ++i) {
-				GL.Vertex2(vertices[i].x, vertices[i].y);
+				GL.Vertex2(vertices[i].X, vertices[i].Y);
 			}
 			GL.End();
 
 			GL.Color4(color.R, color.G, color.B, 1.0f);
 			GL.Begin(BeginMode.LineLoop);
 			for (int i = 0; i < vertexCount; ++i) {
-				GL.Vertex2(vertices[i].x, vertices[i].y);
+				GL.Vertex2(vertices[i].X, vertices[i].Y);
 			}
 			GL.End();
 			GL.Enable(EnableCap.Texture2D);
@@ -104,14 +104,14 @@ namespace Testbed.Framework {
 			GL.Begin(BeginMode.Lines);
 			{
 				GL.Color3(1.0f, 0.0f, 0.0f);
-				GL.Vertex2(p1.x, p1.y);
+				GL.Vertex2(p1.X, p1.Y);
 				p2 = p1 + k_axisScale * xf.q.GetXAxis();
-				GL.Vertex2(p2.x, p2.y);
+				GL.Vertex2(p2.X, p2.Y);
 
 				GL.Color3(0.0f, 1.0f, 0.0f);
-				GL.Vertex2(p1.x, p1.y);
+				GL.Vertex2(p1.X, p1.Y);
 				p2 = p1 + k_axisScale * xf.q.GetYAxis();
-				GL.Vertex2(p2.x, p2.y);
+				GL.Vertex2(p2.X, p2.Y);
 			}
 			GL.End();
 			GL.Enable(EnableCap.Texture2D);
@@ -122,8 +122,8 @@ namespace Testbed.Framework {
 			GL.Disable(EnableCap.Texture2D);
 			GL.Begin(BeginMode.Lines);
 			{
-				GL.Vertex2(p1.x, p1.y);
-				GL.Vertex2(p2.x, p2.y);
+				GL.Vertex2(p1.X, p1.Y);
+				GL.Vertex2(p2.X, p2.Y);
 			}
 			GL.End();
 			GL.Enable(EnableCap.Texture2D);
@@ -137,7 +137,7 @@ namespace Testbed.Framework {
 			GL.Begin(BeginMode.Points);
 			{
 				GL.Color3(c);
-				GL.Vertex2(xy.x, xy.y);
+				GL.Vertex2(xy.X, xy.Y);
 			}
 			GL.End();
 		}
@@ -145,9 +145,9 @@ namespace Testbed.Framework {
 		internal void DrawAABB(AABB AABB, Color c) {
 			this.DrawPolygon(new Vec2[] { 
 				AABB.lowerBound,
-				new Vec2(AABB.lowerBound.x, AABB.upperBound.y),
+				new Vec2(AABB.lowerBound.X, AABB.upperBound.Y),
 				AABB.upperBound,
-				new Vec2(AABB.upperBound.x, AABB.lowerBound.y)}, 
+				new Vec2(AABB.upperBound.X, AABB.lowerBound.Y)}, 
 				4, c);
 		}
 	}

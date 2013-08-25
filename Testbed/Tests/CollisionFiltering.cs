@@ -52,15 +52,15 @@ namespace Testbed.Tests {
 
 			FixtureDef triangleShapeDef = new FixtureDef();
 			triangleShapeDef.shape = polygon;
-			triangleShapeDef.density = 1.0f;
+			triangleShapeDef.Density = 1.0f;
 
-			triangleShapeDef.filter.groupIndex = k_smallGroup;
-			triangleShapeDef.filter.categoryBits = k_triangleCategory;
-			triangleShapeDef.filter.maskBits = k_triangleMask;
+			triangleShapeDef.Filter.GroupIndex = k_smallGroup;
+			triangleShapeDef.Filter.CategoryBits = k_triangleCategory;
+			triangleShapeDef.Filter.MaskBits = k_triangleMask;
 
 			BodyDef triangleBodyDef = new BodyDef();
 			triangleBodyDef.type = BodyType._dynamicBody;
-			triangleBodyDef.position.Set(-5.0f, 2.0f);
+			triangleBodyDef.Position.Set(-5.0f, 2.0f);
 
 			Body body1 = m_world.CreateBody(triangleBodyDef);
 			body1.CreateFixture(triangleShapeDef);
@@ -70,8 +70,8 @@ namespace Testbed.Tests {
 			vertices[1] *= 2.0f;
 			vertices[2] *= 2.0f;
 			polygon.Set(vertices, 3);
-			triangleShapeDef.filter.groupIndex = k_largeGroup;
-			triangleBodyDef.position.Set(-5.0f, 6.0f);
+			triangleShapeDef.Filter.GroupIndex = k_largeGroup;
+			triangleBodyDef.Position.Set(-5.0f, 6.0f);
 			triangleBodyDef.fixedRotation = true; // look at me!
 
 			Body body2 = m_world.CreateBody(triangleBodyDef);
@@ -80,12 +80,12 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-5.0f, 10.0f);
+				bd.Position.Set(-5.0f, 10.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape p = new PolygonShape();
 				p.SetAsBox(0.5f, 1.0f);
-				body.CreateFixture(p, 1.0f);
+				body.CreateFixture(p);
 
 				PrismaticJointDef jd = new PrismaticJointDef();
 				jd.bodyA = body2;
@@ -104,24 +104,24 @@ namespace Testbed.Tests {
 			polygon.SetAsBox(1.0f, 0.5f);
 			FixtureDef boxShapeDef = new FixtureDef();
 			boxShapeDef.shape = polygon;
-			boxShapeDef.density = 1.0f;
+			boxShapeDef.Density = 1.0f;
 			boxShapeDef.restitution = 0.1f;
 
-			boxShapeDef.filter.groupIndex = k_smallGroup;
-			boxShapeDef.filter.categoryBits = k_boxCategory;
-			boxShapeDef.filter.maskBits = k_boxMask;
+			boxShapeDef.Filter.GroupIndex = k_smallGroup;
+			boxShapeDef.Filter.CategoryBits = k_boxCategory;
+			boxShapeDef.Filter.MaskBits = k_boxMask;
 
 			BodyDef boxBodyDef = new BodyDef();
 			boxBodyDef.type = BodyType._dynamicBody;
-			boxBodyDef.position.Set(0.0f, 2.0f);
+			boxBodyDef.Position.Set(0.0f, 2.0f);
 
 			Body body3 = m_world.CreateBody(boxBodyDef);
 			body3.CreateFixture(boxShapeDef);
 
 			// Large box (recycle definitions)
 			polygon.SetAsBox(2.0f, 1.0f);
-			boxShapeDef.filter.groupIndex = k_largeGroup;
-			boxBodyDef.position.Set(0.0f, 6.0f);
+			boxShapeDef.Filter.GroupIndex = k_largeGroup;
+			boxBodyDef.Position.Set(0.0f, 6.0f);
 
 			Body body4 = m_world.CreateBody(boxBodyDef);
 			body4.CreateFixture(boxShapeDef);
@@ -132,23 +132,23 @@ namespace Testbed.Tests {
 
 			FixtureDef circleShapeDef = new FixtureDef();
 			circleShapeDef.shape = circle;
-			circleShapeDef.density = 1.0f;
+			circleShapeDef.Density = 1.0f;
 
-			circleShapeDef.filter.groupIndex = k_smallGroup;
-			circleShapeDef.filter.categoryBits = k_circleCategory;
-			circleShapeDef.filter.maskBits = k_circleMask;
+			circleShapeDef.Filter.GroupIndex = k_smallGroup;
+			circleShapeDef.Filter.CategoryBits = k_circleCategory;
+			circleShapeDef.Filter.MaskBits = k_circleMask;
 
 			BodyDef circleBodyDef = new BodyDef();
 			circleBodyDef.type = BodyType._dynamicBody;
-			circleBodyDef.position.Set(5.0f, 2.0f);
+			circleBodyDef.Position.Set(5.0f, 2.0f);
 		
 			Body body5 = m_world.CreateBody(circleBodyDef);
 			body5.CreateFixture(circleShapeDef);
 
 			// Large circle
 			circle.m_radius *= 2.0f;
-			circleShapeDef.filter.groupIndex = k_largeGroup;
-			circleBodyDef.position.Set(5.0f, 6.0f);
+			circleShapeDef.Filter.GroupIndex = k_largeGroup;
+			circleBodyDef.Position.Set(5.0f, 6.0f);
 
 			Body body6 = m_world.CreateBody(circleBodyDef);
 			body6.CreateFixture(circleShapeDef);

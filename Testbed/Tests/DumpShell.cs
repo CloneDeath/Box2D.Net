@@ -17,7 +17,7 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = (BodyType)2;
-				bd.position.Set(3.000000000000000e+001f, 6.909857940673828e+001f);
+				bd.Position.Set(3.000000000000000e+001f, 6.909857940673828e+001f);
 				bd.angle = 0.000000000000000e+000f;
 				bd.linearVelocity.Set(0.000000000000000e+000f, -8.618643951416016e+001f);
 				bd.angularVelocity = 0.000000000000000e+000f;
@@ -34,11 +34,11 @@ namespace Testbed.Tests {
 					FixtureDef fd = new FixtureDef();
 					fd.friction = 6.000000238418579e-001f;
 					fd.restitution = 0.000000000000000e+000f;
-					fd.density = 5.000000000000000e-001f;
-					fd.isSensor = false;
-					fd.filter.categoryBits = (ushort)(1);
-					fd.filter.maskBits = (ushort)(2);
-					fd.filter.groupIndex = (short)(0);
+					fd.Density = 5.000000000000000e-001f;
+					fd.IsSensor = false;
+					fd.Filter.CategoryBits = (ushort)(1);
+					fd.Filter.MaskBits = (ushort)(2);
+					fd.Filter.GroupIndex = (short)(0);
 					PolygonShape shape = new PolygonShape();
 					Vec2[] vs = new Vec2[8];
 					vs[0].Set(-1.950000047683716e+000f, -4.750000000000000e+000f);
@@ -56,7 +56,7 @@ namespace Testbed.Tests {
 			{
 			  BodyDef bd = new BodyDef();
 			  bd.type = (BodyType)(0);
-			  bd.position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
+			  bd.Position.Set(5.120000457763672e+001f, 7.580000305175781e+001f);
 			  bd.angle = 0.000000000000000e+000f;
 			  bd.linearVelocity.Set(0.000000000000000e+000f, 0.000000000000000e+000f);
 			  bd.angularVelocity = 0.000000000000000e+000f;
@@ -73,11 +73,11 @@ namespace Testbed.Tests {
 				FixtureDef fd = new FixtureDef();
 				fd.friction = 0.000000000000000e+000f;
 				fd.restitution = 0.000000000000000e+000f;
-				fd.density = 1.000000000000000e+000f;
-				fd.isSensor = false;
-				fd.filter.categoryBits = (ushort)(2);
-				fd.filter.maskBits = (ushort)(65535);
-				fd.filter.groupIndex = (short)(0);
+				fd.Density = 1.000000000000000e+000f;
+				fd.IsSensor = false;
+				fd.Filter.CategoryBits = (ushort)(2);
+				fd.Filter.MaskBits = (ushort)(65535);
+				fd.Filter.GroupIndex = (short)(0);
 				PolygonShape shape = new PolygonShape();
 				Vec2[] vs = new Vec2[8];
 				vs[0].Set(-5.120000076293945e+001f, -5.000000000000000e-001f);

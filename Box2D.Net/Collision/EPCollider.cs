@@ -32,7 +32,7 @@ namespace Box2D {
 	
 			Vec2 edge1 = m_v2 - m_v1;
 			edge1.Normalize();
-			m_normal1.Set(edge1.y, -edge1.x);
+			m_normal1.Set(edge1.Y, -edge1.X);
 			float offset1 = Utilities.Dot(m_normal1, m_centroidB - m_v1);
 			float offset0 = 0.0f, offset2 = 0.0f;
 			bool convex1 = false, convex2 = false;
@@ -42,7 +42,7 @@ namespace Box2D {
 			{
 				Vec2 edge0 = m_v1 - m_v0;
 				edge0.Normalize();
-				m_normal0.Set(edge0.y, -edge0.x);
+				m_normal0.Set(edge0.Y, -edge0.X);
 				convex1 = Utilities.Cross(edge0, edge1) >= 0.0f;
 				offset0 = Utilities.Dot(m_normal0, m_centroidB - m_v0);
 			}
@@ -52,7 +52,7 @@ namespace Box2D {
 			{
 				Vec2 edge2 = m_v3 - m_v2;
 				edge2.Normalize();
-				m_normal2.Set(edge2.y, -edge2.x);
+				m_normal2.Set(edge2.Y, -edge2.X);
 				convex2 = Utilities.Cross(edge1, edge2) > 0.0f;
 				offset2 = Utilities.Dot(m_normal2, m_centroidB - m_v2);
 			}
@@ -335,7 +335,7 @@ namespace Box2D {
 				rf.normal = m_polygonB.normals[rf.i1];
 			}
 	
-			rf.sideNormal1.Set(rf.normal.y, -rf.normal.x);
+			rf.sideNormal1.Set(rf.normal.Y, -rf.normal.X);
 			rf.sideNormal2 = -rf.sideNormal1;
 			rf.sideOffset1 = Utilities.Dot(rf.sideNormal1, rf.v1);
 			rf.sideOffset2 = Utilities.Dot(rf.sideNormal2, rf.v2);
@@ -429,7 +429,7 @@ namespace Box2D {
 			axis.index = -1;
 			axis.separation = -Single.MaxValue;
 
-			Vec2 perp = new Vec2(-m_normal.y, m_normal.x);
+			Vec2 perp = new Vec2(-m_normal.Y, m_normal.X);
 
 			for (int i = 0; i < m_polygonB.count; ++i)
 			{

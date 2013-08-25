@@ -22,7 +22,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				//fd.filter.categoryBits = 2;
+				//fd.Filter.CategoryBits = 2;
 
 				ground.CreateFixture(fd);
 			}
@@ -30,15 +30,16 @@ namespace Testbed.Tests {
 			{
 				CircleShape shape = new CircleShape();
 				shape.m_radius = 0.5f;
+				shape.Density = 5;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
 
 				RevoluteJointDef rjd = new RevoluteJointDef();
 
-				bd.position.Set(-10.0f, 20.0f);
+				bd.Position.Set(-10.0f, 20.0f);
 				Body body = m_world.CreateBody(bd);
-				body.CreateFixture(shape, 5.0f);
+				body.CreateFixture(shape);
 
 				float w = 100.0f;
 				body.SetAngularVelocity(w);
@@ -62,11 +63,11 @@ namespace Testbed.Tests {
 
 				BodyDef circle_bd = new BodyDef();
 				circle_bd.type = BodyType._dynamicBody;
-				circle_bd.position.Set(5.0f, 30.0f);
+				circle_bd.Position.Set(5.0f, 30.0f);
 
 				FixtureDef fd = new FixtureDef();
-				fd.density = 5.0f;
-				fd.filter.maskBits = 1;
+				fd.Density = 5.0f;
+				fd.Filter.MaskBits = 1;
 				fd.shape = circle_shape;
 
 				m_ball = m_world.CreateBody(circle_bd);
@@ -74,13 +75,15 @@ namespace Testbed.Tests {
 
 				PolygonShape polygon_shape = new PolygonShape();
 				polygon_shape.SetAsBox(10.0f, 0.2f, new Vec2(-10.0f, 0.0f), 0.0f);
+				polygon_shape.Density = 2;
 
 				BodyDef polygon_bd = new BodyDef();
-				polygon_bd.position.Set(20.0f, 10.0f);
+				polygon_bd.Position.Set(20.0f, 10.0f);
 				polygon_bd.type = BodyType._dynamicBody;
 				polygon_bd.bullet = true;
 				Body polygon_body = m_world.CreateBody(polygon_bd);
-				polygon_body.CreateFixture(polygon_shape, 2.0f);
+				
+				polygon_body.CreateFixture(polygon_shape);
 
 				RevoluteJointDef rjd = new RevoluteJointDef();
 				rjd.Initialize(ground, polygon_body, new Vec2(20.0f, 10.0f));
@@ -105,7 +108,7 @@ namespace Testbed.Tests {
 		
 				FixtureDef polyFixtureDef = new FixtureDef();
 				polyFixtureDef.shape = polyShape;
-				polyFixtureDef.density = 1;
+				polyFixtureDef.Density = 1;
 
 				body.CreateFixture(polyFixtureDef);	//assertion hits inside here
 			}

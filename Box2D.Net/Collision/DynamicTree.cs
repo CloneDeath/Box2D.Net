@@ -104,22 +104,22 @@ namespace Box2D {
 			// Predict AABB displacement.
 			Vec2 d = Settings._aabbMultiplier * displacement;
 
-			if (d.x < 0.0f)
+			if (d.X < 0.0f)
 			{
-			    b.lowerBound.x += d.x;
+			    b.lowerBound.X += d.X;
 			}
 			else
 			{
-			    b.upperBound.x += d.x;
+			    b.upperBound.X += d.X;
 			}
 
-			if (d.y < 0.0f)
+			if (d.Y < 0.0f)
 			{
-			    b.lowerBound.y += d.y;
+			    b.lowerBound.Y += d.Y;
 			}
 			else
 			{
-			    b.upperBound.y += d.y;
+			    b.upperBound.Y += d.Y;
 			}
 
 			m_nodes[proxyId].aabb = b;

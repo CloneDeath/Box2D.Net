@@ -19,7 +19,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -28,7 +29,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				fd.friction = 0.2f;
 
 				RevoluteJointDef jd = new RevoluteJointDef();
@@ -38,7 +39,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(-14.5f + 1.0f * i, 5.0f);
+					bd.Position.Set(-14.5f + 1.0f * i, 5.0f);
 					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 
@@ -70,11 +71,11 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-8.0f + 8.0f * i, 12.0f);
+				bd.Position.Set(-8.0f + 8.0f * i, 12.0f);
 				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(fd);
 			}
@@ -86,11 +87,11 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-6.0f + 6.0f * i, 10.0f);
+				bd.Position.Set(-6.0f + 6.0f * i, 10.0f);
 				Body body = m_world.CreateBody(bd);
 				body.CreateFixture(fd);
 			}

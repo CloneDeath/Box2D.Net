@@ -175,20 +175,20 @@ namespace Testbed.Tests {
 		{
 			Vec2 w = new Vec2(); 
 			w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
-			//aabb.lowerBound.x = -m_proxyExtent;
-			//aabb.lowerBound.y = -m_proxyExtent + m_worldExtent;
-			aabb.lowerBound.x = RandomFloat(-m_worldExtent, m_worldExtent);
-			aabb.lowerBound.y = RandomFloat(0.0f, 2.0f * m_worldExtent);
+			//aabb.lowerBound.X = -m_proxyExtent;
+			//aabb.lowerBound.Y = -m_proxyExtent + m_worldExtent;
+			aabb.lowerBound.X = RandomFloat(-m_worldExtent, m_worldExtent);
+			aabb.lowerBound.Y = RandomFloat(0.0f, 2.0f * m_worldExtent);
 			aabb.upperBound = aabb.lowerBound + w;
 		}
 
 		private void MoveAABB(AABB aabb)
 		{
 			Vec2 d;
-			d.x = RandomFloat(-0.5f, 0.5f);
-			d.y = RandomFloat(-0.5f, 0.5f);
-			//d.x = 2.0f;
-			//d.y = 0.0f;
+			d.X = RandomFloat(-0.5f, 0.5f);
+			d.Y = RandomFloat(-0.5f, 0.5f);
+			//d.X = 2.0f;
+			//d.Y = 0.0f;
 			aabb.lowerBound += d;
 			aabb.upperBound += d;
 

@@ -51,7 +51,8 @@ namespace Testbed.Tests {
 
 					EdgeShape shape = new EdgeShape();
 					shape.Set(new Vec2(x1, y1), new Vec2(x2, y2));
-					ground.CreateFixture(shape, 0.0f);
+					shape.Density = 0;
+					ground.CreateFixture(shape);
 
 					x1 = x2;
 					y1 = y2;
@@ -118,7 +119,7 @@ namespace Testbed.Tests {
 
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(10.0f, 20.0f);
-			bd.position.Set(x, y);
+			bd.Position.Set(x, y);
 			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 			bd.type = BodyType._dynamicBody;
 
@@ -134,7 +135,7 @@ namespace Testbed.Tests {
 				FixtureDef fd = new FixtureDef();
 				fd.shape = m_polygons[index];
 				fd.friction = 0.3f;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 			else
@@ -142,7 +143,7 @@ namespace Testbed.Tests {
 				FixtureDef fd = new FixtureDef();
 				fd.shape = m_circle;
 				fd.friction = 0.3f;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 

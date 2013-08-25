@@ -11,13 +11,10 @@ namespace Box2D {
 	/// @warning you cannot reuse fixtures.
 	public class Fixture
 	{
-		internal float m_density;
-
+		internal float m_Density;
 		protected Fixture m_next; //pointer
 		internal Body m_body; //pointer
-
 		protected Shape m_shape; //pointer
-
 		internal float m_friction;
 		internal float m_restitution;
 
@@ -42,19 +39,18 @@ namespace Box2D {
 			return m_shape;
 		}
 
-		/// Set if this fixture is a sensor.
-		public void SetSensor(bool sensor){
-			if (sensor != m_isSensor)
-			{
-				m_body.SetAwake(true);
-				m_isSensor = sensor;
-			}
-		}
-
 		/// Is this fixture a sensor (non-solid)?
-		/// @return the true if the shape is a sensor.
-		public bool IsSensor(){
-			return m_isSensor;
+		/// true if the shape is a sensor, false if it is not
+		public bool IsSensor {
+			get {
+				return m_isSensor;
+			}
+			set {
+				if (value != m_isSensor) {
+					m_body.SetAwake(true);
+					m_isSensor = value;
+				}
+			}
 		}
 
 		/// Set the contact filtering data. This will not update contacts until the next time
@@ -67,6 +63,12 @@ namespace Box2D {
 			set {
 				m_filter = value;
 				Refilter();
+			}
+		}
+
+		public Body Body {
+			get {
+				return m_body;
 			}
 		}
 
@@ -83,8 +85,8 @@ namespace Box2D {
 			//while (edge)
 			//{
 			//    Contact* contact = edge.contact;
-			//    Fixture fixtureA = contact.GetFixtureA();
-			//    Fixture fixtureB = contact.GetFixtureB();
+			//    Fixture fixtureA = contact.FixtureA;
+			//    Fixture fixtureB = contact.FixtureB;
 			//    if (fixtureA == this || fixtureB == this)
 			//    {
 			//        contact.FlagForFiltering();
@@ -144,24 +146,24 @@ namespace Box2D {
 			return m_shape.RayCast(out output, input, m_body.GetTransform(), childIndex);
 		}
 
-		/// Get the mass data for this fixture. The mass data is based on the density and
+		/// Get the mass data for this fixture. The mass data is based on the Density and
 		/// the shape. The rotational inertia is about the shape's origin. This operation
 		/// may be expensive.
 		public void GetMassData(out MassData massData){
-			m_shape.ComputeMass(out massData, m_density);
+			m_shape.ComputeMass(out massData, m_Density);
 		}
 
-		/// Set the density of this fixture. This will _not_ automatically adjust the mass
+		/// Set the Density of this fixture. This will _not_ automatically adjust the mass
 		/// of the body. You must call Body::ResetMassData to update the body's mass.
-		public void SetDensity(float density){
+		public void SetDensity(float Density){
 			throw new NotImplementedException();
-			//Utilities.Assert(Utilities.IsValid(density) && density >= 0.0f);
-			//m_density = density;
+			//Utilities.Assert(Utilities.IsValid(Density) && Density >= 0.0f);
+			//m_Density = Density;
 		}
 
-		/// Get the density of this fixture.
+		/// Get the Density of this fixture.
 		public float GetDensity(){
-			return m_density;
+			return m_Density;
 		}
 
 		/// Get the coefficient of friction.
@@ -203,11 +205,11 @@ namespace Box2D {
 			//Settings.Log("    FixtureDef fd = new FixtureDef();\n");
 			//Settings.Log("    fd.friction = %.15lef;\n", m_friction);
 			//Settings.Log("    fd.restitution = %.15lef;\n", m_restitution);
-			//Settings.Log("    fd.density = %.15lef;\n", m_density);
-			//Settings.Log("    fd.isSensor = (bool)(%d);\n", m_isSensor);
-			//Settings.Log("    fd.filter.categoryBits = (ushort)(%d);\n", m_filter.categoryBits);
-			//Settings.Log("    fd.filter.maskBits = (ushort)(%d);\n", m_filter.maskBits);
-			//Settings.Log("    fd.filter.groupIndex = (short)(%d);\n", m_filter.groupIndex);
+			//Settings.Log("    fd.Density = %.15lef;\n", m_Density);
+			//Settings.Log("    fd.IsSensor = (bool)(%d);\n", m_isSensor);
+			//Settings.Log("    fd.Filter.CategoryBits = (ushort)(%d);\n", m_filter.CategoryBits);
+			//Settings.Log("    fd.Filter.MaskBits = (ushort)(%d);\n", m_filter.MaskBits);
+			//Settings.Log("    fd.Filter.GroupIndex = (short)(%d);\n", m_filter.GroupIndex);
 
 			//switch (m_shape.m_type)
 			//{
@@ -216,7 +218,7 @@ namespace Box2D {
 			//        CircleShape* s = (CircleShape*)m_shape;
 			//        Settings.Log("    CircleShape shape;\n");
 			//        Settings.Log("    shape.m_radius = %.15lef;\n", s.m_radius);
-			//        Settings.Log("    shape.m_p.Set(%.15lef, %.15lef);\n", s.m_p.x, s.m_p.y);
+			//        Settings.Log("    shape.m_p.Set(%.15lef, %.15lef);\n", s.m_p.X, s.m_p.Y);
 			//    }
 			//    break;
 
@@ -225,10 +227,10 @@ namespace Box2D {
 			//        EdgeShape* s = (EdgeShape*)m_shape;
 			//        Settings.Log("    EdgeShape shape;\n");
 			//        Settings.Log("    shape.m_radius = %.15lef;\n", s.m_radius);
-			//        Settings.Log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s.m_vertex0.x, s.m_vertex0.y);
-			//        Settings.Log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s.m_vertex1.x, s.m_vertex1.y);
-			//        Settings.Log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n", s.m_vertex2.x, s.m_vertex2.y);
-			//        Settings.Log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n", s.m_vertex3.x, s.m_vertex3.y);
+			//        Settings.Log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s.m_vertex0.X, s.m_vertex0.Y);
+			//        Settings.Log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s.m_vertex1.X, s.m_vertex1.Y);
+			//        Settings.Log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n", s.m_vertex2.X, s.m_vertex2.Y);
+			//        Settings.Log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n", s.m_vertex3.X, s.m_vertex3.Y);
 			//        Settings.Log("    shape.m_hasVertex0 = (bool)(%d);\n", s.m_hasVertex0);
 			//        Settings.Log("    shape.m_hasVertex3 = (bool)(%d);\n", s.m_hasVertex3);
 			//    }
@@ -241,7 +243,7 @@ namespace Box2D {
 			//        Settings.Log("    Vec2[] vs = new Vec2[%d];\n", Settings._maxPolygonVertices);
 			//        for (int i = 0; i < s.m_count; ++i)
 			//        {
-			//            Settings.Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s.m_vertices[i].x, s.m_vertices[i].y);
+			//            Settings.Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s.m_vertices[i].X, s.m_vertices[i].Y);
 			//        }
 			//        Settings.Log("    shape.Set(vs, %d);\n", s.m_count);
 			//    }
@@ -254,11 +256,11 @@ namespace Box2D {
 			//        Settings.Log("    Vec2[] vs = new Vec2[%d];\n", s.m_count);
 			//        for (int i = 0; i < s.m_count; ++i)
 			//        {
-			//            Settings.Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s.m_vertices[i].x, s.m_vertices[i].y);
+			//            Settings.Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s.m_vertices[i].X, s.m_vertices[i].Y);
 			//        }
 			//        Settings.Log("    shape.CreateChain(vs, %d);\n", s.m_count);
-			//        Settings.Log("    shape.m_prevVertex.Set(%.15lef, %.15lef);\n", s.m_prevVertex.x, s.m_prevVertex.y);
-			//        Settings.Log("    shape.m_nextVertex.Set(%.15lef, %.15lef);\n", s.m_nextVertex.x, s.m_nextVertex.y);
+			//        Settings.Log("    shape.m_prevVertex.Set(%.15lef, %.15lef);\n", s.m_prevVertex.X, s.m_prevVertex.Y);
+			//        Settings.Log("    shape.m_nextVertex.Set(%.15lef, %.15lef);\n", s.m_nextVertex.X, s.m_nextVertex.Y);
 			//        Settings.Log("    shape.m_hasPrevVertex = (bool)(%d);\n", s.m_hasPrevVertex);
 			//        Settings.Log("    shape.m_hasNextVertex = (bool)(%d);\n", s.m_hasNextVertex);
 			//    }
@@ -281,22 +283,22 @@ namespace Box2D {
 			m_next = null;
 			m_proxies = new List<FixtureProxy>();
 			m_shape = null;
-			m_density = 0.0f;
+			m_Density = 0.0f;
 		}
 
 		// We need separation create/destroy functions from the constructor/destructor because
 		// the destructor cannot access the allocator (no destructor arguments allowed by C++).
 		internal void Create(Body body, FixtureDef def){
-			m_userData = def.userData;
+			m_userData = def.UserData;
 			m_friction = def.friction;
 			m_restitution = def.restitution;
 
 			m_body = body;
 			m_next = null;
 
-			m_filter = def.filter;
+			m_filter = def.Filter;
 
-			m_isSensor = def.isSensor;
+			m_isSensor = def.IsSensor;
 
 			m_shape = def.shape.Clone();
 
@@ -304,7 +306,7 @@ namespace Box2D {
 			int childCount = m_shape.GetChildCount();
 			m_proxies = new List<FixtureProxy>();
 
-			m_density = def.density;
+			m_Density = def.Density;
 		}
 
 		protected void Destroy(){

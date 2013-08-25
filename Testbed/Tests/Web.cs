@@ -20,31 +20,32 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
+				shape.Density = 5;
 
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
 
-				bd.position.Set(-5.0f, 5.0f);
+				bd.Position.Set(-5.0f, 5.0f);
 				m_bodies[0] = m_world.CreateBody(bd);
-				m_bodies[0].CreateFixture(shape, 5.0f);
-
-				bd.position.Set(5.0f, 5.0f);
+				m_bodies[0].CreateFixture(shape);
+				bd.Position.Set(5.0f, 5.0f);
 				m_bodies[1] = m_world.CreateBody(bd);
-				m_bodies[1].CreateFixture(shape, 5.0f);
+				m_bodies[1].CreateFixture(shape);
 
-				bd.position.Set(5.0f, 15.0f);
+				bd.Position.Set(5.0f, 15.0f);
 				m_bodies[2] = m_world.CreateBody(bd);
-				m_bodies[2].CreateFixture(shape, 5.0f);
+				m_bodies[2].CreateFixture(shape);
 
-				bd.position.Set(-5.0f, 15.0f);
+				bd.Position.Set(-5.0f, 15.0f);
 				m_bodies[3] = m_world.CreateBody(bd);
-				m_bodies[3].CreateFixture(shape, 5.0f);
+				m_bodies[3].CreateFixture(shape);
 
 				DistanceJointDef jd = new DistanceJointDef();
 				Vec2 p1, p2, d;

@@ -43,10 +43,10 @@ namespace Box2D {
 		}
 
 		public override Vec2 GetReactionForce(float inv_dt){
-			return inv_dt * (m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis);
+			return inv_dt * (m_impulse.X * m_perp + (m_motorImpulse + m_impulse.Z) * m_axis);
 		}
 		public override float GetReactionTorque(float inv_dt) {
-			return inv_dt * m_impulse.y;
+			return inv_dt * m_impulse.Y;
 		}
 
 		/// The local anchor point relative to bodyA's origin.
@@ -105,7 +105,7 @@ namespace Box2D {
 				m_bodyA.SetAwake(true);
 				m_bodyB.SetAwake(true);
 				m_enableLimit = flag;
-				m_impulse.z = 0.0f;
+				m_impulse.Z = 0.0f;
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace Box2D {
 				m_bodyB.SetAwake(true);
 				m_lowerTranslation = lower;
 				m_upperTranslation = upper;
-				m_impulse.z = 0.0f;
+				m_impulse.Z = 0.0f;
 			}
 		}
 
@@ -178,9 +178,9 @@ namespace Box2D {
 			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
 			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
 			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-			Settings.Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.X, m_localAnchorA.Y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.X, m_localAnchorB.Y);
+			Settings.Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.X, m_localXAxisA.Y);
 			Settings.Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 			Settings.Log("  jd.enableLimit = (bool)(%d);\n", m_enableLimit);
 			Settings.Log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);
@@ -273,7 +273,7 @@ namespace Box2D {
 					if (m_limitState != LimitState.e_atLowerLimit)
 					{
 						m_limitState = LimitState.e_atLowerLimit;
-						m_impulse.z = 0.0f;
+						m_impulse.Z = 0.0f;
 					}
 				}
 				else if (jointTranslation >= m_upperTranslation)
@@ -281,19 +281,19 @@ namespace Box2D {
 					if (m_limitState != LimitState.e_atUpperLimit)
 					{
 						m_limitState = LimitState.e_atUpperLimit;
-						m_impulse.z = 0.0f;
+						m_impulse.Z = 0.0f;
 					}
 				}
 				else
 				{
 					m_limitState = LimitState.e_inactiveLimit;
-					m_impulse.z = 0.0f;
+					m_impulse.Z = 0.0f;
 				}
 			}
 			else
 			{
 				m_limitState = LimitState.e_inactiveLimit;
-				m_impulse.z = 0.0f;
+				m_impulse.Z = 0.0f;
 			}
 
 			if (m_enableMotor == false)
@@ -307,9 +307,9 @@ namespace Box2D {
 				m_impulse *= data.step.dtRatio;
 				m_motorImpulse *= data.step.dtRatio;
 
-				Vec2 P = m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis;
-				float LA = m_impulse.x * m_s1 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a1;
-				float LB = m_impulse.x * m_s2 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a2;
+				Vec2 P = m_impulse.X * m_perp + (m_motorImpulse + m_impulse.Z) * m_axis;
+				float LA = m_impulse.X * m_s1 + m_impulse.Y + (m_motorImpulse + m_impulse.Z) * m_a1;
+				float LB = m_impulse.X * m_s2 + m_impulse.Y + (m_motorImpulse + m_impulse.Z) * m_a2;
 
 				vA -= mA * P;
 				wA -= iA * LA;
@@ -360,15 +360,15 @@ namespace Box2D {
 			}
 
 			Vec2 Cdot1;
-			Cdot1.x = Utilities.Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA;
-			Cdot1.y = wB - wA;
+			Cdot1.X = Utilities.Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA;
+			Cdot1.Y = wB - wA;
 
 			if (m_enableLimit && m_limitState != LimitState.e_inactiveLimit)
 			{
 				// Solve prismatic and limit constraint in block form.
 				float Cdot2;
 				Cdot2 = Utilities.Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
-				Vec3 Cdot = new Vec3(Cdot1.x, Cdot1.y, Cdot2);
+				Vec3 Cdot = new Vec3(Cdot1.X, Cdot1.Y, Cdot2);
 
 				Vec3 f1 = m_impulse;
 				Vec3 df =  m_K.Solve33(-Cdot);
@@ -376,24 +376,24 @@ namespace Box2D {
 
 				if (m_limitState == LimitState.e_atLowerLimit)
 				{
-					m_impulse.z = Math.Max(m_impulse.z, 0.0f);
+					m_impulse.Z = Math.Max(m_impulse.Z, 0.0f);
 				}
 				else if (m_limitState == LimitState.e_atUpperLimit)
 				{
-					m_impulse.z = Math.Min(m_impulse.z, 0.0f);
+					m_impulse.Z = Math.Min(m_impulse.Z, 0.0f);
 				}
 
 				// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
-				Vec2 b = -Cdot1 - (m_impulse.z - f1.z) * new Vec2(m_K.ez.x, m_K.ez.y);
-				Vec2 f2r = m_K.Solve22(b) + new Vec2(f1.x, f1.y);
-				m_impulse.x = f2r.x;
-				m_impulse.y = f2r.y;
+				Vec2 b = -Cdot1 - (m_impulse.Z - f1.Z) * new Vec2(m_K.ez.X, m_K.ez.Y);
+				Vec2 f2r = m_K.Solve22(b) + new Vec2(f1.X, f1.Y);
+				m_impulse.X = f2r.X;
+				m_impulse.Y = f2r.Y;
 
 				df = m_impulse - f1;
 
-				Vec2 P = df.x * m_perp + df.z * m_axis;
-				float LA = df.x * m_s1 + df.y + df.z * m_a1;
-				float LB = df.x * m_s2 + df.y + df.z * m_a2;
+				Vec2 P = df.X * m_perp + df.Z * m_axis;
+				float LA = df.X * m_s1 + df.Y + df.Z * m_a1;
+				float LB = df.X * m_s2 + df.Y + df.Z * m_a2;
 
 				vA -= mA * P;
 				wA -= iA * LA;
@@ -405,12 +405,12 @@ namespace Box2D {
 			{
 				// Limit is inactive, just solve the prismatic constraint in block form.
 				Vec2 df = m_K.Solve22(-Cdot1);
-				m_impulse.x += df.x;
-				m_impulse.y += df.y;
+				m_impulse.X += df.X;
+				m_impulse.Y += df.Y;
 
-				Vec2 P = df.x * m_perp;
-				float LA = df.x * m_s1 + df.y;
-				float LB = df.x * m_s2 + df.y;
+				Vec2 P = df.X * m_perp;
+				float LA = df.X * m_s1 + df.Y;
+				float LB = df.X * m_s2 + df.Y;
 
 				vA -= mA * P;
 				wA -= iA * LA;
@@ -452,11 +452,11 @@ namespace Box2D {
 
 			Vec3 impulse;
 			Vec2 C1;
-			C1.x = Utilities.Dot(perp, d);
-			C1.y = aB - aA - m_referenceAngle;
+			C1.X = Utilities.Dot(perp, d);
+			C1.Y = aB - aA - m_referenceAngle;
 
-			float linearError = Math.Abs(C1.x);
-			float angularError = Math.Abs(C1.y);
+			float linearError = Math.Abs(C1.X);
+			float angularError = Math.Abs(C1.Y);
 
 			bool active = false;
 			float C2 = 0.0f;
@@ -506,9 +506,9 @@ namespace Box2D {
 				K.ez.Set(k13, k23, k33);
 
 				Vec3 C = new Vec3();
-				C.x = C1.x;
-				C.y = C1.y;
-				C.z = C2;
+				C.X = C1.X;
+				C.Y = C1.Y;
+				C.Z = C2;
 
 				impulse = K.Solve33(-C);
 			}
@@ -527,14 +527,14 @@ namespace Box2D {
 				K.ey.Set(k12, k22);
 
 				Vec2 impulse1 = K.Solve(-C1);
-				impulse.x = impulse1.x;
-				impulse.y = impulse1.y;
-				impulse.z = 0.0f;
+				impulse.X = impulse1.X;
+				impulse.Y = impulse1.Y;
+				impulse.Z = 0.0f;
 			}
 
-			Vec2 P = impulse.x * perp + impulse.z * axis;
-			float LA = impulse.x * s1 + impulse.y + impulse.z * a1;
-			float LB = impulse.x * s2 + impulse.y + impulse.z * a2;
+			Vec2 P = impulse.X * perp + impulse.Z * axis;
+			float LA = impulse.X * s1 + impulse.Y + impulse.Z * a1;
+			float LB = impulse.X * s2 + impulse.Y + impulse.Z * a2;
 
 			cA -= mA * P;
 			aA -= iA * LA;

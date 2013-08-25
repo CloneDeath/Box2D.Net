@@ -120,9 +120,9 @@ namespace Box2D {
 			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
 			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
 			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-			Settings.Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.X, m_localAnchorA.Y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.X, m_localAnchorB.Y);
+			Settings.Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.X, m_localXAxisA.Y);
 			Settings.Log("  jd.enableMotor = (bool)(%d);\n", m_enableMotor);
 			Settings.Log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 			Settings.Log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);

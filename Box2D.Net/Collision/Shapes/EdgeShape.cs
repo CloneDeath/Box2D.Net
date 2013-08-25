@@ -11,10 +11,10 @@ namespace Box2D {
 		public EdgeShape(){
 			m_type = ShapeType.Edge;
 			m_radius = Settings._polygonRadius;
-			m_vertex0.x = 0.0f;
-			m_vertex0.y = 0.0f;
-			m_vertex3.x = 0.0f;
-			m_vertex3.y = 0.0f;
+			m_vertex0.X = 0.0f;
+			m_vertex0.Y = 0.0f;
+			m_vertex3.X = 0.0f;
+			m_vertex3.Y = 0.0f;
 			m_hasVertex0 = false;
 			m_hasVertex3 = false;
 		}
@@ -59,7 +59,7 @@ namespace Box2D {
 			//Vec2 v1 = m_vertex1;
 			//Vec2 v2 = m_vertex2;
 			//Vec2 e = v2 - v1;
-			//Vec2 normal(e.y, -e.x);
+			//Vec2 normal(e.Y, -e.X);
 			//normal.Normalize();
 
 			//// q = p1 + t * d
@@ -122,7 +122,7 @@ namespace Box2D {
 		}
 
 		/// @see Shape::ComputeMass
-		public override void ComputeMass(out MassData massData, float density) {
+		public override void ComputeMass(out MassData massData, float Density) {
 			throw new NotImplementedException();
 
 			//massData.mass = 0.0f;

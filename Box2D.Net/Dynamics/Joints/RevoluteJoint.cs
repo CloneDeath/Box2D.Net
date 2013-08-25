@@ -55,7 +55,7 @@ namespace Box2D {
 				m_bodyA.SetAwake(true);
 				m_bodyB.SetAwake(true);
 				m_enableLimit = flag;
-				m_impulse.z = 0.0f;
+				m_impulse.Z = 0.0f;
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace Box2D {
 			{
 				m_bodyA.SetAwake(true);
 				m_bodyB.SetAwake(true);
-				m_impulse.z = 0.0f;
+				m_impulse.Z = 0.0f;
 				m_lowerAngle = lower;
 				m_upperAngle = upper;
 			}
@@ -118,14 +118,14 @@ namespace Box2D {
 		/// Get the reaction force given the inverse time step.
 		/// Unit is N.
 		public override Vec2 GetReactionForce(float inv_dt){
-			Vec2 P = new Vec2(m_impulse.x, m_impulse.y);
+			Vec2 P = new Vec2(m_impulse.X, m_impulse.Y);
 			return inv_dt * P;
 		}
 
 		/// Get the reaction torque due to the joint limit given the inverse time step.
 		/// Unit is N*m.
 		public override float GetReactionTorque(float inv_dt){
-			return inv_dt * m_impulse.z;
+			return inv_dt * m_impulse.Z;
 		}
 
 		/// Get the current motor torque given the inverse time step.
@@ -143,8 +143,8 @@ namespace Box2D {
 			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
 			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
 			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.X, m_localAnchorA.Y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.X, m_localAnchorB.Y);
 			Settings.Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 			Settings.Log("  jd.enableLimit = (bool)(%d);\n", m_enableLimit);
 			Settings.Log("  jd.lowerAngle = %.15lef;\n", m_lowerAngle);
@@ -210,15 +210,15 @@ namespace Box2D {
 
 			bool fixedRotation = (iA + iB == 0.0f);
 
-			m_mass.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
-			m_mass.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
-			m_mass.ez.x = -m_rA.y * iA - m_rB.y * iB;
-			m_mass.ex.y = m_mass.ey.x;
-			m_mass.ey.y = mA + mB + m_rA.x * m_rA.x * iA + m_rB.x * m_rB.x * iB;
-			m_mass.ez.y = m_rA.x * iA + m_rB.x * iB;
-			m_mass.ex.z = m_mass.ez.x;
-			m_mass.ey.z = m_mass.ez.y;
-			m_mass.ez.z = iA + iB;
+			m_mass.ex.X = mA + mB + m_rA.Y * m_rA.Y * iA + m_rB.Y * m_rB.Y * iB;
+			m_mass.ey.X = -m_rA.Y * m_rA.X * iA - m_rB.Y * m_rB.X * iB;
+			m_mass.ez.X = -m_rA.Y * iA - m_rB.Y * iB;
+			m_mass.ex.Y = m_mass.ey.X;
+			m_mass.ey.Y = mA + mB + m_rA.X * m_rA.X * iA + m_rB.X * m_rB.X * iB;
+			m_mass.ez.Y = m_rA.X * iA + m_rB.X * iB;
+			m_mass.ex.Z = m_mass.ez.X;
+			m_mass.ey.Z = m_mass.ez.Y;
+			m_mass.ez.Z = iA + iB;
 
 			m_motorMass = iA + iB;
 			if (m_motorMass > 0.0f)
@@ -242,7 +242,7 @@ namespace Box2D {
 				{
 					if (m_limitState != LimitState.e_atLowerLimit)
 					{
-						m_impulse.z = 0.0f;
+						m_impulse.Z = 0.0f;
 					}
 					m_limitState = LimitState.e_atLowerLimit;
 				}
@@ -250,14 +250,14 @@ namespace Box2D {
 				{
 					if (m_limitState != LimitState.e_atUpperLimit)
 					{
-						m_impulse.z = 0.0f;
+						m_impulse.Z = 0.0f;
 					}
 					m_limitState = LimitState.e_atUpperLimit;
 				}
 				else
 				{
 					m_limitState = LimitState.e_inactiveLimit;
-					m_impulse.z = 0.0f;
+					m_impulse.Z = 0.0f;
 				}
 			}
 			else
@@ -271,13 +271,13 @@ namespace Box2D {
 				m_impulse *= data.step.dtRatio;
 				m_motorImpulse *= data.step.dtRatio;
 
-				Vec2 P = new Vec2(m_impulse.x, m_impulse.y);
+				Vec2 P = new Vec2(m_impulse.X, m_impulse.Y);
 
 				vA -= mA * P;
-				wA -= iA * (Utilities.Cross(m_rA, P) + m_motorImpulse + m_impulse.z);
+				wA -= iA * (Utilities.Cross(m_rA, P) + m_motorImpulse + m_impulse.Z);
 
 				vB += mB * P;
-				wB += iB * (Utilities.Cross(m_rB, P) + m_motorImpulse + m_impulse.z);
+				wB += iB * (Utilities.Cross(m_rB, P) + m_motorImpulse + m_impulse.Z);
 			}
 			else
 			{
@@ -320,7 +320,7 @@ namespace Box2D {
 			{
 				Vec2 Cdot1 = vB + Utilities.Cross(wB, m_rB) - vA - Utilities.Cross(wA, m_rA);
 				float Cdot2 = wB - wA;
-				Vec3 Cdot = new Vec3(Cdot1.x, Cdot1.y, Cdot2);
+				Vec3 Cdot = new Vec3(Cdot1.X, Cdot1.Y, Cdot2);
 
 				Vec3 impulse = -m_mass.Solve33(Cdot);
 
@@ -330,17 +330,17 @@ namespace Box2D {
 				}
 				else if (m_limitState == LimitState.e_atLowerLimit)
 				{
-					float newImpulse = m_impulse.z + impulse.z;
+					float newImpulse = m_impulse.Z + impulse.Z;
 					if (newImpulse < 0.0f)
 					{
-						Vec2 rhs = -Cdot1 + m_impulse.z * new Vec2(m_mass.ez.x, m_mass.ez.y);
+						Vec2 rhs = -Cdot1 + m_impulse.Z * new Vec2(m_mass.ez.X, m_mass.ez.Y);
 						Vec2 reduced = m_mass.Solve22(rhs);
-						impulse.x = reduced.x;
-						impulse.y = reduced.y;
-						impulse.z = -m_impulse.z;
-						m_impulse.x += reduced.x;
-						m_impulse.y += reduced.y;
-						m_impulse.z = 0.0f;
+						impulse.X = reduced.X;
+						impulse.Y = reduced.Y;
+						impulse.Z = -m_impulse.Z;
+						m_impulse.X += reduced.X;
+						m_impulse.Y += reduced.Y;
+						m_impulse.Z = 0.0f;
 					}
 					else
 					{
@@ -349,17 +349,17 @@ namespace Box2D {
 				}
 				else if (m_limitState == LimitState.e_atUpperLimit)
 				{
-					float newImpulse = m_impulse.z + impulse.z;
+					float newImpulse = m_impulse.Z + impulse.Z;
 					if (newImpulse > 0.0f)
 					{
-						Vec2 rhs = -Cdot1 + m_impulse.z * new Vec2(m_mass.ez.x, m_mass.ez.y);
+						Vec2 rhs = -Cdot1 + m_impulse.Z * new Vec2(m_mass.ez.X, m_mass.ez.Y);
 						Vec2 reduced = m_mass.Solve22(rhs);
-						impulse.x = reduced.x;
-						impulse.y = reduced.y;
-						impulse.z = -m_impulse.z;
-						m_impulse.x += reduced.x;
-						m_impulse.y += reduced.y;
-						m_impulse.z = 0.0f;
+						impulse.X = reduced.X;
+						impulse.Y = reduced.Y;
+						impulse.Z = -m_impulse.Z;
+						m_impulse.X += reduced.X;
+						m_impulse.Y += reduced.Y;
+						m_impulse.Z = 0.0f;
 					}
 					else
 					{
@@ -367,13 +367,13 @@ namespace Box2D {
 					}
 				}
 
-				Vec2 P = new Vec2(impulse.x, impulse.y);
+				Vec2 P = new Vec2(impulse.X, impulse.Y);
 
 				vA -= mA * P;
-				wA -= iA * (Utilities.Cross(m_rA, P) + impulse.z);
+				wA -= iA * (Utilities.Cross(m_rA, P) + impulse.Z);
 
 				vB += mB * P;
-				wB += iB * (Utilities.Cross(m_rB, P) + impulse.z);
+				wB += iB * (Utilities.Cross(m_rB, P) + impulse.Z);
 			}
 			else
 			{
@@ -381,8 +381,8 @@ namespace Box2D {
 				Vec2 Cdot = vB + Utilities.Cross(wB, m_rB) - vA - Utilities.Cross(wA, m_rA);
 				Vec2 impulse = m_mass.Solve22(-Cdot);
 
-				m_impulse.x += impulse.x;
-				m_impulse.y += impulse.y;
+				m_impulse.X += impulse.X;
+				m_impulse.Y += impulse.Y;
 
 				vA -= mA * impulse;
 				wA -= iA * Utilities.Cross(m_rA, impulse);
@@ -460,10 +460,10 @@ namespace Box2D {
 				float iA = m_invIA, iB = m_invIB;
 
 				Mat22 K;
-				K.ex.x = mA + mB + iA * rA.y * rA.y + iB * rB.y * rB.y;
-				K.ex.y = -iA * rA.x * rA.y - iB * rB.x * rB.y;
-				K.ey.x = K.ex.y;
-				K.ey.y = mA + mB + iA * rA.x * rA.x + iB * rB.x * rB.x;
+				K.ex.X = mA + mB + iA * rA.Y * rA.Y + iB * rB.Y * rB.Y;
+				K.ex.Y = -iA * rA.X * rA.Y - iB * rB.X * rB.Y;
+				K.ey.X = K.ex.Y;
+				K.ey.Y = mA + mB + iA * rA.X * rA.X + iB * rB.X * rB.X;
 
 				Vec2 impulse = -K.Solve(C);
 

@@ -24,18 +24,20 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-20.0f, 0.0f), new Vec2(20.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Platform
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(0.0f, 10.0f);
+				bd.Position.Set(0.0f, 10.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(3.0f, 0.5f);
-				m_platform = body.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				m_platform = body.CreateFixture(shape);
 
 				m_bottom = 10.0f - 0.5f;
 				m_top = 10.0f + 0.5f;
@@ -45,13 +47,14 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 12.0f);
+				bd.Position.Set(0.0f, 12.0f);
 				Body body = m_world.CreateBody(bd);
 
 				m_radius = 0.5f;
 				CircleShape shape = new CircleShape();
 				shape.m_radius = m_radius;
-				m_character = body.CreateFixture(shape, 20.0f);
+				shape.Density = 20;
+				m_character = body.CreateFixture(shape);
 
 				body.SetLinearVelocity(new Vec2(0.0f, -50.0f));
 
@@ -63,8 +66,8 @@ namespace Testbed.Tests {
 		{
 			base.PreSolve(contact, oldManifold);
 
-			Fixture fixtureA = contact.GetFixtureA();
-			Fixture fixtureB = contact.GetFixtureB();
+			Fixture fixtureA = contact.FixtureA;
+			Fixture fixtureB = contact.FixtureB;
 
 			if (fixtureA != m_platform && fixtureA != m_character)
 			{
@@ -79,13 +82,13 @@ namespace Testbed.Tests {
 	#if true
 			Vec2 position = m_character.GetBody().GetPosition();
 
-			if (position.y < m_top + m_radius - 3.0f *Settings._linearSlop)
+			if (position.Y < m_top + m_radius - 3.0f *Settings._linearSlop)
 			{
 				contact.SetEnabled(false);
 			}
 	#else
 			Vec2 v = m_character.GetBody().GetLinearVelocity();
-			if (v.y > 0.0f)
+			if (v.Y > 0.0f)
 			{
 				contact.SetEnabled(false);
 			}
@@ -99,7 +102,7 @@ namespace Testbed.Tests {
 			
 
 			Vec2 v = m_character.GetBody().GetLinearVelocity();
-			m_debugDraw.DrawString("Character Linear Velocity: %f", v.y);
+			m_debugDraw.DrawString("Character Linear Velocity: %f", v.Y);
 			
 		}
 

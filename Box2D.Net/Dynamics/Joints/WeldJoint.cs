@@ -17,11 +17,11 @@ namespace Box2D {
 		}
 
 		public override Vec2 GetReactionForce(float inv_dt){
-			Vec2 P = new Vec2(m_impulse.x, m_impulse.y);
+			Vec2 P = new Vec2(m_impulse.X, m_impulse.Y);
 			return inv_dt * P;
 		}
 		public override float GetReactionTorque(float inv_dt){
-			return inv_dt * m_impulse.z;
+			return inv_dt * m_impulse.Z;
 		}
 
 		/// The local anchor point relative to bodyA's origin.
@@ -50,8 +50,8 @@ namespace Box2D {
 			Settings.Log("  jd.bodyA = bodies[%d];\n", indexA);
 			Settings.Log("  jd.bodyB = bodies[%d];\n", indexB);
 			Settings.Log("  jd.collideConnected = (bool)(%d);\n", m_collideConnected);
-			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+			Settings.Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.X, m_localAnchorA.Y);
+			Settings.Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.X, m_localAnchorB.Y);
 			Settings.Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 			Settings.Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 			Settings.Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
@@ -107,15 +107,15 @@ namespace Box2D {
 			float iA = m_invIA, iB = m_invIB;
 
 			Mat33 K;
-			K.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
-			K.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
-			K.ez.x = -m_rA.y * iA - m_rB.y * iB;
-			K.ex.y = K.ey.x;
-			K.ey.y = mA + mB + m_rA.x * m_rA.x * iA + m_rB.x * m_rB.x * iB;
-			K.ez.y = m_rA.x * iA + m_rB.x * iB;
-			K.ex.z = K.ez.x;
-			K.ey.z = K.ez.y;
-			K.ez.z = iA + iB;
+			K.ex.X = mA + mB + m_rA.Y * m_rA.Y * iA + m_rB.Y * m_rB.Y * iB;
+			K.ey.X = -m_rA.Y * m_rA.X * iA - m_rB.Y * m_rB.X * iB;
+			K.ez.X = -m_rA.Y * iA - m_rB.Y * iB;
+			K.ex.Y = K.ey.X;
+			K.ey.Y = mA + mB + m_rA.X * m_rA.X * iA + m_rB.X * m_rB.X * iB;
+			K.ez.Y = m_rA.X * iA + m_rB.X * iB;
+			K.ex.Z = K.ez.X;
+			K.ey.Z = K.ez.Y;
+			K.ez.Z = iA + iB;
 
 			if (m_frequencyHz > 0.0f)
 			{
@@ -142,7 +142,7 @@ namespace Box2D {
 				m_bias = C * h * k * m_gamma;
 
 				invM += m_gamma;
-				m_mass.ez.z = invM != 0.0f ? 1.0f / invM : 0.0f;
+				m_mass.ez.Z = invM != 0.0f ? 1.0f / invM : 0.0f;
 			}
 			else
 			{
@@ -156,13 +156,13 @@ namespace Box2D {
 				// Scale impulses to support a variable time step.
 				m_impulse *= data.step.dtRatio;
 
-				Vec2 P = new Vec2(m_impulse.x, m_impulse.y);
+				Vec2 P = new Vec2(m_impulse.X, m_impulse.Y);
 
 				vA -= mA * P;
-				wA -= iA * (Utilities.Cross(m_rA, P) + m_impulse.z);
+				wA -= iA * (Utilities.Cross(m_rA, P) + m_impulse.Z);
 
 				vB += mB * P;
-				wB += iB * (Utilities.Cross(m_rB, P) + m_impulse.z);
+				wB += iB * (Utilities.Cross(m_rB, P) + m_impulse.Z);
 			}
 			else
 			{
@@ -187,8 +187,8 @@ namespace Box2D {
 			{
 				float Cdot2 = wB - wA;
 
-				float impulse2 = -m_mass.ez.z * (Cdot2 + m_bias + m_gamma * m_impulse.z);
-				m_impulse.z += impulse2;
+				float impulse2 = -m_mass.ez.Z * (Cdot2 + m_bias + m_gamma * m_impulse.Z);
+				m_impulse.Z += impulse2;
 
 				wA -= iA * impulse2;
 				wB += iB * impulse2;
@@ -196,8 +196,8 @@ namespace Box2D {
 				Vec2 Cdot1 = vB + Utilities.Cross(wB, m_rB) - vA - Utilities.Cross(wA, m_rA);
 
 				Vec2 impulse1 = -Utilities.Mul22(m_mass, Cdot1);
-				m_impulse.x += impulse1.x;
-				m_impulse.y += impulse1.y;
+				m_impulse.X += impulse1.X;
+				m_impulse.Y += impulse1.Y;
 
 				Vec2 P = impulse1;
 
@@ -211,18 +211,18 @@ namespace Box2D {
 			{
 				Vec2 Cdot1 = vB + Utilities.Cross(wB, m_rB) - vA - Utilities.Cross(wA, m_rA);
 				float Cdot2 = wB - wA;
-				Vec3 Cdot = new Vec3(Cdot1.x, Cdot1.y, Cdot2);
+				Vec3 Cdot = new Vec3(Cdot1.X, Cdot1.Y, Cdot2);
 
 				Vec3 impulse = -Utilities.Mul(m_mass, Cdot);
 				m_impulse += impulse;
 
-				Vec2 P = new Vec2(impulse.x, impulse.y);
+				Vec2 P = new Vec2(impulse.X, impulse.Y);
 
 				vA -= mA * P;
-				wA -= iA * (Utilities.Cross(m_rA, P) + impulse.z);
+				wA -= iA * (Utilities.Cross(m_rA, P) + impulse.Z);
 
 				vB += mB * P;
-				wB += iB * (Utilities.Cross(m_rB, P) + impulse.z);
+				wB += iB * (Utilities.Cross(m_rB, P) + impulse.Z);
 			}
 
 			data.velocities[m_indexA].v = vA;
@@ -248,15 +248,15 @@ namespace Box2D {
 			float positionError, angularError;
 
 			Mat33 K;
-			K.ex.x = mA + mB + rA.y * rA.y * iA + rB.y * rB.y * iB;
-			K.ey.x = -rA.y * rA.x * iA - rB.y * rB.x * iB;
-			K.ez.x = -rA.y * iA - rB.y * iB;
-			K.ex.y = K.ey.x;
-			K.ey.y = mA + mB + rA.x * rA.x * iA + rB.x * rB.x * iB;
-			K.ez.y = rA.x * iA + rB.x * iB;
-			K.ex.z = K.ez.x;
-			K.ey.z = K.ez.y;
-			K.ez.z = iA + iB;
+			K.ex.X = mA + mB + rA.Y * rA.Y * iA + rB.Y * rB.Y * iB;
+			K.ey.X = -rA.Y * rA.X * iA - rB.Y * rB.X * iB;
+			K.ez.X = -rA.Y * iA - rB.Y * iB;
+			K.ex.Y = K.ey.X;
+			K.ey.Y = mA + mB + rA.X * rA.X * iA + rB.X * rB.X * iB;
+			K.ez.Y = rA.X * iA + rB.X * iB;
+			K.ex.Z = K.ez.X;
+			K.ey.Z = K.ez.Y;
+			K.ez.Z = iA + iB;
 
 			if (m_frequencyHz > 0.0f)
 			{
@@ -281,16 +281,16 @@ namespace Box2D {
 				positionError = C1.Length();
 				angularError = Math.Abs(C2);
 
-				Vec3 C = new Vec3(C1.x, C1.y, C2);
+				Vec3 C = new Vec3(C1.X, C1.Y, C2);
 	
 				Vec3 impulse = -K.Solve33(C);
-				Vec2 P = new Vec2(impulse.x, impulse.y);
+				Vec2 P = new Vec2(impulse.X, impulse.Y);
 
 				cA -= mA * P;
-				aA -= iA * (Utilities.Cross(rA, P) + impulse.z);
+				aA -= iA * (Utilities.Cross(rA, P) + impulse.Z);
 
 				cB += mB * P;
-				aB += iB * (Utilities.Cross(rB, P) + impulse.z);
+				aB += iB * (Utilities.Cross(rB, P) + impulse.Z);
 			}
 
 			data.positions[m_indexA].c = cA;

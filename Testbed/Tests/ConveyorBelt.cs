@@ -17,13 +17,14 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-20.0f, 0.0f), new Vec2(20.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Platform
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(-5.0f, 5.0f);
+				bd.Position.Set(-5.0f, 5.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
@@ -40,12 +41,13 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-10.0f + 2.0f * i, 7.0f);
+				bd.Position.Set(-10.0f + 2.0f * i, 7.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 0.5f);
-				body.CreateFixture(shape, 20.0f);
+				shape.Density = 20;
+				body.CreateFixture(shape);
 			}
 		}
 
@@ -53,8 +55,8 @@ namespace Testbed.Tests {
 		{
 			base.PreSolve(contact, oldManifold);
 
-			Fixture fixtureA = contact.GetFixtureA();
-			Fixture fixtureB = contact.GetFixtureB();
+			Fixture fixtureA = contact.FixtureA;
+			Fixture fixtureB = contact.FixtureB;
 
 			if (fixtureA == m_platform)
 			{

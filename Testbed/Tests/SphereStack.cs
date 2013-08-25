@@ -18,7 +18,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -29,11 +30,11 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(0.0f, 4.0f + 3.0f * i);
+					bd.Position.Set(0.0f, 4.0f + 3.0f * i);
 
 					m_bodies[i] = m_world.CreateBody(bd);
 
-					m_bodies[i].CreateFixture(shape, 1.0f);
+					m_bodies[i].CreateFixture(shape);
 
 					m_bodies[i].SetLinearVelocity(new Vec2(0.0f, -50.0f));
 				}
@@ -46,12 +47,12 @@ namespace Testbed.Tests {
 
 			//for (int i = 0; i < e_count; ++i)
 			//{
-			//	printf("%g ", m_bodies[i].GetWorldCenter().y);
+			//	printf("%g ", m_bodies[i].GetWorldCenter().Y);
 			//}
 
 			//for (int i = 0; i < e_count; ++i)
 			//{
-			//	printf("%g ", m_bodies[i].GetLinearVelocity().y);
+			//	printf("%g ", m_bodies[i].GetLinearVelocity().Y);
 			//}
 
 			//printf("\n");

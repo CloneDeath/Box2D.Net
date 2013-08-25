@@ -77,6 +77,7 @@
     <Compile Include="Common\Vec3.cs" />
     <Compile Include="Common\Utilities.cs" />
     <Compile Include="Dynamics\Body.cs" />
+    <Compile Include="Dynamics\BodyDef.cs" />
     <Compile Include="Dynamics\ContactFilter.cs" />
     <Compile Include="Dynamics\ContactImpulse.cs" />
     <Compile Include="Dynamics\ContactListener.cs" />

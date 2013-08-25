@@ -58,11 +58,11 @@ namespace Box2D {
 
 			// Find the right most point on the hull
 			int i0 = 0;
-			float x0 = ps[0].x;
+			float x0 = ps[0].X;
 			for (int i = 1; i < count; ++i)
 			{
-			    float x = ps[i].x;
-			    if (x > x0 || (x == x0 && ps[i].y < ps[i0].y))
+			    float x = ps[i].X;
+			    if (x > x0 || (x == x0 && ps[i].Y < ps[i0].Y))
 			    {
 			        i0 = i;
 			        x0 = x;
@@ -330,13 +330,13 @@ namespace Box2D {
 		}
 
 		/// @see Shape::ComputeMass
-		public override void ComputeMass(out MassData massData, float density) {
+		public override void ComputeMass(out MassData massData, float Density) {
 			// Polygon mass, centroid, and inertia.
-			// Let rho be the polygon density in mass per unit area.
+			// Let rho be the polygon Density in mass per unit area.
 			// Then:
 			// mass = rho * int(dA)
-			// centroid.x = (1/mass) * rho * int(x * dA)
-			// centroid.y = (1/mass) * rho * int(y * dA)
+			// centroid.X = (1/mass) * rho * int(x * dA)
+			// centroid.Y = (1/mass) * rho * int(y * dA)
 			// I = rho * int((x*x + y*y) * dA)
 			//
 			// We can compute these integrals by summing all the integrals
@@ -388,8 +388,8 @@ namespace Box2D {
 			    // Area weighted centroid
 			    center += triangleArea * k_inv3 * (e1 + e2);
 
-			    float ex1 = e1.x, ey1 = e1.y;
-			    float ex2 = e2.x, ey2 = e2.y;
+			    float ex1 = e1.X, ey1 = e1.Y;
+			    float ex2 = e2.X, ey2 = e2.Y;
 
 			    float intx2 = ex1*ex1 + ex2*ex1 + ex2*ex2;
 			    float inty2 = ey1*ey1 + ey2*ey1 + ey2*ey2;
@@ -398,7 +398,7 @@ namespace Box2D {
 			}
 
 			// Total mass
-			massData.mass = density * area;
+			massData.mass = Density * area;
 
 			// Center of mass
 			Utilities.Assert(area > Single.Epsilon);
@@ -406,7 +406,7 @@ namespace Box2D {
 			massData.center = center + s;
 
 			// Inertia tensor relative to the local origin (point s).
-			massData.I = density * I;
+			massData.I = Density * I;
 
 			// Shift to center of mass then to original body origin.
 			massData.I += massData.mass * (Utilities.Dot(massData.center, massData.center) - Utilities.Dot(center, center));

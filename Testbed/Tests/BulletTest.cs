@@ -16,39 +16,42 @@ namespace Testbed.Tests {
 		{
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(0.0f, 0.0f);
+				bd.Position.Set(0.0f, 0.0f);
 				Body body = m_world.CreateBody(bd);
 
 				EdgeShape edge = new EdgeShape();
 
 				edge.Set(new Vec2(-10.0f, 0.0f), new Vec2(10.0f, 0.0f));
-				body.CreateFixture(edge, 0.0f);
+				edge.Density = 0;
+				body.CreateFixture(edge);
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.2f, 1.0f, new Vec2(0.5f, 1.0f), 0.0f);
-				body.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				body.CreateFixture(shape);
 			}
 
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 4.0f);
+				bd.Position.Set(0.0f, 4.0f);
 
 				PolygonShape box = new PolygonShape();
 				box.SetAsBox(2.0f, 0.1f);
+				box.Density = 100;
 
 				m_body = m_world.CreateBody(bd);
-				m_body.CreateFixture(box, 1.0f);
+				m_body.CreateFixture(box);
 
 				box.SetAsBox(0.25f, 0.25f);
 
 				//m_x = RandomFloat(-1.0f, 1.0f);
 				m_x = 0.20352793f;
-				bd.position.Set(m_x, 10.0f);
+				bd.Position.Set(m_x, 10.0f);
 				bd.bullet = true;
 
 				m_bullet = m_world.CreateBody(bd);
-				m_bullet.CreateFixture(box, 100.0f);
+				m_bullet.CreateFixture(box);
 
 				m_bullet.SetLinearVelocity(new Vec2(0.0f, -50.0f));
 			}

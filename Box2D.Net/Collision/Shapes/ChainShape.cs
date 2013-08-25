@@ -188,7 +188,7 @@ namespace Box2D {
 
 		/// Chains have zero mass.
 		/// @see Shape::ComputeMass
-		public override void ComputeMass(out MassData massData, float density){
+		public override void ComputeMass(out MassData massData, float Density){
 			massData = new MassData();
 			massData.mass = 0.0f;
 			massData.center.SetZero();

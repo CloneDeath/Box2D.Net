@@ -23,10 +23,12 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 
 				shape.Set(new Vec2(20.0f, 0.0f), new Vec2(20.0f, 20.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			float[] xs = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
@@ -38,7 +40,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 				fd.friction = 0.3f;
 
 				for (int i = 0; i < e_rowCount; ++i)
@@ -54,7 +56,7 @@ namespace Testbed.Tests {
 					float x = 0.0f;
 					//float x = RandomFloat(-0.02f, 0.02f);
 					//float x = i % 2 == 0 ? -0.025f : 0.025f;
-					bd.position.Set(xs[j] + x, 0.752f + 1.54f * i);
+					bd.Position.Set(xs[j] + x, 0.752f + 1.54f * i);
 					Body body = m_world.CreateBody(bd);
 
 					m_bodies[n] = body;
@@ -81,13 +83,13 @@ namespace Testbed.Tests {
 
 					FixtureDef fd = new FixtureDef();
 					fd.shape = shape;
-					fd.density = 20.0f;
+					fd.Density = 20.0f;
 					fd.restitution = 0.05f;
 
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
 					bd.bullet = true;
-					bd.position.Set(-31.0f, 5.0f);
+					bd.Position.Set(-31.0f, 5.0f);
 
 					m_bullet = m_world.CreateBody(bd);
 					m_bullet.CreateFixture(fd);
@@ -117,7 +119,7 @@ namespace Testbed.Tests {
 
 			//		FixtureDef fd = new FixtureDef();
 			//		fd.shape = shape;
-			//		fd.density = 20.0f;
+			//		fd.Density = 20.0f;
 			//		fd.restitution = 0.05f;
 
 			//		BodyDef bd = new BodyDef();

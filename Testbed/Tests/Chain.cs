@@ -17,7 +17,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -26,7 +27,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 20.0f;
+				fd.Density = 20.0f;
 				fd.friction = 0.2f;
 
 				RevoluteJointDef jd = new RevoluteJointDef();
@@ -38,7 +39,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(0.5f + i, y);
+					bd.Position.Set(0.5f + i, y);
 					Body body = m_world.CreateBody(bd);
 					body.CreateFixture(fd);
 

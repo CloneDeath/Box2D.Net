@@ -553,10 +553,10 @@ namespace Box2D {
 				return;
 			}
 	
-			Vec2 n = new Vec2(-e.y, e.x);
+			Vec2 n = new Vec2(-e.Y, e.X);
 			if (Utilities.Dot(n, Q - A) < 0.0f)
 			{
-				n.Set(-n.x, -n.y);
+				n.Set(-n.X, -n.Y);
 			}
 			n.Normalize();
 	
@@ -686,17 +686,17 @@ namespace Box2D {
 			d1 = b.lowerBound - a.upperBound;
 			d2 = a.lowerBound - b.upperBound;
 
-			if (d1.x > 0.0f || d1.y > 0.0f)
+			if (d1.X > 0.0f || d1.Y > 0.0f)
 				return false;
 
-			if (d2.x > 0.0f || d2.y > 0.0f)
+			if (d2.X > 0.0f || d2.Y > 0.0f)
 				return false;
 
 			return true;					
 		}
 		//{
-		//    return (a.lowerBound.x <= b.upperBound.x) && (a.lowerBound.y <= b.upperBound.y) &&
-		//           (a.upperBound.x >= b.lowerBound.x) && (a.upperBound.y >= b.lowerBound.y);
+		//    return (a.lowerBound.X <= b.upperBound.X) && (a.lowerBound.Y <= b.upperBound.Y) &&
+		//           (a.upperBound.X >= b.lowerBound.X) && (a.upperBound.Y >= b.lowerBound.Y);
 		//}
 	}
 
@@ -917,7 +917,7 @@ namespace Box2D {
 		/// Verify that the bounds are sorted.
 		public bool IsValid(){
 			Vec2 d = upperBound - lowerBound;
-			bool valid = d.x >= 0.0f && d.y >= 0.0f;
+			bool valid = d.X >= 0.0f && d.Y >= 0.0f;
 			valid = valid && lowerBound.IsValid() && upperBound.IsValid();
 			return valid;
 		}
@@ -937,8 +937,8 @@ namespace Box2D {
 		/// Get the perimeter length
 		public float GetPerimeter()
 		{
-			float wx = upperBound.x - lowerBound.x;
-			float wy = upperBound.y - lowerBound.y;
+			float wx = upperBound.X - lowerBound.X;
+			float wy = upperBound.Y - lowerBound.Y;
 			return 2.0f * (wx + wy);
 		}
 
@@ -961,10 +961,10 @@ namespace Box2D {
 		public bool Contains(AABB aabb)
 		{
 			bool result = true;
-			result = result && lowerBound.x <= aabb.lowerBound.x;
-			result = result && lowerBound.y <= aabb.lowerBound.y;
-			result = result && aabb.upperBound.x <= upperBound.x;
-			result = result && aabb.upperBound.y <= upperBound.y;
+			result = result && lowerBound.X <= aabb.lowerBound.X;
+			result = result && lowerBound.Y <= aabb.lowerBound.Y;
+			result = result && aabb.upperBound.X <= upperBound.X;
+			result = result && aabb.upperBound.Y <= upperBound.Y;
 			return result;
 		}
 

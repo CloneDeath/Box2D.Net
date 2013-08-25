@@ -303,7 +303,7 @@ namespace Testbed.Framework {
 
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType._dynamicBody;
-			bd.position = position;
+			bd.Position = position;
 			bd.bullet = true;
 			m_bomb = m_world.CreateBody(bd);
 			m_bomb.SetLinearVelocity(velocity);
@@ -313,7 +313,7 @@ namespace Testbed.Framework {
 
 			FixtureDef fd = new FixtureDef();
 			fd.shape = circle;
-			fd.density = 20.0f;
+			fd.Density = 20.0f;
 			fd.restitution = 0.0f;
 	
 			Vec2 minV = position - new Vec2(0.3f,0.3f);
@@ -357,8 +357,8 @@ namespace Testbed.Framework {
 				return;
 			}
 
-			Fixture fixtureA = contact.GetFixtureA();
-			Fixture fixtureB = contact.GetFixtureB();
+			Fixture fixtureA = contact.FixtureA;
+			Fixture fixtureB = contact.FixtureB;
 
 			PointState[] state1 = new PointState[Settings._maxManifoldPoints];
 			PointState[] state2 = new PointState[Settings._maxManifoldPoints];

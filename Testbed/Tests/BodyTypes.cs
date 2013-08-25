@@ -30,19 +30,20 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 3.0f);
+				bd.Position.Set(0.0f, 3.0f);
 				m_attachment = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(0.5f, 2.0f);
-				m_attachment.CreateFixture(shape, 2.0f);
+				shape.Density = 2;
+				m_attachment.CreateFixture(shape);
 			}
 
 			// Define platform
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(-4.0f, 5.0f);
+				bd.Position.Set(-4.0f, 5.0f);
 				m_platform = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
@@ -51,7 +52,7 @@ namespace Testbed.Tests {
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
-				fd.density = 2.0f;
+				fd.Density = 2.0f;
 				m_platform.CreateFixture(fd);
 
 				RevoluteJointDef rjd = new RevoluteJointDef();
@@ -78,7 +79,7 @@ namespace Testbed.Tests {
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 8.0f);
+				bd.Position.Set(0.0f, 8.0f);
 				Body body = m_world.CreateBody(bd);
 
 				PolygonShape shape = new PolygonShape();
@@ -87,7 +88,7 @@ namespace Testbed.Tests {
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
 				fd.friction = 0.6f;
-				fd.density = 2.0f;
+				fd.Density = 2.0f;
 
 				body.CreateFixture(fd);
 			}
@@ -118,10 +119,10 @@ namespace Testbed.Tests {
 				Vec2 p = m_platform.GetTransform().p;
 				Vec2 v = m_platform.GetLinearVelocity();
 
-				if ((p.x < -10.0f && v.x < 0.0f) ||
-					(p.x > 10.0f && v.x > 0.0f))
+				if ((p.X < -10.0f && v.X < 0.0f) ||
+					(p.X > 10.0f && v.X > 0.0f))
 				{
-					v.x = -v.x;
+					v.X = -v.X;
 					m_platform.SetLinearVelocity(v);
 				}
 			}

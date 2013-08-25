@@ -32,7 +32,7 @@ namespace Testbed.Tests {
 				loop.CreateLoop(vs, 5);
 				FixtureDef fd = new FixtureDef();
 				fd.shape = loop;
-				fd.density = 0.0f;
+				fd.Density = 0.0f;
 				ground.CreateFixture(fd);
 			}
 
@@ -44,10 +44,10 @@ namespace Testbed.Tests {
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
 
-				bd.position = p1;
+				bd.Position = p1;
 				Body leftFlipper = m_world.CreateBody(bd);
 
-				bd.position = p2;
+				bd.Position = p2;
 				Body rightFlipper = m_world.CreateBody(bd);
 
 				PolygonShape box = new PolygonShape();
@@ -55,7 +55,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = box;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 
 				leftFlipper.CreateFixture(fd);
 				rightFlipper.CreateFixture(fd);
@@ -85,7 +85,7 @@ namespace Testbed.Tests {
 			// Circle character
 			{
 				BodyDef bd = new BodyDef();
-				bd.position.Set(1.0f, 15.0f);
+				bd.Position.Set(1.0f, 15.0f);
 				bd.type = BodyType._dynamicBody;
 				bd.bullet = true;
 
@@ -96,7 +96,7 @@ namespace Testbed.Tests {
 
 				FixtureDef fd = new FixtureDef();
 				fd.shape = shape;
-				fd.density = 1.0f;
+				fd.Density = 1.0f;
 				m_ball.CreateFixture(fd);
 			}
 

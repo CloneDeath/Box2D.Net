@@ -49,8 +49,8 @@ namespace Box2D {
 			foreach (ContactEdge edge in edges) {
 				if (edge.other == bodyA)
 				{
-					Fixture fA = edge.contact.GetFixtureA();
-					Fixture fB = edge.contact.GetFixtureB();
+					Fixture fA = edge.contact.FixtureA;
+					Fixture fB = edge.contact.FixtureB;
 					int iA = edge.contact.GetChildIndexA();
 					int iB = edge.contact.GetChildIndexB();
 
@@ -88,8 +88,8 @@ namespace Box2D {
 			}
 
 			// Contact creation may swap fixtures.
-			fixtureA = c.GetFixtureA();
-			fixtureB = c.GetFixtureB();
+			fixtureA = c.FixtureA;
+			fixtureB = c.FixtureB;
 			indexA = c.GetChildIndexA();
 			indexB = c.GetChildIndexB();
 			bodyA = fixtureA.GetBody();
@@ -112,7 +112,7 @@ namespace Box2D {
 			bodyB.m_contactList.Add(c.m_nodeB);
 
 			// Wake up the bodies
-			if (fixtureA.IsSensor() == false && fixtureB.IsSensor() == false)
+			if (fixtureA.IsSensor == false && fixtureB.IsSensor == false)
 			{
 				bodyA.SetAwake(true);
 				bodyB.SetAwake(true);
@@ -124,8 +124,8 @@ namespace Box2D {
 		}
 
 		public void Destroy(Contact c) {
-			Fixture fixtureA = c.GetFixtureA();
-			Fixture fixtureB = c.GetFixtureB();
+			Fixture fixtureA = c.FixtureA;
+			Fixture fixtureB = c.FixtureB;
 			Body bodyA = fixtureA.GetBody();
 			Body bodyB = fixtureB.GetBody();
 
@@ -150,8 +150,8 @@ namespace Box2D {
 			// Update awake contacts.
 			for (int i = 0; i < m_contactList.Count(); i++){
 				Contact c = m_contactList[i];
-			    Fixture fixtureA = c.GetFixtureA();
-			    Fixture fixtureB = c.GetFixtureB();
+			    Fixture fixtureA = c.FixtureA;
+			    Fixture fixtureB = c.FixtureB;
 			    int indexA = c.GetChildIndexA();
 			    int indexB = c.GetChildIndexB();
 			    Body bodyA = fixtureA.GetBody();

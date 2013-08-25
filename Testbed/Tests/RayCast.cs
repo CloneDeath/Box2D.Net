@@ -156,7 +156,8 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
@@ -222,7 +223,7 @@ namespace Testbed.Tests {
 
 			float x = RandomFloat(-10.0f, 10.0f);
 			float y = RandomFloat(0.0f, 20.0f);
-			bd.position.Set(x, y);
+			bd.Position.Set(x, y);
 			bd.angle = RandomFloat(-(float)Math.PI, (float)Math.PI);
 
 			m_userData[m_bodyIndex] = index;

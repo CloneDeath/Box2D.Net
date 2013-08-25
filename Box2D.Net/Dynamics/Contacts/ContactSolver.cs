@@ -342,7 +342,7 @@ namespace Box2D {
 					VelocityConstraintPoint cp2 = vc.points[1];
 
 					Vec2 a = new Vec2(cp1.normalImpulse, cp2.normalImpulse);
-					Utilities.Assert(a.x >= 0.0f && a.y >= 0.0f);
+					Utilities.Assert(a.X >= 0.0f && a.Y >= 0.0f);
 
 					// Relative velocity at contact
 					Vec2 dv1 = vB + Utilities.Cross(wB, cp1.rB) - vA - Utilities.Cross(wA, cp1.rA);
@@ -353,8 +353,8 @@ namespace Box2D {
 					float vn2 = Utilities.Dot(dv2, normal);
 
 					Vec2 b;
-					b.x = vn1 - cp1.velocityBias;
-					b.y = vn2 - cp2.velocityBias;
+					b.X = vn1 - cp1.velocityBias;
+					b.Y = vn2 - cp2.velocityBias;
 
 					// Compute b'
 					b -= Utilities.Mul(vc.K, a);
@@ -373,13 +373,13 @@ namespace Box2D {
 						//
 						Vec2 x = -Utilities.Mul(vc.normalMass, b);
 
-						if (x.x >= 0.0f && x.y >= 0.0f) {
+						if (x.X >= 0.0f && x.Y >= 0.0f) {
 							// Get the incremental impulse
 							Vec2 d = x - a;
 
 							// Apply incremental impulse
-							Vec2 P1 = d.x * normal;
-							Vec2 P2 = d.y * normal;
+							Vec2 P1 = d.X * normal;
+							Vec2 P2 = d.Y * normal;
 							vA -= mA * (P1 + P2);
 							wA -= iA * (Utilities.Cross(cp1.rA, P1) + Utilities.Cross(cp2.rA, P2));
 
@@ -387,8 +387,8 @@ namespace Box2D {
 							wB += iB * (Utilities.Cross(cp1.rB, P1) + Utilities.Cross(cp2.rB, P2));
 
 							// Accumulate
-							cp1.normalImpulse = x.x;
-							cp2.normalImpulse = x.y;
+							cp1.normalImpulse = x.X;
+							cp2.normalImpulse = x.Y;
 
 #if B2_DEBUG_SOLVER
 		                    // Postconditions
@@ -411,18 +411,18 @@ namespace Box2D {
 						//   0 = a11 * x1 + a12 * 0 + b1' 
 						// vn2 = a21 * x1 + a22 * 0 + '
 						//
-						x.x = -cp1.normalMass * b.x;
-						x.y = 0.0f;
+						x.X = -cp1.normalMass * b.X;
+						x.Y = 0.0f;
 						vn1 = 0.0f;
-						vn2 = vc.K.ex.y * x.x + b.y;
+						vn2 = vc.K.ex.Y * x.X + b.Y;
 
-						if (x.x >= 0.0f && vn2 >= 0.0f) {
+						if (x.X >= 0.0f && vn2 >= 0.0f) {
 							// Get the incremental impulse
 							Vec2 d = x - a;
 
 							// Apply incremental impulse
-							Vec2 P1 = d.x * normal;
-							Vec2 P2 = d.y * normal;
+							Vec2 P1 = d.X * normal;
+							Vec2 P2 = d.Y * normal;
 							vA -= mA * (P1 + P2);
 							wA -= iA * (Utilities.Cross(cp1.rA, P1) + Utilities.Cross(cp2.rA, P2));
 
@@ -430,8 +430,8 @@ namespace Box2D {
 							wB += iB * (Utilities.Cross(cp1.rB, P1) + Utilities.Cross(cp2.rB, P2));
 
 							// Accumulate
-							cp1.normalImpulse = x.x;
-							cp2.normalImpulse = x.y;
+							cp1.normalImpulse = x.X;
+							cp2.normalImpulse = x.Y;
 
 #if B2_DEBUG_SOLVER
 		                    // Postconditions
@@ -452,18 +452,18 @@ namespace Box2D {
 						// vn1 = a11 * 0 + a12 * x2 + b1' 
 						//   0 = a21 * 0 + a22 * x2 + '
 						//
-						x.x = 0.0f;
-						x.y = -cp2.normalMass * b.y;
-						vn1 = vc.K.ey.x * x.y + b.x;
+						x.X = 0.0f;
+						x.Y = -cp2.normalMass * b.Y;
+						vn1 = vc.K.ey.X * x.Y + b.X;
 						vn2 = 0.0f;
 
-						if (x.y >= 0.0f && vn1 >= 0.0f) {
+						if (x.Y >= 0.0f && vn1 >= 0.0f) {
 							// Resubstitute for the incremental impulse
 							Vec2 d = x - a;
 
 							// Apply incremental impulse
-							Vec2 P1 = d.x * normal;
-							Vec2 P2 = d.y * normal;
+							Vec2 P1 = d.X * normal;
+							Vec2 P2 = d.Y * normal;
 							vA -= mA * (P1 + P2);
 							wA -= iA * (Utilities.Cross(cp1.rA, P1) + Utilities.Cross(cp2.rA, P2));
 
@@ -471,8 +471,8 @@ namespace Box2D {
 							wB += iB * (Utilities.Cross(cp1.rB, P1) + Utilities.Cross(cp2.rB, P2));
 
 							// Accumulate
-							cp1.normalImpulse = x.x;
-							cp2.normalImpulse = x.y;
+							cp1.normalImpulse = x.X;
+							cp2.normalImpulse = x.Y;
 
 #if B2_DEBUG_SOLVER
 		                    // Postconditions
@@ -491,18 +491,18 @@ namespace Box2D {
 						// 
 						// vn1 = b1
 						// vn2 = ;
-						x.x = 0.0f;
-						x.y = 0.0f;
-						vn1 = b.x;
-						vn2 = b.y;
+						x.X = 0.0f;
+						x.Y = 0.0f;
+						vn1 = b.X;
+						vn2 = b.Y;
 
 						if (vn1 >= 0.0f && vn2 >= 0.0f) {
 							// Resubstitute for the incremental impulse
 							Vec2 d = x - a;
 
 							// Apply incremental impulse
-							Vec2 P1 = d.x * normal;
-							Vec2 P2 = d.y * normal;
+							Vec2 P1 = d.X * normal;
+							Vec2 P2 = d.Y * normal;
 							vA -= mA * (P1 + P2);
 							wA -= iA * (Utilities.Cross(cp1.rA, P1) + Utilities.Cross(cp2.rA, P2));
 
@@ -510,8 +510,8 @@ namespace Box2D {
 							wB += iB * (Utilities.Cross(cp1.rB, P1) + Utilities.Cross(cp2.rB, P2));
 
 							// Accumulate
-							cp1.normalImpulse = x.x;
-							cp2.normalImpulse = x.y;
+							cp1.normalImpulse = x.X;
+							cp2.normalImpulse = x.Y;
 
 							break;
 						}

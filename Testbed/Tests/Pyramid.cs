@@ -18,13 +18,15 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			{
 				float a = 0.5f;
 				PolygonShape shape = new PolygonShape();
 				shape.SetAsBox(a, a);
+				shape.Density = 5;
 
 				Vec2 x = new Vec2(-7.0f, 0.75f);
 				Vec2 y;
@@ -39,9 +41,9 @@ namespace Testbed.Tests {
 					{
 						BodyDef bd = new BodyDef();
 						bd.type = BodyType._dynamicBody;
-						bd.position = y;
+						bd.Position = y;
 						Body body = m_world.CreateBody(bd);
-						body.CreateFixture(shape, 5.0f);
+						body.CreateFixture(shape);
 
 						y += deltaY;
 					}

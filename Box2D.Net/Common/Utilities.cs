@@ -33,34 +33,34 @@ namespace Box2D {
 		/// Perform the dot product on two vectors.
 		public static float Dot(Vec2 a, Vec2 b)
 		{
-			return a.x * b.x + a.y * b.y;
+			return a.X * b.X + a.Y * b.Y;
 		}
 
 		/// Perform the cross product on two vectors. In 2D this produces a scalar.
 		public static float Cross(Vec2 a, Vec2 b)
 		{
-			return a.x * b.y - a.y * b.x;
+			return a.X * b.Y - a.Y * b.X;
 		}
 
 		/// Perform the cross product on a vector and a scalar. In 2D this produces
 		/// a vector.
 		public static Vec2 Cross(Vec2 a, float s)
 		{
-			return new Vec2(s * a.y, -s * a.x);
+			return new Vec2(s * a.Y, -s * a.X);
 		}
 
 		/// Perform the cross product on a scalar and a vector. In 2D this produces
 		/// a vector.
 		public static Vec2 Cross(float s, Vec2 a)
 		{
-			return new Vec2(-s * a.y, s * a.x);
+			return new Vec2(-s * a.Y, s * a.X);
 		}
 
 		/// Multiply a matrix times a vector. If a rotation matrix is provided,
 		/// then this transforms the vector from one frame to another.
 		public static Vec2 Mul(Mat22 A, Vec2 v)
 		{
-			return new Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y);
+			return new Vec2(A.ex.X * v.X + A.ey.X * v.Y, A.ex.Y * v.X + A.ey.Y * v.Y);
 		}
 
 		/// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
@@ -85,13 +85,13 @@ namespace Box2D {
 		/// Perform the dot product on two vectors.
 		public static float Dot(Vec3 a, Vec3 b)
 		{
-			return a.x * b.x + a.y * b.y + a.z * b.z;
+			return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
 		}
 
 		/// Perform the cross product on two vectors.
 		public static Vec3 Cross(Vec3 a, Vec3 b)
 		{
-			return new Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+			return new Vec3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 		}
 
 		
@@ -113,13 +113,13 @@ namespace Box2D {
 		/// Multiply a matrix times a vector.
 		public static Vec3 Mul(Mat33 A, Vec3 v)
 		{
-			return v.x * A.ex + v.y * A.ey + v.z * A.ez;
+			return v.X * A.ex + v.Y * A.ey + v.Z * A.ez;
 		}
 
 		/// Multiply a matrix times a vector.
 		public static Vec2 Mul22(Mat33 A, Vec2 v)
 		{
-			return new Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y);
+			return new Vec2(A.ex.X * v.X + A.ey.X * v.Y, A.ex.Y * v.X + A.ey.Y * v.Y);
 		}
 
 		/// Multiply two rotations: q * r
@@ -151,27 +151,27 @@ namespace Box2D {
 		/// Rotate a vector
 		public static  Vec2 Mul(Rot q, Vec2 v)
 		{
-			return new Vec2(q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y);
+			return new Vec2(q.c * v.X - q.s * v.Y, q.s * v.X + q.c * v.Y);
 		}
 
 		/// Inverse rotate a vector
 		public static  Vec2 MulT(Rot q, Vec2 v)
 		{
-			return new Vec2(q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y);
+			return new Vec2(q.c * v.X + q.s * v.Y, -q.s * v.X + q.c * v.Y);
 		}
 
 		public static  Vec2 Mul(Transform T, Vec2 v)
 		{
-			float x = (T.q.c * v.x - T.q.s * v.y) + T.p.x;
-			float y = (T.q.s * v.x + T.q.c * v.y) + T.p.y;
+			float x = (T.q.c * v.X - T.q.s * v.Y) + T.p.X;
+			float y = (T.q.s * v.X + T.q.c * v.Y) + T.p.Y;
 
 			return new Vec2(x, y);
 		}
 
 		public static Vec2 MulT(Transform T, Vec2 v)
 		{
-			float px = v.x - T.p.x;
-			float py = v.y - T.p.y;
+			float px = v.X - T.p.X;
+			float py = v.Y - T.p.Y;
 			float x = (T.q.c * px + T.q.s * py);
 			float y = (-T.q.s * px + T.q.c * py);
 
@@ -200,11 +200,11 @@ namespace Box2D {
 
 		public static Vec2 Min(Vec2 a, Vec2 b)
 		{
-			return new Vec2(Math.Min(a.x, b.x), Math.Min(a.y, b.y));
+			return new Vec2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
 		}
 		public static Vec2 Max(Vec2 a, Vec2 b)
 		{
-			return new Vec2(Math.Max(a.x, b.x), Math.Max(a.y, b.y));
+			return new Vec2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
 		}
 
 		internal static float Clamp(float val, float lo, float hi) {
@@ -239,7 +239,7 @@ namespace Box2D {
 
 		public static Vec2 Abs(Vec2 a)
 		{
-			return new Vec2(Math.Abs(a.x), Math.Abs(a.y));
+			return new Vec2(Math.Abs(a.X), Math.Abs(a.Y));
 		}
 
 		public static Mat22 Abs(Mat22 A)

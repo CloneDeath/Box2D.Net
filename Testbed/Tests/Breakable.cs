@@ -20,22 +20,25 @@ namespace Testbed.Tests {
 
 				EdgeShape shape = new EdgeShape();
 				shape.Set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
-				ground.CreateFixture(shape, 0.0f);
+				shape.Density = 0;
+				ground.CreateFixture(shape);
 			}
 
 			// Breakable dynamic body
 			{
 				BodyDef bd = new BodyDef();
 				bd.type = BodyType._dynamicBody;
-				bd.position.Set(0.0f, 40.0f);
+				bd.Position.Set(0.0f, 40.0f);
 				bd.angle = 0.25f * (float)Math.PI;
 				m_body1 = m_world.CreateBody(bd);
 
 				m_shape1.SetAsBox(0.5f, 0.5f, new Vec2(-0.5f, 0.0f), 0.0f);
-				m_piece1 = m_body1.CreateFixture(m_shape1, 1.0f);
+				m_shape1.Density = 1;
+				m_piece1 = m_body1.CreateFixture(m_shape1);
 
 				m_shape2.SetAsBox(0.5f, 0.5f, new Vec2(0.5f, 0.0f), 0.0f);
-				m_piece2 = m_body1.CreateFixture(m_shape2, 1.0f);
+				m_shape2.Density = 1;
+				m_piece2 = m_body1.CreateFixture(m_shape2);
 			}
 
 			m_break = false;
@@ -77,11 +80,12 @@ namespace Testbed.Tests {
 
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType._dynamicBody;
-			bd.position = body1.GetPosition();
+			bd.Position = body1.GetPosition();
 			bd.angle = body1.GetAngle();
 
 			Body body2 = m_world.CreateBody(bd);
-			m_piece2 = body2.CreateFixture(m_shape2, 1.0f);
+			m_shape2.Density = 1;
+			m_piece2 = body2.CreateFixture(m_shape2);
 
 			// Compute consistent velocities for new bodies based on
 			// cached velocity.

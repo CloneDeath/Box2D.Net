@@ -23,19 +23,20 @@ namespace Testbed.Tests {
 
 				// Floor
 				shape2.Set(new Vec2(-10.0f, 0.0f), new Vec2(10.0f, 0.0f));
-				ground.CreateFixture(shape2, 0.0f);
+				shape2.Density = 0;
+				ground.CreateFixture(shape2);
 
 				// Left wall
 				shape2.Set(new Vec2(-10.0f, 0.0f), new Vec2(-10.0f, 20.0f));
-				ground.CreateFixture(shape2, 0.0f);
+				ground.CreateFixture(shape2);
 
 				// Right wall
 				shape2.Set(new Vec2(10.0f, 0.0f), new Vec2(10.0f, 20.0f));
-				ground.CreateFixture(shape2, 0.0f);
+				ground.CreateFixture(shape2);
 
 				// Roof
 				shape2.Set(new Vec2(-10.0f, 20.0f), new Vec2(10.0f, 20.0f));
-				ground.CreateFixture(shape2, 0.0f);
+				ground.CreateFixture(shape2);
 			}
 
 			float radius = 0.5f;
@@ -45,7 +46,7 @@ namespace Testbed.Tests {
 
 			FixtureDef fd = new FixtureDef();
 			fd.shape = shape;
-			fd.density = 1.0f;
+			fd.Density = 1.0f;
 			fd.friction = 0.1f;
 
 			for (int j = 0; j < e_columnCount; ++j)
@@ -54,7 +55,7 @@ namespace Testbed.Tests {
 				{
 					BodyDef bd = new BodyDef();
 					bd.type = BodyType._dynamicBody;
-					bd.position.Set(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
+					bd.Position.Set(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 					Body body = m_world.CreateBody(bd);
 
 					body.CreateFixture(fd);
@@ -73,13 +74,13 @@ namespace Testbed.Tests {
 
 			FixtureDef fd = new FixtureDef();
 			fd.shape = shape;
-			fd.density = 1.0f;
+			fd.Density = 1.0f;
 			fd.friction = 0.0f;
 
 			Vec2 p = new Vec2(RandomFloat(), 3.0f + RandomFloat());
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType._dynamicBody;
-			bd.position = p;
+			bd.Position = p;
 			//bd.allowSleep = false;
 			Body body = m_world.CreateBody(bd);
 
@@ -129,9 +130,9 @@ namespace Testbed.Tests {
 				}
 
 				Vec2 p = b.GetPosition();
-				if (p.x <= -10.0f || 10.0f <= p.x || p.y <= 0.0f || 20.0f <= p.y)
+				if (p.X <= -10.0f || 10.0f <= p.X || p.Y <= 0.0f || 20.0f <= p.Y)
 				{
-					p.x += 0.0f;
+					p.X += 0.0f;
 				}
 			}
 
