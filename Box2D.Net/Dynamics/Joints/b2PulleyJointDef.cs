@@ -6,11 +6,11 @@ using System.Text;
 namespace Box2D {
 	/// Pulley joint definition. This requires two ground anchors,
 	/// two dynamic body anchor points, and a pulley ratio.
-	struct b2PulleyJointDef : b2JointDef
+	class b2PulleyJointDef : b2JointDef
 	{
 		public b2PulleyJointDef()
 		{
-			type = e_pulleyJoint;
+			type = b2JointType.e_pulleyJoint;
 			groundAnchorA.Set(-1.0f, 1.0f);
 			groundAnchorB.Set(1.0f, 1.0f);
 			localAnchorA.Set(-1.0f, 0.0f);
@@ -33,8 +33,8 @@ namespace Box2D {
 		// J = -[u1 cross(r1, u1) ratio * u2  ratio * cross(r2, u2)]
 		// K = J * invM * JT
 		//   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
-		public void Initialize(b2Body* bodyA, b2Body* bodyB,
-						b2Vec2 groundAnchorA, b2Vec2 groundAnchorB,
+		public void Initialize(b2Body bA, b2Body bB,
+						b2Vec2 groundA, b2Vec2 groundB,
 						b2Vec2 anchorA, b2Vec2 anchorB,
 						float ratio){
 			bodyA = bA;

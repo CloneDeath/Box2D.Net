@@ -252,13 +252,13 @@ namespace Box2D {
 
 			//    float C = angle - m_as[i];
 
-			//    while (C > Math.PI) {
-			//        angle -= 2 * Math.PI;
+			//    while (C > (float)Math.PI) {
+			//        angle -= 2 * (float)Math.PI;
 			//        C = angle - m_as[i];
 			//    }
 
 			//    while (C < -Math.PI) {
-			//        angle += 2.0f * Math.PI;
+			//        angle += 2.0f * (float)Math.PI;
 			//        C = angle - m_as[i];
 			//    }
 

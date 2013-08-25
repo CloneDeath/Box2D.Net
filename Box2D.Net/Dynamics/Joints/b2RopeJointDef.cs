@@ -8,11 +8,11 @@ namespace Box2D {
 	/// a maximum lengths.
 	/// Note: by default the connected objects will not collide.
 	/// see collideConnected in b2JointDef.
-	struct b2RopeJointDef : b2JointDef
+	class b2RopeJointDef : b2JointDef
 	{
 		public b2RopeJointDef()
 		{
-			type = e_ropeJoint;
+			type = b2JointType.e_ropeJoint;
 			localAnchorA.Set(-1.0f, 0.0f);
 			localAnchorB.Set(1.0f, 0.0f);
 			maxLength = 0.0f;

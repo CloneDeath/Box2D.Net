@@ -71,7 +71,7 @@ namespace Box2D {
 			m_impulse.SetZero();
 		}
 
-		void InitVelocityConstraints(const b2SolverData& data){
+		void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -89,7 +89,7 @@ namespace Box2D {
 			b2Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
-			b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
 
 			m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
 			m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
@@ -127,7 +127,7 @@ namespace Box2D {
 				float C = aB - aA - m_referenceAngle;
 
 				// Frequency
-				float omega = 2.0f * Math.PI * m_frequencyHz;
+				float omega = 2.0f * (float)Math.PI * m_frequencyHz;
 
 				// Damping coefficient
 				float d = 2.0f * m * m_dampingRatio * omega;
@@ -174,7 +174,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(const b2SolverData& data){
+		void SolveVelocityConstraints(b2SolverData data){
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -230,13 +230,14 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(const b2SolverData& data){
+		bool SolvePositionConstraints(b2SolverData data){
 			b2Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
 			b2Vec2 cB = data.positions[m_indexB].c;
 			float aB = data.positions[m_indexB].a;
 
-			b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA);
+			b2Rot qB = new b2Rot(aB);
 
 			float mA = m_invMassA, mB = m_invMassB;
 			float iA = m_invIA, iB = m_invIB;

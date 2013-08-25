@@ -117,7 +117,7 @@ namespace Box2D {
 			m_impulse = 0.0f;
 		}
 
-		void InitVelocityConstraints(const b2SolverData& data){
+		void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -137,7 +137,7 @@ namespace Box2D {
 			b2Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
-			b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
 
 			m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
 			m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
@@ -205,101 +205,101 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(const b2SolverData& data){
-	b2Vec2 vA = data.velocities[m_indexA].v;
-	float wA = data.velocities[m_indexA].w;
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float wB = data.velocities[m_indexB].w;
+		void SolveVelocityConstraints(b2SolverData data){
+			b2Vec2 vA = data.velocities[m_indexA].v;
+			float wA = data.velocities[m_indexA].w;
+			b2Vec2 vB = data.velocities[m_indexB].v;
+			float wB = data.velocities[m_indexB].w;
 
-	b2Vec2 vpA = vA + Utilities.b2Cross(wA, m_rA);
-	b2Vec2 vpB = vB + Utilities.b2Cross(wB, m_rB);
+			b2Vec2 vpA = vA + Utilities.b2Cross(wA, m_rA);
+			b2Vec2 vpB = vB + Utilities.b2Cross(wB, m_rB);
 
-	float Cdot = -Utilities.b2Dot(m_uA, vpA) - m_ratio * Utilities.b2Dot(m_uB, vpB);
-	float impulse = -m_mass * Cdot;
-	m_impulse += impulse;
+			float Cdot = -Utilities.b2Dot(m_uA, vpA) - m_ratio * Utilities.b2Dot(m_uB, vpB);
+			float impulse = -m_mass * Cdot;
+			m_impulse += impulse;
 
-	b2Vec2 PA = -impulse * m_uA;
-	b2Vec2 PB = -m_ratio * impulse * m_uB;
-	vA += m_invMassA * PA;
-	wA += m_invIA * Utilities.b2Cross(m_rA, PA);
-	vB += m_invMassB * PB;
-	wB += m_invIB * Utilities.b2Cross(m_rB, PB);
+			b2Vec2 PA = -impulse * m_uA;
+			b2Vec2 PB = -m_ratio * impulse * m_uB;
+			vA += m_invMassA * PA;
+			wA += m_invIA * Utilities.b2Cross(m_rA, PA);
+			vB += m_invMassB * PB;
+			wB += m_invIB * Utilities.b2Cross(m_rB, PB);
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
-}
-		bool SolvePositionConstraints(const b2SolverData& data){
-	b2Vec2 cA = data.positions[m_indexA].c;
-	float aA = data.positions[m_indexA].a;
-	b2Vec2 cB = data.positions[m_indexB].c;
-	float aB = data.positions[m_indexB].a;
+			data.velocities[m_indexA].v = vA;
+			data.velocities[m_indexA].w = wA;
+			data.velocities[m_indexB].v = vB;
+			data.velocities[m_indexB].w = wB;
+		}
+		bool SolvePositionConstraints(b2SolverData data){
+			b2Vec2 cA = data.positions[m_indexA].c;
+			float aA = data.positions[m_indexA].a;
+			b2Vec2 cB = data.positions[m_indexB].c;
+			float aB = data.positions[m_indexB].a;
 
-	b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
 
-	b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
+			b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+			b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
 
-	// Get the pulley axes.
-	b2Vec2 uA = cA + rA - m_groundAnchorA;
-	b2Vec2 uB = cB + rB - m_groundAnchorB;
+			// Get the pulley axes.
+			b2Vec2 uA = cA + rA - m_groundAnchorA;
+			b2Vec2 uB = cB + rB - m_groundAnchorB;
 
-	float lengthA = uA.Length();
-	float lengthB = uB.Length();
+			float lengthA = uA.Length();
+			float lengthB = uB.Length();
 
-	if (lengthA > 10.0f *b2Settings.b2_linearSlop)
-	{
-		uA *= 1.0f / lengthA;
-	}
-	else
-	{
-		uA.SetZero();
-	}
+			if (lengthA > 10.0f *b2Settings.b2_linearSlop)
+			{
+				uA *= 1.0f / lengthA;
+			}
+			else
+			{
+				uA.SetZero();
+			}
 
-	if (lengthB > 10.0f *b2Settings.b2_linearSlop)
-	{
-		uB *= 1.0f / lengthB;
-	}
-	else
-	{
-		uB.SetZero();
-	}
+			if (lengthB > 10.0f *b2Settings.b2_linearSlop)
+			{
+				uB *= 1.0f / lengthB;
+			}
+			else
+			{
+				uB.SetZero();
+			}
 
-	// Compute effective mass.
-	float ruA = Utilities.b2Cross(rA, uA);
-	float ruB = Utilities.b2Cross(rB, uB);
+			// Compute effective mass.
+			float ruA = Utilities.b2Cross(rA, uA);
+			float ruB = Utilities.b2Cross(rB, uB);
 
-	float mA = m_invMassA + m_invIA * ruA * ruA;
-	float mB = m_invMassB + m_invIB * ruB * ruB;
+			float mA = m_invMassA + m_invIA * ruA * ruA;
+			float mB = m_invMassB + m_invIB * ruB * ruB;
 
-	float mass = mA + m_ratio * m_ratio * mB;
+			float mass = mA + m_ratio * m_ratio * mB;
 
-	if (mass > 0.0f)
-	{
-		mass = 1.0f / mass;
-	}
+			if (mass > 0.0f)
+			{
+				mass = 1.0f / mass;
+			}
 
-	float C = m_constant - lengthA - m_ratio * lengthB;
-	float linearError = Math.Abs(C);
+			float C = m_constant - lengthA - m_ratio * lengthB;
+			float linearError = Math.Abs(C);
 
-	float impulse = -mass * C;
+			float impulse = -mass * C;
 
-	b2Vec2 PA = -impulse * uA;
-	b2Vec2 PB = -m_ratio * impulse * uB;
+			b2Vec2 PA = -impulse * uA;
+			b2Vec2 PB = -m_ratio * impulse * uB;
 
-	cA += m_invMassA * PA;
-	aA += m_invIA * Utilities.b2Cross(rA, PA);
-	cB += m_invMassB * PB;
-	aB += m_invIB * Utilities.b2Cross(rB, PB);
+			cA += m_invMassA * PA;
+			aA += m_invIA * Utilities.b2Cross(rA, PA);
+			cB += m_invMassB * PB;
+			aB += m_invIB * Utilities.b2Cross(rB, PB);
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+			data.positions[m_indexA].c = cA;
+			data.positions[m_indexA].a = aA;
+			data.positions[m_indexB].c = cB;
+			data.positions[m_indexB].a = aB;
 
-	return linearError <b2Settings.b2_linearSlop;
-}
+			return linearError <b2Settings.b2_linearSlop;
+		}
 
 		b2Vec2 m_groundAnchorA;
 		b2Vec2 m_groundAnchorB;

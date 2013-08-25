@@ -78,7 +78,7 @@ namespace Box2D {
 			b2Settings.b2Log("  joints[%d] = m_world.CreateJoint(&jd);\n", m_index);
 		}
 		
-		internal b2DistanceJoint(b2DistanceJointDef def): base(def)
+		internal b2DistanceJoint(b2DistanceJointDef def) : base(def)
 		{
 			m_localAnchorA = def.localAnchorA;
 			m_localAnchorB = def.localAnchorB;
@@ -90,7 +90,7 @@ namespace Box2D {
 			m_bias = 0.0f;
 		}
 
-		void InitVelocityConstraints(const b2SolverData& data){
+		void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -110,7 +110,8 @@ namespace Box2D {
 			b2Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
-			b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); 
+			b2Rot qB = new b2Rot(aB);
 
 			m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
 			m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
@@ -139,7 +140,7 @@ namespace Box2D {
 				float C = length - m_length;
 
 				// Frequency
-				float omega = 2.0f * Math.PI * m_frequencyHz;
+				float omega = 2.0f * (float)Math.PI * m_frequencyHz;
 
 				// Damping coefficient
 				float d = 2.0f * m_mass * m_dampingRatio * omega;
@@ -183,7 +184,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(const b2SolverData& data){
+		void SolveVelocityConstraints(b2SolverData data){
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -208,7 +209,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(const b2SolverData& data){
+		bool SolvePositionConstraints(b2SolverData data){
 			if (m_frequencyHz > 0.0f)
 			{
 				// There is no position correction for soft distance constraints.
@@ -220,7 +221,7 @@ namespace Box2D {
 			b2Vec2 cB = data.positions[m_indexB].c;
 			float aB = data.positions[m_indexB].a;
 
-			b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
 
 			b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
 			b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
@@ -228,7 +229,7 @@ namespace Box2D {
 
 			float length = u.Normalize();
 			float C = length - m_length;
-			C = b2Clamp(C, -b2_maxLinearCorrection, b2_maxLinearCorrection);
+			C = Utilities.b2Clamp(C, -b2Settings.b2_maxLinearCorrection, b2Settings.b2_maxLinearCorrection);
 
 			float impulse = -m_mass * C;
 			b2Vec2 P = impulse * u;

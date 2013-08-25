@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Box2D {
 	/// Motor joint definition.
-	struct b2MotorJointDef : b2JointDef
+	class b2MotorJointDef : b2JointDef
 	{
 		public b2MotorJointDef()
 		{
-			type = e_motorJoint;
+			type = b2JointType.e_motorJoint;
 			linearOffset.SetZero();
 			angularOffset = 0.0f;
 			maxForce = 1.0f;
@@ -29,7 +29,7 @@ namespace Box2D {
 		// Cdot = w2 - w1
 		// J = [0 0 -1 0 0 1]
 		// K = invI1 + invI2
-		public void Initialize(b2Body* bodyA, b2Body* bodyB) {
+		public void Initialize(b2Body bA, b2Body bB) {
 			bodyA = bA;
 			bodyB = bB;
 			b2Vec2 xB = bodyB.GetPosition();

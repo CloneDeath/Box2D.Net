@@ -81,150 +81,151 @@ namespace Box2D.Dynamics.Joints {
 			m_length = 0.0f;
 		}
 
-		void InitVelocityConstraints(const b2SolverData& data){
-	m_indexA = m_bodyA.m_islandIndex;
-	m_indexB = m_bodyB.m_islandIndex;
-	m_localCenterA = m_bodyA.m_sweep.localCenter;
-	m_localCenterB = m_bodyB.m_sweep.localCenter;
-	m_invMassA = m_bodyA.m_invMass;
-	m_invMassB = m_bodyB.m_invMass;
-	m_invIA = m_bodyA.m_invI;
-	m_invIB = m_bodyB.m_invI;
+		void InitVelocityConstraints(b2SolverData data){
+			m_indexA = m_bodyA.m_islandIndex;
+			m_indexB = m_bodyB.m_islandIndex;
+			m_localCenterA = m_bodyA.m_sweep.localCenter;
+			m_localCenterB = m_bodyB.m_sweep.localCenter;
+			m_invMassA = m_bodyA.m_invMass;
+			m_invMassB = m_bodyB.m_invMass;
+			m_invIA = m_bodyA.m_invI;
+			m_invIB = m_bodyB.m_invI;
 
-	b2Vec2 cA = data.positions[m_indexA].c;
-	float aA = data.positions[m_indexA].a;
-	b2Vec2 vA = data.velocities[m_indexA].v;
-	float wA = data.velocities[m_indexA].w;
+			b2Vec2 cA = data.positions[m_indexA].c;
+			float aA = data.positions[m_indexA].a;
+			b2Vec2 vA = data.velocities[m_indexA].v;
+			float wA = data.velocities[m_indexA].w;
 
-	b2Vec2 cB = data.positions[m_indexB].c;
-	float aB = data.positions[m_indexB].a;
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float wB = data.velocities[m_indexB].w;
+			b2Vec2 cB = data.positions[m_indexB].c;
+			float aB = data.positions[m_indexB].a;
+			b2Vec2 vB = data.velocities[m_indexB].v;
+			float wB = data.velocities[m_indexB].w;
 
-	b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
 
-	m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
-	m_u = cB + m_rB - cA - m_rA;
+			m_rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+			m_rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
+			m_u = cB + m_rB - cA - m_rA;
 
-	m_length = m_u.Length();
+			m_length = m_u.Length();
 
-	float C = m_length - m_maxLength;
-	if (C > 0.0f)
-	{
-		m_state = e_atUpperLimit;
-	}
-	else
-	{
-		m_state = e_inactiveLimit;
-	}
+			float C = m_length - m_maxLength;
+			if (C > 0.0f)
+			{
+				m_state = e_atUpperLimit;
+			}
+			else
+			{
+				m_state = e_inactiveLimit;
+			}
 
-	if (m_length >b2Settings.b2_linearSlop)
-	{
-		m_u *= 1.0f / m_length;
-	}
-	else
-	{
-		m_u.SetZero();
-		m_mass = 0.0f;
-		m_impulse = 0.0f;
-		return;
-	}
+			if (m_length >b2Settings.b2_linearSlop)
+			{
+				m_u *= 1.0f / m_length;
+			}
+			else
+			{
+				m_u.SetZero();
+				m_mass = 0.0f;
+				m_impulse = 0.0f;
+				return;
+			}
 
-	// Compute effective mass.
-	float crA = Utilities.b2Cross(m_rA, m_u);
-	float crB = Utilities.b2Cross(m_rB, m_u);
-	float invMass = m_invMassA + m_invIA * crA * crA + m_invMassB + m_invIB * crB * crB;
+			// Compute effective mass.
+			float crA = Utilities.b2Cross(m_rA, m_u);
+			float crB = Utilities.b2Cross(m_rB, m_u);
+			float invMass = m_invMassA + m_invIA * crA * crA + m_invMassB + m_invIB * crB * crB;
 
-	m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
+			m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
 
-	if (data.step.warmStarting)
-	{
-		// Scale the impulse to support a variable time step.
-		m_impulse *= data.step.dtRatio;
+			if (data.step.warmStarting)
+			{
+				// Scale the impulse to support a variable time step.
+				m_impulse *= data.step.dtRatio;
 
-		b2Vec2 P = m_impulse * m_u;
-		vA -= m_invMassA * P;
-		wA -= m_invIA * Utilities.b2Cross(m_rA, P);
-		vB += m_invMassB * P;
-		wB += m_invIB * Utilities.b2Cross(m_rB, P);
-	}
-	else
-	{
-		m_impulse = 0.0f;
-	}
+				b2Vec2 P = m_impulse * m_u;
+				vA -= m_invMassA * P;
+				wA -= m_invIA * Utilities.b2Cross(m_rA, P);
+				vB += m_invMassB * P;
+				wB += m_invIB * Utilities.b2Cross(m_rB, P);
+			}
+			else
+			{
+				m_impulse = 0.0f;
+			}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
-}
-		void SolveVelocityConstraints(const b2SolverData& data){
-	b2Vec2 vA = data.velocities[m_indexA].v;
-	float wA = data.velocities[m_indexA].w;
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float wB = data.velocities[m_indexB].w;
+			data.velocities[m_indexA].v = vA;
+			data.velocities[m_indexA].w = wA;
+			data.velocities[m_indexB].v = vB;
+			data.velocities[m_indexB].w = wB;
+		}
+		void SolveVelocityConstraints(b2SolverData data){
+			b2Vec2 vA = data.velocities[m_indexA].v;
+			float wA = data.velocities[m_indexA].w;
+			b2Vec2 vB = data.velocities[m_indexB].v;
+			float wB = data.velocities[m_indexB].w;
 
-	// Cdot = dot(u, v + cross(w, r))
-	b2Vec2 vpA = vA + Utilities.b2Cross(wA, m_rA);
-	b2Vec2 vpB = vB + Utilities.b2Cross(wB, m_rB);
-	float C = m_length - m_maxLength;
-	float Cdot = Utilities.b2Dot(m_u, vpB - vpA);
+			// Cdot = dot(u, v + cross(w, r))
+			b2Vec2 vpA = vA + Utilities.b2Cross(wA, m_rA);
+			b2Vec2 vpB = vB + Utilities.b2Cross(wB, m_rB);
+			float C = m_length - m_maxLength;
+			float Cdot = Utilities.b2Dot(m_u, vpB - vpA);
 
-	// Predictive constraint.
-	if (C < 0.0f)
-	{
-		Cdot += data.step.inv_dt * C;
-	}
+			// Predictive constraint.
+			if (C < 0.0f)
+			{
+				Cdot += data.step.inv_dt * C;
+			}
 
-	float impulse = -m_mass * Cdot;
-	float oldImpulse = m_impulse;
-	m_impulse = Math.Min(0.0f, m_impulse + impulse);
-	impulse = m_impulse - oldImpulse;
+			float impulse = -m_mass * Cdot;
+			float oldImpulse = m_impulse;
+			m_impulse = Math.Min(0.0f, m_impulse + impulse);
+			impulse = m_impulse - oldImpulse;
 
-	b2Vec2 P = impulse * m_u;
-	vA -= m_invMassA * P;
-	wA -= m_invIA * Utilities.b2Cross(m_rA, P);
-	vB += m_invMassB * P;
-	wB += m_invIB * Utilities.b2Cross(m_rB, P);
+			b2Vec2 P = impulse * m_u;
+			vA -= m_invMassA * P;
+			wA -= m_invIA * Utilities.b2Cross(m_rA, P);
+			vB += m_invMassB * P;
+			wB += m_invIB * Utilities.b2Cross(m_rB, P);
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
-}
-		bool SolvePositionConstraints(const b2SolverData& data){
-	b2Vec2 cA = data.positions[m_indexA].c;
-	float aA = data.positions[m_indexA].a;
-	b2Vec2 cB = data.positions[m_indexB].c;
-	float aB = data.positions[m_indexB].a;
+			data.velocities[m_indexA].v = vA;
+			data.velocities[m_indexA].w = wA;
+			data.velocities[m_indexB].v = vB;
+			data.velocities[m_indexB].w = wB;
+		}
+		bool SolvePositionConstraints(b2SolverData data){
+			b2Vec2 cA = data.positions[m_indexA].c;
+			float aA = data.positions[m_indexA].a;
+			b2Vec2 cB = data.positions[m_indexB].c;
+			float aB = data.positions[m_indexB].a;
 
-	b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA);
+			b2Rot qB = new b2Rot(aB);
 
-	b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
-	b2Vec2 u = cB + rB - cA - rA;
+			b2Vec2 rA = Utilities.b2Mul(qA, m_localAnchorA - m_localCenterA);
+			b2Vec2 rB = Utilities.b2Mul(qB, m_localAnchorB - m_localCenterB);
+			b2Vec2 u = cB + rB - cA - rA;
 
-	float length = u.Normalize();
-	float C = length - m_maxLength;
+			float length = u.Normalize();
+			float C = length - m_maxLength;
 
-	C = b2Clamp(C, 0.0f, b2_maxLinearCorrection);
+			C = Utilities.b2Clamp(C, 0.0f, b2_maxLinearCorrection);
 
-	float impulse = -m_mass * C;
-	b2Vec2 P = impulse * u;
+			float impulse = -m_mass * C;
+			b2Vec2 P = impulse * u;
 
-	cA -= m_invMassA * P;
-	aA -= m_invIA * Utilities.b2Cross(rA, P);
-	cB += m_invMassB * P;
-	aB += m_invIB * Utilities.b2Cross(rB, P);
+			cA -= m_invMassA * P;
+			aA -= m_invIA * Utilities.b2Cross(rA, P);
+			cB += m_invMassB * P;
+			aB += m_invIB * Utilities.b2Cross(rB, P);
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+			data.positions[m_indexA].c = cA;
+			data.positions[m_indexA].a = aA;
+			data.positions[m_indexB].c = cB;
+			data.positions[m_indexB].a = aB;
 
-	return length - m_maxLength <b2Settings.b2_linearSlop;
-}
+			return length - m_maxLength <b2Settings.b2_linearSlop;
+		}
 
 		// Solver shared
 		b2Vec2 m_localAnchorA;

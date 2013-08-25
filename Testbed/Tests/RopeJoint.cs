@@ -125,6 +125,6 @@ namespace Testbed.Tests {
 		}
 
 		b2RopeJointDef m_ropeDef;
-		b2Joint* m_rope;
+		b2Joint m_rope;
 	};
 }

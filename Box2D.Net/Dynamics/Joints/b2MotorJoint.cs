@@ -103,7 +103,7 @@ namespace Box2D {
 			m_correctionFactor = def.correctionFactor;
 		}
 
-		void InitVelocityConstraints(const b2SolverData& data){
+		void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -123,7 +123,7 @@ namespace Box2D {
 			b2Vec2 vB = data.velocities[m_indexB].v;
 			float wB = data.velocities[m_indexB].w;
 
-			b2Rot qA(aA), qB(aB);
+			b2Rot qA = new b2Rot(aA); b2Rot qB = new b2Rot(aB);
 
 			// Compute the effective mass matrix.
 			m_rA = Utilities.b2Mul(qA, -m_localCenterA);
@@ -181,7 +181,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(const b2SolverData& data){
+		void SolveVelocityConstraints(b2SolverData data){
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -200,7 +200,7 @@ namespace Box2D {
 
 				float oldImpulse = m_angularImpulse;
 				float maxImpulse = h * m_maxTorque;
-				m_angularImpulse = b2Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
+				m_angularImpulse = Utilities.b2Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 				impulse = m_angularImpulse - oldImpulse;
 
 				wA -= iA * impulse;
@@ -237,7 +237,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(const b2SolverData& data){
+		bool SolvePositionConstraints(b2SolverData data){
 
 			return true;
 		}

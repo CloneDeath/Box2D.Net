@@ -36,7 +36,7 @@ namespace Box2D {
 
 		/// A small angle used as a collision and constraint tolerance. Usually it is
 		/// chosen to be numerically significant, but visually insignificant.
-		public const float b2_angularSlop		=	(float)(2.0f / 180.0f * Math.PI);
+		public const float b2_angularSlop		=	(float)(2.0f / 180.0f * (float)Math.PI);
 
 		/// The radius of the polygon/edge shape skin. This should not be modified. Making
 		/// this smaller means polygons will have an insufficient buffer for continuous collision.
@@ -62,7 +62,7 @@ namespace Box2D {
 
 		/// The maximum angular position correction used when solving constraints. This helps to
 		/// prevent overshoot.
-		public const float b2_maxAngularCorrection	=	(float)(8.0f / 180.0f * Math.PI);
+		public const float b2_maxAngularCorrection	=	(float)(8.0f / 180.0f * (float)Math.PI);
 
 		/// The maximum linear velocity of a body. This limit is very large and is used
 		/// to prevent numerical problems. You shouldn't need to adjust this.
@@ -71,7 +71,7 @@ namespace Box2D {
 
 		/// The maximum angular velocity of a body. This limit is very large and is used
 		/// to prevent numerical problems. You shouldn't need to adjust this.
-		public const float b2_maxRotation		=		(float)(0.5f * Math.PI);
+		public const float b2_maxRotation		=		(float)(0.5f * (float)Math.PI);
 		public const float b2_maxRotationSquared	=	(b2_maxRotation * b2_maxRotation);
 
 		/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
@@ -90,7 +90,7 @@ namespace Box2D {
 		public const float b2_linearSleepTolerance	=	0.01f;
 
 		/// A body cannot sleep if its angular velocity is above this tolerance.
-		public const float b2_angularSleepTolerance	= (float)(2.0f / 180.0f * Math.PI);
+		public const float b2_angularSleepTolerance	= (float)(2.0f / 180.0f * (float)Math.PI);
 
 		// Memory Allocation
 

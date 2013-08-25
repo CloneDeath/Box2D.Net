@@ -10,11 +10,11 @@ namespace Box2D {
 	/// can violate the constraint slightly. The joint translation is zero
 	/// when the local anchor points coincide in world space. Using local
 	/// anchors and a local axis helps when saving and loading a game.
-	struct b2WheelJointDef : b2JointDef
+	class b2WheelJointDef : b2JointDef
 	{
 		public b2WheelJointDef()
 		{
-			type = e_wheelJoint;
+			type = b2JointType.e_wheelJoint;
 			localAnchorA.SetZero();
 			localAnchorB.SetZero();
 			localAxisA.Set(1.0f, 0.0f);
@@ -42,7 +42,7 @@ namespace Box2D {
 		// Motor rotational constraint
 		// Cdot = wB - wA
 		// J = [0 0 -1 0 0 1]
-		public void Initialize(b2Body* bodyA, b2Body* bodyB, b2Vec2 anchor, b2Vec2 axis) {
+		public void Initialize(b2Body bA, b2Body bB, b2Vec2 anchor, b2Vec2 axis) {
 			bodyA = bA;
 			bodyB = bB;
 			localAnchorA = bodyA.GetLocalPoint(anchor);
