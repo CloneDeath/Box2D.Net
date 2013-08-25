@@ -117,8 +117,7 @@ namespace Box2D {
 			{
 			case b2JointType.e_distanceJoint:
 			    {
-					throw new NotImplementedException();
-					//joint = new b2DistanceJoint((b2DistanceJointDef)def);
+					joint = new b2DistanceJoint((b2DistanceJointDef)def);
 			    }
 			    break;
 
@@ -136,36 +135,31 @@ namespace Box2D {
 
 			case b2JointType.e_revoluteJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2RevoluteJoint((b2RevoluteJointDef)def);
+					joint = new b2RevoluteJoint((b2RevoluteJointDef)def);
 			    }
 			    break;
 
 			case b2JointType.e_pulleyJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2PulleyJoint((b2PulleyJointDef)def);
+					joint = new b2PulleyJoint((b2PulleyJointDef)def);
 			    }
 			    break;
 
 			case b2JointType.e_gearJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2GearJoint((b2GearJointDef)def);
+					joint = new b2GearJoint((b2GearJointDef)def);
 			    }
 			    break;
 
 			case b2JointType.e_wheelJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2WheelJoint((b2WheelJointDef)def);
+					joint = new b2WheelJoint((b2WheelJointDef)def);
 			    }
 			    break;
 
 			case b2JointType.e_weldJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2WeldJoint((b2WeldJointDef)def);
+					joint = new b2WeldJoint((b2WeldJointDef)def);
 			    }
 			    break;
         
@@ -178,14 +172,13 @@ namespace Box2D {
 			case b2JointType.e_ropeJoint:
 			    {
 					throw new NotImplementedException();
-			        //joint = new b2RopeJoint((b2RopeJointDef)def);
+					//joint = new b2RopeJoint((b2RopeJointDef)def);
 			    }
 			    break;
 
 			case b2JointType.e_motorJoint:
 			    {
-					throw new NotImplementedException();
-			        //joint = new b2MotorJoint((b2MotorJointDef)def);
+			        joint = new b2MotorJoint((b2MotorJointDef)def);
 			    }
 			    break;
 

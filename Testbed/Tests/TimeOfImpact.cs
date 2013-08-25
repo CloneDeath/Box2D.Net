@@ -14,6 +14,8 @@ namespace Testbed.Tests {
 
 		public TimeOfImpact()
 		{
+			m_shapeA = new b2PolygonShape();
+			m_shapeB = new b2PolygonShape();
 			m_shapeA.SetAsBox(25.0f, 5.0f);
 			m_shapeB.SetAsBox(2.5f, 2.5f);
 		}

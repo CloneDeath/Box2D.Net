@@ -159,7 +159,7 @@ namespace Testbed {
 			hertzSpinner.Value = settingsHz;
 			hertzSpinner.SetPosition(10, 140);
 
-			CheckBox scb = new CheckBox(glui);
+			LabeledCheckBox scb = new LabeledCheckBox(glui);
 			scb.Text = "Sleep";
 			scb.CheckChanged += delegate(Base sender, EventArgs argsscb) {
 				settings.enableSleep = scb.IsChecked;
@@ -167,7 +167,7 @@ namespace Testbed {
 			scb.IsChecked = settings.enableSleep;
 			scb.SetPosition(10, 160);
 
-			CheckBox wsu = new CheckBox(glui);
+			LabeledCheckBox wsu = new LabeledCheckBox(glui);
 			wsu.Text = "Warm Starting";
 			wsu.CheckChanged += delegate(Base sender, EventArgs argsscb) {
 				settings.enableWarmStarting = wsu.IsChecked;
@@ -175,7 +175,7 @@ namespace Testbed {
 			wsu.IsChecked = settings.enableWarmStarting;
 			wsu.SetPosition(10, 180);
 
-			CheckBox toi = new CheckBox(glui);
+			LabeledCheckBox toi = new LabeledCheckBox(glui);
 			toi.Text = "Time of Impact";
 			toi.CheckChanged += delegate(Base sender, EventArgs argsscb) {
 				settings.enableContinuous = toi.IsChecked;
@@ -183,7 +183,7 @@ namespace Testbed {
 			toi.IsChecked = settings.enableContinuous;
 			toi.SetPosition(10, 200);
 
-			CheckBox ssb = new CheckBox(glui);
+			LabeledCheckBox ssb = new LabeledCheckBox(glui);
 			ssb.Text = "Sub-Stepping";
 			ssb.CheckChanged += delegate(Base sender, EventArgs argsscb) {
 				settings.enableSubStepping = ssb.IsChecked;
@@ -215,7 +215,6 @@ namespace Testbed {
 			//glui.add_button("Restart", 0, Restart);
 
 			//glui.add_button("Quit", 0,(GLUI_Update_CB)Exit);
-			//glui.set_main_gfx_window( mainWindow );
 
 			glui.SetSize(200, 300);
 			GraphicsManager.Start();

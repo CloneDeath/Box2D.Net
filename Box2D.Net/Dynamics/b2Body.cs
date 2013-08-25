@@ -308,18 +308,15 @@ namespace Box2D {
 		/// Set the angular velocity.
 		/// @param omega the new angular velocity in radians/second.
 		public void SetAngularVelocity(float omega){
-			throw new NotImplementedException();
-			//if (m_type == b2_staticBody)
-			//{
-			//    return;
-			//}
+			if (m_type == b2BodyType.b2_staticBody) {
+				return;
+			}
 
-			//if (w * w > 0.0f)
-			//{
-			//    SetAwake(true);
-			//}
+			if (omega * omega > 0.0f) {
+				SetAwake(true);
+			}
 
-			//m_angularVelocity = w;
+			m_angularVelocity = omega;
 		}
 
 		/// Get the angular velocity.
@@ -591,16 +588,14 @@ namespace Box2D {
 		/// @param a point in world coordinates.
 		/// @return the corresponding local point relative to the body's origin.
 		public b2Vec2 GetLocalPoint(b2Vec2 worldPoint){
-			throw new NotImplementedException();
-			//return Utilities.b2MulT(m_xf, worldPoint);
+			return Utilities.b2MulT(m_xf, worldPoint);
 		}
 
 		/// Gets a local vector given a world vector.
 		/// @param a vector in world coordinates.
 		/// @return the corresponding local vector.
 		public b2Vec2 GetLocalVector(b2Vec2 worldVector) {
-			throw new NotImplementedException();
-			//return Utilities.b2MulT(m_xf.q, worldVector);
+			return Utilities.b2MulT(m_xf.q, worldVector);
 		}
 
 
@@ -608,16 +603,14 @@ namespace Box2D {
 		/// @param a point in world coordinates.
 		/// @return the world velocity of a point.
 		public b2Vec2 GetLinearVelocityFromWorldPoint(b2Vec2 worldPoint){
-			throw new NotImplementedException();
-			//return m_linearVelocity + Utilities.b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
+			return m_linearVelocity + Utilities.b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
 		}
 
 		/// Get the world velocity of a local point.
 		/// @param a point in local coordinates.
 		/// @return the world velocity of a point.
 		public b2Vec2 GetLinearVelocityFromLocalPoint(b2Vec2 localPoint){
-			throw new NotImplementedException();
-			//return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
+			return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
 		}
 
 		/// Get the linear damping of the body.

@@ -40,105 +40,109 @@ namespace Box2D {
 		public static void b2CollidePolygonAndCircle(out b2Manifold manifold,
 									   b2PolygonShape polygonA, b2Transform xfA,
 									   b2CircleShape circleB, b2Transform xfB) {
-			throw new NotImplementedException();
-			//manifold.pointCount = 0;
+			manifold = new b2Manifold();
+			manifold.points.Clear();
 
-			//// Compute circle position in the frame of the polygon.
-			//b2Vec2 c = Utilities.b2Mul(xfB, circleB.m_p);
-			//b2Vec2 cLocal = Utilities.b2MulT(xfA, c);
+			// Compute circle position in the frame of the polygon.
+			b2Vec2 c = Utilities.b2Mul(xfB, circleB.m_p);
+			b2Vec2 cLocal = Utilities.b2MulT(xfA, c);
 
-			//// Find the min separating edge.
-			//int normalIndex = 0;
-			//float separation = -Single.MaxValue;
-			//float radius = polygonA.m_radius + circleB.m_radius;
-			//int vertexCount = polygonA.m_count;
-			//const b2Vec2* vertices = polygonA.m_vertices;
-			//const b2Vec2* normals = polygonA.m_normals;
+			// Find the min separating edge.
+			int normalIndex = 0;
+			float separation = -Single.MaxValue;
+			float radius = polygonA.m_radius + circleB.m_radius;
+			int vertexCount = polygonA.m_count;
+			List<b2Vec2> vertices = new List<b2Vec2>(polygonA.m_vertices);
+			List<b2Vec2> normals = new List<b2Vec2>(polygonA.m_normals);
 
-			//for (int i = 0; i < vertexCount; ++i)
-			//{
-			//    float s = Utilities.b2Dot(normals[i], cLocal - vertices[i]);
+			for (int i = 0; i < vertexCount; ++i)
+			{
+			    float s = Utilities.b2Dot(normals[i], cLocal - vertices[i]);
 
-			//    if (s > radius)
-			//    {
-			//        // Early out.
-			//        return;
-			//    }
+			    if (s > radius)
+			    {
+			        // Early out.
+			        return;
+			    }
 
-			//    if (s > separation)
-			//    {
-			//        separation = s;
-			//        normalIndex = i;
-			//    }
-			//}
+			    if (s > separation)
+			    {
+			        separation = s;
+			        normalIndex = i;
+			    }
+			}
 
-			//// Vertices that subtend the incident face.
-			//int vertIndex1 = normalIndex;
-			//int vertIndex2 = vertIndex1 + 1 < vertexCount ? vertIndex1 + 1 : 0;
-			//b2Vec2 v1 = vertices[vertIndex1];
-			//b2Vec2 v2 = vertices[vertIndex2];
+			// Vertices that subtend the incident face.
+			int vertIndex1 = normalIndex;
+			int vertIndex2 = vertIndex1 + 1 < vertexCount ? vertIndex1 + 1 : 0;
+			b2Vec2 v1 = vertices[vertIndex1];
+			b2Vec2 v2 = vertices[vertIndex2];
 
-			//// If the center is inside the polygon ...
-			//if (separation < Single.Epsilon)
-			//{
-			//    manifold.pointCount = 1;
-			//    manifold.type = b2Manifold::e_faceA;
-			//    manifold.localNormal = normals[normalIndex];
-			//    manifold.localPoint = 0.5f * (v1 + v2);
-			//    manifold.points[0].localPoint = circleB.m_p;
-			//    manifold.points[0].id.key = 0;
-			//    return;
-			//}
+			// If the center is inside the polygon ...
+			if (separation < Single.Epsilon)
+			{
+				manifold.points.Clear();
+				manifold.points.Add(new b2ManifoldPoint());
+			    manifold.type = b2Manifold.ManifoldType.e_faceA;
+			    manifold.localNormal = normals[normalIndex];
+			    manifold.localPoint = 0.5f * (v1 + v2);
+			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].id.key = 0;
+			    return;
+			}
 
-			//// Compute barycentric coordinates
-			//float u1 = Utilities.b2Dot(cLocal - v1, v2 - v1);
-			//float u2 = Utilities.b2Dot(cLocal - v2, v1 - v2);
-			//if (u1 <= 0.0f)
-			//{
-			//    if (b2DistanceSquared(cLocal, v1) > radius * radius)
-			//    {
-			//        return;
-			//    }
+			// Compute barycentric coordinates
+			float u1 = Utilities.b2Dot(cLocal - v1, v2 - v1);
+			float u2 = Utilities.b2Dot(cLocal - v2, v1 - v2);
+			if (u1 <= 0.0f)
+			{
+			    if (Utilities.b2DistanceSquared(cLocal, v1) > radius * radius)
+			    {
+			        return;
+			    }
 
-			//    manifold.pointCount = 1;
-			//    manifold.type = b2Manifold::e_faceA;
-			//    manifold.localNormal = cLocal - v1;
-			//    manifold.localNormal.Normalize();
-			//    manifold.localPoint = v1;
-			//    manifold.points[0].localPoint = circleB.m_p;
-			//    manifold.points[0].id.key = 0;
-			//}
-			//else if (u2 <= 0.0f)
-			//{
-			//    if (b2DistanceSquared(cLocal, v2) > radius * radius)
-			//    {
-			//        return;
-			//    }
+				manifold.points.Clear();
+				manifold.points.Add(new b2ManifoldPoint());
+			    manifold.type = b2Manifold.ManifoldType.e_faceA;
+			    manifold.localNormal = cLocal - v1;
+			    manifold.localNormal.Normalize();
+			    manifold.localPoint = v1;
+			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].id.key = 0;
+			}
+			else if (u2 <= 0.0f)
+			{
+				if (Utilities.b2DistanceSquared(cLocal, v2) > radius * radius)
+			    {
+			        return;
+			    }
 
-			//    manifold.pointCount = 1;
-			//    manifold.type = b2Manifold::e_faceA;
-			//    manifold.localNormal = cLocal - v2;
-			//    manifold.localNormal.Normalize();
-			//    manifold.localPoint = v2;
-			//    manifold.points[0].localPoint = circleB.m_p;
-			//    manifold.points[0].id.key = 0;
-			//}
-			//else
-			//{
-			//    b2Vec2 faceCenter = 0.5f * (v1 + v2);
-			//    float separation = Utilities.b2Dot(cLocal - faceCenter, normals[vertIndex1]);
-			//    if (separation > radius)
-			//    {
-			//        return;
-			//    }
+				manifold.points = new List<b2ManifoldPoint>();
+				manifold.points.Add(new b2ManifoldPoint());
+			    manifold.type = b2Manifold.ManifoldType.e_faceA;
+			    manifold.localNormal = cLocal - v2;
+			    manifold.localNormal.Normalize();
+			    manifold.localPoint = v2;
+			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].id.key = 0;
+			}
+			else
+			{
+			    b2Vec2 faceCenter = 0.5f * (v1 + v2);
+			    float separation2 = Utilities.b2Dot(cLocal - faceCenter, normals[vertIndex1]);
+			    if (separation2 > radius)
+			    {
+			        return;
+			    }
 
-			//    manifold.pointCount = 1;
-			//    manifold.type = b2Manifold::e_faceA;
-			//    manifold.localNormal = normals[vertIndex1];
-			//    manifold.localPoint = faceCenter;
-			//    manifold.points[0].localPoint = circleB.m_p;
-			//    manifold.points[0].id.key = 0;
-			//}
+				manifold.points = new List<b2ManifoldPoint>();
+				manifold.points.Add(new b2ManifoldPoint());
+			    manifold.type = b2Manifold.ManifoldType.e_faceA;
+			    manifold.localNormal = normals[vertIndex1];
+			    manifold.localPoint = faceCenter;
+			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].id.key = 0;
+			}
 		}
 
 		// Find the separation between poly1 and poly2 for a give edge normal on poly1.
@@ -596,6 +600,13 @@ namespace Box2D {
 		public uint key {
 			get {
 				return (uint)((cf.indexA << 24) & (cf.indexB << 16) & ((byte)cf.typeA << 8) & ((byte)cf.typeB));
+			}
+
+			set {
+				cf.indexA = (byte)((value >> 24) & 0x00FF);
+				cf.indexB = (byte)((value >> 16) & 0x00FF);
+				cf.typeA = (b2ContactFeature.FeatureType)((value >> 8) & 0x00FF);
+				cf.typeB = (b2ContactFeature.FeatureType)((value) & 0x00FF);
 			}
 		}
 	}

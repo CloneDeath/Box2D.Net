@@ -156,29 +156,26 @@ namespace Box2D {
 		/// @param center the center of the box in local coordinates.
 		/// @param angle the rotation of the box in local coordinates.
 		public void SetAsBox(float hx, float hy, b2Vec2 center, float angle){
-			throw new NotImplementedException();
-			//m_count = 4;
-			//m_vertices[0].Set(-hx, -hy);
-			//m_vertices[1].Set( hx, -hy);
-			//m_vertices[2].Set( hx,  hy);
-			//m_vertices[3].Set(-hx,  hy);
-			//m_normals[0].Set(0.0f, -1.0f);
-			//m_normals[1].Set(1.0f, 0.0f);
-			//m_normals[2].Set(0.0f, 1.0f);
-			//m_normals[3].Set(-1.0f, 0.0f);
-			//m_centroid = center;
+			m_count = 4;
+			m_vertices[0].Set(-hx, -hy);
+			m_vertices[1].Set(hx, -hy);
+			m_vertices[2].Set(hx, hy);
+			m_vertices[3].Set(-hx, hy);
+			m_normals[0].Set(0.0f, -1.0f);
+			m_normals[1].Set(1.0f, 0.0f);
+			m_normals[2].Set(0.0f, 1.0f);
+			m_normals[3].Set(-1.0f, 0.0f);
+			m_centroid = center;
 
-			//b2Transform xf;
-			//xf.p = center;
-			//xf.q.Set(angle);
+			b2Transform xf = new b2Transform();
+			xf.p = center;
+			xf.q.Set(angle);
 
-			//// Transform vertices and normals.
-			//for (int i = 0; i < m_count; ++i)
-			//{
-			//    throw new NotImplementedException();
-			//    //m_vertices[i] = Utilities.b2Mul(xf, m_vertices[i]);
-			//    //m_normals[i] = Utilities.b2Mul(xf.q, m_normals[i]);
-			//}
+			// Transform vertices and normals.
+			for (int i = 0; i < m_count; ++i) {
+				m_vertices[i] = Utilities.b2Mul(xf, m_vertices[i]);
+				m_normals[i] = Utilities.b2Mul(xf.q, m_normals[i]);
+			}
 		}
 		
 		private static b2Vec2 ComputeCentroid(b2Vec2[] vs, int count)
@@ -428,31 +425,26 @@ namespace Box2D {
 		/// Validate convexity. This is a very time consuming operation.
 		/// @returns true if valid
 		public bool Validate(){
-			throw new NotImplementedException();
-			//for (int i = 0; i < m_count; ++i)
-			//{
-			//    int i1 = i;
-			//    int i2 = i < m_count - 1 ? i1 + 1 : 0;
-			//    b2Vec2 p = m_vertices[i1];
-			//    b2Vec2 e = m_vertices[i2] - p;
+			for (int i = 0; i < m_count; ++i) {
+				int i1 = i;
+				int i2 = i < m_count - 1 ? i1 + 1 : 0;
+				b2Vec2 p = m_vertices[i1];
+				b2Vec2 e = m_vertices[i2] - p;
 
-			//    for (int j = 0; j < m_count; ++j)
-			//    {
-			//        if (j == i1 || j == i2)
-			//        {
-			//            continue;
-			//        }
+				for (int j = 0; j < m_count; ++j) {
+					if (j == i1 || j == i2) {
+						continue;
+					}
 
-			//        b2Vec2 v = m_vertices[j] - p;
-			//        float c = Utilities.b2Cross(e, v);
-			//        if (c < 0.0f)
-			//        {
-			//            return false;
-			//        }
-			//    }
-			//}
+					b2Vec2 v = m_vertices[j] - p;
+					float c = Utilities.b2Cross(e, v);
+					if (c < 0.0f) {
+						return false;
+					}
+				}
+			}
 
-			//return true;
+			return true;
 		}
 	}
 }
