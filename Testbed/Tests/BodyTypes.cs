@@ -132,7 +132,7 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new BodyTypes;
 		}

@@ -9,9 +9,7 @@ namespace Testbed.Tests {
 	// due to position correction.
 	class VaryingRestitution : Test
 	{
-	public:
-
-		VaryingRestitution()
+		public VaryingRestitution()
 		{
 			{
 				b2BodyDef bd;
@@ -46,9 +44,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new VaryingRestitution;
+			return new VaryingRestitution();
 		}
 	};
 }

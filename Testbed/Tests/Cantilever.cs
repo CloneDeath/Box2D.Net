@@ -186,7 +186,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new Cantilever;
 		}

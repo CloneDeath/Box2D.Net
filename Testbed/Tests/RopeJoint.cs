@@ -15,8 +15,7 @@ namespace Testbed.Tests {
 	/// so that the payload does not collide with the chain.
 	class RopeJoint : Test
 	{
-	public:
-		RopeJoint()
+		public RopeJoint()
 		{
 			b2Body* ground = null;
 			{
@@ -85,7 +84,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -103,7 +102,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
@@ -119,9 +118,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new RopeJoint;
+			return new RopeJoint();
 		}
 
 		b2RopeJointDef m_ropeDef;

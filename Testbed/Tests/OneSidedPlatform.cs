@@ -7,16 +7,14 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class OneSidedPlatform : Test
 	{
-	public:
-
-		enum State
+		public enum State
 		{
 			e_unknown,
 			e_above,
 			e_below
 		};
 
-		OneSidedPlatform()
+		public OneSidedPlatform()
 		{
 			// Ground
 			{
@@ -60,7 +58,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+		public void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 		{
 			Test::PreSolve(contact, oldManifold);
 
@@ -93,7 +91,7 @@ namespace Testbed.Tests {
 	#endif
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
@@ -104,9 +102,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new OneSidedPlatform;
+			return new OneSidedPlatform();
 		}
 
 		float m_radius, m_top, m_bottom;

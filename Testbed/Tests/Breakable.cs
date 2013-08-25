@@ -121,7 +121,7 @@ namespace Testbed.Tests {
 			Test::Step(settings);
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new Breakable;
 		}

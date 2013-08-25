@@ -8,8 +8,7 @@ namespace Testbed.Tests {
 	// The motor in this test gets smoother with higher velocity iterations.
 	class Prismatic : Test
 	{
-	public:
-		Prismatic()
+		public Prismatic()
 		{
 			b2Body* ground = null;
 			{
@@ -54,7 +53,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -72,7 +71,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
@@ -82,9 +81,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Prismatic;
+			return new Prismatic();
 		}
 
 		b2PrismaticJoint* m_joint;

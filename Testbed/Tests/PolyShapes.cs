@@ -11,22 +11,21 @@ namespace Testbed.Tests {
 	/// This callback is called by b2World::QueryAABB. We find all the fixtures
 	/// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
 	/// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-	class PolyShapesCallback : public b2QueryCallback
+	class PolyShapesCallback : b2QueryCallback
 	{
 		const int k_maxBodies = 256;
-	public:
 	
-		enum
+		public enum
 		{
 			e_maxCount = 4
 		};
 
-		PolyShapesCallback()
+		public PolyShapesCallback()
 		{
 			m_count = 0;
 		}
 
-		void DrawFixture(b2Fixture* fixture)
+		public void DrawFixture(b2Fixture* fixture)
 		{
 			b2Color color(0.95f, 0.95f, 0.6f);
 			const b2Transform& xf = fixture.GetBody().GetTransform();
@@ -67,7 +66,7 @@ namespace Testbed.Tests {
 
 		/// Called for each fixture found in the query AABB.
 		/// @return false to terminate the query.
-		bool ReportFixture(b2Fixture* fixture)
+		public bool ReportFixture(b2Fixture* fixture)
 		{
 			if (m_count == e_maxCount)
 			{
@@ -96,8 +95,7 @@ namespace Testbed.Tests {
 
 	class PolyShapes : Test
 	{
-	public:
-		PolyShapes()
+		public PolyShapes()
 		{
 			// Ground body
 			{
@@ -155,7 +153,7 @@ namespace Testbed.Tests {
 			memset(m_bodies, 0, sizeof(m_bodies));
 		}
 
-		void Create(int index)
+		public void Create(int index)
 		{
 			if (m_bodies[m_bodyIndex] != null)
 			{
@@ -198,7 +196,7 @@ namespace Testbed.Tests {
 			m_bodyIndex = (m_bodyIndex + 1) % k_maxBodies;
 		}
 
-		void DestroyBody()
+		public void DestroyBody()
 		{
 			for (int i = 0; i < k_maxBodies; ++i)
 			{
@@ -211,7 +209,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -240,7 +238,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -266,9 +264,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new PolyShapes;
+			return new PolyShapes();
 		}
 
 		int m_bodyIndex;

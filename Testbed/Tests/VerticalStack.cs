@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class VerticalStack : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_columnCount = 5,
 			e_rowCount = 16
@@ -17,7 +15,7 @@ namespace Testbed.Tests {
 			//e_rowCount = 1
 		};
 
-		VerticalStack()
+		public VerticalStack()
 		{
 			{
 				b2BodyDef bd;
@@ -68,7 +66,7 @@ namespace Testbed.Tests {
 			m_bullet = null;
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -102,7 +100,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
@@ -138,9 +136,9 @@ namespace Testbed.Tests {
 			//}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new VerticalStack;
+			return new VerticalStack();
 		}
 
 		b2Body* m_bullet;

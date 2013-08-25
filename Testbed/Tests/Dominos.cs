@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class Dominos : Test
 	{
-	public:
-
-		Dominos()
+		public Dominos()
 		{
 			b2Body* b1;
 			{
@@ -192,9 +190,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Dominos;
+			return new Dominos();
 		}
 	};
 }

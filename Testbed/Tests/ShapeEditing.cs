@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class ShapeEditing : Test
 	{
-	public:
-
-		ShapeEditing()
+		public ShapeEditing()
 		{
 			{
 				b2BodyDef bd;
@@ -34,7 +32,7 @@ namespace Testbed.Tests {
 			m_sensor = false;
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -68,7 +66,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
@@ -77,9 +75,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new ShapeEditing;
+			return new ShapeEditing();
 		}
 
 		b2Body* m_body;

@@ -5,15 +5,14 @@ using System.Text;
 using Testbed.Framework;
 
 namespace Testbed.Tests {
-	class EdgeShapesCallback : public b2RayCastCallback
+	class EdgeShapesCallback : b2RayCastCallback
 	{
-	public:
-		EdgeShapesCallback()
+		public EdgeShapesCallback()
 		{
 			m_fixture = null;
 		}
 
-		float ReportFixture(	b2Fixture* fixture, b2Vec2 point,
+		public float ReportFixture(	b2Fixture* fixture, b2Vec2 point,
 			b2Vec2 normal, float fraction)
 		{
 			m_fixture = fixture;
@@ -30,14 +29,12 @@ namespace Testbed.Tests {
 
 	class EdgeShapes : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_maxBodies = 256
 		};
 
-		EdgeShapes()
+		public EdgeShapes()
 		{
 			// Ground body
 			{
@@ -108,7 +105,7 @@ namespace Testbed.Tests {
 			m_angle = 0.0f;
 		}
 
-		void Create(int index)
+		public void Create(int index)
 		{
 			if (m_bodies[m_bodyIndex] != null)
 			{
@@ -151,7 +148,7 @@ namespace Testbed.Tests {
 			m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
 		}
 
-		void DestroyBody()
+		public void DestroyBody()
 		{
 			for (int i = 0; i < e_maxBodies; ++i)
 			{
@@ -164,7 +161,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -219,9 +216,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new EdgeShapes;
+			return new EdgeShapes();
 		}
 
 		int m_bodyIndex;

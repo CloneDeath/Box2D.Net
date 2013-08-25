@@ -7,19 +7,18 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class ConvexHull : Test
 	{
-	public:
-		enum
+		public enum
 		{
 			e_count = b2Settings.b2_maxPolygonVertices
 		};
 
-		ConvexHull()
+		public ConvexHull()
 		{
 			Generate();
 			m_auto = false;
 		}
 
-		void Generate()
+		public void Generate()
 		{
 			b2Vec2 lowerBound(-8.0f, -8.0f);
 			b2Vec2 upperBound(8.0f, 8.0f);
@@ -37,12 +36,12 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new ConvexHull;
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -56,7 +55,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 

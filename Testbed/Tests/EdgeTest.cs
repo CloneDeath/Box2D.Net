@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class EdgeTest : Test
 	{
-	public:
-
-		EdgeTest()
+		public EdgeTest()
 		{
 			{
 				b2BodyDef bd;
@@ -86,9 +84,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new EdgeTest;
+			return new EdgeTest();
 		}
 	};
 }

@@ -10,8 +10,7 @@ namespace Testbed.Tests {
 	/// the body can be blocked by collision with other bodies.
 	class MotorJoint : Test
 	{
-	public:
-		MotorJoint()
+		public MotorJoint()
 		{
 			b2Body* ground = null;
 			{
@@ -54,7 +53,7 @@ namespace Testbed.Tests {
 			m_time = 0.0f;
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -64,7 +63,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			if (m_go && settings.hz > 0.0f)
 			{
@@ -87,9 +86,9 @@ namespace Testbed.Tests {
 			m_textLine += 15;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new MotorJoint;
+			return new MotorJoint();
 		}
 
 		b2MotorJoint* m_joint;

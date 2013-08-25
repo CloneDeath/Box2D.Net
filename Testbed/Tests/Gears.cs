@@ -7,8 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class Gears : Test
 	{
-	public:
-		Gears()
+		public Gears()
 		{
 			b2Body* ground = null;
 			{
@@ -131,7 +130,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -140,7 +139,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -157,9 +156,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Gears;
+			return new Gears();
 		}
 
 		b2RevoluteJoint* m_joint1;

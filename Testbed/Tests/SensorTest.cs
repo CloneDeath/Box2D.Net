@@ -8,14 +8,12 @@ namespace Testbed.Tests {
 	// This is used to test sensor shapes.
 	class SensorTest : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_count = 7
 		};
 
-		SensorTest()
+		public SensorTest()
 		{
 			{
 				b2BodyDef bd;
@@ -68,7 +66,7 @@ namespace Testbed.Tests {
 		}
 
 		// Implement contact listener.
-		void BeginContact(b2Contact* contact)
+		public void BeginContact(b2Contact* contact)
 		{
 			b2Fixture* fixtureA = contact.GetFixtureA();
 			b2Fixture* fixtureB = contact.GetFixtureB();
@@ -95,7 +93,7 @@ namespace Testbed.Tests {
 		}
 
 		// Implement contact listener.
-		void EndContact(b2Contact* contact)
+		public void EndContact(b2Contact* contact)
 		{
 			b2Fixture* fixtureA = contact.GetFixtureA();
 			b2Fixture* fixtureB = contact.GetFixtureB();
@@ -121,7 +119,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -154,9 +152,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new SensorTest;
+			return new SensorTest();
 		}
 
 		b2Fixture* m_sensor;

@@ -7,14 +7,12 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class DynamicTreeTest : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_actorCount = 128
 		};
 
-		DynamicTreeTest()
+		public DynamicTreeTest()
 		{
 			m_worldExtent = 15.0f;
 			m_proxyExtent = 0.5f;
@@ -43,12 +41,12 @@ namespace Testbed.Tests {
 			m_automated = false;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new DynamicTreeTest;
+			return new DynamicTreeTest();
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings settings)
 		{
 			B2_NOT_USED(settings);
 
@@ -121,7 +119,7 @@ namespace Testbed.Tests {
 			++m_stepCount;
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -143,14 +141,14 @@ namespace Testbed.Tests {
 			}
 		}
 
-		bool QueryCallback(int proxyId)
+		public bool QueryCallback(int proxyId)
 		{
 			Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
 			actor.overlap = b2TestOverlap(m_queryAABB, actor.aabb);
 			return true;
 		}
 
-		float RayCastCallback(const b2RayCastInput& input, int proxyId)
+		public float RayCastCallback(const b2RayCastInput& input, int proxyId)
 		{
 			Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
 

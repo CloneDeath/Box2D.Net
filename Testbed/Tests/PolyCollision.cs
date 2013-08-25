@@ -7,8 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class PolyCollision : Test
 	{
-	public:
-		PolyCollision()
+		public PolyCollision()
 		{
 			{
 				m_polygonA.SetAsBox(0.2f, 0.4f);
@@ -23,12 +22,12 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new PolyCollision;
+			return new PolyCollision();
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			B2_NOT_USED(settings);
 
@@ -63,7 +62,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{

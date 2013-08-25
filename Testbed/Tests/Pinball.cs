@@ -10,8 +10,7 @@ namespace Testbed.Tests {
 	/// This also uses a loop shape.
 	class Pinball : Test
 	{
-	public:
-		Pinball()
+		public Pinball()
 		{
 			// Ground body
 			b2Body* ground = null;
@@ -100,7 +99,7 @@ namespace Testbed.Tests {
 			m_button = false;
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			if (m_button)
 			{
@@ -120,7 +119,7 @@ namespace Testbed.Tests {
 
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -131,7 +130,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void KeyboardUp(unsigned char key)
+		public void KeyboardUp(unsigned char key)
 		{
 			switch (key)
 			{
@@ -142,9 +141,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Pinball;
+			return new Pinball();
 		}
 
 		b2RevoluteJoint* m_leftJoint;

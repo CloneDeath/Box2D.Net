@@ -7,8 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class Revolute : Test
 	{
-	public:
-		Revolute()
+		public Revolute()
 		{
 			b2Body* ground = null;
 			{
@@ -110,7 +109,7 @@ namespace Testbed.Tests {
 
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -124,7 +123,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
@@ -140,9 +139,9 @@ namespace Testbed.Tests {
 			//m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Revolute;
+			return new Revolute();
 		}
 
 		b2Body* m_ball;

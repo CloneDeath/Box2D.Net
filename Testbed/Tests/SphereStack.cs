@@ -7,14 +7,12 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class SphereStack : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_count = 10
 		};
 
-		SphereStack()
+		public SphereStack()
 		{
 			{
 				b2BodyDef bd;
@@ -44,7 +42,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -61,9 +59,9 @@ namespace Testbed.Tests {
 			//printf("\n");
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new SphereStack;
+			return new SphereStack();
 		}
 
 		b2Body* m_bodies[e_count];

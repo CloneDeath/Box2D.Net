@@ -7,8 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class DistanceTest : Test
 	{
-	public:
-		DistanceTest()
+		public DistanceTest()
 		{
 			{
 				m_transformA.SetIdentity();
@@ -25,12 +24,12 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
-			return new DistanceTest;
+			return new DistanceTest();
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings settings)
 		{
 			Test::Step(settings);
 
@@ -77,7 +76,7 @@ namespace Testbed.Tests {
 			m_debugDraw.DrawPoint(x2, 4.0f, c2);
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{

@@ -10,15 +10,14 @@ namespace Testbed.Tests {
 	// the ray will always miss one type of polygon.
 
 	// This callback finds the closest hit. Polygon 0 is filtered.
-	class RayCastClosestCallback : public b2RayCastCallback
+	class RayCastClosestCallback : b2RayCastCallback
 	{
-	public:
-		RayCastClosestCallback()
+		public RayCastClosestCallback()
 		{
 			m_hit = false;
 		}
 
-		float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body* body = fixture.GetBody();
 			void* userData = body.GetUserData();
@@ -46,19 +45,18 @@ namespace Testbed.Tests {
 		bool m_hit;
 		b2Vec2 m_point;
 		b2Vec2 m_normal;
-	};
+	}
 
 	// This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
 	// just checking for obstruction, so the actual fixture and hit point are irrelevant. 
-	class RayCastAnyCallback : public b2RayCastCallback
+	class RayCastAnyCallback : b2RayCastCallback
 	{
-	public:
-		RayCastAnyCallback()
+		public RayCastAnyCallback()
 		{
 			m_hit = false;
 		}
 
-		float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body* body = fixture.GetBody();
 			void* userData = body.GetUserData();
@@ -90,20 +88,19 @@ namespace Testbed.Tests {
 	// This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
 	// The fixtures are not necessary reported in order, so we might not capture
 	// the closest fixture.
-	class RayCastMultipleCallback : public b2RayCastCallback
+	class RayCastMultipleCallback : b2RayCastCallback
 	{
-	public:
-		enum
+		public enum
 		{
 			e_maxCount = 3
 		};
 
-		RayCastMultipleCallback()
+		public RayCastMultipleCallback()
 		{
 			m_count = 0;
 		}
 
-		float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
+		public float ReportFixture(b2Fixture* fixture, b2Vec2 point, b2Vec2 normal, float fraction)
 		{
 			b2Body* body = fixture.GetBody();
 			void* userData = body.GetUserData();
@@ -143,21 +140,19 @@ namespace Testbed.Tests {
 
 	class RayCast : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_maxBodies = 256
 		};
 
-		enum Mode
+		public enum Mode
 		{
 			e_closest,
 			e_any,
 			e_multiple
 		};
 
-		RayCast()
+		public RayCast()
 		{
 			// Ground body
 			{
@@ -219,7 +214,7 @@ namespace Testbed.Tests {
 			m_mode = e_closest;
 		}
 
-		void Create(int index)
+		public void Create(int index)
 		{
 			if (m_bodies[m_bodyIndex] != null)
 			{
@@ -263,7 +258,7 @@ namespace Testbed.Tests {
 			m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
 		}
 
-		void DestroyBody()
+		public void DestroyBody()
 		{
 			for (int i = 0; i < e_maxBodies; ++i)
 			{
@@ -276,7 +271,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -308,7 +303,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			bool advanceRay = settings.pause == 0 || settings.singleStep;
 
@@ -434,7 +429,7 @@ namespace Testbed.Tests {
 	#endif
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new RayCast;
 		}

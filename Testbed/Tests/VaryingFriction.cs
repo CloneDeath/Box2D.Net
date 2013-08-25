@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class VaryingFriction : Test
 	{
-	public:
-
-		VaryingFriction()
+		public VaryingFriction()
 		{
 			{
 				b2BodyDef bd;
@@ -101,9 +99,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new VaryingFriction;
+			return new VaryingFriction();
 		}
 	};
 }

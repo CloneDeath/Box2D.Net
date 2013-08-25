@@ -9,13 +9,12 @@ namespace Testbed.Tests {
 	/// based collision is _not_ smooth due to Box2D not knowing about adjacency.
 	class Tiles : Test
 	{
-	public:
-		enum
+		public enum
 		{
 			e_count = 20
 		};
 
-		Tiles()
+		public Tiles()
 		{
 			m_fixtureCount = 0;
 			b2Timer timer;
@@ -106,7 +105,7 @@ namespace Testbed.Tests {
 			m_createTime = timer.GetMilliseconds();
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			const b2ContactManager& cm = m_world.GetContactManager();
 			int height = cm.m_broadPhase.GetTreeHeight();
@@ -130,9 +129,9 @@ namespace Testbed.Tests {
 			//}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Tiles;
+			return new Tiles();
 		}
 
 		int m_fixtureCount;

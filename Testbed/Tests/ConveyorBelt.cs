@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class ConveyorBelt : Test
 	{
-	public:
-
-		ConveyorBelt()
+		public ConveyorBelt()
 		{
 			// Ground
 			{
@@ -50,7 +48,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+		public void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 		{
 			Test::PreSolve(contact, oldManifold);
 
@@ -68,12 +66,12 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new ConveyorBelt;
 		}

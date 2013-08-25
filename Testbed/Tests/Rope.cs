@@ -8,8 +8,7 @@ namespace Testbed.Tests {
 	///
 	class Rope : Test
 	{
-	public:
-		Rope()
+		public Rope()
 		{
 			const int N = 40;
 			b2Vec2 vertices[N];
@@ -38,7 +37,7 @@ namespace Testbed.Tests {
 			m_rope.SetAngle(m_angle);
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -54,7 +53,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			float dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
 
@@ -75,9 +74,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Rope;
+			return new Rope();
 		}
 
 		b2Rope m_rope;

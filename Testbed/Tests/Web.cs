@@ -8,8 +8,7 @@ namespace Testbed.Tests {
 	// This tests distance joints, body destruction, and joint destruction.
 	class Web : Test
 	{
-	public:
-		Web()
+		public Web()
 		{
 			b2Body* ground = null;
 			{
@@ -132,7 +131,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public override void Keyboard()
 		{
 			switch (key)
 			{
@@ -162,7 +161,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public override void Step(Settings settings)
 		{
 			Test::Step(settings);
 			m_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
@@ -171,7 +170,7 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		void JointDestroyed(b2Joint* joint)
+		public override void JointDestroyed(b2Joint joint)
 		{
 			for (int i = 0; i < 8; ++i)
 			{
@@ -183,9 +182,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
-			return new Web;
+			return new Web();
 		}
 
 		b2Body* m_bodies[4];

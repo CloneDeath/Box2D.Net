@@ -7,14 +7,12 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class Tumbler : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_count = 800
 		};
 
-		Tumbler()
+		public Tumbler()
 		{
 			b2Body* ground = null;
 			{
@@ -54,7 +52,7 @@ namespace Testbed.Tests {
 			m_count = 0;
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -73,9 +71,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Tumbler;
+			return new Tumbler();
 		}
 
 		b2RevoluteJoint* m_joint;

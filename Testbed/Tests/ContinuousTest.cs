@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class ContinuousTest : Test
 	{
-	public:
-
-		ContinuousTest()
+		public ContinuousTest()
 		{
 			{
 				b2BodyDef bd;
@@ -75,7 +73,7 @@ namespace Testbed.Tests {
 			b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
 		}
 
-		void Launch()
+		public void Launch()
 		{
 			extern int b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 			extern int b2_toiCalls, b2_toiIters;
@@ -93,7 +91,7 @@ namespace Testbed.Tests {
 			m_body.SetAngularVelocity(m_angularVelocity);
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -131,7 +129,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new ContinuousTest;
 		}

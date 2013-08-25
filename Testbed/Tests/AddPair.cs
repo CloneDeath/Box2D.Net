@@ -7,9 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class AddPair : Test
 	{
-	public:
-
-		AddPair()
+		public AddPair()
 		{
 			m_world.SetGravity(b2Vec2(0.0f,0.0f));
 			{
@@ -45,7 +43,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()()
 		{
 			return new AddPair;
 		}

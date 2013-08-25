@@ -7,8 +7,7 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class Pulleys : Test
 	{
-	public:
-		Pulleys()
+		public Pulleys()
 		{
 			float y = 16.0f;
 			float L = 12.0f;
@@ -62,7 +61,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -71,7 +70,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -81,9 +80,9 @@ namespace Testbed.Tests {
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Pulleys;
+			return new Pulleys();
 		}
 
 		b2PulleyJoint* m_joint1;

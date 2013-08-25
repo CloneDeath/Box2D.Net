@@ -9,9 +9,7 @@ namespace Testbed.Tests {
 	// Dimensions scooped from APE (http://www.cove.org/ape/index.htm)
 	class TheoJansen : Test
 	{
-	public:
-
-		void CreateLeg(float s, b2Vec2 wheelAnchor)
+		public void CreateLeg(float s, b2Vec2 wheelAnchor)
 		{
 			b2Vec2 p1(5.4f * s, -6.1f);
 			b2Vec2 p2(7.2f * s, -1.2f);
@@ -101,7 +99,7 @@ namespace Testbed.Tests {
 			m_world.CreateJoint(&rjd);
 		}
 
-		TheoJansen()
+		public TheoJansen()
 		{
 			m_offset.Set(0.0f, 8.0f);
 			m_motorSpeed = 2.0f;
@@ -195,7 +193,7 @@ namespace Testbed.Tests {
 			CreateLeg(1.0f, wheelAnchor);
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			m_debugDraw.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, toggle motor = m");
 			m_textLine += DRAW_STRING_NEW_LINE;
@@ -203,7 +201,7 @@ namespace Testbed.Tests {
 			Test::Step(settings);
 		}
 
-		void Keyboard(unsigned char key)
+		public void Keyboard(unsigned char key)
 		{
 			switch (key)
 			{
@@ -225,9 +223,9 @@ namespace Testbed.Tests {
 			}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new TheoJansen;
+			return new TheoJansen();
 		}
 
 		b2Vec2 m_offset;

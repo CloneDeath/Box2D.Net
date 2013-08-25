@@ -7,14 +7,12 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class MobileBalanced : Test
 	{
-	public:
-
-		enum
+		public enum
 		{
 			e_depth = 4
 		};
 
-		MobileBalanced()
+		public MobileBalanced()
 		{
 			b2Body* ground;
 
@@ -38,7 +36,7 @@ namespace Testbed.Tests {
 			m_world.CreateJoint(&jointDef);
 		}
 
-		b2Body* AddNode(b2Body* parent, b2Vec2 localAnchor, int depth, float offset, float a)
+		public b2Body* AddNode(b2Body* parent, b2Vec2 localAnchor, int depth, float offset, float a)
 		{
 			float density = 20.0f;
 			b2Vec2 h(0.0f, a);
@@ -82,9 +80,9 @@ namespace Testbed.Tests {
 			return body;
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new MobileBalanced;
+			return new MobileBalanced();
 		}
 	};
 }

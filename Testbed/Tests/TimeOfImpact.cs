@@ -7,19 +7,18 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class TimeOfImpact : Test
 	{
-	public:
-		TimeOfImpact()
+		public TimeOfImpact()
 		{
 			m_shapeA.SetAsBox(25.0f, 5.0f);
 			m_shapeB.SetAsBox(2.5f, 2.5f);
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new TimeOfImpact;
+			return new TimeOfImpact();
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 

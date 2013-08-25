@@ -7,13 +7,12 @@ using Testbed.Framework;
 namespace Testbed.Tests {
 	class Pyramid : Test
 	{
-	public:
-		enum
+		public enum
 		{
 			e_count = 20
 		};
 
-		Pyramid()
+		public Pyramid()
 		{
 			{
 				b2BodyDef bd;
@@ -54,7 +53,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		void Step(Settings* settings)
+		public void Step(Settings* settings)
 		{
 			Test::Step(settings);
 
@@ -66,9 +65,9 @@ namespace Testbed.Tests {
 			//}
 		}
 
-		static Test* Create()
+		public static Test Create()
 		{
-			return new Pyramid;
+			return new Pyramid();
 		}
 	};
 }
