@@ -36,14 +36,14 @@ struct b2StackEntry
 // if you try to interleave multiple allocate/free pairs.
 class b2StackAllocator
 {
-public:
+
 	b2StackAllocator();
 	~b2StackAllocator();
 
 	void* Allocate(int size);
 	void Free(void* p);
 
-	int GetMaxAllocation() const;
+	int GetMaxAllocation();
 
 private:
 

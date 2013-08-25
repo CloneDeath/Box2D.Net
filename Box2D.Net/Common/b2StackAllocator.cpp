@@ -77,7 +77,7 @@ void b2StackAllocator::Free(void* p)
 	p = null;
 }
 
-int b2StackAllocator::GetMaxAllocation() const
+int b2StackAllocator::GetMaxAllocation()
 {
 	return m_maxAllocation;
 }

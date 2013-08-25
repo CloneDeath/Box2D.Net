@@ -121,7 +121,7 @@ struct b2SeparationFunction
 	}
 
 	//
-	float FindMinSeparation(int* indexA, int* indexB, float t) const
+	float FindMinSeparation(int* indexA, int* indexB, float t)
 	{
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t);
@@ -190,7 +190,7 @@ struct b2SeparationFunction
 	}
 
 	//
-	float Evaluate(int indexA, int indexB, float t) const
+	float Evaluate(int indexA, int indexB, float t)
 	{
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t);

@@ -143,10 +143,7 @@ namespace Box2D {
 		/// This always return false.
 		/// @see b2Shape::TestPoint
 		public override bool TestPoint(b2Transform transform, b2Vec2 p) {
-			throw new NotImplementedException();
-			//B2_NOT_USED(xf);
-			//B2_NOT_USED(p);
-			//return false;
+			return false;
 		}
 
 		/// Implement b2Shape.
@@ -192,12 +189,9 @@ namespace Box2D {
 		/// Chains have zero mass.
 		/// @see b2Shape::ComputeMass
 		public override void ComputeMass(out b2MassData massData, float density){
-			throw new NotImplementedException();
-			//B2_NOT_USED(density);
-
-			//massData.mass = 0.0f;
-			//massData.center.SetZero();
-			//massData.I = 0.0f;
+			massData.mass = 0.0f;
+			massData.center.SetZero();
+			massData.I = 0.0f;
 		}
 
 		/// The vertices. Owned by this class.

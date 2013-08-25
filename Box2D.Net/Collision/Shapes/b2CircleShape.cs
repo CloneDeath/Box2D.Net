@@ -38,7 +38,6 @@ namespace Box2D {
 		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input,
 					b2Transform transform, int childIndex){
 			throw new NotImplementedException();
-			//B2_NOT_USED(childIndex);
 
 			//b2Vec2 position = transform.p + Utilities.b2Mul(transform.q, m_p);
 			//b2Vec2 s = input.p1 - position;
@@ -92,16 +91,12 @@ namespace Box2D {
 
 		/// Get the supporting vertex index in the given direction.
 		public int GetSupport(b2Vec2 d){
-			throw new NotImplementedException();
-			//B2_NOT_USED(d);
-			//return 0;
+			return 0;
 		}
 
 		/// Get the supporting vertex in the given direction.
 		public b2Vec2 GetSupportVertex(b2Vec2 d){
-			throw new NotImplementedException();
-			//B2_NOT_USED(d);
-			//return m_p;
+			return m_p;
 		}
 
 		/// Get the vertex count.
@@ -109,10 +104,8 @@ namespace Box2D {
 
 		/// Get a vertex by index. Used by b2Distance.
 		public b2Vec2 GetVertex(int index){
-			throw new NotImplementedException();
-			//B2_NOT_USED(index);
-			//Utilities.Assert(index == 0);
-			//return m_p;
+			Utilities.Assert(index == 0);
+			return m_p;
 		}
 
 		/// Position

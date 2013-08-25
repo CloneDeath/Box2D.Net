@@ -107,8 +107,7 @@ namespace Box2D {
 
 		/// Shift the origin for any points stored in world coordinates.
 		public virtual void ShiftOrigin(b2Vec2 newOrigin) {
-			throw new NotImplementedException();
-			//B2_NOT_USED(newOrigin);  
+			
 		}
 
 		internal static b2Joint Create(b2JointDef def){

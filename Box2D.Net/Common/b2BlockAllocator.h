@@ -34,7 +34,7 @@ struct b2Chunk;
 /// See: http://www.codeproject.com/useritems/Small_Block_Allocator.asp
 class b2BlockAllocator
 {
-public:
+
 	b2BlockAllocator();
 	~b2BlockAllocator();
 

@@ -247,7 +247,6 @@ namespace Box2D {
 		/// Implement b2Shape.
 		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input, b2Transform transform, int childIndex) {
 			throw new NotImplementedException();
-			//B2_NOT_USED(childIndex);
 
 			//// Put the ray into the polygon's frame of reference.
 			//b2Vec2 p1 = Utilities.b2MulT(xf.q, input.p1 - xf.p);

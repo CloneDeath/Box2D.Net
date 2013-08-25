@@ -39,10 +39,7 @@ namespace Box2D {
 
 		/// @see b2Shape::TestPoint
 		public override bool TestPoint(b2Transform transform, b2Vec2 p) {
-			throw new NotImplementedException();
-			//B2_NOT_USED(xf);
-			//B2_NOT_USED(p);
-			//return false;
+			return false;
 		}
 
 		/// Implement b2Shape.
@@ -53,7 +50,6 @@ namespace Box2D {
 		public override bool RayCast(out b2RayCastOutput output, b2RayCastInput input,
 					b2Transform transform, int childIndex){
 			throw new NotImplementedException();
-			//B2_NOT_USED(childIndex);
 
 			//// Put the ray into the edge's frame of reference.
 			//b2Vec2 p1 = Utilities.b2MulT(xf.q, input.p1 - xf.p);
@@ -128,7 +124,6 @@ namespace Box2D {
 		/// @see b2Shape::ComputeMass
 		public override void ComputeMass(out b2MassData massData, float density) {
 			throw new NotImplementedException();
-			//B2_NOT_USED(density);
 
 			//massData.mass = 0.0f;
 			//massData.center = 0.5f * (m_vertex1 + m_vertex2);

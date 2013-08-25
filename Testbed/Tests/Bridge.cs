@@ -8,10 +8,7 @@ using Box2D;
 namespace Testbed.Tests {
 	class Bridge : Test
 	{
-	public enum
-		{
-			e_count = 30
-		};
+		const int e_count = 30;
 
 		Bridge()
 		{
@@ -56,14 +53,14 @@ namespace Testbed.Tests {
 					prevBody = body;
 				}
 
-				b2Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
+				b2Vec2 anchor = new b2Vec2(-15.0f + 1.0f * e_count, 5.0f);
 				jd.Initialize(prevBody, ground, anchor);
 				m_world.CreateJoint(&jd);
 			}
 
 			for (int i = 0; i < 2; ++i)
 			{
-				b2Vec2 vertices[3];
+				b2Vec2[] vertices = new b2Vec2[3];
 				vertices[0].Set(-0.5f, 0.0f);
 				vertices[1].Set(0.5f, 0.0f);
 				vertices[2].Set(0.0f, 1.5f);
