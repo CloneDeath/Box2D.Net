@@ -619,16 +619,10 @@ namespace Box2D {
 			return m_contactManager.m_broadPhase.GetTreeQuality();
 		}
 
-
-		/// Change the global gravity vector.
-		public void SetGravity(Vec2 gravity){
-			m_gravity = gravity;
-		}
-	
-		/// Get the global gravity vector.
-		public Vec2 GetGravity(){
-			return m_gravity;
-		}
+		/// <summary>
+		/// Get\Set global gravity vector.
+		/// </summary>
+		public Vec2 Gravity { get { return m_gravity; } set { m_gravity = value; } }
 
 		/// Is the world locked (in the middle of a time step).
 		public bool IsLocked(){
@@ -1304,7 +1298,7 @@ namespace Box2D {
 			    {
 			        CircleShape circle = (CircleShape)fixture.GetShape();
 
-			        Vec2 center = Utilities.Mul(xf, circle.m_p);
+			        Vec2 center = Utilities.Mul(xf, circle.m_position);
 			        float radius = circle.m_radius;
 			        Vec2 axis = Utilities.Mul(xf.q, new Vec2(1.0f, 0.0f));
 

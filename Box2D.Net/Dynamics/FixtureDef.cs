@@ -12,14 +12,16 @@ namespace Box2D {
 		/// can create the shape on the stack.
 		public Shape shape; //was const*
 
+		public ShapeType Type;
+
 		/// Use this to store application specific fixture data.
 		public object UserData { get; set; }
 
 		/// The friction coefficient, usually in the range [0,1].
-		public float friction;
+		public float Friction;
 
 		/// The restitution (elasticity) usually in the range [0,1].
-		public float restitution;
+		public float Restitution;
 
 		/// The Density, usually in kg/m^2.
 		public float Density { get; set; }
@@ -34,10 +36,11 @@ namespace Box2D {
 		/// The constructor sets the default fixture definition values.
 		public FixtureDef()
 		{
+			Type = ShapeType.Unknown;
 			shape = null;
 			UserData = null;
-			friction = 0.2f;
-			restitution = 0.0f;
+			Friction = 0.2f;
+			Restitution = 0.0f;
 			Density = 0.0f;
 			IsSensor = false;
 			Filter = new Filter();

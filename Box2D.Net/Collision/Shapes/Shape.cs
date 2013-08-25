@@ -5,6 +5,7 @@ using System.Text;
 namespace Box2D {
 	public enum ShapeType
 	{
+		Unknown = -1,
 		Circle = 0,
 		Edge = 1,
 		Polygon = 2,
@@ -18,8 +19,6 @@ namespace Box2D {
 	public abstract class Shape {
 		public ShapeType m_type;
 		public float m_radius;
-		public float Density = 1.0f;
-		public Filter Filter = new Filter();
 
 		~Shape() {}
 

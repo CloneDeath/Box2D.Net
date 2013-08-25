@@ -29,7 +29,7 @@ namespace HelloWorld {
 			Body groundBody = world.CreateBody(groundBodyDef);
 
 			// Define the ground box shape.
-			PolygonShape groundBox = new PolygonShape();
+			PolygonDef groundBox = new PolygonDef();
 
 			// The extents are the half-widths of the box.
 			groundBox.SetAsBox(50.0f, 10.0f);
@@ -56,7 +56,7 @@ namespace HelloWorld {
 			fixtureDef.Density = 1.0f;
 
 			// Override the default friction.
-			fixtureDef.friction = 0.3f;
+			fixtureDef.Friction = 0.3f;
 
 			// Add the shape to the body.
 			body.CreateFixture(fixtureDef);

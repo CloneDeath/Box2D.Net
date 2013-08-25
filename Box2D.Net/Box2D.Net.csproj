@@ -39,15 +39,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collision\BroadPhase.cs" />
+    <Compile Include="Collision\CircleDef.cs" />
     <Compile Include="Collision\Collision.cs" />
     <Compile Include="Collision\Distance.cs" />
     <Compile Include="Collision\DistanceInput.cs" />
     <Compile Include="Collision\DistanceOutput.cs" />
     <Compile Include="Collision\DistanceProxy.cs" />
     <Compile Include="Collision\DynamicTree.cs" />
+    <Compile Include="Collision\EdgeDef.cs" />
     <Compile Include="Collision\EPAxis.cs" />
     <Compile Include="Collision\EPCollider.cs" />
     <Compile Include="Collision\Pair.cs" />
+    <Compile Include="Collision\PolygonDef.cs" />
     <Compile Include="Collision\ReferenceFace.cs" />
     <Compile Include="Collision\Simplex.cs" />
     <Compile Include="Collision\SimplexCache.cs" />

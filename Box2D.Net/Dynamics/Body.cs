@@ -51,7 +51,7 @@ namespace Box2D {
 			// Adjust mass properties if needed.
 			if (fixture.m_Density > 0.0f)
 			{
-			    ResetMassData();
+				SetMassFromShapes();
 			}
 
 			// Let the world know we have a new fixture. This will cause new contacts
@@ -61,21 +61,6 @@ namespace Box2D {
 			return fixture;
 		}
 
-		/// Creates a fixture from a shape and attach it to this body.
-		/// This is a convenience function. Use FixtureDef if you need to set parameters
-		/// like friction, restitution, user data, or filtering.
-		/// If the Density is non-zero, this function automatically updates the mass of the body.
-		/// @param shape the shape to be cloned.
-		/// @param Density the shape Density (set to zero for static bodies).
-		/// @warning This function is locked during callbacks.
-		public Fixture CreateFixture(Shape shape){
-			FixtureDef def = new FixtureDef();
-			def.shape = shape.Clone();
-			def.Density = shape.Density;
-			def.Filter = shape.Filter;
-
-			return CreateFixture(def);
-		}
 
 		/// Destroy a fixture. This removes the fixture from the broad-phase and
 		/// destroys all contacts associated with this fixture. This will
@@ -260,7 +245,7 @@ namespace Box2D {
 		/// @param force the world force vector, usually in Newtons (N).
 		/// @param point the world position of the point of application.
 		/// @param wake also wake up the body
-		public void ApplyForce(Vec2 force, Vec2 point, bool wake){
+		public void ApplyForce(Vec2 force, Vec2 point, bool wake = true){
 			if (m_type != BodyType._dynamicBody) {
 				return;
 			}
@@ -303,7 +288,7 @@ namespace Box2D {
 		/// This wakes up the body.
 		/// @param torque about the z-axis (out of the screen), usually in N-m.
 		/// @param wake also wake up the body
-		public void ApplyTorque(float torque, bool wake){
+		public void ApplyTorque(float torque, bool wake = true){
 			if (m_type != BodyType._dynamicBody)
 			{
 			    return;
@@ -429,7 +414,8 @@ namespace Box2D {
 		/// This resets the mass properties to the sum of the mass properties of the fixtures.
 		/// This normally does not need to be called unless you called SetMassData to override
 		/// the mass and you later want to reset the mass.
-		public void ResetMassData(){
+		public void SetMassFromShapes()
+		{
 			// Compute mass data from shapes. Each shape has its own Density.
 			m_mass = 0.0f;
 			m_invMass = 0.0f;
@@ -767,7 +753,7 @@ namespace Box2D {
 
 			m_angularVelocity = 0.0f;
 
-			ResetMassData();
+			SetMassFromShapes();
 		}
 		/// Does this body have fixed rotation?
 		public bool IsFixedRotation() {

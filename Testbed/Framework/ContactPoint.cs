@@ -5,7 +5,7 @@ using System.Text;
 using Box2D;
 
 namespace Testbed.Framework {
-	struct ContactPoint {
+	public struct ContactPoint {
 		public Fixture fixtureA;
 		public Fixture fixtureB;
 		public Vec2 normal;

@@ -9,7 +9,7 @@ namespace Box2D {
 		public CircleShape(){
 			m_type = ShapeType.Circle;
 			m_radius = 0.0f;
-			m_p.SetZero();
+			m_position.SetZero();
 		}
 
 		/// Implement Shape.
@@ -74,7 +74,7 @@ namespace Box2D {
 		/// @see Shape::ComputeAABB
 		public override void ComputeAABB(out AABB aabb, Transform transform, int childIndex) {
 			aabb = new AABB();
-			Vec2 p = transform.p + Utilities.Mul(transform.q, m_p);
+			Vec2 p = transform.p + Utilities.Mul(transform.q, m_position);
 			aabb.lowerBound.Set(p.X - m_radius, p.Y - m_radius);
 			aabb.upperBound.Set(p.X + m_radius, p.Y + m_radius);
 		}
@@ -83,10 +83,10 @@ namespace Box2D {
 		public override void ComputeMass(out MassData massData, float Density) {
 			massData = new MassData();
 			massData.mass = Density * (float)Math.PI * m_radius * m_radius;
-			massData.center = m_p;
+			massData.center = m_position;
 
 			// inertia about the local origin
-			massData.I = massData.mass * (0.5f * m_radius * m_radius + Utilities.Dot(m_p, m_p));
+			massData.I = massData.mass * (0.5f * m_radius * m_radius + Utilities.Dot(m_position, m_position));
 		}
 
 		/// Get the supporting vertex index in the given direction.
@@ -96,7 +96,7 @@ namespace Box2D {
 
 		/// Get the supporting vertex in the given direction.
 		public Vec2 GetSupportVertex(Vec2 d){
-			return m_p;
+			return m_position;
 		}
 
 		/// Get the vertex count.
@@ -105,10 +105,10 @@ namespace Box2D {
 		/// Get a vertex by index. Used by Distance.
 		public Vec2 GetVertex(int index){
 			Utilities.Assert(index == 0);
-			return m_p;
+			return m_position;
 		}
 
 		/// Position
-		public Vec2 m_p;
+		public Vec2 m_position;
 	}
 }

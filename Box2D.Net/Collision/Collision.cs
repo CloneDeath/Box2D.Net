@@ -44,7 +44,7 @@ namespace Box2D {
 			manifold.points.Clear();
 
 			// Compute circle position in the frame of the polygon.
-			Vec2 c = Utilities.Mul(xfB, circleB.m_p);
+			Vec2 c = Utilities.Mul(xfB, circleB.m_position);
 			Vec2 cLocal = Utilities.MulT(xfA, c);
 
 			// Find the min separating edge.
@@ -86,7 +86,7 @@ namespace Box2D {
 			    manifold.type = Manifold.ManifoldType.e_faceA;
 			    manifold.localNormal = normals[normalIndex];
 			    manifold.localPoint = 0.5f * (v1 + v2);
-			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].localPoint = circleB.m_position;
 			    manifold.points[0].id.key = 0;
 			    return;
 			}
@@ -107,7 +107,7 @@ namespace Box2D {
 			    manifold.localNormal = cLocal - v1;
 			    manifold.localNormal.Normalize();
 			    manifold.localPoint = v1;
-			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].localPoint = circleB.m_position;
 			    manifold.points[0].id.key = 0;
 			}
 			else if (u2 <= 0.0f)
@@ -123,7 +123,7 @@ namespace Box2D {
 			    manifold.localNormal = cLocal - v2;
 			    manifold.localNormal.Normalize();
 			    manifold.localPoint = v2;
-			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].localPoint = circleB.m_position;
 			    manifold.points[0].id.key = 0;
 			}
 			else
@@ -140,7 +140,7 @@ namespace Box2D {
 			    manifold.type = Manifold.ManifoldType.e_faceA;
 			    manifold.localNormal = normals[vertIndex1];
 			    manifold.localPoint = faceCenter;
-			    manifold.points[0].localPoint = circleB.m_p;
+			    manifold.points[0].localPoint = circleB.m_position;
 			    manifold.points[0].id.key = 0;
 			}
 		}
@@ -449,7 +449,7 @@ namespace Box2D {
 			manifold = new Manifold();
 	
 			// Compute circle in frame of edge
-			Vec2 Q = Utilities.MulT(xfA, Utilities.Mul(xfB, circleB.m_p));
+			Vec2 Q = Utilities.MulT(xfA, Utilities.Mul(xfB, circleB.m_position));
 	
 			Vec2 A = edgeA.m_vertex1, B = edgeA.m_vertex2;
 			Vec2 e = B - A;
@@ -499,7 +499,7 @@ namespace Box2D {
 				manifold.localPoint = P;
 				manifold.points[0].id.key = 0;
 				manifold.points[0].id.cf = cf;
-				manifold.points[0].localPoint = circleB.m_p;
+				manifold.points[0].localPoint = circleB.m_position;
 				return;
 			}
 	
@@ -538,7 +538,7 @@ namespace Box2D {
 				manifold.localPoint = P;
 				manifold.points[0].id.key = 0;
 				manifold.points[0].id.cf = cf;
-				manifold.points[0].localPoint = circleB.m_p;
+				manifold.points[0].localPoint = circleB.m_position;
 				return;
 			}
 	
@@ -569,7 +569,7 @@ namespace Box2D {
 			manifold.localPoint = A;
 			manifold.points[0].id.key = 0;
 			manifold.points[0].id.cf = cf;
-			manifold.points[0].localPoint = circleB.m_p;
+			manifold.points[0].localPoint = circleB.m_position;
 		}
 
 		/// Compute the collision manifold between an edge and a circle.

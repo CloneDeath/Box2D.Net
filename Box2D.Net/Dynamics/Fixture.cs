@@ -290,8 +290,8 @@ namespace Box2D {
 		// the destructor cannot access the allocator (no destructor arguments allowed by C++).
 		internal void Create(Body body, FixtureDef def){
 			m_userData = def.UserData;
-			m_friction = def.friction;
-			m_restitution = def.restitution;
+			m_friction = def.Friction;
+			m_restitution = def.Restitution;
 
 			m_body = body;
 			m_next = null;

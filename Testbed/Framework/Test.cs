@@ -314,7 +314,7 @@ namespace Testbed.Framework {
 			FixtureDef fd = new FixtureDef();
 			fd.shape = circle;
 			fd.Density = 20.0f;
-			fd.restitution = 0.0f;
+			fd.Restitution = 0.0f;
 	
 			Vec2 minV = position - new Vec2(0.3f,0.3f);
 			Vec2 maxV = position + new Vec2(0.3f, 0.3f);

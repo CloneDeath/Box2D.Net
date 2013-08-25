@@ -23,7 +23,7 @@ namespace Box2D {
 			    {
 			        CircleShape circle = (CircleShape)shape;
 					m_vertices = new List<Vec2>();
-			        m_vertices.Add(circle.m_p);
+			        m_vertices.Add(circle.m_position);
 			        m_radius = circle.m_radius;
 			    }
 			    break;

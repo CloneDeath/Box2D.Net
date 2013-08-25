@@ -6,13 +6,13 @@ using Testbed.Framework;
 using Box2D;
 
 namespace Testbed.Tests.BasicTests {
-	class GravityTest : Test {
-		public GravityTest() {
+	class SimpleTest : Test {
+		public SimpleTest() {
 			// Define the gravity vector.
 			Vec2 gravity = new Vec2(0.0f, 10.0f);
 
 			// Construct a world object, which will hold and simulate the rigid bodies.
-			m_world.SetGravity(gravity);
+			m_world.Gravity = gravity;
 
 			// Define the ground body.
 			BodyDef groundBodyDef = new BodyDef();
@@ -24,11 +24,10 @@ namespace Testbed.Tests.BasicTests {
 			Body groundBody = m_world.CreateBody(groundBodyDef);
 
 			// Define the ground box shape.
-			PolygonShape groundBox = new PolygonShape();
+			PolygonDef groundBox = new PolygonDef();
 
 			// The extents are the half-widths of the box.
 			groundBox.SetAsBox(50.0f, 10.0f);
-			groundBox.Density = 0;
 
 			// Add the ground fixture to the ground body.
 			groundBody.CreateFixture(groundBox);
@@ -51,14 +50,14 @@ namespace Testbed.Tests.BasicTests {
 			fixtureDef.Density = 1.0f;
 
 			// Override the default friction.
-			fixtureDef.friction = 0.3f;
+			fixtureDef.Friction = 0.3f;
 
 			// Add the shape to the body.
 			body.CreateFixture(fixtureDef);
 		}
 
 		public static Test Create() {
-			return new GravityTest();
+			return new SimpleTest();
 		}
 	}
 }
