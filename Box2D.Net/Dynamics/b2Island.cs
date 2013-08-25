@@ -275,7 +275,7 @@ namespace Box2D {
 			    bool contactsOkay = contactSolver.SolvePositionConstraints();
 
 			    bool jointsOkay = true;
-			    for (int j = 0; j < m_joints.Count; ++i)
+			    for (int j = 0; j < m_joints.Count; ++j)
 			    {
 			        bool jointOkay = m_joints[j].SolvePositionConstraints(solverData);
 			        jointsOkay = jointsOkay && jointOkay;

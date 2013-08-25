@@ -856,7 +856,7 @@ namespace Box2D {
 			            }
 
 			            Utilities.Assert(stackCount < m_bodyList.Count());
-			            stack[stackCount++] = other;
+						stack.Add(other); stackCount++;
 			            other.m_flags |= b2Body.BodyFlags.e_islandFlag;
 			        }
 

@@ -206,11 +206,10 @@ namespace Box2D {
 				wB += iB * Utilities.b2Cross(m_rB, impulse);
 			}
 
-			throw new NotImplementedException();
-			//data.velocities[m_indexA].v = vA;
-			//data.velocities[m_indexA].w = wA;
-			//data.velocities[m_indexB].v = vB;
-			//data.velocities[m_indexB].w = wB;
+			data.velocities[m_indexA].v = vA;
+			data.velocities[m_indexA].w = wA;
+			data.velocities[m_indexB].v = vB;
+			data.velocities[m_indexB].w = wB;
 		}
 
 		internal override bool SolvePositionConstraints(b2SolverData data) {

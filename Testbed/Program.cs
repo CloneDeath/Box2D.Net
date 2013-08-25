@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text; 
+using Testbed.Framework;
 using GLImp;
 using Box2D;
 using Testbed.Framework;
@@ -25,7 +26,7 @@ namespace Testbed {
 		static int framePeriod = 16;
 		static int mainWindow;
 		static float settingsHz = 60.0f;
-		static float viewZoom = 1.0f;
+		static float viewZoom = 12.0f;
 		static int tx, ty, tw, th;
 		static bool rMouseDown;
 		static b2Vec2 lastp;
@@ -105,7 +106,7 @@ namespace Testbed {
 			camera = new Camera2D();
 			camera.OnRender += SimulationLoop;
 
-			camera.SetZoom(100);
+			camera.SetZoom(12);
 			camera.CenterOnTarget(true);
 			camera.SetLocation(0, 0);
 
@@ -256,7 +257,7 @@ namespace Testbed {
 				testIndex = testSelection;
 				entry = g_testEntries[testIndex];
 				test = entry.createFcn();
-				viewZoom = 1.0f;
+				viewZoom = 12.0f;
 				camera.SetZoom(viewZoom);
 				settings.viewCenter.Set(0.0f, 20.0f);
 			}
@@ -277,7 +278,7 @@ namespace Testbed {
 
 			//x to zoom in
 			if (KeyboardManager.IsPressed(Key.X)){
-				viewZoom = Math.Max(0.9f * viewZoom, 0.02f);
+				viewZoom = Math.Max(0.9f * viewZoom, 1f);
 				//camera.SetZoom(viewZoom);
 			}
 
@@ -368,7 +369,7 @@ namespace Testbed {
 
 			    // Press home to reset the view.
 			if (KeyboardManager.IsPressed(Key.Home)){
-			    viewZoom = 1.0f;
+			    viewZoom = 12.0f;
 			    settings.viewCenter.Set(0.0f, 20.0f);
 			    //camera.SetZoom(viewZoom);
 			}
