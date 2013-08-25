@@ -71,8 +71,8 @@ namespace Testbed.Tests {
 			b2Body body1 = m_world.CreateBody(&bd1);
 			b2Body body2 = m_world.CreateBody(&bd2);
 
-			body1.CreateFixture(&fd1);
-			body2.CreateFixture(&fd2);
+			body1.CreateFixture(fd1);
+			body2.CreateFixture(fd2);
 
 			b2DistanceJointDef djd;
 

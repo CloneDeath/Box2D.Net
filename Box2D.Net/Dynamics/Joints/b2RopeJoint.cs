@@ -15,18 +15,18 @@ namespace Box2D.Dynamics.Joints {
 	class b2RopeJoint : b2Joint
 	{
 	
-		public b2Vec2 GetAnchorA(){
+		public override b2Vec2 GetAnchorA(){
 			return m_bodyA.GetWorldPoint(m_localAnchorA);
 		}
-		public b2Vec2 GetAnchorB(){
+		public override b2Vec2 GetAnchorB(){
 			return m_bodyB.GetWorldPoint(m_localAnchorB);
 		}
 
-		public b2Vec2 GetReactionForce(float inv_dt){
+		public override b2Vec2 GetReactionForce(float inv_dt){
 			b2Vec2 F = (inv_dt * m_impulse) * m_u;
 			return F;
 		}
-		public float GetReactionTorque(float inv_dt){
+		public override float GetReactionTorque(float inv_dt){
 			return 0.0f;
 		}
 
@@ -77,11 +77,11 @@ namespace Box2D.Dynamics.Joints {
 
 			m_mass = 0.0f;
 			m_impulse = 0.0f;
-			m_state = e_inactiveLimit;
+			m_state = b2LimitState.e_inactiveLimit;
 			m_length = 0.0f;
 		}
 
-		void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -112,11 +112,11 @@ namespace Box2D.Dynamics.Joints {
 			float C = m_length - m_maxLength;
 			if (C > 0.0f)
 			{
-				m_state = e_atUpperLimit;
+				m_state = b2LimitState.e_atUpperLimit;
 			}
 			else
 			{
-				m_state = e_inactiveLimit;
+				m_state = b2LimitState.e_inactiveLimit;
 			}
 
 			if (m_length >b2Settings.b2_linearSlop)
@@ -159,7 +159,7 @@ namespace Box2D.Dynamics.Joints {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(b2SolverData data){
+		internal override void SolveVelocityConstraints(b2SolverData data){
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -193,7 +193,7 @@ namespace Box2D.Dynamics.Joints {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(b2SolverData data){
+		internal override bool SolvePositionConstraints(b2SolverData data){
 			b2Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
 			b2Vec2 cB = data.positions[m_indexB].c;
@@ -209,7 +209,7 @@ namespace Box2D.Dynamics.Joints {
 			float length = u.Normalize();
 			float C = length - m_maxLength;
 
-			C = Utilities.b2Clamp(C, 0.0f, b2_maxLinearCorrection);
+			C = Utilities.b2Clamp(C, 0.0f, b2Settings.b2_maxLinearCorrection);
 
 			float impulse = -m_mass * C;
 			b2Vec2 P = impulse * u;

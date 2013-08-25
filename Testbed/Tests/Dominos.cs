@@ -123,13 +123,13 @@ namespace Testbed.Tests {
 				fd.friction = 0.1f;
 
 				shape.SetAsBox(1.0f, 0.1f, new b2Vec2(0.0f, -0.9f), 0.0f);
-				b5.CreateFixture(&fd);
+				b5.CreateFixture(fd);
 
 				shape.SetAsBox(0.1f, 1.0f, new b2Vec2(-0.9f, 0.0f), 0.0f);
-				b5.CreateFixture(&fd);
+				b5.CreateFixture(fd);
 
 				shape.SetAsBox(0.1f, 1.0f, new b2Vec2(0.9f, 0.0f), 0.0f);
-				b5.CreateFixture(&fd);
+				b5.CreateFixture(fd);
 			}
 
 			anchor.Set(6.0f, 2.0f);

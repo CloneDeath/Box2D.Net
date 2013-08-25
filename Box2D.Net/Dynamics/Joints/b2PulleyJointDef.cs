@@ -36,7 +36,7 @@ namespace Box2D {
 		public void Initialize(b2Body bA, b2Body bB,
 						b2Vec2 groundA, b2Vec2 groundB,
 						b2Vec2 anchorA, b2Vec2 anchorB,
-						float ratio){
+						float r) {
 			bodyA = bA;
 			bodyB = bB;
 			groundAnchorA = groundA;

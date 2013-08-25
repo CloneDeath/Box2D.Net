@@ -19,7 +19,7 @@ namespace Testbed.Tests {
 				b2BodyDef bd = new b2BodyDef();
 				ground = m_world.CreateBody(bd);
 
-				b2Vec2 vs[5];
+				b2Vec2[] vs = new b2Vec2[5];
 				vs[0].Set(0.0f, -2.0f);
 				vs[1].Set(8.0f, 6.0f);
 				vs[2].Set(8.0f, 20.0f);
@@ -31,12 +31,13 @@ namespace Testbed.Tests {
 				b2FixtureDef fd;
 				fd.shape = &loop;
 				fd.density = 0.0f;
-				ground.CreateFixture(&fd);
+				ground.CreateFixture(fd);
 			}
 
 			// Flippers
 			{
-				b2Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
+				b2Vec2 p1 = new b2Vec2(-2.0f, 0.0f);
+				b2Vec2 p2 = new b2Vec2(2.0f, 0.0f);
 
 				b2BodyDef bd = new b2BodyDef();
 				bd.type = b2BodyType.b2_dynamicBody;
@@ -54,8 +55,8 @@ namespace Testbed.Tests {
 				fd.shape = &box;
 				fd.density = 1.0f;
 
-				leftFlipper.CreateFixture(&fd);
-				rightFlipper.CreateFixture(&fd);
+				leftFlipper.CreateFixture(fd);
+				rightFlipper.CreateFixture(fd);
 
 				b2RevoluteJointDef jd;
 				jd.bodyA = ground;
@@ -94,7 +95,7 @@ namespace Testbed.Tests {
 				b2FixtureDef fd;
 				fd.shape = shape;
 				fd.density = 1.0f;
-				m_ball.CreateFixture(&fd);
+				m_ball.CreateFixture(fd);
 			}
 
 			m_button = false;
@@ -131,7 +132,7 @@ namespace Testbed.Tests {
 			}
 		}
 
-		public void KeyboardUp(unsigned char key)
+		public void KeyboardUp()
 		{
 			switch (key)
 			{

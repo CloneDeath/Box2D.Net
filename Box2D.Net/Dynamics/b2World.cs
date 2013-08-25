@@ -721,7 +721,7 @@ namespace Box2D {
 			//// First pass on joints, skip gear joints.
 			//for (b2Joint* j = m_jointList; j; j = j.m_next)
 			//{
-			//    if (j.m_type == e_gearJoint)
+			//    if (j.m_type == b2JointType.e_gearJoint)
 			//    {
 			//        continue;
 			//    }
@@ -734,7 +734,7 @@ namespace Box2D {
 			//// Second pass on joints, only gear joints.
 			//for (b2Joint* j = m_jointList; j; j = j.m_next)
 			//{
-			//    if (j.m_type != e_gearJoint)
+			//    if (j.m_type != b2JointType.e_gearJoint)
 			//    {
 			//        continue;
 			//    }

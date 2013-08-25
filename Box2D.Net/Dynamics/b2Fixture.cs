@@ -213,7 +213,7 @@ namespace Box2D {
 
 			//switch (m_shape.m_type)
 			//{
-			//case b2Shape::e_circle:
+			//case ShapeType.circle:
 			//    {
 			//        b2CircleShape* s = (b2CircleShape*)m_shape;
 			//        b2Settings.b2Log("    b2CircleShape shape;\n");
@@ -222,7 +222,7 @@ namespace Box2D {
 			//    }
 			//    break;
 
-			//case b2Shape::e_edge:
+			//case ShapeType.edge:
 			//    {
 			//        b2EdgeShape* s = (b2EdgeShape*)m_shape;
 			//        b2Settings.b2Log("    b2EdgeShape shape;\n");
@@ -236,7 +236,7 @@ namespace Box2D {
 			//    }
 			//    break;
 
-			//case b2Shape::e_polygon:
+			//case ShapeType.polygon:
 			//    {
 			//        b2PolygonShape* s = (b2PolygonShape*)m_shape;
 			//        b2Settings.b2Log("    b2PolygonShape shape;\n");
@@ -249,7 +249,7 @@ namespace Box2D {
 			//    }
 			//    break;
 
-			//case b2Shape::e_chain:
+			//case ShapeType.chain:
 			//    {
 			//        b2ChainShape* s = (b2ChainShape*)m_shape;
 			//        b2Settings.b2Log("    b2ChainShape shape;\n");
@@ -273,7 +273,7 @@ namespace Box2D {
 			//b2Settings.b2Log("\n");
 			//b2Settings.b2Log("    fd.shape = &shape;\n");
 			//b2Settings.b2Log("\n");
-			//b2Settings.b2Log("    bodies[%d].CreateFixture(&fd);\n", bodyIndex);
+			//b2Settings.b2Log("    bodies[%d].CreateFixture(fd);\n", bodyIndex);
 		}
 
 
@@ -322,7 +322,7 @@ namespace Box2D {
 			//// Free the child shape.
 			//switch (m_shape.m_type)
 			//{
-			//case b2Shape::e_circle:
+			//case ShapeType.circle:
 			//    {
 			//        b2CircleShape* s = (b2CircleShape*)m_shape;
 			//        s.~b2CircleShape();
@@ -330,7 +330,7 @@ namespace Box2D {
 			//    }
 			//    break;
 
-			//case b2Shape::e_edge:
+			//case ShapeType.edge:
 			//    {
 			//        b2EdgeShape* s = (b2EdgeShape*)m_shape;
 			//        s.~b2EdgeShape();
@@ -338,7 +338,7 @@ namespace Box2D {
 			//    }
 			//    break;
 
-			//case b2Shape::e_polygon:
+			//case ShapeType.polygon:
 			//    {
 			//        b2PolygonShape* s = (b2PolygonShape*)m_shape;
 			//        s.~b2PolygonShape();
@@ -346,7 +346,7 @@ namespace Box2D {
 			//    }
 			//    break;
 
-			//case b2Shape::e_chain:
+			//case ShapeType.chain:
 			//    {
 			//        b2ChainShape* s = (b2ChainShape*)m_shape;
 			//        s.~b2ChainShape();

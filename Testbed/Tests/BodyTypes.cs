@@ -23,7 +23,7 @@ namespace Testbed.Tests {
 				b2FixtureDef fd;
 				fd.shape = shape;
 
-				ground.CreateFixture(&fd);
+				ground.CreateFixture(fd);
 			}
 
 			// Define attachment
@@ -52,7 +52,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				fd.friction = 0.6f;
 				fd.density = 2.0f;
-				m_platform.CreateFixture(&fd);
+				m_platform.CreateFixture(fd);
 
 				b2RevoluteJointDef rjd;
 				rjd.Initialize(m_attachment, m_platform, new b2Vec2(0.0f, 5.0f));

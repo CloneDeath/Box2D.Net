@@ -9,18 +9,18 @@ namespace Box2D {
 	class b2WeldJoint : b2Joint
 	{
 	
-		public b2Vec2 GetAnchorA(){
+		public override b2Vec2 GetAnchorA(){
 			return m_bodyA.GetWorldPoint(m_localAnchorA);
 		}
-		public b2Vec2 GetAnchorB(){
+		public override b2Vec2 GetAnchorB(){
 			return m_bodyB.GetWorldPoint(m_localAnchorB);
 		}
 
-		public b2Vec2 GetReactionForce(float inv_dt){
-			b2Vec2 P(m_impulse.x, m_impulse.y);
+		public override b2Vec2 GetReactionForce(float inv_dt){
+			b2Vec2 P = new b2Vec2(m_impulse.x, m_impulse.y);
 			return inv_dt * P;
 		}
-		public float GetReactionTorque(float inv_dt){
+		public override float GetReactionTorque(float inv_dt){
 			return inv_dt * m_impulse.z;
 		}
 
@@ -71,7 +71,7 @@ namespace Box2D {
 			m_impulse.SetZero();
 		}
 
-		void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -119,7 +119,7 @@ namespace Box2D {
 
 			if (m_frequencyHz > 0.0f)
 			{
-				K.GetInverse22(&m_mass);
+				K.GetInverse22(out m_mass);
 
 				float invM = iA + iB;
 				float m = invM > 0.0f ? 1.0f / invM : 0.0f;
@@ -146,7 +146,7 @@ namespace Box2D {
 			}
 			else
 			{
-				K.GetSymInverse33(&m_mass);
+				K.GetSymInverse33(out m_mass);
 				m_gamma = 0.0f;
 				m_bias = 0.0f;
 			}
@@ -156,7 +156,7 @@ namespace Box2D {
 				// Scale impulses to support a variable time step.
 				m_impulse *= data.step.dtRatio;
 
-				b2Vec2 P(m_impulse.x, m_impulse.y);
+				b2Vec2 P = new b2Vec2(m_impulse.x, m_impulse.y);
 
 				vA -= mA * P;
 				wA -= iA * (Utilities.b2Cross(m_rA, P) + m_impulse.z);
@@ -174,7 +174,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(b2SolverData data){
+		internal override void SolveVelocityConstraints(b2SolverData data){
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -211,12 +211,12 @@ namespace Box2D {
 			{
 				b2Vec2 Cdot1 = vB + Utilities.b2Cross(wB, m_rB) - vA - Utilities.b2Cross(wA, m_rA);
 				float Cdot2 = wB - wA;
-				b2Vec3 Cdot(Cdot1.x, Cdot1.y, Cdot2);
+				b2Vec3 Cdot = new b2Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 				b2Vec3 impulse = -Utilities.b2Mul(m_mass, Cdot);
 				m_impulse += impulse;
 
-				b2Vec2 P(impulse.x, impulse.y);
+				b2Vec2 P = new b2Vec2(impulse.x, impulse.y);
 
 				vA -= mA * P;
 				wA -= iA * (Utilities.b2Cross(m_rA, P) + impulse.z);
@@ -230,7 +230,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(b2SolverData data){
+		internal override bool SolvePositionConstraints(b2SolverData data){
 			b2Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
 			b2Vec2 cB = data.positions[m_indexB].c;
@@ -281,10 +281,10 @@ namespace Box2D {
 				positionError = C1.Length();
 				angularError = Math.Abs(C2);
 
-				b2Vec3 C(C1.x, C1.y, C2);
+				b2Vec3 C = new b2Vec3(C1.x, C1.y, C2);
 	
 				b2Vec3 impulse = -K.Solve33(C);
-				b2Vec2 P(impulse.x, impulse.y);
+				b2Vec2 P = new b2Vec2(impulse.x, impulse.y);
 
 				cA -= mA * P;
 				aA -= iA * (Utilities.b2Cross(rA, P) + impulse.z);

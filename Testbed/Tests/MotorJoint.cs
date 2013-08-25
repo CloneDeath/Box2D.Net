@@ -24,7 +24,7 @@ namespace Testbed.Tests {
 				b2FixtureDef fd;
 				fd.shape = shape;
 
-				ground.CreateFixture(&fd);
+				ground.CreateFixture(fd);
 			}
 
 			// Define motorized body

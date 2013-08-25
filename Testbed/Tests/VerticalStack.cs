@@ -90,7 +90,7 @@ namespace Testbed.Tests {
 					bd.position.Set(-31.0f, 5.0f);
 
 					m_bullet = m_world.CreateBody(bd);
-					m_bullet.CreateFixture(&fd);
+					m_bullet.CreateFixture(fd);
 
 					m_bullet.SetLinearVelocity(new b2Vec2(400.0f, 0.0f));
 				}
@@ -127,7 +127,7 @@ namespace Testbed.Tests {
 			//		bd.position.Set(-31.0f, 5.0f);
 
 			//		m_bullet = m_world.CreateBody(bd);
-			//		m_bullet.CreateFixture(&fd);
+			//		m_bullet.CreateFixture(fd);
 
 			//		m_bullet.SetLinearVelocity(new b2Vec2(400.0f, 0.0f));
 			//	}

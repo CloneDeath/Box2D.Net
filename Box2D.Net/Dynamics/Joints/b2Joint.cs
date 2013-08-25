@@ -16,7 +16,7 @@ namespace Box2D {
 		internal b2Body m_bodyA;
 		internal b2Body m_bodyB;
 
-		protected int m_index;
+		internal int m_index;
 
 		internal bool m_islandFlag;
 		internal bool m_collideConnected;
@@ -201,47 +201,47 @@ namespace Box2D {
 			//joint.~b2Joint();
 			//switch (joint.m_type)
 			//{
-			//case e_distanceJoint:
+			//case b2JointType.e_distanceJoint:
 			//    allocator.Free(joint, sizeof(b2DistanceJoint));
 			//    break;
 
-			//case e_mouseJoint:
+			//case b2JointType.e_mouseJoint:
 			//    allocator.Free(joint, sizeof(b2MouseJoint));
 			//    break;
 
-			//case e_prismaticJoint:
+			//case b2JointType.e_prismaticJoint:
 			//    allocator.Free(joint, sizeof(b2PrismaticJoint));
 			//    break;
 
-			//case e_revoluteJoint:
+			//case b2JointType.e_revoluteJoint:
 			//    allocator.Free(joint, sizeof(b2RevoluteJoint));
 			//    break;
 
-			//case e_pulleyJoint:
+			//case b2JointType.e_pulleyJoint:
 			//    allocator.Free(joint, sizeof(b2PulleyJoint));
 			//    break;
 
-			//case e_gearJoint:
+			//case b2JointType.e_gearJoint:
 			//    allocator.Free(joint, sizeof(b2GearJoint));
 			//    break;
 
-			//case e_wheelJoint:
+			//case b2JointType.e_wheelJoint:
 			//    allocator.Free(joint, sizeof(b2WheelJoint));
 			//    break;
     
-			//case e_weldJoint:
+			//case b2JointType.e_weldJoint:
 			//    allocator.Free(joint, sizeof(b2WeldJoint));
 			//    break;
 
-			//case e_frictionJoint:
+			//case b2JointType.e_frictionJoint:
 			//    allocator.Free(joint, sizeof(b2FrictionJoint));
 			//    break;
 
-			//case e_ropeJoint:
+			//case b2JointType.e_ropeJoint:
 			//    allocator.Free(joint, sizeof(b2RopeJoint));
 			//    break;
 
-			//case e_motorJoint:
+			//case b2JointType.e_motorJoint:
 			//    allocator.Free(joint, sizeof(b2MotorJoint));
 			//    break;
 

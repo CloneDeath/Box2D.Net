@@ -239,7 +239,7 @@ namespace Testbed.Tests {
 				b2FixtureDef fd;
 				fd.shape = m_polygons + index;
 				fd.friction = 0.3f;
-				m_bodies[m_bodyIndex].CreateFixture(&fd);
+				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 			else
 			{
@@ -247,7 +247,7 @@ namespace Testbed.Tests {
 				fd.shape = &m_circle;
 				fd.friction = 0.3f;
 
-				m_bodies[m_bodyIndex].CreateFixture(&fd);
+				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 
 			m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
@@ -320,11 +320,9 @@ namespace Testbed.Tests {
 				break;
 			}
 
-			m_textLine += DRAW_STRING_NEW_LINE;
-
 			float L = 11.0f;
-			b2Vec2 point1(0.0f, 10.0f);
-			b2Vec2 d(L * cosf(m_angle), L * sinf(m_angle));
+			b2Vec2 point1 = new b2Vec2(0.0f, 10.0f);
+			b2Vec2 d = new b2Vec2(L * cosf(m_angle), L * sinf(m_angle));
 			b2Vec2 point2 = point1 + d;
 
 			if (m_mode == e_closest)
@@ -431,8 +429,8 @@ namespace Testbed.Tests {
 
 		int m_bodyIndex;
 		b2Body[] m_bodied = new b2Body[e_maxBodies];
-		int m_userData[e_maxBodies];
-		b2PolygonShape m_polygons[4];
+		int[] m_userData = new int[e_maxBodies];
+		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
 		b2CircleShape m_circle;
 
 		float m_angle;

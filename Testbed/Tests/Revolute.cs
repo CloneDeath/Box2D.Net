@@ -22,7 +22,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				//fd.filter.categoryBits = 2;
 
-				ground.CreateFixture(&fd);
+				ground.CreateFixture(fd);
 			}
 
 			{
@@ -68,7 +68,7 @@ namespace Testbed.Tests {
 				fd.shape = &circle_shape;
 
 				m_ball = m_world.CreateBody(&circle_bd);
-				m_ball.CreateFixture(&fd);
+				m_ball.CreateFixture(fd);
 
 				b2PolygonShape polygon_shape;
 				polygon_shape.SetAsBox(10.0f, 0.2f, b2Vec2 (-10.0f, 0.0f), 0.0f);

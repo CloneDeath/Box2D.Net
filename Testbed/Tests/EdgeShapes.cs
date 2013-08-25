@@ -135,7 +135,7 @@ namespace Testbed.Tests {
 				fd.shape = m_polygons + index;
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
-				m_bodies[m_bodyIndex].CreateFixture(&fd);
+				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 			else
 			{
@@ -143,7 +143,7 @@ namespace Testbed.Tests {
 				fd.shape = &m_circle;
 				fd.friction = 0.3f;
 				fd.density = 20.0f;
-				m_bodies[m_bodyIndex].CreateFixture(&fd);
+				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 
 			m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;

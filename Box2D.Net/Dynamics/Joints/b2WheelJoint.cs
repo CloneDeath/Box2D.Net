@@ -11,20 +11,17 @@ namespace Box2D {
 	/// This joint is designed for vehicle suspensions.
 	class b2WheelJoint : b2Joint
 	{
-	
-		public void GetDefinition(b2WheelJointDef def);
-
-		public b2Vec2 GetAnchorA(){
+		public override b2Vec2 GetAnchorA(){
 			return m_bodyA.GetWorldPoint(m_localAnchorA);
 		}
-		public b2Vec2 GetAnchorB(){
+		public override b2Vec2 GetAnchorB(){
 			return m_bodyB.GetWorldPoint(m_localAnchorB);
 		}
 
-		public b2Vec2 GetReactionForce(float inv_dt){
+		public override b2Vec2 GetReactionForce(float inv_dt){
 			return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax);
 		}
-		public float GetReactionTorque(float inv_dt){
+		public override float GetReactionTorque(float inv_dt){
 			return inv_dt * m_motorImpulse;
 		}
 
@@ -39,8 +36,8 @@ namespace Box2D {
 
 		/// Get the current joint translation, usually in meters.
 		public float GetJointTranslation(){
-			b2Body* bA = m_bodyA;
-			b2Body* bB = m_bodyB;
+			b2Body bA = m_bodyA;
+			b2Body bB = m_bodyB;
 
 			b2Vec2 pA = bA.GetWorldPoint(m_localAnchorA);
 			b2Vec2 pB = bB.GetWorldPoint(m_localAnchorB);
@@ -89,12 +86,12 @@ namespace Box2D {
 			m_maxMotorTorque = torque;
 		}
 		public float GetMaxMotorTorque(){
-			return inv_dt * m_motorImpulse;
+			return m_maxMotorTorque; 
 		}
 
 		/// Get the current motor torque given the inverse time step, usually in N-m.
 		public float GetMotorTorque(float inv_dt){
-			return m_maxMotorTorque;
+			return inv_dt * m_motorImpulse;
 		}
 
 		/// Set/Get the spring frequency in hertz. Setting the frequency to zero disables the spring.
@@ -162,7 +159,7 @@ namespace Box2D {
 			m_ay.SetZero();
 		}
 
-		void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -228,14 +225,14 @@ namespace Box2D {
 					float omega = 2.0f * (float)Math.PI * m_frequencyHz;
 
 					// Damping coefficient
-					float d = 2.0f * m_springMass * m_dampingRatio * omega;
+					float df = 2.0f * m_springMass * m_dampingRatio * omega;
 
 					// Spring stiffness
 					float k = m_springMass * omega * omega;
 
 					// magic formulas
 					float h = data.step.dt;
-					m_gamma = h * (d + h * k);
+					m_gamma = h * (df + h * k);
 					if (m_gamma > 0.0f)
 					{
 						m_gamma = 1.0f / m_gamma;
@@ -299,7 +296,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(b2SolverData data){
+		internal override void SolveVelocityConstraints(b2SolverData data){
 			float mA = m_invMassA, mB = m_invMassB;
 			float iA = m_invIA, iB = m_invIB;
 
@@ -361,7 +358,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(b2SolverData data){
+		internal override bool SolvePositionConstraints(b2SolverData data){
 			b2Vec2 cA = data.positions[m_indexA].c;
 			float aA = data.positions[m_indexA].a;
 			b2Vec2 cB = data.positions[m_indexB].c;

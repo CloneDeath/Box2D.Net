@@ -10,17 +10,17 @@ namespace Box2D {
 	class b2MotorJoint : b2Joint
 	{
 	
-		public b2Vec2 GetAnchorA(){
+		public override b2Vec2 GetAnchorA(){
 			return m_bodyA.GetPosition();
 		}
-		public b2Vec2 GetAnchorB(){
+		public override b2Vec2 GetAnchorB(){
 			return m_bodyB.GetPosition();
 		}
 
-		public b2Vec2 GetReactionForce(float inv_dt){
+		public override b2Vec2 GetReactionForce(float inv_dt){
 			return inv_dt * m_linearImpulse;
 		}
-		public float GetReactionTorque(float inv_dt){
+		public override float GetReactionTorque(float inv_dt){
 			return inv_dt * m_angularImpulse;
 		}
 
@@ -103,7 +103,7 @@ namespace Box2D {
 			m_correctionFactor = def.correctionFactor;
 		}
 
-		void InitVelocityConstraints(b2SolverData data){
+		internal override void InitVelocityConstraints(b2SolverData data){
 			m_indexA = m_bodyA.m_islandIndex;
 			m_indexB = m_bodyB.m_islandIndex;
 			m_localCenterA = m_bodyA.m_sweep.localCenter;
@@ -164,7 +164,7 @@ namespace Box2D {
 				m_linearImpulse *= data.step.dtRatio;
 				m_angularImpulse *= data.step.dtRatio;
 
-				b2Vec2 P(m_linearImpulse.x, m_linearImpulse.y);
+				b2Vec2 P = new b2Vec2(m_linearImpulse.x, m_linearImpulse.y);
 				vA -= mA * P;
 				wA -= iA * (Utilities.b2Cross(m_rA, P) + m_angularImpulse);
 				vB += mB * P;
@@ -181,7 +181,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		void SolveVelocityConstraints(b2SolverData data){
+		internal override void SolveVelocityConstraints(b2SolverData data){
 			b2Vec2 vA = data.velocities[m_indexA].v;
 			float wA = data.velocities[m_indexA].w;
 			b2Vec2 vB = data.velocities[m_indexB].v;
@@ -237,7 +237,7 @@ namespace Box2D {
 			data.velocities[m_indexB].v = vB;
 			data.velocities[m_indexB].w = wB;
 		}
-		bool SolvePositionConstraints(b2SolverData data){
+		internal override bool SolvePositionConstraints(b2SolverData data){
 
 			return true;
 		}

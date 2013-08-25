@@ -28,9 +28,9 @@ namespace Testbed.Tests {
 			b2Color color(0.95f, 0.95f, 0.6f);
 			const b2Transform& xf = fixture.GetBody().GetTransform();
 
-			switch (fixture.GetType())
+			switch (fixture.GetShapeType())
 			{
-			case b2Shape::e_circle:
+			case ShapeType.Circle:
 				{
 					b2CircleShape* circle = (b2CircleShape*)fixture.GetShape();
 
@@ -41,7 +41,7 @@ namespace Testbed.Tests {
 				}
 				break;
 
-			case b2Shape::e_polygon:
+			case ShapeType.polygon:
 				{
 					b2PolygonShape* poly = (b2PolygonShape*)fixture.GetShape();
 					int vertexCount = poly.m_count;
@@ -179,7 +179,7 @@ namespace Testbed.Tests {
 				fd.shape = m_polygons + index;
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
-				m_bodies[m_bodyIndex].CreateFixture(&fd);
+				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 			else
 			{
@@ -188,7 +188,7 @@ namespace Testbed.Tests {
 				fd.density = 1.0f;
 				fd.friction = 0.3f;
 
-				m_bodies[m_bodyIndex].CreateFixture(&fd);
+				m_bodies[m_bodyIndex].CreateFixture(fd);
 			}
 
 			m_bodyIndex = (m_bodyIndex + 1) % k_maxBodies;
@@ -269,7 +269,7 @@ namespace Testbed.Tests {
 
 		int m_bodyIndex;
 		b2Body[] m_bodied = new b2Body[k_maxBodies];
-		b2PolygonShape m_polygons[4];
+		b2PolygonShape[] m_polygons = new b2PolygonShape[4];
 		b2CircleShape m_circle;
 	};
 }

@@ -111,7 +111,7 @@ namespace Box2D {
 		public void GetChildEdge(out b2EdgeShape edge, int index){
 			throw new NotImplementedException();
 			//Utilities.Assert(0 <= index && index < m_count - 1);
-			//edge.m_type = b2Shape::e_edge;
+			//edge.m_type = ShapeType.edge;
 			//edge.m_radius = m_radius;
 
 			//edge.m_vertex1 = m_vertices[index + 0];
@@ -189,6 +189,7 @@ namespace Box2D {
 		/// Chains have zero mass.
 		/// @see b2Shape::ComputeMass
 		public override void ComputeMass(out b2MassData massData, float density){
+			massData = new b2MassData();
 			massData.mass = 0.0f;
 			massData.center.SetZero();
 			massData.I = 0.0f;

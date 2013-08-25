@@ -51,7 +51,7 @@ namespace Testbed.Tests {
 		
 				fd.shape = shape;
 		
-				bodies[0].CreateFixture(&fd);
+				bodies[0].CreateFixture(fd);
 			}
 		}
 		
@@ -90,7 +90,7 @@ namespace Testbed.Tests {
 
 				fd.shape = shape;
 
-				bodies[1].CreateFixture(&fd);
+				bodies[1].CreateFixture(fd);
 			  }
 			}
 

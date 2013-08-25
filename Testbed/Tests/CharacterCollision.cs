@@ -209,7 +209,7 @@ namespace Testbed.Tests {
 				fd.shape = shape;
 				fd.density = 20.0f;
 				fd.friction = 1.0f;
-				m_character.CreateFixture(&fd);
+				m_character.CreateFixture(fd);
 			}
 		}
 

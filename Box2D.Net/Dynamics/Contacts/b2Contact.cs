@@ -270,8 +270,8 @@ namespace Box2D {
 			//b2Shape::Type typeA = fixtureA.GetType();
 			//b2Shape::Type typeB = fixtureB.GetType();
 
-			//Utilities.Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
-			//Utilities.Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
+			//Utilities.Assert(0 <= typeA && typeB < ShapeType.typeCount);
+			//Utilities.Assert(0 <= typeA && typeB < ShapeType.typeCount);
 
 			//b2ContactDestroyFcn* destroyFcn = s_registers[typeA][typeB].destroyFcn;
 			//destroyFcn(contact, allocator);

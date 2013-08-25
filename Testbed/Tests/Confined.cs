@@ -77,7 +77,7 @@ namespace Testbed.Tests {
 			fd.density = 1.0f;
 			fd.friction = 0.0f;
 
-			b2Vec2 p(RandomFloat(), 3.0f + RandomFloat());
+			b2Vec2 p = new b2Vec2(RandomFloat(), 3.0f + RandomFloat());
 			b2BodyDef bd = new b2BodyDef();
 			bd.type = b2BodyType.b2_dynamicBody;
 			bd.position = p;

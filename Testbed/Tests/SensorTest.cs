@@ -39,7 +39,7 @@ namespace Testbed.Tests {
 					b2FixtureDef fd;
 					fd.shape = shape;
 					fd.isSensor = true;
-					m_sensor = ground.CreateFixture(&fd);
+					m_sensor = ground.CreateFixture(fd);
 				}
 	#endif
 			}
